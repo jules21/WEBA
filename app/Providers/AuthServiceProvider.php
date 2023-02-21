@@ -25,6 +25,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // make is_super_admin to bypass spatie permission gate
+        Gate::before(function ($user, $ability) {
+            return $user->is_super_admin ? true : null;
+        });
     }
 }
