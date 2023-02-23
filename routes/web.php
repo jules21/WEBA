@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\CellController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,19 +20,38 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
-    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class,'index'])->name('dashboard');
+
+
+Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
+Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('villages');
+
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get("/users/profile/{user_id}", [App\Http\Controllers\UserController::class, 'userProfile'])->name("users.profile");
+
+    Route::group(['prefix' => 'operators', 'as' => 'operator.'], function () {
+
+        Route::get('/', [OperatorController::class, 'index'])->name('index');
+        Route::post('/store', [OperatorController::class, 'store'])->name('store');
+        Route::get('/edit/{operator}', [OperatorController::class, 'edit'])->name('edit');
+        Route::put('/update/{operator}', [OperatorController::class, 'update'])->name('update');
+        Route::delete('/delete/{operator}', [OperatorController::class, 'destroy'])->name('delete');
+        Route::get('/show/{operator}', [OperatorController::class, 'show'])->name('show');
+        Route::get("/operator-details", [OperatorController::class, 'operatorDetails'])->name('details');
+
+    });
+
 
     Route::prefix('user-management')->group(function () {
         //roles routes
-        Route::get("/roles", [\App\Http\Controllers\RoleController::class, 'index'])->name("roles.index");
-        Route::post("/roles/update/{role}", [\App\Http\Controllers\RoleController::class, 'update'])->name("roles.update");
-        Route::post("/roles/store", [\App\Http\Controllers\RoleController::class, 'store'])->name("roles.store");
-        Route::get('/add-permissions-to-role/{role_id}', [\App\Http\Controllers\RoleController::class, 'addPermissionToRole'])->name('roles.add.permissions');
-        Route::get('/add-roles-to-user/{user_id}', [\App\Http\Controllers\RoleController::class, 'addRoleToUser'])->name('user.add.roles');
-        Route::post('/add-roles-to-user/store', [\App\Http\Controllers\RoleController::class, 'storeRoleToUser'])->name('user.add.roles.store');
-        Route::post('/add-permissions-to-role/store', [\App\Http\Controllers\RoleController::class, 'storePermissionToRole'])->name('permissions_to_role.store');
+        Route::get("/roles", [RoleController::class, 'index'])->name("roles.index");
+        Route::post("/roles/update/{role}", [RoleController::class, 'update'])->name("roles.update");
+        Route::post("/roles/store", [RoleController::class, 'store'])->name("roles.store");
+        Route::get('/add-permissions-to-role/{role_id}', [RoleController::class, 'addPermissionToRole'])->name('roles.add.permissions');
+        Route::get('/add-roles-to-user/{user_id}', [RoleController::class, 'addRoleToUser'])->name('user.add.roles');
+        Route::post('/add-roles-to-user/store', [RoleController::class, 'storeRoleToUser'])->name('user.add.roles.store');
+        Route::post('/add-permissions-to-role/store', [RoleController::class, 'storePermissionToRole'])->name('permissions_to_role.store');
 
         Route::get('/permissions/add-permission-to-user/{user_id}', [App\Http\Controllers\PermissionController::class, 'addPermissionToUser'])->name('user.add.permissions');
         Route::post('/permissions/add-permissions-to-user/store', [App\Http\Controllers\PermissionController::class, 'storePermissionToUser'])->name('permissions_to_user.store');

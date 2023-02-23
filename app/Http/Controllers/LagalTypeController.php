@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLagalTypeRequest;
 use App\Http\Requests\UpdateLagalTypeRequest;
-use App\Models\LagalType;
+use App\Models\LegalType;
 
 class LagalTypeController extends Controller
 {
@@ -42,10 +42,10 @@ class LagalTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LagalType  $lagalType
+     * @param  \App\Models\LegalType  $lagalType
      * @return \Illuminate\Http\Response
      */
-    public function show(LagalType $lagalType)
+    public function show(LegalType $lagalType)
     {
         //
     }
@@ -53,10 +53,10 @@ class LagalTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\LagalType  $lagalType
+     * @param  \App\Models\LegalType  $lagalType
      * @return \Illuminate\Http\Response
      */
-    public function edit(LagalType $lagalType)
+    public function edit(LegalType $lagalType)
     {
         //
     }
@@ -65,10 +65,10 @@ class LagalTypeController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateLagalTypeRequest  $request
-     * @param  \App\Models\LagalType  $lagalType
+     * @param  \App\Models\LegalType  $lagalType
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateLagalTypeRequest $request, LagalType $lagalType)
+    public function update(UpdateLagalTypeRequest $request, LegalType $lagalType)
     {
         //
     }
@@ -76,10 +76,10 @@ class LagalTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\LagalType  $lagalType
+     * @param  \App\Models\LegalType  $lagalType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LagalType $lagalType)
+    public function destroy(LegalType $lagalType)
     {
         //
     }
