@@ -14,6 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
+    'CLMS_URL'=>env('CLMS_URL','https://licensing.rura.rw'),
 
     /*
     |--------------------------------------------------------------------------

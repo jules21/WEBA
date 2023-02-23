@@ -11,3 +11,5 @@ class LegalType extends Model
 
     protected $table = 'legal_types';
 }
+
+

@@ -4,83 +4,163 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOperatorRequest;
 use App\Http\Requests\UpdateOperatorRequest;
+use App\Models\LegalType;
 use App\Models\Operator;
+use App\Models\Province;
+use Exception;
+use Illuminate\Support\Facades\Http;
+use Yajra\DataTables\DataTables;
 
 class OperatorController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @throws Exception
      */
     public function index()
     {
-        //
+        $data = Operator::with(['legalType'])
+        ->select('operators.*');
+
+        if (request()->ajax()) {
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function (Operator $row) {
+
+                    return '<div class="dropdown">
+                                                 <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                                    Options
+                                                 </button>
+                                                 <div class="dropdown-menu border">
+                                                     <a class="dropdown-item" href="#">
+                                                         <i class="fas fa-edit"></i>
+                                                         <span class="ml-2">Edit</span>
+                                                     </a>
+                                                     <a class="dropdown-item js-delete" href="'.route('admin.operator.delete',encryptId($row->id)).'">
+                                                         <i class="fas fa-trash"></i>
+                                                         <span class="ml-2">Delete</span>
+                                                     </a>
+                                                 </div>
+                                             </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        $legalTypes = LegalType::all();
+        $provinces = Province::all();
+
+        return view('admin.operator.index', [
+            'legalTypes' => $legalTypes,
+            'provinces' => $provinces
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreOperatorRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreOperatorRequest $request)
     {
-        //
+        $data = $request->validated();
+        $details = json_decode($request->input('operator_details'), true);
+
+        $idType = $details['id_type'];
+        $docNumber = $details['document_number'];
+
+        // make id type and document number unique for each operator
+        $operator = Operator::query()
+            ->where('id_type', '=', $idType)
+            ->where('doc_number', '=', $docNumber)
+            ->first();
+
+        if ($operator) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Operator with this ID type and Document Number already exists',
+                'data' => $operator
+            ], 400);
+        }
+
+
+        $operator = Operator::query()->create([
+            'name' => $details['name'],
+            'legal_type_id' => $details['legal_type_id'],
+            'id_type' => $idType,
+            'doc_number' => $docNumber,
+            'province_id' => $details['province_id'],
+            'district_id' => $details['district_id'],
+            'sector_id' => $details['sector_id'],
+            'cell_id' => $data['cell_id'],
+            'village_id' => $data['village_id'],
+            'address' => $details['address']
+        ]);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'data' => $operator,
+                'message' => 'Operator created successfully'
+            ]);
+        }
+
+        return redirect()->route('operator.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Operator  $operator
-     * @return \Illuminate\Http\Response
-     */
     public function show(Operator $operator)
     {
-        //
+        return response()->json([
+            'success' => true,
+            'data' => $operator
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Operator  $operator
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Operator $operator)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateOperatorRequest  $request
-     * @param  \App\Models\Operator  $operator
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateOperatorRequest $request, Operator $operator)
     {
-        //
+        $data = $request->validated();
+
+        $operator->update($data);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'data' => $operator,
+                'message' => 'Operator updated successfully'
+            ]);
+        }
+
+        return redirect()->route('operator.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Operator  $operator
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Operator $operator)
     {
-        //
+
+        $operator->delete();
+
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Operator deleted successfully'
+            ]);
+        }
+
+        return redirect()->route('operator.index');
+    }
+
+    public function operatorDetails()
+    {
+        $idType = request('identification_type');
+        $idNumber = request('identification_number');
+        $headers = [
+            'CMS-RWSS-Key' => 'f0b2f01b-2ce6-43aa-8ee8-d959c13135d3',
+            'Content-Type' => 'application/json'
+        ];
+        $body = [
+            "identificationType" => $idType/*"document_number"*/,
+            "identificationNumber" => $idNumber/*"103058183"*/
+        ];
+
+        $response = Http::withHeaders($headers)
+            ->post(config('app.CLMS_URL') . '/api/v1/cms-rwss/get-operator-details', $body);
+        return $response->json();
+
     }
 }

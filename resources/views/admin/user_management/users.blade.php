@@ -1,7 +1,6 @@
 @extends('layouts.master')
 @section("title","User Management")
 @section('css')
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.css" integrity="sha512-Woz+DqWYJ51bpVk5Fv0yES/edIMXjj3Ynda+KWTIkGoynAMHrqTcDUQltbipuiaD5ymEo9520lyoVOo9jCQOCA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endsection
 @section('page-header')
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
@@ -200,7 +199,7 @@
 @stop
 
 @section('scripts')
-    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     {!! JsValidator::formRequest(App\Http\Requests\ValidateUpdateUser::class,'#edit-user-form') !!}
     {!! JsValidator::formRequest(App\Http\Requests\ValidateUser::class,'#add-user-form') !!}
     {{ $dataTable->scripts() }}
