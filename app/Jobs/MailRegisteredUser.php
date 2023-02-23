@@ -21,12 +21,13 @@ class MailRegisteredUser implements ShouldQueue
      */
     private $email, $password, $name,$phone;
 
-    public function __construct($email, $password, $name)
+    public function __construct($email, $password, $name, $phone)
     {
         //
         $this->email = $email;
         $this->password = $password;
         $this->name = $name;
+        $this->phone=$phone;
     }
 
     /**

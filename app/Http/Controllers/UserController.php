@@ -6,6 +6,7 @@ use App\Imports\ClientImport;
 use App\Jobs\SendSms;
 use App\Mail\MailResetPassword;
 use App\Models\Branch;
+use App\Models\Operator;
 use App\Models\User;
 use App\Models\UserFlowHistory;
 use Carbon\Carbon;
@@ -26,61 +27,29 @@ class UserController extends Controller
 
     public function index()
     {
+        $operator_id = auth()->user()->operator_id;
         $data = User::with(["permissions",'roles']);
-        if (auth()->user()->operator_id) {
-            $data = $data->where("operator_id", auth()->user()->operator_id);
-        }
+        $data->when($operator_id, function ($query) use ($operator_id) {
+            return $query->where('operator_id', $operator_id);
+        });
         $data = $data->orderBy('updated_at', 'desc')->select("users.*")->get();
         $dataTable = new UserDataTable($data);
-        return $dataTable->render('admin.user_management.users');
+        return $dataTable->render('admin.user_management.users',['operators'=>Operator::all()]);
     }
 
 
     public function store(ValidateUser $request)
     {
-        $request->validated();
-        $ini_pass = random_int(1000000, 9999999);
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-//        $user->telephone = $request->telephone;
-//        $user->password = bcrypt('Password@123!');
-        $user->password = bcrypt($ini_pass);
-//        $user->is_super_admin = false;
-//        $user->operator_id = $request->branch;
-//        $user->gender = $request->gender;
-        $user->save();
-        $this->dispatch(new MailRegisteredUser($user->email,$ini_pass,$user->name,$user->telephone));
+        $user = User::query()->make($request->validated());
+        $password = \Helper::generatePassword();
+        $user->fill(['password' => bcrypt($password)])->save();
+        $this->dispatch(new MailRegisteredUser($user->email, $password, $user->name, $user->phone));
         return redirect()->back()->with('success', 'User created successfully');
     }
 
     public function update(ValidateUpdateUser $request, $user_id)
     {
-        $request->validated();
-        $user = User::find($user_id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->telephone = $request->telephone;
-        $user->gender = $request->gender;
-        $user->national_id = $request->national_id;
-        if ($request->has('nid_attachment') && $request->nid_attachment)
-        {
-            $filename = $this->storeFile($request,'nid_attachment');
-            $user->nid_attachment = $filename;
-        }
-        if ($request->has('photo') && $request->photo)
-        {
-            $filename = $this->storeFile($request,'photo');
-            $user->photo = $filename;
-        }
-        if ($request->has('iposita_form') && $request->iposita_form)
-        {
-            $filename = $this->storeFile($request,'iposita_form');
-            $user->iposita_form = $filename;
-        }
-        $user->is_active = $request->is_active;
-        $user->operator_id = $request->branch;
-        $user->save();
+        User::query()->find($user_id)->update($request->validated());
         return redirect()->back()->with('success', 'User Updated successfully');
     }
 
