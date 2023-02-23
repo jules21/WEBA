@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LagalType extends Model
+class LegalType extends Model
 {
     use HasFactory;
 }
+
+

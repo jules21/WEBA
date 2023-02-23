@@ -11,9 +11,9 @@ class StoreOperatorRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -21,10 +21,24 @@ class StoreOperatorRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'operator_details' => ['required', 'json'],
+            'cell_id' => ['required', 'exists:cells,id'],
+            'village_id' => ['nullable', 'exists:villages,id'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'operator_details.required' => 'Operator details are required',
+            'operator_details.json' => 'Operator details must be a valid json',
+            'cell_id.required' => 'Cell is required',
+            'cell_id.exists' => 'Cell does not exist',
+            'village_id.required' => 'Village is required',
+            'village_id.exists' => 'Village does not exist',
         ];
     }
 }
