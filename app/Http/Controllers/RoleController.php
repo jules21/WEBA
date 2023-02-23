@@ -15,7 +15,7 @@ class RoleController extends Controller
     public function index()
     {
         $user=auth()->user();
-        $roles = Role::query()->get();
+        $roles = Role::with('permissions')->get();
         return view('admin.user_management.roles', compact('roles'));
     }
 

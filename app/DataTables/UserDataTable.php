@@ -26,6 +26,9 @@ class UserDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+            ->editColumn('operator', function ($item) {
+                return $item->operator ? $item->operator->name : "-";
+            })
             ->editColumn('phone', function ($item) {
                 return $item->phone ? $item->phone : "-";
             })
@@ -33,7 +36,7 @@ class UserDataTable extends DataTable
                 if(count($item->roles)>0){
                     $roles="";
                     foreach($item->roles as $role){
-                        $roles .='<span class="badge badge-success" style="margin-bottom: 5px">'.$role->name.'</span>';
+                        $roles .='<span class="badge badge-info mr-2" style="margin-bottom: 5px">'.$role->name.'</span>';
                     }
                     return $roles ;
                 }else{
@@ -76,7 +79,7 @@ class UserDataTable extends DataTable
                                 '</div>
                             </div>';
             })
-            ->rawColumns(['action','roles','status','phone']);
+            ->rawColumns(['action','roles','status','phone','operator']);
     }
 
 
@@ -118,6 +121,9 @@ class UserDataTable extends DataTable
             'id' => ['title' => '#', 'searchable' => false, 'render' => function() {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
+            Column::make('operator')
+                ->title("Operator")
+                ->addClass('text-center'),
             Column::make('name'),
             Column::make('email')
                 ->addClass('text-center'),

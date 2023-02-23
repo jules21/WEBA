@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Operator;
 use Illuminate\Database\Seeder;
 
 class OperatorSeeder extends Seeder
@@ -13,6 +14,6 @@ class OperatorSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Operator::factory(10)->create();
     }
 }

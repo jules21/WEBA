@@ -61,8 +61,8 @@
                                 <input type="checkbox"
                                        @if($user->roles->contains($role)) checked
                                        @endif value="{{$role->id}}"
-                                       name="roles[]"> {{$role->name}}
-                                <span></span>
+                                       name="roles[]">
+                                <span class="mr-1"></span>{{$role->name}}
                             </label>
                         </div>
                     @endforeach

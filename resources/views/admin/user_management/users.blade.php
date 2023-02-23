@@ -94,15 +94,19 @@
                                     <input type="text" name="phone" class="form-control" aria-describedby="emailHelp"
                                            placeholder="Phone">
                                 </div>
-                                <div class="col-md-12 form-group">
-                                    <label>Operator</label>
-                                    <select name="operator_id" class="form-control">
-                                        <option value="">Select Operator</option>
-                                        @foreach($operators as $operator)
-                                            <option value="{{$operator->id}}">{{$operator->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                @if(auth()->user()->operator_id == null)
+                                    <div class="col-md-12 form-group">
+                                        <label>Operator</label>
+                                        <select name="operator_id" class="form-control select2" style="width: 100% !important;" id="kt_select2_1">
+                                            <option value="">Select Operator</option>
+                                            @foreach($operators as $operator)
+                                                <option value="{{$operator->id}}">{{$operator->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @else
+                                    <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
+                                @endif
                             </div>
 
                         </div>
@@ -150,15 +154,19 @@
                                            aria-describedby="emailHelp"
                                            placeholder="Telephone">
                                 </div>
-                                <div class="col-md-12 form-group">
-                                    <label>Operator</label>
-                                    <select id="operator_id" name="operator_id" class="form-control">
-                                        <option value="">Select Operator</option>
-                                        @foreach($operators as $operator)
-                                            <option value="{{$operator->id}}">{{$operator->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                @if(auth()->user()->operator_id == null)
+                                    <div class="col-md-12 form-group">
+                                        <label>Operator</label>
+                                        <select id="operator_id" name="operator_id" class="form-control select2" style="width: 100% !important;"  id="kt_select2_2">
+                                            <option value="">Select Operator</option>
+                                            @foreach($operators as $operator)
+                                                <option value="{{$operator->id}}">{{$operator->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @else
+                                    <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
+                                @endif
                                 <div class="col-md-12 form-group">
                                     <label for="status">Active</label>
                                     <select class="form-control form-control-sm" id="status" name="status">
@@ -215,6 +223,12 @@
             var modal = $(this);
             modal.find('form').attr('action', href)
         })
+
+        // basic
+        $('#kt_select2_1, #kt_select2_2').select2({
+            placeholder: 'Select an operator'
+        });
+
     </script>
 
     @endsection

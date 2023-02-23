@@ -11,4 +11,13 @@ class Helper{
         }
         return $result;
     }
+    public static function getRandomModelId($model): int
+    {
+        $count = $model::count();
+        if ($count > 0){
+            return rand(1, $count);
+        }else{
+            return $model::factory()->create()->id;
+        }
+    }
 }

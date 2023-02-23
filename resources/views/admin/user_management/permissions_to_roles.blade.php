@@ -63,11 +63,11 @@
                         @foreach($permissions as $permission)
                             <div class="col-md-3" style="padding: 2px">
                                 <label class="checkbox checkbox-outline checkbox-primary">
-                                    <input type="checkbox"
+                                    <input type="checkbox" class=""
                                            @if($role->permissions->contains($permission)) checked
                                            @endif value="{{$permission->id}}"
-                                           name="permissions[]"> {{$permission->name}}
-                                    <span></span>
+                                           name="permissions[]">
+                                    <span class="mr-1"></span> {{$permission->name}}
                                 </label>
                             </div>
                         @endforeach

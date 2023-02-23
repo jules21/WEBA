@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\LegalType;
+use App\Models\Province;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LagalTypeFactory extends Factory
@@ -14,7 +16,6 @@ class LagalTypeFactory extends Factory
     public function definition()
     {
         return [
-            //
         ];
     }
 }
