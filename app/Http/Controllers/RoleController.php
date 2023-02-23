@@ -15,7 +15,13 @@ class RoleController extends Controller
     public function index()
     {
         $user=auth()->user();
-        $roles = Role::query()->get();
+        $roles = Role::with('permissions');
+        if($user->operator_id != null){
+            $roles = $roles->where('operator_id',$user->operator_id);
+        }else{
+            $roles = $roles->where('operator_id',null);
+        }
+        $roles = $roles->get();
         return view('admin.user_management.roles', compact('roles'));
     }
 
@@ -32,7 +38,11 @@ class RoleController extends Controller
     }
     public function addPermissionToRole($role_id){
         $role=Role::findorFail($role_id);
-        $permissions =Permission::query()->get();
+        $permissions =Permission::query();
+        if($role->operator_id != null){
+            $permissions = $permissions->whereIn('level',['both','operator']);
+        }
+        $permissions = $permissions->get();
         return view('admin.user_management.permissions_to_roles',compact('permissions','role'));
     }
     public function addRoleToUser($user_id){

@@ -26,11 +26,17 @@ class UserDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+            ->editColumn('operator', function ($item) {
+                return $item->operator ? $item->operator->name : "-";
+            })
+            ->editColumn('phone', function ($item) {
+                return $item->phone ? $item->phone : "-";
+            })
             ->editColumn('roles', function ($item) {
                 if(count($item->roles)>0){
                     $roles="";
                     foreach($item->roles as $role){
-                        $roles .='<span class="badge badge-success" style="margin-bottom: 5px">'.$role->name.'</span>';
+                        $roles .='<span class="badge badge-info mr-2" style="margin-bottom: 5px">'.$role->name.'</span>';
                     }
                     return $roles ;
                 }else{
@@ -39,25 +45,17 @@ class UserDataTable extends DataTable
 
             })
             ->editColumn('status', function ($item) {
-                if(!$item->is_active){
+                if($item->status == 'active'){
                     return '
-                <a href="'.route('admin.users.flow.history', encryptId($item->id)).'" data-toggle="tooltip" data-placement="top" title="Click for more">
-                    <span class="badge badge-success">Active</span>
-                </a>';
+                    <span class="badge badge-success">Active</span>';
                 }else{
                     return '
-                 <a href="'.route('admin.users.flow.history', encryptId($item->id)).'" data-toggle="tooltip" data-placement="top" title="Click for more">
                  <span class="badge badge-danger">Inactive</span>
-                 </a>';
+                    ';
+
                 }
             })
             ->addColumn('action', function ($item) {
-                $userActivation = $item->is_active ? "Deactivate":"Activate";
-              $reset_password =   !auth()->user()->can('Reset Password') ? "" :
-                    ' <a class=" reset-btn dropdown-item"
-                                               href="'.route("admin.users.reset.password",encryptId($item->id)).'">
-                                                Reset password
-                                            </a>';
                 return '<div class="btn-group">
                                 <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">Actions
@@ -71,20 +69,17 @@ class UserDataTable extends DataTable
                                        data-target="#edit-user-model"
                                        data-name="'.$item->name.'"
                                        data-email="'.$item->email.'"
-                                       data-telephone="'.$item->telephone.'"
+                                       data-phone="'.$item->phone.'"
                                        data-gender="'.$item->gender.'"
                                        data-id="'.$item->id.'"
-                                       data-branch="'.$item->branch_id.'"
+                                       data-operator="'.$item->operator_id.'"
                                        data-national_id="'.$item->national_id.'"
-                                       data-is_active="'.$item->is_active.'"
-
-
-                                       data-url="'.route("admin.users.update",$item->id).'"> Edit</a>'
-                                        . $reset_password .
+                                       data-status="'.$item->status.'"
+                                       data-url="'.route("admin.users.update",$item->id).'"> Edit</a>';
                                 '</div>
                             </div>';
             })
-            ->rawColumns(['action','roles','status']);
+            ->rawColumns(['action','roles','status','phone','operator']);
     }
 
 
@@ -112,17 +107,7 @@ class UserDataTable extends DataTable
             ->setTableId('datadatatable-table')
             ->addTableClass('table table-striped- table-hover table-checkable')
             ->columns($this->getColumns())
-            ->minifiedAjax()
-//            ->dom('Bfrtip')
-//            ->orderBy(1,"asc")
-            ->parameters([
-//                'dom'        => 'Bfrtip',
-//                'responsive' => true,
-//                "lengthMenu" => [
-//                    [10, 25, 50, -1],
-//                    ['10 rows', '25 rows', '50 rows', 'Show all']
-//                ],
-            ]);
+            ->minifiedAjax();
     }
 
     /**
@@ -136,11 +121,16 @@ class UserDataTable extends DataTable
             'id' => ['title' => '#', 'searchable' => false, 'render' => function() {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
+            Column::make('operator')
+                ->title("Operator")
+                ->addClass('text-center'),
             Column::make('name'),
             Column::make('email')
                 ->addClass('text-center'),
+            Column::make('phone')
+            ->addClass('text-center'),
             Column::make('status')
-                ->name('is_active')
+                ->name('status')
                 ->title("Status")
                 ->addClass('text-center'),
             Column::make('roles')

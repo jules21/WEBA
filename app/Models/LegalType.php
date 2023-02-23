@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class LegalType extends Model
 {
     use HasFactory;
+
+    protected $table = 'legal_types';
 }
 
 

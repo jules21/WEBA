@@ -125,6 +125,7 @@
                     <form class="kt-form" id="add-role-form" action="{{route('admin.roles.store')}} "
                           method="POST">
                         {{csrf_field()}}
+                        <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Role</label>
@@ -164,6 +165,7 @@
                     <form class="kt-form" id="edit-role-form" action="{{route('admin.roles.store')}} "
                           method="POST">
                         {{csrf_field()}}
+                        <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                         <div class="modal-body">
                             <div class="form-group">
                                 <label>Role</label>
