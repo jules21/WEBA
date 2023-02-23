@@ -331,7 +331,7 @@
 
 
         $(document).ready(function () {
-
+            $('.nav-operators').addClass('menu-item-active');
             $('#addButton').on('click', function () {
                 $('#addModal').modal();
             });
