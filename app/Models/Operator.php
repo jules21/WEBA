@@ -18,7 +18,6 @@ class Operator extends Model
     public function resolveRouteBinding($value, $field = null)
     {
         $id = decryptId($value);
-        info('Operator id: ' . $id);
         // find the model by id
         return $this->where('id', $id)->firstOrFail();
     }
