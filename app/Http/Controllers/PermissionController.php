@@ -12,7 +12,7 @@ class PermissionController extends Controller
 {
     public function index(){
         if(auth()->user()->branch_id){
-            $permissions = Permission::whereIn('type', ['branch', 'both'])->get();
+            $permissions = Permission::whereIn('type', ['operator', 'both'])->get();
         }else{
             $permissions = Permission::all();
         }

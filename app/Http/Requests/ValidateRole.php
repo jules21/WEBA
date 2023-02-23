@@ -26,6 +26,7 @@ class ValidateRole extends FormRequest
         return [
             'name'=>'required',
             'description'=>'required',
+            'operator_id'=>'nullable|exists:operators,id'
         ];
     }
 }
