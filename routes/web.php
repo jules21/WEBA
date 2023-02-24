@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AreaOfOperationController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OperatorController;
@@ -39,6 +40,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::delete('/delete/{operator}', [OperatorController::class, 'destroy'])->name('delete');
         Route::get('/show/{operator}', [OperatorController::class, 'show'])->name('show');
         Route::get("/operator-details", [OperatorController::class, 'operatorDetails'])->name('details');
+
+        Route::get("/{operator}/operation-areas", [AreaOfOperationController::class, 'index'])->name('area-of-operation.index');
+        Route::post("/{operator}/operation-areas", [AreaOfOperationController::class, 'store'])->name('area-of-operation.store');
+        Route::delete("/operation-areas/{areaOfOperation}", [AreaOfOperationController::class, 'destroy'])->name('area-of-operation.destroy');
+        Route::get("/operation-areas/{areaOfOperation}", [AreaOfOperationController::class, 'show'])->name('area-of-operation.show');
+
+        Route::get('/operation-areas/{id}/get', [AreaOfOperationController::class, 'getAreaOfOperations'])->name('get-area-of-operations');
 
     });
 

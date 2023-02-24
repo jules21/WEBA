@@ -144,7 +144,7 @@
                                                name="identification_number"/>
                                         <div class="input-group-append">
                                             <button class="btn btn-light-primary" type="button" id="searchButton">
-                                                Button
+                                                Check Operator
                                             </button>
                                         </div>
                                     </div>

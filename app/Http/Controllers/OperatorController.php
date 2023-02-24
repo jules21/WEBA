@@ -20,7 +20,7 @@ class OperatorController extends Controller
     public function index()
     {
         $data = Operator::with(['legalType'])
-        ->select('operators.*');
+            ->select('operators.*');
 
         if (request()->ajax()) {
             return DataTables::of($data)
@@ -32,11 +32,15 @@ class OperatorController extends Controller
                                                     Options
                                                  </button>
                                                  <div class="dropdown-menu border">
+                                                     <a class="dropdown-item" href="' . route('admin.operator.area-of-operation.index', encryptId($row->id)) . '">
+                                                         <i class="fas fa-map"></i>
+                                                         <span class="ml-2">Area of Operations</span>
+                                                     </a>
                                                      <a class="dropdown-item" href="#">
                                                          <i class="fas fa-edit"></i>
                                                          <span class="ml-2">Edit</span>
                                                      </a>
-                                                     <a class="dropdown-item js-delete" href="'.route('admin.operator.delete',encryptId($row->id)).'">
+                                                     <a class="dropdown-item js-delete" href="' . route('admin.operator.delete', encryptId($row->id)) . '">
                                                          <i class="fas fa-trash"></i>
                                                          <span class="ml-2">Delete</span>
                                                      </a>
@@ -81,6 +85,7 @@ class OperatorController extends Controller
 
 
         $operator = Operator::query()->create([
+            'clms_id' => $details['id'],
             'name' => $details['name'],
             'legal_type_id' => $details['legal_type_id'],
             'id_type' => $idType,
@@ -150,7 +155,7 @@ class OperatorController extends Controller
         $idType = request('identification_type');
         $idNumber = request('identification_number');
         $headers = [
-            'CMS-RWSS-Key' => 'f0b2f01b-2ce6-43aa-8ee8-d959c13135d3',
+            'CMS-RWSS-Key' => config('app.CMS-RWSS-Key'),
             'Content-Type' => 'application/json'
         ];
         $body = [
@@ -160,7 +165,11 @@ class OperatorController extends Controller
 
         $response = Http::withHeaders($headers)
             ->post(config('app.CLMS_URL') . '/api/v1/cms-rwss/get-operator-details', $body);
-        return $response->json();
-
+        if ($response->status() == 200)
+            return $response->json();
+        return response()
+            ->json([
+                'message' => "Unable to fetch operator details, please check your internet connection and try again"
+            ], 400);
     }
 }

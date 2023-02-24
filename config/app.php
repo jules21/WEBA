@@ -15,6 +15,7 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
     'CLMS_URL'=>env('CLMS_URL','https://licensing.rura.rw'),
+    'CMS-RWSS-Key'=>env('CMS-RWSS-Key','f0b2f01b-2ce6-43aa-8ee8-d959c13135d3'),
 
     /*
     |--------------------------------------------------------------------------

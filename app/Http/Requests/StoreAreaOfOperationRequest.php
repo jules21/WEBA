@@ -11,9 +11,9 @@ class StoreAreaOfOperationRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -21,10 +21,14 @@ class StoreAreaOfOperationRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name' => ['required'],
+            'district_id' => ['required', 'exists:districts,id'],
+            'contact_person_name' => ['required', 'string', 'max:255'],
+            'contact_person_phone' => ['required', 'string', 'max:50'],
+            'contact_person_email' => ['nullable', 'email', 'max:100'],
         ];
     }
 }
