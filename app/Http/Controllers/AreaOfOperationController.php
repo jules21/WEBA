@@ -5,82 +5,130 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAreaOfOperationRequest;
 use App\Http\Requests\UpdateAreaOfOperationRequest;
 use App\Models\AreaOfOperation;
+use App\Models\District;
+use App\Models\Operator;
+use Exception;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Yajra\DataTables\Facades\DataTables;
 
 class AreaOfOperationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @throws Exception
      */
-    public function create()
+    public function index(Operator $operator)
     {
-        //
+        $data = $operator->areaOfOperations()
+            ->with('district')
+            ->select('area_of_operations.*');
+
+        if (request()->ajax()) {
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function (AreaOfOperation $row) {
+
+                    return '<div class="dropdown">
+                                                 <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                                    Options
+                                                 </button>
+                                                 <div class="dropdown-menu border">
+                                                     <a class="dropdown-item js-edit" href="' . route('admin.operator.area-of-operation.show', encryptId($row->id)) . '">
+                                                         <i class="fas fa-edit"></i>
+                                                         <span class="ml-2">Edit</span>
+                                                     </a>
+                                                     <a class="dropdown-item js-delete" href="' . route('admin.operator.area-of-operation.destroy', encryptId($row->id)) . '">
+                                                         <i class="fas fa-trash"></i>
+                                                         <span class="ml-2">Delete</span>
+                                                     </a>
+                                                 </div>
+                                             </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        $districts = District::query()->get();
+
+        return view('admin.area-of-operation.index', [
+            'operator' => $operator,
+            'districts' => $districts
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreAreaOfOperationRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreAreaOfOperationRequest $request)
+
+    public function store(StoreAreaOfOperationRequest $request, Operator $operator)
     {
-        //
+        $data = $request->validated();
+
+        $id = $request->input('id');
+
+        if ($id > 0) {
+            $opArea = AreaOfOperation::query()->find($id);
+            $opArea->update($data);
+        } else {
+            $opArea = $operator
+                ->areaOfOperations()
+                ->create($data);
+        }
+
+        if (request()->ajax()) {
+            return \response()
+                ->json([
+                    'message' => 'Area of operation created successfully',
+                    'success' => true,
+                    'data' => $opArea
+                ], ResponseAlias::HTTP_CREATED);
+        }
+
+        return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\AreaOfOperation  $areaOfOperation
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(AreaOfOperation $areaOfOperation)
     {
-        //
+        $areaOfOperation->load('operator');
+        return $areaOfOperation;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\AreaOfOperation  $areaOfOperation
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(AreaOfOperation $areaOfOperation)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateAreaOfOperationRequest  $request
-     * @param  \App\Models\AreaOfOperation  $areaOfOperation
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateAreaOfOperationRequest $request, AreaOfOperation $areaOfOperation)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\AreaOfOperation  $areaOfOperation
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(AreaOfOperation $areaOfOperation)
     {
-        //
+        $areaOfOperation->delete();
+
+        if (request()->ajax())
+            return response()->noContent();
+
+        return back();
+    }
+
+    public function getAreaOfOperations($id)
+    {
+        $headers = [
+            'CMS-RWSS-Key' => config('app.CMS-RWSS-Key'),
+            'Content-Type' => 'application/json'
+        ];
+
+        $operatorID = decryptId($id);
+        info($operatorID);
+        $body = [
+            "operatorId" => $operatorID
+        ];
+
+
+
+        $response = Http::withHeaders($headers)
+            ->post(config('app.CLMS_URL') . '/api/v1/cms-rwss/get-operator/operation-area', $body);
+
+        if ($response->status() == 200)
+            return $response->json();
+
+        return response()
+            ->json([
+                'message' => 'Unable to fetch area of operations, please try again later',
+            ], 400);
+
     }
 }

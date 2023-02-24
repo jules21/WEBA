@@ -30,8 +30,15 @@
     {{--    <link rel="stylesheet" href="{{ asset('css/master.css') }}">--}}
     <!--end::Layout Themes-->
     @yield("css")
-    <link  rel="icon" type="image/png" href="{{asset('img/WFP.png')}}"/>
+    <link rel="icon" type="image/png" href="{{asset('img/WFP.png')}}"/>
     <title>@yield('title')</title>
+    <style>
+      /*  .select2 ~ .invalid-feedback {
+            display: none !important
+        }
+
+*/
+    </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -43,7 +50,7 @@
 <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
     <!--begin::Logo-->
     <a href="{{ route('admin.dashboard') }}">
-        <img alt="Logo" class="img-fluid rounded-pill" src="{{asset("img/logo.png")}}" width="50" />
+        <img alt="Logo" class="img-fluid rounded-pill" src="{{asset("img/logo.png")}}" width="50"/>
         {{--        <h3>Airtel</h3>--}}
     </a>
     <!--end::Logo-->
@@ -92,7 +99,7 @@
             <div class="brand flex-column-auto" id="kt_brand">
                 <!--begin::Logo-->
                 <a href="/" class="brand-logo">
-                    <img alt="Logo" class="rounded-pill" src="{{asset("img/WFP.png")}}" width="50" />
+                    <img alt="Logo" class="rounded-pill" src="{{asset("img/WFP.png")}}" width="50"/>
                     {{--                    <h2>NPA</h2>--}}
                 </a>
                 <!--end::Logo-->
@@ -213,7 +220,7 @@
                 <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
                     <!--begin::Copyright-->
                     <div class="text-dark order-2 order-md-1">
-                        <span class="text-muted font-weight-bold mr-2"><?= date('Y')?></span>
+                        <span class="text-muted font-weight-bold mr-2"><?= date('Y') ?></span>
                         <a href="#" target="_blank" class="text-dark-75 text-hover-primary">
                             WFP System
                         </a>
@@ -420,6 +427,12 @@
 
 <script src="{{asset("assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.3")}}"></script>
 @yield("scripts")
+
+<script>
+    $(document).ready(function () {
+        $('.select2').select2();
+    });
+</script>
 
 <!--end::Page Scripts-->
 </body>
