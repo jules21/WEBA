@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AreaOfOperationController;
 use App\Http\Controllers\CellController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\RoleController;
@@ -48,6 +49,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/operation-areas/{id}/get', [AreaOfOperationController::class, 'getAreaOfOperations'])->name('get-area-of-operations');
 
+    });
+
+    Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
+        Route::get('/', [CustomerController::class, 'index'])->name('index');
+        Route::post('/store', [CustomerController::class, 'store'])->name('store');
+        Route::get('/edit/{customer}', [CustomerController::class, 'edit'])->name('edit');
+        Route::delete('/delete/{customer}', [CustomerController::class, 'destroy'])->name('delete');
     });
 
 
