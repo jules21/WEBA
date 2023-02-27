@@ -67,7 +67,7 @@ class Operator extends Model
 
     public function areaOfOperations(): HasMany
     {
-        return $this->hasMany(AreaOfOperation::class);
+        return $this->hasMany(OperationArea::class);
     }
 
 

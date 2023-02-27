@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAreaOfOperationRequest;
-use App\Http\Requests\UpdateAreaOfOperationRequest;
-use App\Models\AreaOfOperation;
+use App\Http\Requests\StoreOperationAreaRequest;
+use App\Http\Requests\UpdateOperationAreaRequest;
+use App\Models\OperationArea;
 use App\Models\District;
 use App\Models\Operator;
 use Exception;
@@ -28,7 +28,7 @@ class AreaOfOperationController extends Controller
         if (request()->ajax()) {
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function (AreaOfOperation $row) {
+                ->addColumn('action', function (OperationArea $row) {
 
                     return '<div class="dropdown">
                                                  <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -59,14 +59,14 @@ class AreaOfOperationController extends Controller
     }
 
 
-    public function store(StoreAreaOfOperationRequest $request, Operator $operator)
+    public function store(StoreOperationAreaRequest $request, Operator $operator)
     {
         $data = $request->validated();
 
         $id = $request->input('id');
 
         if ($id > 0) {
-            $opArea = AreaOfOperation::query()->find($id);
+            $opArea = OperationArea::query()->find($id);
             $opArea->update($data);
         } else {
             $opArea = $operator
@@ -87,14 +87,14 @@ class AreaOfOperationController extends Controller
     }
 
 
-    public function show(AreaOfOperation $areaOfOperation)
+    public function show(OperationArea $areaOfOperation)
     {
         $areaOfOperation->load('operator');
         return $areaOfOperation;
     }
 
 
-    public function destroy(AreaOfOperation $areaOfOperation)
+    public function destroy(OperationArea $areaOfOperation)
     {
         $areaOfOperation->delete();
 
