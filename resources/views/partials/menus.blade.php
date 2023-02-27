@@ -26,6 +26,53 @@
         </a>
     </li>
     {{--    @can('Manage System Users')--}}
+
+    <li class="menu-section">
+        <h4 class="menu-text">System Settings</h4>
+        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+    </li>
+    <li class="menu-item menu-item-submenu nav-settings" aria-haspopup="true" data-menu-toggle="hover">
+        <a href="javascript:;" class="menu-link menu-toggle">
+            <i class="menu-icon flaticon-settings"></i>
+            <span class="menu-text">Settings</span>
+            <i class="menu-arrow"></i>
+        </a>
+        <div class="menu-submenu">
+            <i class="menu-arrow"></i>
+            <ul class="menu-subnav">
+                <li class="menu-item menu-item-parent" aria-haspopup="true">
+                            <span class="menu-link">
+                                <span class="menu-text">User Management</span>
+                            </span>
+                </li>
+                <li class="menu-item nav-request-type" aria-haspopup="true">
+                    <a href="{{ route('admin.request.type.index') }}" class="menu-link">
+                        <i class="menu-bullet menu-bullet-dot">
+                            <span></span>
+                        </i>
+                        <span class="menu-text">Request Type</span>
+                    </a>
+                </li>
+                <li class="menu-item nav-payment-type" aria-haspopup="true">
+                    <a href="{{ route('admin.payment.type.index') }}" class="menu-link">
+                        <i class="menu-bullet menu-bullet-dot">
+                            <span></span>
+                        </i>
+                        <span class="menu-text">Payment Type</span>
+                    </a>
+                </li>
+                <li class="menu-item nav-request-duration-configuration" aria-haspopup="true">
+                    <a href="{{ route('admin.request.duration.configuration.index') }}" class="menu-link">
+                        <i class="menu-bullet menu-bullet-dot">
+                            <span></span>
+                        </i>
+                        <span class="menu-text">Request Duration Configuration</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </li>
+
     <li class="menu-section">
         <h4 class="menu-text">System Users Section</h4>
         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>

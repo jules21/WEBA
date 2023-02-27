@@ -82,6 +82,33 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/users/update-password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('user.update.password');
 
     });
+
+    Route::prefix('settings')->group(function () {
+        //payment types
+        Route::get('/payment_types',[App\Http\Controllers\PaymentTypeController::class,'index'])->name('payment.type.index');
+        Route::post('/payment_type/store',[App\Http\Controllers\PaymentTypeController::class,'store'])->name('payment.type.store');
+        Route::post('/payment_type/update',[App\Http\Controllers\PaymentTypeController::class,'update'])->name('payment.type.edit');
+        Route::get('/payment_type/delete/{id}',[App\Http\Controllers\PaymentTypeController::class,'destroy'])->name('payment.type.delete');
+
+        //request types
+        Route::get('/request_types',[App\Http\Controllers\RequestTypeController::class,'index'])->name('request.type.index');
+        Route::post('/request_type/store',[App\Http\Controllers\RequestTypeController::class,'store'])->name('request.type.store');
+        Route::post('/request_type/update',[App\Http\Controllers\RequestTypeController::class,'update'])->name('request.type.edit');
+        Route::get('/request_type/delete/{id}',[App\Http\Controllers\RequestTypeController::class,'destroy'])->name('request.type.delete');
+
+        //request duration configurations
+        Route::get('/request_duration_configurations',[App\Http\Controllers\RequestDurationConfigurationController::class,'index'])->name('request.duration.configuration.index');
+        Route::post('/request_duration_configuration/store',[App\Http\Controllers\RequestDurationConfigurationController::class,'store'])->name('request.duration.configuration.store');
+        Route::post('/request_duration_configuration/update',[App\Http\Controllers\RequestDurationConfigurationController::class,'update'])->name('request.duration.configuration.edit');
+        Route::get('/request_duration_configuration/delete/{id}',[App\Http\Controllers\RequestDurationConfigurationController::class,'destroy'])->name('request.duration.configuration.delete');
+
+        //payment configurations
+        Route::get('/payment_configurations',[App\Http\Controllers\PaymentConfigurationController::class,'index'])->name('payment.configuration.index');
+        Route::post('/payment_configuration/store',[App\Http\Controllers\PaymentConfigurationController::class,'store'])->name('payment.configuration.store');
+        Route::post('/payment_configuration/update',[App\Http\Controllers\PaymentConfigurationController::class,'update'])->name('payment.configuration.edit');
+        Route::get('/payment_configuration/delete/{id}',[App\Http\Controllers\PaymentConfigurationController::class,'destroy'])->name('payment.configuration.delete');
+
+    });
 });
 
 

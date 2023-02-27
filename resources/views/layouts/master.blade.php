@@ -27,6 +27,7 @@
     <link href="{{asset('assets/css/themes/layout/header/menu/light.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('assets/css/themes/layout/brand/dark.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('assets/css/themes/layout/aside/dark.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
     {{--    <link rel="stylesheet" href="{{ asset('css/master.css') }}">--}}
     <!--end::Layout Themes-->
     @yield("css")
@@ -417,7 +418,7 @@
 <script src="{{asset('assets/plugins/global/plugins.bundle.js')}}"></script>
 <script src="{{asset('assets/plugins/custom/prismjs/prismjs.bundle.js')}}"></script>
 <script src="{{asset('assets/js/scripts.bundle.js')}}"></script>
-
+<script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
 <script src="{{asset("assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.3")}}"></script>
 @yield("scripts")
 

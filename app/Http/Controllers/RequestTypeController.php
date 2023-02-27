@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRequestTypeRequest;
 use App\Http\Requests\UpdateRequestTypeRequest;
+use App\Http\Requests\ValidateRequestType;
+use App\Models\PaymentType;
 use App\Models\RequestType;
 
 class RequestTypeController extends Controller
@@ -15,7 +17,8 @@ class RequestTypeController extends Controller
      */
     public function index()
     {
-        //
+        $types = RequestType::query()->orderBy('id','DESC')->get();
+        return view('admin.settings.request_type.index',compact('types'));
     }
 
     /**
@@ -31,12 +34,20 @@ class RequestTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreRequestTypeRequest  $request
+     * @param  \App\Http\Requests\ValidateRequestType  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequestTypeRequest $request)
+    public function store(ValidateRequestType $request)
     {
-        //
+                $request->validated();
+        $type = new RequestType();
+        $type->name=$request->name;
+        $type->name_kin=$request->name_kin;
+//        $type->is_active=$request->is_active;
+        $type->is_active="1";
+//        return $type;
+        $type->save();
+        return redirect()->back()->with('success', 'Request Type created successfully');
     }
 
     /**
@@ -70,7 +81,13 @@ class RequestTypeController extends Controller
      */
     public function update(UpdateRequestTypeRequest $request, RequestType $requestType)
     {
-        //
+        $type = RequestType::FindOrFail($request->input('TypeId'));
+        $type->name=$request->name;
+        $type->name_kin=$request->name_kin;
+        $type->is_active=$request->is_active;
+//        return $type;
+        $type->save();
+        return redirect()->back()->with('success','Request Type updated successfully');
     }
 
     /**
@@ -79,8 +96,10 @@ class RequestTypeController extends Controller
      * @param  \App\Models\RequestType  $requestType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(RequestType $requestType)
+    public function destroy(RequestType $requestType,$id)
     {
-        //
+        $type = RequestType::find($id);
+        $type->delete();
+        return redirect()->back()->with('success','Request Type deleted successfully');
     }
 }

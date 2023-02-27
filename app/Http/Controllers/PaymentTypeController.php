@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePaymentTypeRequest;
 use App\Http\Requests\UpdatePaymentTypeRequest;
+use App\Http\Requests\ValidatePaymentType;
 use App\Models\PaymentType;
+use App\Models\Request;
+use App\Models\User;
 
 class PaymentTypeController extends Controller
 {
@@ -15,7 +18,8 @@ class PaymentTypeController extends Controller
      */
     public function index()
     {
-        //
+        $types = PaymentType::query()->orderBy('id','DESC')->get();
+        return view('admin.settings.payment_type.index',compact('types'));
     }
 
     /**
@@ -34,9 +38,16 @@ class PaymentTypeController extends Controller
      * @param  \App\Http\Requests\StorePaymentTypeRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePaymentTypeRequest $request)
+    public function store(ValidatePaymentType $request)
     {
-        //
+        $request->validated();
+        $type = new PaymentType();
+        $type->name=$request->name;
+        $type->name_kin=$request->name_kin;
+        $type->is_active="1";
+        return $type;
+        $type->save();
+        return redirect()->back()->with('success', 'Payment Type created successfully');
     }
 
     /**
@@ -70,7 +81,13 @@ class PaymentTypeController extends Controller
      */
     public function update(UpdatePaymentTypeRequest $request, PaymentType $paymentType)
     {
-        //
+        $type = PaymentType::FindOrFail($request->input('TypeId'));
+        $type->name=$request->name;
+        $type->name_kin=$request->name_kin;
+        $type->is_active=$request->is_active;
+//        return $type;
+        $type->save();
+        return redirect()->back()->with('success','Payment Type updated successfully');
     }
 
     /**
@@ -79,8 +96,10 @@ class PaymentTypeController extends Controller
      * @param  \App\Models\PaymentType  $paymentType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PaymentType $paymentType)
+    public function destroy(PaymentType $paymentType,$id)
     {
-        //
+        $type = PaymentType::find($id);
+        $type->delete();
+        return redirect()->back()->with('success','Payment Type deleted successfully');
     }
 }
