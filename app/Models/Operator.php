@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Storage;
+
 
 class Operator extends Model
 {
@@ -61,6 +63,11 @@ class Operator extends Model
     public function getLogoUrlAttribute(): string
     {
         return $this->logo ? Storage::url(self::LOGO_PATH . $this->logo) : 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=A6CE39&background=1068BF';
+    }
+
+    public function areaOfOperations(): HasMany
+    {
+        return $this->hasMany(OperationArea::class);
     }
 
 

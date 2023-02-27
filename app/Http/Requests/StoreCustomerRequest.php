@@ -11,9 +11,9 @@ class StoreCustomerRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -21,10 +21,22 @@ class StoreCustomerRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'doc_type' => ['required'],
+            'doc_number' => ['required', 'string', 'max:255'],
+            'email' => ['nullable', 'string', 'email', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
+            'legal_type_id' => ['required'],
+            'province_id' => ['required',],
+            'district_id' => ['required',],
+            'sector_id' => ['required'],
+            'cell_id' => ['required',],
+            'village_id' => ['nullable', 'integer', 'exists:villages,id'],
         ];
     }
+
+
 }
