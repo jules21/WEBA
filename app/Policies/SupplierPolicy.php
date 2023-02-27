@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\OperationArea;
+use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AreaOfOperationPolicy
+class SupplierPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class AreaOfOperationPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\OperationArea  $areaOfOperation
+     * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, OperationArea $areaOfOperation)
+    public function view(User $user, Supplier $supplier)
     {
         //
     }
@@ -48,10 +48,10 @@ class AreaOfOperationPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\OperationArea  $areaOfOperation
+     * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, OperationArea $areaOfOperation)
+    public function update(User $user, Supplier $supplier)
     {
         //
     }
@@ -60,10 +60,10 @@ class AreaOfOperationPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\OperationArea  $areaOfOperation
+     * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, OperationArea $areaOfOperation)
+    public function delete(User $user, Supplier $supplier)
     {
         //
     }
@@ -72,10 +72,10 @@ class AreaOfOperationPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\OperationArea  $areaOfOperation
+     * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, OperationArea $areaOfOperation)
+    public function restore(User $user, Supplier $supplier)
     {
         //
     }
@@ -84,10 +84,10 @@ class AreaOfOperationPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\OperationArea  $areaOfOperation
+     * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, OperationArea $areaOfOperation)
+    public function forceDelete(User $user, Supplier $supplier)
     {
         //
     }
