@@ -21,9 +21,9 @@ class AreaOfOperationController extends Controller
      */
     public function index(Operator $operator)
     {
-        $data = $operator->areaOfOperations()
+        $data = $operator->operationAreas()
             ->with('district')
-            ->select('area_of_operations.*');
+            ->select('operation_areas.*');
 
         if (request()->ajax()) {
             return DataTables::of($data)
@@ -70,7 +70,7 @@ class AreaOfOperationController extends Controller
             $opArea->update($data);
         } else {
             $opArea = $operator
-                ->areaOfOperations()
+                ->operationAreas()
                 ->create($data);
         }
 

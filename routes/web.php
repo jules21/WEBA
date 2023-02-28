@@ -26,6 +26,8 @@ Route::get('/', function () {
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
 Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('villages');
+Route::get('/districts/{province}', [\App\Http\Controllers\DistrictController::class, 'getByProvince'])->name('districts.province');
+Route::get('/sectors/{district}', [\App\Http\Controllers\SectorController::class, 'getByDistrict'])->name('sectors.district');
 
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], function () {
