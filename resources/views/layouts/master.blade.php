@@ -30,8 +30,8 @@
     {{--    <link rel="stylesheet" href="{{ asset('css/master.css') }}">--}}
     <!--end::Layout Themes-->
     @yield("css")
-    <link rel="icon" type="image/png" href="{{asset('img/WFP.png')}}"/>
-    <title>@yield('title')</title>
+    <link rel="icon" type="image/png" href="{{asset('img/CMS RWSS.png')}}"/>
+    <title>@yield('title', 'Home') - CMS RWSS</title>
     <style>
       /*  .select2 ~ .invalid-feedback {
             display: none !important
@@ -99,7 +99,7 @@
             <div class="brand flex-column-auto" id="kt_brand">
                 <!--begin::Logo-->
                 <a href="/" class="brand-logo">
-                    <img alt="Logo" class="rounded-pill" src="{{asset("img/WFP.png")}}" width="50"/>
+                    <img alt="Logo" class="rounded-pill" src="{{asset("img/CMS RWSS.png")}}" width="50"/>
                     {{--                    <h2>NPA</h2>--}}
                 </a>
                 <!--end::Logo-->
@@ -159,7 +159,7 @@
                                         <span class="menu-text text-muted" style="font-size: 22px;">
 {{--                                            <img src="{{asset("img/log.jpg")}}" class="img-fluid rounded-pill" width="50"--}}
                                             {{--                                                height="30" alt="">--}}
-                                            <span style="margin-left: 5px"> WFP System</span> </span>
+                                            <span style="margin-left: 5px"> CMS RWSS System</span> </span>
                                         <i class="menu-arrow"></i>
                                     </a>
                                 </li>
@@ -222,7 +222,7 @@
                     <div class="text-dark order-2 order-md-1">
                         <span class="text-muted font-weight-bold mr-2"><?= date('Y') ?></span>
                         <a href="#" target="_blank" class="text-dark-75 text-hover-primary">
-                            WFP System
+                            CMS RWSS System
                         </a>
                     </div>
                     <!--end::Copyright-->

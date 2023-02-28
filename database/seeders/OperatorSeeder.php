@@ -16,7 +16,7 @@ class OperatorSeeder extends Seeder
     public function run()
     {
         Operator::factory(10)
-            ->has(OperationArea::factory(3),'areaOfOperations')
+            ->has(OperationArea::factory(2),'operationAreas')
             ->create();
     }
 }

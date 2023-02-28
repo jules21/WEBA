@@ -216,5 +216,37 @@
             $('#_description').val($(this).data('description'));
             $('#edit-role-form').attr('action', $(this).data('url'));
         });
+
+        $('.delete_btn').click(function (e){
+            e.preventDefault();
+            var url = $(this).data('url');
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+                if (result.value) {
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                        },
+                        success: function (data) {
+                            if (data.status == 'success') {
+                                swal.fire(
+                                    'Deleted!',
+                                    'Your file has been deleted.',
+                                    'success'
+                                );
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            });
+        });
     </script>
 @endsection

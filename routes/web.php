@@ -100,6 +100,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/users/update-password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('user.update.password');
 
     });
+
+    Route::prefix('stock-management')->name('stock.')->group(function (){
+        Route::resource('item-categories', \App\Http\Controllers\ItemCategoryController::class);
+        Route::resource('items', \App\Http\Controllers\ItemController::class);
+    });
+
 });
 
 
