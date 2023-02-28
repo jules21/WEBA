@@ -4,8 +4,12 @@ use App\Http\Controllers\AreaOfOperationController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SectorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,9 +30,9 @@ Route::get('/', function () {
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
 Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('villages');
-Route::get('/districts/{province}', [\App\Http\Controllers\DistrictController::class, 'getByProvince'])->name('districts.province');
-Route::get('/sectors/{district}', [\App\Http\Controllers\SectorController::class, 'getByDistrict'])->name('sectors.district');
-
+Route::get('/districts/{province}', [DistrictController::class, 'getByProvince'])->name('districts.province');
+Route::get('/sectors/{district}', [SectorController::class, 'getByDistrict'])->name('sectors.district');
+Route::get('/documents-types/{legalType}', [DocumentTypeController::class, 'getByLegalType'])->name('type-document.get-by-legal-type');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -56,8 +60,21 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
         Route::get('/', [CustomerController::class, 'index'])->name('index');
         Route::post('/store', [CustomerController::class, 'store'])->name('store');
-        Route::get('/edit/{customer}', [CustomerController::class, 'edit'])->name('edit');
+        Route::get('/show/{customer}', [CustomerController::class, 'show'])->name('show');
         Route::delete('/delete/{customer}', [CustomerController::class, 'destroy'])->name('delete');
+    });
+
+
+    Route::group(['prefix' => 'requests.', 'as' => 'requests.'], function () {
+        Route::get('/requests', [RequestsController::class, 'index'])->name('index');
+        Route::post('/', [RequestsController::class, 'store'])->name('store');
+        Route::get('/requests/create', [RequestsController::class, 'create'])->name('create');
+        Route::get('/requests/{request}', [RequestsController::class, 'show'])->name('show');
+        Route::get('/requests/{request}/edit', [RequestsController::class, 'edit'])->name('edit');
+        Route::put('/requests/{request}/update', [RequestsController::class, 'update'])->name('update');
+        Route::delete('/requests/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
+        Route::get('/requests/{request}/assign', [RequestsController::class, 'assign'])->name('.assign');
+        Route::post('/requests/{request}/assign', [RequestsController::class, 'assignOperator'])->name('assign.operator');
     });
 
 

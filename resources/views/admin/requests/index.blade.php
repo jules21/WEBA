@@ -9,7 +9,9 @@
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-2">
                 <!--begin::Page Title-->
-                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">Customers</h5>
+                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">
+                    Requests
+                </h5>
 
                 <!--end::Page Title-->
                 <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
@@ -20,7 +22,7 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <span class="text-muted">Customer Management</span>
+                        <span class="text-muted">Request Management</span>
                     </li>
                 </ul>
             </div>
@@ -34,19 +36,18 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
                     <h4>
-                        Customers
+                        Manage Requests
                     </h4>
 
-                    <buttont type="button" class="btn btn-primary btn-sm" id="addButton">
+                    <a href="{{ route('admin.requests.create') }}"  class="btn btn-primary btn-sm" id="addButton">
                        <span class="svg-icon">
                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
-</svg>
-
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
+                            </svg>
                        </span>
                         Add New
-                    </buttont>
+                    </a>
                 </div>
 
 
@@ -54,8 +55,8 @@
                     <table class="table table-head-custom border table-head-solid table-hover dataTable">
                         <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Doc Number</th>
+                            <th>Customer</th>
+                            <th>Request Type</th>
                             <th>Email</th>
                             <th>Phone Number</th>
                             <th></th>
@@ -73,7 +74,7 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  {{--  <div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
          aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -203,7 +204,7 @@
             </div>
         </div>
     </div>
-
+--}}
 @endsection
 
 @section('scripts')

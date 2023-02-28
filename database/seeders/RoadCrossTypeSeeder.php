@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\RequestType;
+use App\Models\RoadCrossType;
 use Illuminate\Database\Seeder;
 
-class RequestTypeSeeder extends Seeder
+class RoadCrossTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,16 +15,19 @@ class RequestTypeSeeder extends Seeder
     public function run()
     {
         $types = [
-          'New Connection',
-          'Repairing',
-          'Relocation'
+            "Gravel or dirt",
+            "Swamp",
+            "Ruhurura",
+            "River",
+            "Strong fence",
+            "Other people's lands"
         ];
 
-        if (RequestType::query()->exists())
+        if (RoadCrossType::query()->exists())
             return;
 
         foreach ($types as $type) {
-            RequestType::query()
+            RoadCrossType::query()
                 ->create([
                     'name' => $type
                 ]);
