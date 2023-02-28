@@ -25,7 +25,7 @@ class StoreCustomerRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'doc_type' => ['required'],
+            'document_type_id' => ['required'],
             'doc_number' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
@@ -34,7 +34,7 @@ class StoreCustomerRequest extends FormRequest
             'district_id' => ['required',],
             'sector_id' => ['required'],
             'cell_id' => ['required',],
-            'village_id' => ['nullable', 'integer', 'exists:villages,id'],
+//            'village_id' => ['nullable', 'integer', 'exists:villages,id'],
         ];
     }
 

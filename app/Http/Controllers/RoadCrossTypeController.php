@@ -2,19 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreDocumentTypeRequest;
-use App\Http\Requests\UpdateDocumentTypeRequest;
-use App\Models\DocumentType;
-use App\Models\LegalType;
+use App\Http\Requests\StoreRoadCrossTypeRequest;
+use App\Http\Requests\UpdateRoadCrossTypeRequest;
+use App\Models\RoadCrossType;
 
-class DocumentTypeController extends Controller
+class RoadCrossTypeController extends Controller
 {
-    public function getByLegalType(LegalType $legalType)
-    {
-        return $legalType->documentTypes()->get();
-    }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +15,7 @@ class DocumentTypeController extends Controller
      */
     public function index()
     {
-
+        //
     }
 
     /**
@@ -38,10 +31,10 @@ class DocumentTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \App\Http\Requests\StoreDocumentTypeRequest $request
+     * @param  \App\Http\Requests\StoreRoadCrossTypeRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreDocumentTypeRequest $request)
+    public function store(StoreRoadCrossTypeRequest $request)
     {
         //
     }
@@ -49,10 +42,10 @@ class DocumentTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Models\DocumentType $documentType
+     * @param  \App\Models\RoadCrossType  $roadCrossType
      * @return \Illuminate\Http\Response
      */
-    public function show(DocumentType $documentType)
+    public function show(RoadCrossType $roadCrossType)
     {
         //
     }
@@ -60,10 +53,10 @@ class DocumentTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\DocumentType $documentType
+     * @param  \App\Models\RoadCrossType  $roadCrossType
      * @return \Illuminate\Http\Response
      */
-    public function edit(DocumentType $documentType)
+    public function edit(RoadCrossType $roadCrossType)
     {
         //
     }
@@ -71,11 +64,11 @@ class DocumentTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \App\Http\Requests\UpdateDocumentTypeRequest $request
-     * @param \App\Models\DocumentType $documentType
+     * @param  \App\Http\Requests\UpdateRoadCrossTypeRequest  $request
+     * @param  \App\Models\RoadCrossType  $roadCrossType
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateDocumentTypeRequest $request, DocumentType $documentType)
+    public function update(UpdateRoadCrossTypeRequest $request, RoadCrossType $roadCrossType)
     {
         //
     }
@@ -83,10 +76,10 @@ class DocumentTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\DocumentType $documentType
+     * @param  \App\Models\RoadCrossType  $roadCrossType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DocumentType $documentType)
+    public function destroy(RoadCrossType $roadCrossType)
     {
         //
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
+use App\Models\DocumentType;
 use App\Models\IdType;
 use App\Models\LegalType;
 use App\Models\Province;
@@ -17,27 +18,23 @@ class CustomerController extends Controller
 
     public function index()
     {
-        $data = Customer::with(['legal', 'province', 'district', 'sector'])
+        $data = Customer::with(['legalType','documentType'])
             ->select('customers.*');
 
         if (request()->ajax()) {
             return DataTables::of($data)
                 ->addIndexColumn()
-                /*    -> editColumn('name', function (Customer $row) {
-                        return '<a href="' . route('admin.customer.show', encryptId($row->id)) . '">' . $row->name . '</a>';
-                    })*/
                 ->addColumn('action', function (Customer $row) {
-
                     return '<div class="dropdown">
                                                  <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                                     Options
                                                 </button>
                                                 <div class="dropdown-menu border">
-                                                    <a class="dropdown-item" href="' . route('admin.customer.edit', encryptId($row->id)) . '">
+                                                    <a class="dropdown-item js-edit" href="' . route('admin.customers.show', encryptId($row->id)) . '">
                                                         <i class="fas fa-edit"></i>
                                                         <span class="ml-2">Edit</span>
                                                     </a>
-                                                    <a class="dropdown-item js-delete" href="' . route('admin.customer.delete', encryptId($row->id)) . '">
+                                                    <a class="dropdown-item js-delete" href="' . route('admin.customers.delete', encryptId($row->id)) . '">
                                                         <i class="fas fa-trash"></i>
                                                         <span class="ml-2">Delete</span>
                                                     </a>
@@ -52,7 +49,7 @@ class CustomerController extends Controller
         return view('admin.customers.index', [
             'legalTypes' => $legalTypes,
             'provinces' => $provinces,
-            'idTypes' => IdType::get()
+            'idTypes' => DocumentType::query()->get()
         ]);
     }
 
@@ -60,9 +57,15 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         $data = $request->validated();
+        $id = $request->input('id');
+        if ($id > 0) {
+            $customer = Customer::query()->find($id);
 
-        $customer = Customer::query()
-            ->create($data);
+            $customer->update($data);
+        } else {
+            $customer = Customer::query()
+                ->create($data);
+        }
 
         if (request()->ajax()) {
             return response()->json([
