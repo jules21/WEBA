@@ -65,7 +65,7 @@ class Operator extends Model
         return $this->logo ? Storage::url(self::LOGO_PATH . $this->logo) : 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=A6CE39&background=1068BF';
     }
 
-    public function areaOfOperations(): HasMany
+    public function operationAreas(): HasMany
     {
         return $this->hasMany(OperationArea::class);
     }

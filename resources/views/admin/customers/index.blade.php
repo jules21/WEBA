@@ -238,7 +238,7 @@
 
 
             $.ajax({
-                url: "/sectors/" + sectorId,
+                url: "/sectors/" + districtId,
                 method: "GET",
                 success: function (data) {
                     console.log(data);
