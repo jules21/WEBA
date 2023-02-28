@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\OperationArea;
 use App\Models\Operator;
 use Illuminate\Database\Seeder;
 
@@ -14,6 +15,8 @@ class OperatorSeeder extends Seeder
      */
     public function run()
     {
-        Operator::factory(10)->create();
+        Operator::factory(10)
+            ->has(OperationArea::factory(3),'areaOfOperations')
+            ->create();
     }
 }

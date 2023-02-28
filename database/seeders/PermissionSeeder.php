@@ -20,7 +20,7 @@ class PermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            \Spatie\Permission\Models\Permission::create($permission);
+            \Spatie\Permission\Models\Permission::query()->updateOrCreate(['name'=>data_get($permission, 'name')],$permission);
         }
     }
 }
