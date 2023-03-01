@@ -8,23 +8,33 @@ use App\Models\Province;
 use App\Models\Request as AppRequest;
 use App\Models\RequestType;
 use App\Models\RoadCrossType;
+use App\Models\User;
 use App\Models\WaterUsage;
+use DB;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
 class RequestsController extends Controller
 {
+    /**
+     * @throws Exception
+     */
     public function index()
     {
+
         $data = AppRequest::query()
+            ->with(['customer', 'requestType'])
             ->where('operator_id', '=', auth()->user()->operator_id)
             ->select('requests.*');
         if (request()->ajax()) {
 
             return DataTables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function (Customer $row) {
+                ->addColumn('action', function (AppRequest $row) {
                     return '<div class="dropdown">
                                  <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                     Options
@@ -47,6 +57,44 @@ class RequestsController extends Controller
         return view('admin.requests.index');
     }
 
+    /**
+     * @throws Exception
+     */
+    public function newRequests()
+    {
+
+
+        if (request()->ajax()) {
+            $data = AppRequest::query()
+                ->with(['customer', 'requestType'])
+                ->where('operator_id', '=', auth()->user()->operator_id)
+                ->whereDoesntHave('requestAssignments')
+                ->select('requests.*');
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function (AppRequest $row) {
+                    return ' <a class="btn btn-sm btn-primary rounded" href="' . route('admin.requests.show', encryptId($row->id)) . '">
+                                <span class="">Details</span>
+                             </a>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        $users = User::query()
+            ->where('operator_id', '=', auth()->user()->operator_id)
+            /*    ->whereHas('roles', function (Builder $query) {
+                    $query->where('name', '=', 'Engineer');
+                })*/
+            ->get();
+        return view('admin.requests.new_requests', [
+            'users' => $users
+        ]);
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function store(ValidateAppRequest $request)
     {
         $data = $request->validated();
@@ -54,13 +102,17 @@ class RequestsController extends Controller
         $id = $request->input('id');
         $data['operator_id'] = auth()->user()->operator_id;
         $data['created_by'] = auth()->id();
-
+        DB::beginTransaction();
         if ($id > 0) {
             $req = AppRequest::query()->find($id);
             $req->update($data);
         } else {
-            AppRequest::query()->create($data);
+            $req = AppRequest::query()->create($data);
+            // save flow history
+            $this->saveFlowHistory($req);
         }
+
+        DB::commit();
 
         if ($request->ajax()) {
             return response()->json([
@@ -76,6 +128,7 @@ class RequestsController extends Controller
 
     public function show(AppRequest $request)
     {
+        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments');
 
         return view('admin.requests.show', [
             'request' => $request
@@ -128,6 +181,21 @@ class RequestsController extends Controller
             'roadTypes' => $roadTypes,
             'roadCrossTypes' => RoadCrossType::query()->get()
         ]);
+    }
+
+    /**
+     * @param AppRequest $req
+     * @return void
+     */
+    public function saveFlowHistory(AppRequest $req): void
+    {
+        $req->flowHistories()
+            ->create([
+                'type' => $req->getClassName(),
+                'status' => 'Pending',
+                'user_id' => auth()->id(),
+                'comment' => 'Request created by ' . auth()->user()->name
+            ]);
     }
 
 

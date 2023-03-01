@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\RequestAssignmentController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
@@ -65,16 +66,20 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     });
 
 
-    Route::group(['prefix' => 'requests.', 'as' => 'requests.'], function () {
-        Route::get('/requests', [RequestsController::class, 'index'])->name('index');
+    Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
+        Route::get('/', [RequestsController::class, 'index'])->name('index');
         Route::post('/', [RequestsController::class, 'store'])->name('store');
-        Route::get('/requests/create', [RequestsController::class, 'create'])->name('create');
-        Route::get('/requests/{request}', [RequestsController::class, 'show'])->name('show');
-        Route::get('/requests/{request}/edit', [RequestsController::class, 'edit'])->name('edit');
-        Route::put('/requests/{request}/update', [RequestsController::class, 'update'])->name('update');
-        Route::delete('/requests/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
-        Route::get('/requests/{request}/assign', [RequestsController::class, 'assign'])->name('.assign');
-        Route::post('/requests/{request}/assign', [RequestsController::class, 'assignOperator'])->name('assign.operator');
+        Route::get('/create', [RequestsController::class, 'create'])->name('create');
+        Route::get('/{request}/show', [RequestsController::class, 'show'])->name('show');
+        Route::get('/{request}/edit', [RequestsController::class, 'edit'])->name('edit');
+        Route::put('/{request}/update', [RequestsController::class, 'update'])->name('update');
+        Route::delete('/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
+
+
+        Route::get('/new', [RequestsController::class, 'newRequests'])->name('new');
+        Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
+
+        Route::get('/assigned', [RequestsController::class, 'assignedRequests'])->name('assigned');
     });
 
 

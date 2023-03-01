@@ -33,10 +33,10 @@ class ValidateAppRequest extends FormRequest
             'cell_id' => ['required', 'integer'],
             'village_id' => ['nullable'],
             'upi' => ['required', 'string'],
-            'meter_qty' => ['required', 'integer'],
+            'meter_qty' => ['required', 'integer', 'min:1'],
             'description' => ['required', 'string'],
             'new_connection_crosses_road' => ['required', 'string'],
-            'road_type' => ['required_if:new_connection_crosses_road,1', 'string'],
+            'road_type' => ['required_if:new_connection_crosses_road,1'],
             'equipment_payment' => ['required', 'string'],
             'digging_pipeline' => ['required', 'string'],
         ];
