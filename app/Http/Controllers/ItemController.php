@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ItemsDataTable;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Models\Item;
+use App\Models\ItemCategory;
+use App\Models\Operator;
+use App\Models\PackagingUnit;
 
 class ItemController extends Controller
 {
@@ -15,8 +19,11 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return view('admin.stock.items',[
-            'items'=>Item::query()->get()
+        $items = Item::query()->select('items.*')->with('category','packagingUnit');
+        $dataTable = new ItemsDataTable($items);
+        return $dataTable->render('admin.stock.items', [
+            'categories' => ItemCategory::query()->get(),
+            'units' => PackagingUnit::query()->get()
         ]);
     }
 
@@ -29,29 +36,8 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Item $item)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Item $item)
-    {
-        //
+        Item::query()->create($request->validated());
+        return redirect()->back()->with('success', 'Item created successfully');
     }
 
     /**
@@ -63,7 +49,8 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        //
+        $item->update($request->validated());
+        return redirect()->back()->with('success', 'Item updated successfully');
     }
 
     /**
@@ -74,6 +61,23 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        try {
+            $item->delete();
+            return redirect()->back()->with('success', 'Item deleted successfully');
+        }catch (\Exception $exception){
+            info('Item cannot be deleted', [
+                'item' => $item->toArray(),
+                'exception' => $exception->getMessage()
+            ]);
+            return redirect()->back()->with('error', 'Item cannot be deleted');
+        }
+    }
+
+    public function stock(Operator $operator)
+    {
+        return view('admin.stock.stock', [
+            'operator' => $operator,
+            'items' => Item::query()->select('items.*')->with('category','packagingUnit')->get()
+        ]);
     }
 }

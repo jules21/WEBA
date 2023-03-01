@@ -47,55 +47,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-separate border table-head-solid table-head-custom" id="kt_datatable1">
-                        {{--                    kt_datatable1--}}
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Is Meter</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($items as $item)
-                            <tr>
-                                <td>{{$item->name}}</td>
-                                <td>
-                                   <span class=" label label-inline label-light-{{$item->is_meter ? 'primary':'danger'}} font-weight-bold ">
-                                       {{$item->is_meter ? 'Yes':'No'}}
-                                   </span>
-                                </td>
-                                <td>
-                                   <span class="label label-inline label-light-{{$item->is_active ? 'primary':'danger'}}">
-                                       {{$item->is_active ? 'Active':'Inactive'}}
-                                   </span>
-                                </td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-light-primary btn-sm  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
-                                        <div class="dropdown-menu" style="">
-                                            <a href="#" class=" edit-btn dropdown-item "
-                                               data-toggle="modal"
-                                               data-target="#user_category_edit_modal"
-                                               data-name="{{$item->name}}"
-                                               data-is_meter="{{$item->is_meter}}"
-                                               data-is_active="{{$item->is_active}}"
-                                               data-id="{{$item->id}}"
-                                               data-url="{{ route('admin.stock.item-categories.update', $item->id) }}">
-                                                Edit
-                                            </a>
-                                            <a class="delete_btn dropdown-item"
-                                               data-url="{{route('admin.stock.item-categories.destroy', $item->id) }}">
-                                                Delete
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
+                    {!! $dataTable->table() !!}
                 </div>
             </div>
         </div>
@@ -103,32 +55,65 @@
         <div class="modal fade" id="addModal" tabindex="-1" category="dialog"
              aria-labelledby="exampleModalLabel"
              aria-hidden="true">
-            <div class="modal-dialog" category="document">
+            <div class="modal-dialog modal-lg" category="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add new category</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
-                    <form class="kt-form" id="add-category-form" action="{{route('admin.stock.item-categories.store')}} "
+                    <form class="kt-form" id="add-category-form" action="{{route('admin.stock.items.store')}} "
                           method="POST">
                         {{csrf_field()}}
-                        <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label>Item</label>
-                                <input type="text" name="name" class="form-control" aria-describedby="emailHelp"
-                                       placeholder="Item name">
+                            <div class="row">
+                                <div class="col-6 form-group">
+                                    <label>Item</label>
+                                    <input type="text" name="name" class="form-control" aria-describedby="emailHelp"
+                                           placeholder="Item name">
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label>Item Category</label>
+                                    <select name="item_category_id" class="form-control">
+                                        <option value="">--select--</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label>Packaging Unit</label>
+                                    <select name="packaging_unit_id" class="form-control">
+                                        <option value="">--select--</option>
+                                        @foreach($units as $unit)
+                                            <option value="{{$unit->id}}">{{$unit->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label>Selling Price</label>
+                                    <input type="number" name="selling_price" class="form-control" aria-describedby="emailHelp"
+                                           placeholder="Selling Price">
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label>Vatable</label>
+                                    <select name="vatable" class="form-control">
+                                        <option value="">--select--</option>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label for="vat_rate">Vat Rate</label>
+                                    <input type="number" name="vat_rate" class="form-control" aria-describedby="emailHelp"
+                                           placeholder="Vat Rate">
+                                </div>
+                                <div class="col-12 form-group">
+                                    <label>Item Description</label>
+                                    <textarea name="description" class="form-control" aria-describedby="emailHelp"
+                                              placeholder="Item description"></textarea>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Is Meter</label>
-                                <select name="is_meter" class="form-control">
-                                    <option value="">Select</option>
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                                </select>
-                            </div>
-
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"><span
@@ -143,13 +128,13 @@
             </div>
         </div>
         {{--user update modal--}}
-        <div class="modal fade" id="user_category_edit_modal" tabindex="-1" category="dialog"
+        <div class="modal fade" id="edit-item-modal" tabindex="-1" category="dialog"
              aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" category="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit category</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
@@ -157,32 +142,64 @@
                           method="POST">
                         @method('PUT')
                         {{csrf_field()}}
-                        <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label>Item</label>
-                                <input type="text" name="name" id="_name" class="form-control" aria-describedby="emailHelp"
-                                       placeholder="Item name">
-                            </div>
                             <div class="row">
                                 <div class="col-6 form-group">
-                                    <label class="checkbox">
-                                        <input type="hidden" name="is_meter" value="0">
-                                        <input type="checkbox" name="is_meter" id="_is_meter" value="1">
-                                        <span class="mr-2"></span>Is Meter
-
-                                    </label>
+                                    <label>Item</label>
+                                    <input type="text" name="name" class="form-control" aria-describedby="emailHelp"
+                                           placeholder="Item name" id="_name">
                                 </div>
                                 <div class="col-6 form-group">
-                                    <label class="checkbox">
-                                        <input type="hidden" name="is_active" value="0">
-                                        <input type="checkbox" name="is_active" id="_is_active" value="1">
-                                        <span class="mr-2"></span>Is Active
+                                    <label for="item_category_id">Item Category</label>
+                                    <select name="item_category_id" class="form-control" id="_item_category_id">
+                                        <option value="">--select--</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label for="packaging_unit_id">Packaging Unit</label>
+                                    <select name="packaging_unit_id" class="form-control" id="_packaging_unit_id">
+                                        <option value="">--select--</option>
+                                        @foreach($units as $unit)
+                                            <option value="{{$unit->id}}">{{$unit->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label for="selling_price">Selling Price</label>
+                                    <input type="number" name="selling_price" class="form-control" aria-describedby="emailHelp"
+                                           placeholder="Selling Price" id="_selling_price">
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label for="vatable">Vatable</label>
+                                    <select name="vatable" class="form-control" id="_vatable">
+                                        <option value="">--select--</option>
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label for="vat_rate">Vat Rate</label>
+                                    <input type="number" name="vat_rate" class="form-control" aria-describedby="emailHelp"
+                                           placeholder="Vat Rate" id="_vat_rate">
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label for="status">Status</label>
+                                    <select name="is_active" class="form-control" id="_status">
+                                        <option value="">--select--</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
 
-                                    </label>
+                                </div>
+                                <div class="col-12 form-group">
+                                    <label for="description">Item Description</label>
+                                    <textarea name="description" class="form-control" aria-describedby="emailHelp"
+                                              placeholder="Item description" id="_description"></textarea>
                                 </div>
                             </div>
-
                         </div>
 
 
@@ -210,18 +227,24 @@
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
     {!! JsValidator::formRequest(App\Http\Requests\StoreItemRequest::class,'#add-category-form') !!}
     {!! JsValidator::formRequest(App\Http\Requests\UpdateItemRequest::class,'#edit-category-form') !!}
+    {!! $dataTable->scripts() !!}
     <script>
         $("#kt_datatable1").DataTable({responsive:true});
-        $('.edit-btn').click(function (e) {
+        $(document).on('click','.btn-edit', function (e) {
             e.preventDefault();
+            console.log($(this).data('vatable'));
             $('#_name').val($(this).data('name'));
-            $('#_is_meter').prop('checked', $(this).data('is_meter'));
-            $('#_is_active').prop('checked', $(this).data('is_active'));
-
+              $('#_item_category_id').val($(this).data('item_category_id'));
+            $('#_packaging_unit_id').val($(this).data('packaging_unit_id'));
+            $('#_selling_price').val($(this).data('selling_price'));
+            $('#_vatable').val($(this).data('vatable') ? 1 : 0);
+            $('#_vat_rate').val($(this).data('vat_rate'));
+            $('#_description').val($(this).data('description'));
+            $('#_status').val($(this).data('is_active'));
             $('#edit-category-form').attr('action', $(this).data('url'));
         });
 
-        $('.delete_btn').click(function (e){
+        $(document).on('click', '.btn-delete', function (e){
             e.preventDefault();
             var url = $(this).data('url');
             swal.fire({

@@ -121,6 +121,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::prefix('stock-management')->name('stock.')->group(function (){
         Route::resource('item-categories', \App\Http\Controllers\ItemCategoryController::class);
         Route::resource('items', \App\Http\Controllers\ItemController::class);
+        Route::get('/items/{operator}/stock', [\App\Http\Controllers\ItemController::class, 'stock'])->name('items.stock');
     });
 
 });
