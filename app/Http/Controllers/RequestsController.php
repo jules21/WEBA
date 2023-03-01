@@ -40,6 +40,10 @@ class RequestsController extends Controller
                                     Options
                                 </button>
                                 <div class="dropdown-menu border">
+                                    <a class="dropdown-item" href="' . route('admin.requests.show', encryptId($row->id)) . '">
+                                        <i class="fas fa-info-circle"></i>
+                                        <span class="ml-2">Details</span>
+                                    </a>
                                     <a class="dropdown-item js-edit" href="' . route('admin.customers.show', encryptId($row->id)) . '">
                                         <i class="fas fa-edit"></i>
                                         <span class="ml-2">Edit</span>
@@ -128,10 +132,15 @@ class RequestsController extends Controller
 
     public function show(AppRequest $request)
     {
-        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments');
+        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments','flowHistories.user');
+
+        $reviews = $request->flowHistories->where('is_comment', '=', true);
+        $flowHistories = $request->flowHistories->where('is_comment', '=', false);
 
         return view('admin.requests.show', [
-            'request' => $request
+            'request' => $request,
+            'reviews' => $reviews,
+            'flowHistories' => $flowHistories
         ]);
     }
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\RequestAssignmentController;
+use App\Http\Controllers\RequestReviewController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
@@ -78,8 +79,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/new', [RequestsController::class, 'newRequests'])->name('new');
         Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
-
         Route::get('/assigned', [RequestsController::class, 'assignedRequests'])->name('assigned');
+
+        Route::post('/{request}/reviews/save', [RequestReviewController::class, 'saveReview'])->name('reviews.save');
     });
 
 

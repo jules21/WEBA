@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\HasStatusColor;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\FlowHistory
@@ -16,28 +21,34 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $status
  * @property string $type
  * @property int $user_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read Model|\Eloquent $model
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory query()
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory whereComment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FlowHistory whereUserId($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Model|Eloquent $model
+ * @method static Builder|FlowHistory newModelQuery()
+ * @method static Builder|FlowHistory newQuery()
+ * @method static Builder|FlowHistory query()
+ * @method static Builder|FlowHistory whereComment($value)
+ * @method static Builder|FlowHistory whereCreatedAt($value)
+ * @method static Builder|FlowHistory whereId($value)
+ * @method static Builder|FlowHistory whereModelId($value)
+ * @method static Builder|FlowHistory whereModelType($value)
+ * @method static Builder|FlowHistory whereStatus($value)
+ * @method static Builder|FlowHistory whereType($value)
+ * @method static Builder|FlowHistory whereUpdatedAt($value)
+ * @method static Builder|FlowHistory whereUserId($value)
+ * @mixin Eloquent
  */
 class FlowHistory extends Model
 {
-   // create a polymorphic relationship
+    use HasStatusColor;
+
     public function model(): MorphTo
     {
-         return $this->morphTo();
+        return $this->morphTo();
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

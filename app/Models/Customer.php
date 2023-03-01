@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasAddress;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,10 +50,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Customer extends Model
 {
     use HasFactory;
+    use HasAddress;
 
     public function resolveRouteBinding($value, $field = null)
     {
-        return $this->where('id','=',decryptId($value))->firstOrFail();
+        return $this->where('id', '=', decryptId($value))->firstOrFail();
     }
 
     public function legalType(): BelongsTo
@@ -64,4 +66,8 @@ class Customer extends Model
     {
         return $this->belongsTo(DocumentType::class);
     }
+
+
+
+
 }
