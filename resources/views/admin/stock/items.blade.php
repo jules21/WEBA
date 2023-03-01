@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Item Categories')
+@section('title','Items')
 @section('page-header')
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
@@ -17,7 +17,7 @@
                             <a href="/" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a class="text-muted">Item Categories</a>
+                            <a class="text-muted">Items</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -35,13 +35,13 @@
         @include('partials._alerts')
         <div class="card card-custom">
             <div class="card-header flex-wrap">
-                <h3 class="card-title">Categories</h3>
+                <h3 class="card-title">Items</h3>
                 <div class="card-toolbar">
                     <a href="javascript:void(0)" class="btn btn-primary"
                        data-toggle="modal"
                        data-target="#addModal" >
                         <i class="la la-plus"></i>
-                        New Category
+                        New Item
                     </a>
                 </div>
             </div>
@@ -58,17 +58,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($categories as $category)
+                        @foreach($items as $item)
                             <tr>
-                                <td>{{$category->name}}</td>
+                                <td>{{$item->name}}</td>
                                 <td>
-                                   <span class=" label label-inline label-light-{{$category->is_meter ? 'primary':'danger'}} font-weight-bold ">
-                                       {{$category->is_meter ? 'Yes':'No'}}
+                                   <span class=" label label-inline label-light-{{$item->is_meter ? 'primary':'danger'}} font-weight-bold ">
+                                       {{$item->is_meter ? 'Yes':'No'}}
                                    </span>
                                 </td>
                                 <td>
-                                   <span class="label label-inline label-light-{{$category->is_active ? 'primary':'danger'}}">
-                                       {{$category->is_active ? 'Active':'Inactive'}}
+                                   <span class="label label-inline label-light-{{$item->is_active ? 'primary':'danger'}}">
+                                       {{$item->is_active ? 'Active':'Inactive'}}
                                    </span>
                                 </td>
                                 <td>
@@ -78,15 +78,15 @@
                                             <a href="#" class=" edit-btn dropdown-item "
                                                data-toggle="modal"
                                                data-target="#user_category_edit_modal"
-                                               data-name="{{$category->name}}"
-                                               data-is_meter="{{$category->is_meter}}"
-                                               data-is_active="{{$category->is_active}}"
-                                               data-id="{{$category->id}}"
-                                               data-url="{{ route('admin.stock.item-categories.update', $category->id) }}">
+                                               data-name="{{$item->name}}"
+                                               data-is_meter="{{$item->is_meter}}"
+                                               data-is_active="{{$item->is_active}}"
+                                               data-id="{{$item->id}}"
+                                               data-url="{{ route('admin.stock.item-categories.update', $item->id) }}">
                                                 Edit
                                             </a>
                                             <a class="delete_btn dropdown-item"
-                                               data-url="{{route('admin.stock.item-categories.destroy', $category->id) }}">
+                                               data-url="{{route('admin.stock.item-categories.destroy', $item->id) }}">
                                                 Delete
                                             </a>
                                         </div>
@@ -116,9 +116,9 @@
                         <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Category</label>
+                                <label>Item</label>
                                 <input type="text" name="name" class="form-control" aria-describedby="emailHelp"
-                                       placeholder="Category name">
+                                       placeholder="Item name">
                             </div>
                             <div class="form-group">
                                 <label>Is Meter</label>
@@ -135,7 +135,7 @@
                                     class="la la-close"></span> Close
                             </button>
                             <button type="submit" class="btn btn-primary"><span class="la la-check-circle-o"></span>
-                                Save Category
+                                Save Item
                             </button>
                         </div>
                     </form>
@@ -160,9 +160,9 @@
                         <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Category</label>
+                                <label>Item</label>
                                 <input type="text" name="name" id="_name" class="form-control" aria-describedby="emailHelp"
-                                       placeholder="Category name">
+                                       placeholder="Item name">
                             </div>
                             <div class="row">
                                 <div class="col-6 form-group">
@@ -191,7 +191,7 @@
                                     class="la la-close"></span> Close
                             </button>
                             <button type="submit" class="btn btn-primary"><span class="la la-check-circle-o"></span>
-                                Edit Category
+                                Edit Item
                             </button>
                         </div>
                     </form>
@@ -208,8 +208,8 @@
 @endsection
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest(App\Http\Requests\StoreItemCategoryRequest::class,'#add-category-form') !!}
-    {!! JsValidator::formRequest(App\Http\Requests\UpdateItemCategoryRequest::class,'#edit-category-form') !!}
+    {!! JsValidator::formRequest(App\Http\Requests\StoreItemRequest::class,'#add-category-form') !!}
+    {!! JsValidator::formRequest(App\Http\Requests\UpdateItemRequest::class,'#edit-category-form') !!}
     <script>
         $("#kt_datatable1").DataTable({responsive:true});
         $('.edit-btn').click(function (e) {
