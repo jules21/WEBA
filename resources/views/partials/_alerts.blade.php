@@ -1,6 +1,6 @@
 @if(session()->has('success'))
     <div
-        class="alert alert-custom  my-3 alert-light-success border-success fade show rounded-xl"
+        class="alert alert-custom  my-3 alert-light-success border-success fade show rounded-sm"
         role="alert">
         <div class="alert-icon">
             <i class="la la-check-circle"></i>
@@ -17,7 +17,7 @@
 @endif
 @if(session()->has('error'))
     <div
-        class="alert alert-custom  my-3 alert-light-danger border-danger fade show rounded-lg"
+        class="alert alert-custom  my-3 alert-light-danger border-danger fade show rounded-sm"
         role="alert">
         <div class="alert-icon">
             <i class="flaticon-warning"></i>
@@ -35,7 +35,7 @@
 
 @if(session()->has('warning'))
     <div
-        class="alert alert-custom   my-3 alert-light-warning border-warning fade show rounded-lg"
+        class="alert alert-custom   my-3 alert-light-warning border-warning fade show rounded-sm"
         role="alert">
         <div class="alert-icon">
             <i class="flaticon-warning"></i>
@@ -53,7 +53,7 @@
 
 @if(session()->has('info'))
     <div
-        class="alert alert-custom alert-notice  my-3 alert-outline-info bg-white fade show rounded-0"
+        class="alert alert-custom alert-notice  my-3 alert-outline-info bg-white fade show rounded-sm"
         role="alert">
         <div class="alert-icon">
             <i class="flaticon-information"></i>

@@ -207,6 +207,7 @@
                     <!--begin::Container-->
                     <div class="container">
                         <input type="hidden" id="currentUrl" value="{{ url()->current() }} ">
+                        @include('partials._alerts')
                         @yield('content')
                     </div>
                     <!--end::Container-->

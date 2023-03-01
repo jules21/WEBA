@@ -24,12 +24,16 @@ class ValidateUser extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>'required',
+            'name' => 'required',
             'email' => 'nullable|email|unique:users',
-            'phone' => 'required|unique:users|regex:/^[07][0-9]{9}$/',
+            'phone' => [
+                'required', 'unique:users',
+                app()->environment('production') ? 'regex:/^[07][0-9]{9}$/' : 'max:20'
+            ],
             'operator_id' => 'nullable',
         ];
     }
+
     public function messages()
     {
         return [

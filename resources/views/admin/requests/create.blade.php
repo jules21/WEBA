@@ -36,6 +36,17 @@
     </div>
 
     <div class="container">
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="card shadow-none border">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
@@ -191,7 +202,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="road_type">Road Type</label>
-                                <select name="road_type" id="road_type" class="form-control select2">
+                                <select name="road_type" id="road_type" class="form-control ">
                                     <option value="">Select Road Type</option>
                                     @foreach($roadTypes as $roadType)
                                         <option value="{{ $roadType }}">{{ $roadType }}</option>
