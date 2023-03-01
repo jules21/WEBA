@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\HasAddress;
+use App\Traits\HasStatusColor;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -85,6 +87,8 @@ use Illuminate\Support\Carbon;
 class Request extends Model
 {
     protected $appends = ['status_color'];
+    use HasAddress;
+    use HasStatusColor;
 
     public function resolveRouteBinding($value, $field = null)
     {
@@ -142,21 +146,6 @@ class Request extends Model
         return $this->belongsTo(Operator::class);
     }
 
-    public function getStatusColorAttribute(): string
-    {
-        switch (strtolower($this->status)) {
-            case 'pending':
-                return 'primary';
-            case 'assigned':
-                return 'info';
-            case 'approved':
-                return 'success';
-            case 'rejected':
-                return 'danger';
-            default:
-                return 'secondary';
-        }
-    }
 
     // create a polymorphic relationship
     public function flowHistories(): MorphMany
@@ -173,6 +162,33 @@ class Request extends Model
     public function getClassName(): string
     {
         return (new \ReflectionClass($this))->getShortName();
+    }
+
+    const ASSIGNED = 'Assigned';
+    const PROPOSE_TO_APPROVE = 'Propose to approve';
+    const REJECTED = 'Rejected';
+    const APPROVED = 'Approved';
+    const ASSIGNING_METER = 'Assigning meter';
+
+    public function getApprovalStatuses(): array
+    {
+        if ($this->status == self::ASSIGNED) {
+            return [
+                self::PROPOSE_TO_APPROVE,
+                self::REJECTED
+            ];
+        } elseif ($this->status == self::PROPOSE_TO_APPROVE) {
+            return [
+                self::APPROVED,
+                self::REJECTED
+            ];
+        } elseif ($this->status == self::APPROVED) {
+            return [
+                self::ASSIGNING_METER,
+                self::REJECTED
+            ];
+        }
+        return [];
     }
 
 
