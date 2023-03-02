@@ -147,12 +147,15 @@ class RequestsController extends Controller
             ->orderBy('name')
             ->get();
 
+        $technician = $request->technician()->first();
+
         return view('admin.requests.show', [
             'request' => $request,
             'reviews' => $reviews,
             'flowHistories' => $flowHistories,
             'items' => $items,
-            'requestItems' => $requestItems
+            'requestItems' => $requestItems,
+            'technician' => $technician
         ]);
     }
 
