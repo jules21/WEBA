@@ -203,5 +203,10 @@ class Request extends Model
         return $this->hasOne(RequestTechnician::class);
     }
 
+    public function meterNumbers(): HasMany
+    {
+        return $this->hasMany(MeterRequest::class);
+    }
+
 
 }

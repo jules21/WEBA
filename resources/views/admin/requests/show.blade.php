@@ -71,381 +71,68 @@
 
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="mb-4">
-                            Customer Details
-                        </h5>
-                        <div class="row">
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Name</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->name }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Phone</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->phone }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Email</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->email }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">ID Type</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->documentType->name }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Doc Number</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->doc_number }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Address</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->address }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @include('admin.requests.partials._customer_details')
 
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="mb-4">
-                            Request Details
-                        </h5>
-                        <div class="row">
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Type</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->requestType->name }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Water Usage</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->waterUsage->name }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">
-                                        Number of Meters Requested
-                                    </label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->meter_qty }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">UPI</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->upi }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <div class="font-weight-bold">
-                                        Will the new connection cross a road?
-                                    </div>
-                                    <span class="label label-light-info label-inline rounded-pill">
-                                        {{ $request->new_connection_crosses_road? 'Yes' : 'No' }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Road Type:</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->road_type }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <div class="font-weight-bold">
-                                        Will you buy the equipments by yourself?
-                                    </div>
-                                    <span class="label label-light-info label-inline rounded-pill">
-                                        {{ $request->equipment_payment? 'Yes' : 'No' }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <div class="font-weight-bold">
-                                        Will you dig the pipeline by yourself?
-                                    </div>
-                                    <span class="label label-light-info label-inline rounded-pill">
-                                        {{ $request->digging_pipeline? 'Yes' : 'No' }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">
-                                        Address
-                                    </label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->address }}
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Description</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->description }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @include('admin.requests.partials._request_details')
 
                 <div class="mb-3">
-
-                    @if($technician)
-
-                        <div class="card card-body ">
-                            <h6 class="mb-3">
-                                Technician Details
-                            </h6>
-
-                            <div class="row">
-                                <div class="col-md-6 col-xl-4">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Name:</label>
-                                        <div class="form-control-plaintext">
-                                            {{ $technician->name }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Phone Number:</label>
-                                        <div class="form-control-plaintext">
-                                            {{ $technician->phone_number }}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xl-4">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Address:</label>
-                                        <div class="form-control-plaintext">
-                                            {{ $technician->address }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="d-flex">
-                                <button
-                                    data-id="{{ $technician->id }}"
-                                    data-name="{{ $technician->name }}"
-                                    data-phone="{{ $technician->phone_number }}"
-                                    data-address="{{ $technician->address }}"
-                                    class="btn btn-sm btn-light-primary mr-3 rounded-pill px-5 font-weight-bold js-edit-tech">
-                                    <i class="flaticon2-edit"></i>
-                                    Edit
-                                </button>
-                                <button type="button"
-                                        data-href="{{ route('admin.requests.technician.delete',encryptId($technician->id)) }}"
-                                        class="btn btn-sm btn-light-danger rounded-pill px-5 font-weight-bold js-delete">
-                                    <i class="flaticon2-trash"></i>
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-
-                    @else
-                        <div
-                            class="alert alert-light-info flex-column alert-custom justify-content-center align-items-center">
-                            <h1 class="display-6 mb-4">
-                                No technicians assigned yet
-                            </h1>
-                            <button type="button" class="btn rounded-sm btn-info" id="addTechBtn">
-                                <i class="flaticon2-user"></i>
-                                Add Technician
-                            </button>
-                        </div>
-                    @endif
+                    @include('admin.requests.partials._technician_details')
                 </div>
 
 
-                <div class="card card-body mb-3">
+                @if(!$request->equipment_payment)
+                    @include('admin.requests.partials._equipments')
+                @endif
 
-                    @if(!$request->equipment_payment)
-                        <div class="p-3 mb-3">
-
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="mb-0">Materials</h5>
-                                <button type="button" class="btn btn-sm rounded btn-primary" id="addBtn">
-                                    <i class="flaticon2-add"></i>
-                                    Add New
-                                </button>
-                            </div>
-                            <div class="table-responsive">
-                                <table class="table border dataTable rounded table-head-solid table-head-custom">
-                                    <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Qty</th>
-                                        <th>Price</th>
-                                        <th>Total</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <td colspan="3" class="text-right font-weight-bold">Total:</td>
-                                        <td class="font-weight-bolder">
-                                            RWF
-                                            <span id="total">{{ number_format($requestItems->sum('total')) }}</span>
-                                        </td>
-                                        <td></td>
-                                    </tfoot>
-                                    <tbody>
-
-                                    @forelse($requestItems as $item)
-                                        <tr>
-                                            <td>{{ $item->item->name }}</td>
-                                            <td>{{ $item->quantity }}</td>
-                                            <td>{{ number_format($item->unit_price) }}</td>
-                                            <td>RWF {{ number_format($item->total) }}</td>
-                                            <td>
-                                                <button
-                                                    data-id="{{ $item->id }}"
-                                                    data-quantity="{{ $item->quantity }}"
-                                                    data-unit_price="{{ $item->unit_price }}"
-                                                    data-item_id="{{ $item->item_id }}"
-                                                    class="btn btn-sm btn-light-primary btn-icon rounded-circle js-edit">
-                                                    <i class="flaticon2-edit"></i>
-                                                </button>
-                                                <button type="button"
-                                                        data-href="{{ route('admin.requests.delete-request-item',[encryptId($request->id),encryptId($item->id)]) }}"
-                                                        class="btn btn-sm btn-light-danger btn-icon rounded-circle js-delete">
-                                                    <i class="flaticon2-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-
-                                    @empty
-                                        <tr>
-                                            <td colspan="5">
-                                                <div class="alert alert-light-info alert-custom py-1">
-                                                    <div class="alert-icon">
-                                                        <i class="flaticon2-exclamation"></i>
-                                                    </div>
-                                                    <div class="alert-text">
-                                                        No items found, please add some items.
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforelse
-
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    @endif
-                </div>
 
                 @if(!in_array($request->status,[\App\Models\Request::APPROVED,\App\Models\Request::REJECTED]))
-
                     @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-8">
-                                        <h4 class="my-4">Review</h4>
-                                        <form
-                                            action="{{ route('admin.requests.reviews.save',encryptId($request->id)) }}"
-                                            method="post" id="formSaveReview">
-                                            @csrf
-                                            <div class="form-group row">
-                                                <label for="status" class="col-md-3 col-form-label">Status:</label>
-                                                <div class="col-md-9">
-                                                    <select name="status" id="status" class="form-control">
-                                                        <option value="">Select Status</option>
-                                                        @foreach($request->getApprovalStatuses() as $item)
-                                                            <option value="{{$item}}">{{ $item }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="comment" class="col-md-3 col-form-label">Comment:</label>
-                                                <div class="col-md-9">
-                                                <textarea class="form-control" name="comment" id="comment" cols="30"
-                                                          rows="5"></textarea>
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group row">
-                                                <div class="col-md-9 offset-md-3">
-                                                    <button type="submit" class="btn btn-primary">
-                                                <span class="svg-icon">
-                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                  <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                                </svg>
-                                                </span>
-                                                        Submit Review
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @include('admin.requests.partials._review_form')
                     @endif
                 @endif
 
                 @if($request->status == \App\Models\Request::APPROVED)
                     <div class="card card-body mb-3">
 
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h6>Meter Numbers</h6>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">Meter Numbers</h6>
                             <button type="button" class="btn btn-sm btn-primary">
                                 <i class="flaticon2-plus-1"></i>
                                 Add New
                             </button>
                         </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-head-custom table-head-solid table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Serial Number</th>
+                                    <th>Reading</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($request->meterNumbers as $item)
+                                    <tr>
+                                        <td>{{ $item->serial_number }}</td>
+                                        <td>{{ $item->reading }}</td>
+                                        <td>
+                                            <a href="{{ route('admin.meter-numbers.edit',$item->id) }}"
+                                               class="btn btn-sm btn-clean btn-icon mr-2"
+                                               title="Edit details">
+                                                <i class="flaticon2-edit"></i>
+                                            </a>
+                                            <a href="{{ route('admin.meter-numbers.destroy',$item->id) }}"
+                                               class="btn btn-sm btn-clean btn-icon"
+                                               title="Delete">
+                                                <i class="flaticon2-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+
 
 
                     </div>
@@ -492,7 +179,6 @@
                 @endif
 
             </div>
-
             <div class="tab-pane fade  " id="contact" role="tabpanel" aria-labelledby="home-tab">
                 <div class="card card-body">
                     @if($flowHistories->count()==0)
@@ -539,8 +225,6 @@
 
                 </div>
             </div>
-
-
         </div>
     </div>
 
