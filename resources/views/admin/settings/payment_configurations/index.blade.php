@@ -35,6 +35,7 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
+            @include('partials._alerts')
             <!--begin::Card-->
             <div class="card card-custom">
                 <div class="card-header flex-wrap border-0 pt-6 pb-0">
@@ -75,10 +76,10 @@
                             @foreach($payments as $key=>$payment)
                                 <tr>
                                     <td>{{++$key}}</td>
-                                    <td>{{$payment->payment_type_id}}</td>
-                                    <td>{{$payment->request_type_id}}</td>
-                                    <td>{{$payment->operator_id}}</td>
-                                    <td>{{$payment->operation_area}}</td>
+                                    <td>{{$payment->paymentType->name}}</td>
+                                    <td>{{$payment->requestType->name}}</td>
+                                    <td>{{$payment->operator->name}}</td>
+                                    <td>{{$payment->operationArea->name}}</td>
                                     <td>{{$payment->amount}}</td>
                                     <td>
                                         <div class="dropdown">
@@ -95,7 +96,7 @@
                                                    data-area="{{$payment->operation_area}}"
                                                    data-amount="{{$payment->amount}}"
                                                    class="dropdown-item js-edit">Edit</a>
-                                                <a href="{{route('admin.request.duration.configuration.delete',$payment->id)}}"
+                                                <a href="{{route('admin.payment.configuration.delete',$payment->id)}}"
                                                    class="dropdown-item js-delete">Delete</a>
                                             </div>
                                         </div>
@@ -118,11 +119,11 @@
     <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.request.duration.configuration.store')}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.payment.configuration.store')}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">New Request Duration Configuration</h4>
+                        <h4 class="modal-title">New Payment Configuration</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -168,7 +169,7 @@
                             <label for="name">Operation Area</label>
                             <select name="operation_area_id" id="operation_area_id" class="form-control">
                                 <option value="">Please Select Area</option>
-                                @foreach(App\Models\AreaOfOperation::all() as $area)
+                                @foreach(App\Models\OperationArea::all() as $area)
                                     <option value="{{$area->id}}">{{$area->name}}</option>
                                 @endforeach
                             </select>
@@ -176,7 +177,7 @@
 
                         <div class="form-group">
                             <label for="name">Amount</label>
-                            <input type="text"  name="amount" class="form-control" required/>
+                            <input type="number"  name="amount" class="form-control" required/>
                         </div>
 
                     </div>
@@ -199,12 +200,12 @@
     <div class="modal fade" id="modalUpdate" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.request.duration.configuration.edit')}}" method="post" id="submissionFormEdit" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.payment.configuration.edit')}}" method="post" id="submissionFormEdit" class="submissionForm" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" value="0"  id="ConfigurationId" name="ConfigurationId">
+                <input type="hidden" value="0"  id="PaymentId" name="PaymentId">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Request Duration Configuration</h4>
+                        <h4 class="modal-title">Edit Payment Configuration</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -249,7 +250,7 @@
                             <label for="name">Operation Area</label>
                             <select name="operation_area_id" id="edit_operation_area_id" class="form-control">
                                 <option value="">Please Select Area</option>
-                                @foreach(App\Models\AreaOfOperation::all() as $area)
+                                @foreach(App\Models\OperationArea::all() as $area)
                                     <option value="{{$area->id}}">{{$area->name}}</option>
                                 @endforeach
                             </select>
@@ -257,7 +258,7 @@
 
                         <div class="form-group">
                             <label for="name">Amount</label>
-                            <input type="text"  name="amount" class="form-control" required/>
+                            <input type="text"  name="amount" id="edit_amount" class="form-control" required/>
                         </div>
 
                     </div>
@@ -280,27 +281,26 @@
     <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
     {!! JsValidator::formRequest(\App\Http\Requests\ValidatePaymentConfiguration::class,'.submissionForm') !!}
 
-    <script  src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js" integrity="sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
+  <script>
 
         $(document).ready(function() {
             $('#table').DataTable();
         } );
 
         $('.nav-settings').addClass('menu-item-active  menu-item-open');
-        $('.nav-request-duration-configuration').addClass('menu-item-active');
+        $('.nav-payment-configurations').addClass('menu-item-active');
 
         $(document).on('click', '.js-edit', function (e) {
             e.preventDefault();
             $("#modalUpdate").modal('show');
             console.log($(this).data('name'));
             var url = $(this).data('url');
-            $("#ConfigurationId").val($(this).data('id'));
+            $("#PaymentId").val($(this).data('id'));
+            $("#edit_payment_type_id").val($(this).data('payment'));
             $("#edit_request_type_id").val($(this).data('request'));
             $("#edit_operator_id").val($(this).data('operator'));
-            $("#edit_operator_id").val($(this).data('area'));
-            $("#edit_processing_days").val($(this).data('days'));
+            $("#edit_operation_area_id").val($(this).data('area'));
+            $("#edit_amount").val($(this).data('amount'));
             $("#edit_is_active").val($(this).data('active'));
             $('#submissionFormEdit').attr('action', url);
         });
@@ -331,7 +331,7 @@
         });
 
         $('#exampleModal').on('hidden.bs.modal', function (e) {
-            $('#TypeId').val(0);
+            $('#PaymentId').val(0);
         });
 
     </script>

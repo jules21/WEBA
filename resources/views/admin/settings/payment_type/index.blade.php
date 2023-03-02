@@ -35,6 +35,7 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
+            @include('partials._alerts')
             <!--begin::Card-->
             <div class="card card-custom">
                 <div class="card-header flex-wrap border-0 pt-6 pb-0">
@@ -76,9 +77,9 @@
                                     <td>{{$type->name}}</td>
                                     <td>{{$type->name_kin}}</td>
                                     @if($type->is_active == 1)
-                                        <td>Yes</td>
+                                        <td><span class="badge badge-success">Yes</span></td>
                                     @else
-                                        <td>No</td>
+                                        <td><span class="badge badge-danger">No</span></td>
                                     @endif
                                     <td>
                                         <div class="dropdown">
@@ -91,7 +92,7 @@
                                                 <a href="#" data-id="{{$type->id}}"
                                                    data-name="{{$type->name}}"
                                                    data-kin="{{$type->name_kin}}"
-                                                   data-act="{{$type->is_active}}"
+                                                   data-active="{{$type->is_active}}"
                                                    class="dropdown-item js-edit">Edit</a>
                                                 <a href="{{route('admin.payment.type.delete',$type->id)}}"
                                                    class="dropdown-item js-delete">Delete</a>
@@ -139,7 +140,7 @@
 
                         <div class="form-group">
                             <label for="active">Active</label>
-                            <select type="text" name="is_active" id="edit_is_active" class="form-control" required>
+                            <select type="text" name="is_active" id="is_active" class="form-control" required>
                                 <option value="">Please Select</option>
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
@@ -184,7 +185,7 @@
 
                         <div class="form-group">
                             <label for="name">Name (Kin)</label>
-                            <input type="text" id="edit_name" name="name_kin" class="form-control" required/>
+                            <input type="text" id="edit_name_kin" name="name_kin" class="form-control" required/>
                         </div>
 
                         <div class="form-group">
@@ -231,11 +232,13 @@
             e.preventDefault();
             $("#modalUpdate").modal('show');
             console.log($(this).data('name'));
+            console.log($(this).data('kin'));
+            console.log($(this).data('active'));
             var url = $(this).data('url');
             $("#TypeId").val($(this).data('id'));
             $("#edit_name").val($(this).data('name'));
             $("#edit_name_kin").val($(this).data('kin'));
-            $("#edit_is_active").val($(this).data('kin'));
+            $("#edit_is_active").val($(this).data('active')? 1:0);
             $('#submissionFormEdit').attr('action', url);
         });
 

@@ -5,13 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidateRequestDurationConfiguration;
 use App\Models\Operator;
 use App\Models\RequestDurationConfiguration;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class RequestDurationConfigurationController extends Controller
 {
     public function index(){
-        $configurations = RequestDurationConfiguration::query()->orderBy('id','DESC')->get();
+        $configurations = RequestDurationConfiguration::with(['requestType','operator','operationArea'])->orderBy('id','DESC')->get();
         $operators = Operator::all();
         return view('admin.settings.request_duration_configurations.index',compact('configurations','operators'));
     }

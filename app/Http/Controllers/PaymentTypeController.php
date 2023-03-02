@@ -45,7 +45,7 @@ class PaymentTypeController extends Controller
         $type->name=$request->name;
         $type->name_kin=$request->name_kin;
         $type->is_active="1";
-        return $type;
+//        return $type;
         $type->save();
         return redirect()->back()->with('success', 'Payment Type created successfully');
     }

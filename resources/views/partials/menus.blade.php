@@ -80,6 +80,15 @@
                         <span class="menu-text">Request Duration Configuration</span>
                     </a>
                 </li>
+
+                <li class="menu-item nav-payment-configurations" aria-haspopup="true">
+                    <a href="{{ route('admin.payment.configuration.index') }}" class="menu-link">
+                        <i class="menu-bullet menu-bullet-dot">
+                            <span></span>
+                        </i>
+                        <span class="menu-text">Payment Configuration</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </li>

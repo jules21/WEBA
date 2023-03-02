@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RequestDurationConfiguration extends Model
 {
@@ -17,7 +18,8 @@ class RequestDurationConfiguration extends Model
         return $this->belongsTo(Operator::class,'operator_id');
     }
 
-    public function operatorArea(){
-        return $this->belongsTo(AreaOfOperation::class,'operation_area_id');
+    public function operationArea(): BelongsTo
+    {
+        return $this->belongsTo(OperationArea::class,'operation_area_id');
     }
 }

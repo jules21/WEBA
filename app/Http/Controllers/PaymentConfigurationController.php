@@ -3,30 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ValidatePaymentConfiguration;
-use App\Http\Requests\ValidateRequestDurationConfiguration;
 use App\Models\Operator;
 use App\Models\PaymentConfiguration;
-use App\Models\RequestDurationConfiguration;
 use Illuminate\Http\Request;
 
 class PaymentConfigurationController extends Controller
 {
     public function index(){
-        $payments = PaymentConfiguration::query()->orderBy('id','DESC')->get();
+        $payments = PaymentConfiguration::query()->with('paymentType','requestType','operator','operationArea')->orderBy('id','DESC')->get();
         $operators = Operator::all();
         return view('admin.settings.payment_configurations.index',compact('payments','operators'));
     }
 
-    public function store(ValidatePaymentConfiguration $request){
+    public function store(Request $request){
 
-        $request->validated();
+//        $request->validated();
         $payment = new PaymentConfiguration();
         $payment->payment_type_id=$request->payment_type_id;
         $payment->request_type_id=$request->request_type_id;
         $payment->operator_id=$request->operator_id;
-        $payment->operation_area=$request->operation_area;
+        $payment->operation_area_id=$request->operation_area_id;
         $payment->amount=$request->amount;
-        return $payment;
+//        return $payment;
         $payment->save();
         return redirect()->back()->with('success','Payment Configuration created successfully');
     }

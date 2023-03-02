@@ -35,6 +35,7 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
+            @include('partials._alerts')
             <!--begin::Card-->
             <div class="card card-custom">
                 <div class="card-header flex-wrap border-0 pt-6 pb-0">
@@ -77,7 +78,7 @@
                                     <td>{{++$key}}</td>
                                     <td>{{$configuration->requestType->name}}</td>
                                     <td>{{$configuration->operator->name}}</td>
-                                    <td>{{$configuration->operatorArea->name}}</td>
+                                    <td>{{$configuration->operationArea->name}}</td>
                                     <td>{{$configuration->processing_days}}</td>
                                     @if($configuration->is_active == 1)
                                         <td><span class="badge badge-success">Yes</span></td>
@@ -161,7 +162,7 @@
                             <label for="name">Operation Area</label>
                             <select name="operation_area_id" id="operation_area_id" class="form-control">
                                 <option value="">Please Select Type</option>
-                                @foreach(App\Models\AreaOfOperation::all() as $area)
+                                @foreach(App\Models\OperationArea::all() as $area)
                                     <option value="{{$area->id}}">{{$area->name}}</option>
                                 @endforeach
                             </select>
@@ -174,7 +175,7 @@
 
                         <div class="form-group">
                             <label for="active">Active</label>
-                            <select type="text" name="is_active" id="edit_is_active" class="form-control" required>
+                            <select type="text" name="is_active" id="is_active" class="form-control" required>
                                 <option value="">Please Select</option>
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
@@ -238,9 +239,9 @@
 
                         <div class="form-group">
                             <label for="name">Operation Area</label>
-                            <select name="operation_area_id" id="operation_area_id" class="form-control">
+                            <select name="operation_area_id" id="edit_operation_area_id" class="form-control">
                                 <option value="">Please Select Type</option>
-                                @foreach(App\Models\AreaOfOperation::all() as $area)
+                                @foreach(App\Models\OperationArea::all() as $area)
                                     <option value="{{$area->id}}">{{$area->name}}</option>
                                 @endforeach
                             </select>
@@ -280,8 +281,6 @@
     <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
     {!! JsValidator::formRequest(\App\Http\Requests\ValidateRequestDurationConfiguration::class,'.submissionForm') !!}
 
-    <script  src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js" integrity="sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
 
         $(document).ready(function() {
@@ -299,9 +298,9 @@
             $("#ConfigurationId").val($(this).data('id'));
             $("#edit_request_type_id").val($(this).data('request'));
             $("#edit_operator_id").val($(this).data('operator'));
-            $("#edit_operator_id").val($(this).data('area'));
+            $("#edit_operation_area_id").val($(this).data('area'));
             $("#edit_processing_days").val($(this).data('days'));
-            $("#edit_is_active").val($(this).data('active'));
+            $("#edit_is_active").val($(this).data('active')? 1:0);
             $('#submissionFormEdit').attr('action', url);
         });
 
