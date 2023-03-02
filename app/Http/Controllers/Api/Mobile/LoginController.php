@@ -38,4 +38,33 @@ class LoginController extends Controller
             'id'=>$user->id
         ]);
     }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'action' => 1,
+            'message' => 'Logout Successful'
+        ]);
+    }
+
+    public function changePassword(Request $request){
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required',
+        ]);
+        $user = $request->user();
+        if (!\Hash::check($request->old_password, $user->password)) {
+            return response()->json([
+                'action' => 0,
+                'message' => 'Old password does not match'
+            ]);
+        }
+        $user->password = \Hash::make($request->new_password);
+        $user->save();
+        return response()->json([
+            'action' => 1,
+            'message' => 'Password changed successfully'
+        ]);
+    }
 }
