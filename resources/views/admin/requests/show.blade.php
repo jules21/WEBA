@@ -232,82 +232,155 @@
                     </div>
                 </div>
 
-                @if(!$request->equipment_payment)
-                    <div class=" mb-3">
+                <div class="mb-3">
 
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="mb-0">Materials</h5>
-                            <button type="button" class="btn btn-sm rounded btn-primary" id="addBtn">
-                                <i class="flaticon2-add"></i>
+                    @if($technician)
+
+                        <div class="card card-body ">
+                            <h6 class="mb-3">
+                                Technician Details
+                            </h6>
+
+                            <div class="row">
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Name:</label>
+                                        <div class="form-control-plaintext">
+                                            {{ $technician->name }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="form-group">
+                                        <label  class="font-weight-bold">Phone Number:</label>
+                                        <div class="form-control-plaintext">
+                                            {{ $technician->phone_number }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-xl-4">
+                                    <div class="form-group">
+                                        <label  class="font-weight-bold">Address:</label>
+                                        <div class="form-control-plaintext">
+                                            {{ $technician->address }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex">
+                                <button
+                                    data-id="{{ $technician->id }}"
+                                    data-name="{{ $technician->name }}"
+                                    data-phone="{{ $technician->phone_number }}"
+                                    data-address="{{ $technician->address }}"
+                                    class="btn btn-sm btn-light-primary mr-3 rounded-pill px-5 font-weight-bold js-edit-tech">
+                                    <i class="flaticon2-edit"></i>
+                                    Edit
+                                </button>
+                                <button type="button"
+                                        data-href="{{ route('admin.requests.technician.delete',encryptId($technician->id)) }}"
+                                        class="btn btn-sm btn-light-danger rounded-pill px-5 font-weight-bold js-delete">
+                                    <i class="flaticon2-trash"></i>
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+
+
+                    @else
+                        <div class="alert alert-light-info flex-column alert-custom justify-content-center align-items-center">
+                            <h1 class="display-6 mb-4">
+                                No technicians assigned yet
+                            </h1>
+                            <button type="button" class="btn rounded btn-info" id="addTechBtn">
+                                <i class="flaticon2-add-1"></i>
                                 Add New
                             </button>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table border rounded table-head-solid table-head-custom">
-                                <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Qty</th>
-                                    <th>Price</th>
-                                    <th>Total</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tfoot>
-                                <tr>
-                                    <td colspan="3" class="text-right font-weight-bold">Total:</td>
-                                    <td class="font-weight-bolder">
-                                        RWF
-                                        <span id="total">{{ number_format($requestItems->sum('total')) }}</span>
-                                    </td>
-                                    <td></td>
-                                </tfoot>
-                                <tbody>
+                    @endif
+                </div>
 
-                                @forelse($requestItems as $item)
+
+                <div class="card card-body mb-3">
+
+                    @if(!$request->equipment_payment)
+                        <div class="p-3 mb-3">
+
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">Materials</h5>
+                                <button type="button" class="btn btn-sm rounded btn-primary" id="addBtn">
+                                    <i class="flaticon2-add"></i>
+                                    Add New
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table border dataTable rounded table-head-solid table-head-custom">
+                                    <thead>
                                     <tr>
-                                        <td>{{ $item->item->name }}</td>
-                                        <td>{{ $item->quantity }}</td>
-                                        <td>{{ number_format($item->unit_price) }}</td>
-                                        <td>RWF {{ number_format($item->total) }}</td>
-                                        <td>
-                                            <button
-                                                data-id="{{ $item->id }}"
-                                                data-quantity="{{ $item->quantity }}"
-                                                data-unit_price="{{ $item->unit_price }}"
-                                                data-item_id="{{ $item->item_id }}"
-                                                class="btn btn-sm btn-light-primary btn-icon rounded-circle js-edit">
-                                                <i class="flaticon2-edit"></i>
-                                            </button>
-                                            <button type="button"
-                                                    data-href="{{ route('admin.requests.delete-request-item',[encryptId($request->id),encryptId($item->id)]) }}"
-                                                    class="btn btn-sm btn-light-danger btn-icon rounded-circle js-delete">
-                                                <i class="flaticon2-trash"></i>
-                                            </button>
-                                        </td>
+                                        <th>Name</th>
+                                        <th>Qty</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                        <th></th>
                                     </tr>
-
-                                @empty
+                                    </thead>
+                                    <tfoot>
                                     <tr>
-                                        <td colspan="5">
-                                            <div class="alert alert-light-info alert-custom py-1">
-                                                <div class="alert-icon">
-                                                    <i class="flaticon2-exclamation"></i>
-                                                </div>
-                                                <div class="alert-text">
-                                                    No items found, please add some items.
-                                                </div>
-                                            </div>
+                                        <td colspan="3" class="text-right font-weight-bold">Total:</td>
+                                        <td class="font-weight-bolder">
+                                            RWF
+                                            <span id="total">{{ number_format($requestItems->sum('total')) }}</span>
                                         </td>
-                                    </tr>
-                                @endforelse
+                                        <td></td>
+                                    </tfoot>
+                                    <tbody>
 
-                                </tbody>
-                            </table>
+                                    @forelse($requestItems as $item)
+                                        <tr>
+                                            <td>{{ $item->item->name }}</td>
+                                            <td>{{ $item->quantity }}</td>
+                                            <td>{{ number_format($item->unit_price) }}</td>
+                                            <td>RWF {{ number_format($item->total) }}</td>
+                                            <td>
+                                                <button
+                                                    data-id="{{ $item->id }}"
+                                                    data-quantity="{{ $item->quantity }}"
+                                                    data-unit_price="{{ $item->unit_price }}"
+                                                    data-item_id="{{ $item->item_id }}"
+                                                    class="btn btn-sm btn-light-primary btn-icon rounded-circle js-edit">
+                                                    <i class="flaticon2-edit"></i>
+                                                </button>
+                                                <button type="button"
+                                                        data-href="{{ route('admin.requests.delete-request-item',[encryptId($request->id),encryptId($item->id)]) }}"
+                                                        class="btn btn-sm btn-light-danger btn-icon rounded-circle js-delete">
+                                                    <i class="flaticon2-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                    @empty
+                                        <tr>
+                                            <td colspan="5">
+                                                <div class="alert alert-light-info alert-custom py-1">
+                                                    <div class="alert-icon">
+                                                        <i class="flaticon2-exclamation"></i>
+                                                    </div>
+                                                    <div class="alert-text">
+                                                        No items found, please add some items.
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
-
-                    </div>
-                @endif
+                    @endif
+                </div>
 
                 @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
                     <div class="card mb-3">
@@ -454,6 +527,51 @@
     </div>
 
 
+    {{--    add technician modal--}}
+
+    <div class="modal fade" tabindex="-1" id="addTechnicianModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>
+                        Technician
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
+                </div>
+                <form action="{{ route('admin.requests.technician.save',encryptId($request->id)) }}" method="post"
+                      id="saveTechnicianForm">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" value="0" id="tech_id" name="id"/>
+                        <div class="form-group">
+                            <label for="tech_name">Name</label>
+                            <input type="text" name="name" id="tech_name" class="form-control"/>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="tech_phone_number">Phone Number</label>
+                            <input type="tel" name="phone_number" id="tech_phone_number" class="form-control"/>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="tech_address">Address</label>
+                            <input type="tel" name="address" id="tech_address" class="form-control"/>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     {{--    add modal--}}
 
     <div class="modal fade" tabindex="-1" id="addModal">
@@ -508,9 +626,12 @@
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     {!! JsValidator::formRequest(App\Http\Requests\ValidateReviewRequest::class,'#formSaveReview') !!}
     {!! JsValidator::formRequest(App\Http\Requests\ValidateStoreItemRequest::class,'#saveItemForm') !!}
+    {!! JsValidator::formRequest(App\Http\Requests\ValidateTechnicianRequest::class,'#saveTechnicianForm') !!}
 
     <script>
         $(document).ready(function () {
+
+            $('.dataTable').DataTable();
 
             $('#addBtn').on('click', function () {
                 $('#addModal').modal('show');
@@ -570,7 +691,7 @@
 
             });
 
-            $('.js-edit').on('click', function () {
+            $(document).on('click', '.js-edit', function () {
                 let $itemId = $('#item_id');
                 $itemId.val($(this).data('item_id'));
                 $('#quantity').val($(this).data('quantity'));
@@ -579,7 +700,7 @@
                 $('#addModal').modal('show');
             });
 
-            $('.js-delete').on('click', function (e) {
+            $(document).on('click', '.js-delete', function (e) {
                 e.preventDefault();
 
                 let $this = $(this);
@@ -623,6 +744,53 @@
                 });
 
             });
+
+            $('#addTechBtn').on('click', function () {
+                $('#addTechnicianModal').modal('show');
+            });
+
+            $('#saveTechnicianForm').on('submit', function (e) {
+                e.preventDefault();
+
+                let $form = $(this);
+
+                if (!$form.valid())
+                    return false;
+
+                let btn = $form.find('button[type="submit"]');
+
+                btn.addClass('spinner spinner-white spinner-right')
+                    .prop('disabled', true);
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    method: 'post',
+                    data: $form.serialize(),
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong',
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
+                    },
+                    complete: function () {
+
+                    }
+                })
+            });
+
+            $(document).on('click', '.js-edit-tech', function () {
+                $('#tech_id').val($(this).data(('id')));
+                $('#tech_name').val($(this).data(('name')));
+                $('#tech_phone_number').val($(this).data(('phone')));
+                $('#tech_address').val($(this).data(('address')));
+                $('#addTechnicianModal').modal('show');
+            });
+
         });
     </script>
 @endsection
