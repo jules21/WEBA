@@ -93,4 +93,7 @@ class User extends Authenticatable
     public function operator(){
         return $this->belongsTo(Operator::class);
     }
+    public function operationArea(){
+        return $this->belongsTo(OperationArea::class,'operation_area','id');
+    }
 }
