@@ -232,78 +232,115 @@
                     </div>
                 </div>
 
-                {{--              TODO  show this tab when user chooes us to buy equipments for him--}}
+                @if(!$request->equipment_payment)
+                    <div class=" mb-3">
 
-                <div class="card mb-3">
-                    <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="mb-0">Materials</h5>
-                            <button type="button" class="btn btn-sm rounded btn-primary">
+                            <button type="button" class="btn btn-sm rounded btn-primary" id="addBtn">
                                 <i class="flaticon2-add"></i>
                                 Add New
                             </button>
                         </div>
-                        <div class="table-responsive border rounded">
-                            <table class="table table-head-solid table-head-custom">
+                        <div class="table-responsive">
+                            <table class="table border rounded table-head-solid table-head-custom">
                                 <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Qty</th>
                                     <th>Price</th>
+                                    <th>Total</th>
                                     <th></th>
                                 </tr>
                                 </thead>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-right font-weight-bold">Total:</td>
+                                    <td class="font-weight-bolder">
+                                        RWF
+                                        <span id="total">{{ number_format($requestItems->sum('total')) }}</span>
+                                    </td>
+                                    <td></td>
+                                </tfoot>
                                 <tbody>
-                                @for($i=0;$i<5;$i++)
+
+                                @forelse($requestItems as $item)
                                     <tr>
-                                        <td>Jack Harmer</td>
-                                        <td>24,000</td>
+                                        <td>{{ $item->item->name }}</td>
+                                        <td>{{ $item->quantity }}</td>
+                                        <td>{{ number_format($item->unit_price) }}</td>
+                                        <td>RWF {{ number_format($item->total) }}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-light-primary btn-icon rounded-circle">
+                                            <button
+                                                data-id="{{ $item->id }}"
+                                                data-quantity="{{ $item->quantity }}"
+                                                data-unit_price="{{ $item->unit_price }}"
+                                                data-item_id="{{ $item->item_id }}"
+                                                class="btn btn-sm btn-light-primary btn-icon rounded-circle js-edit">
                                                 <i class="flaticon2-edit"></i>
                                             </button>
-                                            <button class="btn btn-sm btn-light-danger btn-icon rounded-circle">
+                                            <button type="button"
+                                                    data-href="{{ route('admin.requests.delete-request-item',[encryptId($request->id),encryptId($item->id)]) }}"
+                                                    class="btn btn-sm btn-light-danger btn-icon rounded-circle js-delete">
                                                 <i class="flaticon2-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
-                                @endfor
+
+                                @empty
+                                    <tr>
+                                        <td colspan="5">
+                                            <div class="alert alert-light-info alert-custom py-1">
+                                                <div class="alert-icon">
+                                                    <i class="flaticon2-exclamation"></i>
+                                                </div>
+                                                <div class="alert-text">
+                                                    No items found, please add some items.
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                @endforelse
+
                                 </tbody>
                             </table>
                         </div>
+
                     </div>
-                </div>
+                @endif
 
-                <div class="card mb-3">
-                    <div class="card-body">
+                @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
+                    <div class="card mb-3">
+                        <div class="card-body">
 
-                        <div class="row justify-content-center">
-                            <div class="col-md-8">
-                                <h4 class="my-4">Review</h4>
-                                <form action="{{ route('admin.requests.reviews.save',encryptId($request->id)) }}"
-                                      method="post" id="formSaveReview">
-                                    @csrf
-                                    <div class="form-group row">
-                                        <label for="status" class="col-md-2 col-form-label">Status:</label>
-                                        <div class="col-md-10">
-                                            <select name="status" id="status" class="form-control">
-                                                <option value="">Select Status</option>
-                                                @foreach($request->getApprovalStatuses() as $item)
-                                                    <option value="{{$item}}">{{ $item }}</option>
-                                                @endforeach
-                                            </select>
+                            <div class="row justify-content-center">
+                                <div class="col-md-8">
+                                    <h4 class="my-4">Review</h4>
+                                    <form action="{{ route('admin.requests.reviews.save',encryptId($request->id)) }}"
+                                          method="post" id="formSaveReview">
+                                        @csrf
+                                        <div class="form-group row">
+                                            <label for="status" class="col-md-3 col-form-label">Status:</label>
+                                            <div class="col-md-9">
+                                                <select name="status" id="status" class="form-control">
+                                                    <option value="">Select Status</option>
+                                                    @foreach($request->getApprovalStatuses() as $item)
+                                                        <option value="{{$item}}">{{ $item }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="comment" class="col-md-2 col-form-label">Comment:</label>
-                                        <div class="col-md-10">
-                                    <textarea class="form-control" name="comment" id="comment" cols="30"
-                                              rows="5"></textarea>
+                                        <div class="form-group row">
+                                            <label for="comment" class="col-md-3 col-form-label">Comment:</label>
+                                            <div class="col-md-9">
+                                                <textarea class="form-control" name="comment" id="comment" cols="30"
+                                                          rows="5"></textarea>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="form-group row">
-                                        <div class="col-md-10 offset-md-2">
-                                            <button type="submit" class="btn btn-primary">
+                                        <div class="form-group row">
+                                            <div class="col-md-9 offset-md-3">
+                                                <button type="submit" class="btn btn-primary">
                                                 <span class="svg-icon">
                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                       stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -311,16 +348,17 @@
                                                         d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                                 </svg>
                                                 </span>
-                                                Submit Review
-                                            </button>
+                                                    Submit Review
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
             </div>
             <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="home-tab">
@@ -415,15 +453,68 @@
         </div>
     </div>
 
+
+    {{--    add modal--}}
+
+    <div class="modal fade" tabindex="-1" id="addModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Material</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
+                </div>
+                <form action="{{ route('admin.requests.save-item',encryptId($request->id)) }}" method="post"
+                      id="saveItemForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="item_id">Item</label>
+                            <select name="item_id" id="item_id" class="form-control select2"
+                                    style="width: 100% !important;">
+                                <option value="">Select Item</option>
+                                @foreach($items as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}
+                                        - RWF {{ number_format($item->selling_price,0) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="unit_price">Unit Price</label>
+                            <input type="number" name="unit_price" id="unit_price" class="form-control"/>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')
 
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
-    {!! JsValidator::formRequest(App\Http\Requests\ValidateReviewRequest::class) !!}
+    {!! JsValidator::formRequest(App\Http\Requests\ValidateReviewRequest::class,'#formSaveReview') !!}
+    {!! JsValidator::formRequest(App\Http\Requests\ValidateStoreItemRequest::class,'#saveItemForm') !!}
 
     <script>
         $(document).ready(function () {
+
+            $('#addBtn').on('click', function () {
+                $('#addModal').modal('show');
+            });
 
             $('#formSaveReview').on('submit', function (e) {
                 e.preventDefault();
@@ -440,6 +531,96 @@
 
                 // submit form here
                 e.target.submit();
+
+            });
+
+            $('#saveItemForm').on('submit', function (e) {
+                e.preventDefault();
+
+                let $form = $(this);
+
+                if (!$form.valid())
+                    return false;
+
+                let btn = $form.find('button[type="submit"]');
+
+                btn.addClass('spinner spinner-white spinner-right')
+                    .prop('disabled', true);
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    method: 'post',
+                    data: $form.serialize(),
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong',
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
+                    },
+                    complete: function () {
+                        /*      btn.removeClass('spinner spinner-white spinner-right')
+                                  .prop('disabled', false);*/
+                    }
+                })
+
+            });
+
+            $('.js-edit').on('click', function () {
+                let $itemId = $('#item_id');
+                $itemId.val($(this).data('item_id'));
+                $('#quantity').val($(this).data('quantity'));
+                $('#unit_price').val($(this).data('unit_price'));
+                $itemId.trigger('change');
+                $('#addModal').modal('show');
+            });
+
+            $('.js-delete').on('click', function (e) {
+                e.preventDefault();
+
+                let $this = $(this);
+                let url = $this.data('href');
+
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                }).then(function (result) {
+                    if (result.value) {
+                        $this.prop('disabled', true)
+                            .addClass('spinner spinner-white spinner-right');
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            data: {
+                                _token: $('meta[name="csrf-token"]').attr('content')
+                            },
+                            complete: function () {
+                                $this.prop('disabled', false)
+                                    .removeClass('spinner spinner-white spinner-right');
+                            },
+                            success: function (response) {
+                                location.reload();
+                            },
+                            error: function (xhr) {
+                                Swal.fire(
+                                    'Error!',
+                                    "Unable to delete item, please try again later",
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
 
             });
         });

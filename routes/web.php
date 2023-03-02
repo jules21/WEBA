@@ -81,6 +81,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
         Route::get('/assigned', [RequestsController::class, 'assignedRequests'])->name('assigned');
 
+        Route::post('/{request}/save-item', [RequestReviewController::class, 'storeItem'])->name('save-item');
+        Route::delete('/{request}/item/{id}/delete', [RequestReviewController::class, 'deleteRequestItem'])->name('delete-request-item');
         Route::post('/{request}/reviews/save', [RequestReviewController::class, 'saveReview'])->name('reviews.save');
     });
 
