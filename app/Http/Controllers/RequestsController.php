@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ValidateAppRequest;
 use App\Models\Customer;
+use App\Models\Item;
 use App\Models\Province;
 use App\Models\Request as AppRequest;
 use App\Models\RequestType;
@@ -132,15 +133,26 @@ class RequestsController extends Controller
 
     public function show(AppRequest $request)
     {
-        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments','flowHistories.user');
+        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user');
 
         $reviews = $request->flowHistories->where('is_comment', '=', true);
         $flowHistories = $request->flowHistories->where('is_comment', '=', false);
 
+        $requestItems = $request->items()
+            ->with('item')
+            ->get();
+
+        $items = Item::query()
+            ->whereHas('category', fn(Builder $query) => $query->where('is_meter', '=', false))
+            ->orderBy('name')
+            ->get();
+
         return view('admin.requests.show', [
             'request' => $request,
             'reviews' => $reviews,
-            'flowHistories' => $flowHistories
+            'flowHistories' => $flowHistories,
+            'items' => $items,
+            'requestItems' => $requestItems
         ]);
     }
 

@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ValidateReviewRequest;
+use App\Http\Requests\ValidateStoreItemRequest;
 use App\Models\Request as AppRequest;
+use App\Models\StockMovementDetail;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 class RequestReviewController extends Controller
@@ -63,5 +67,56 @@ class RequestReviewController extends Controller
             'approval_date' => $status == AppRequest::APPROVED ? now() : null,
             'approved_by' => $status == AppRequest::APPROVED ? auth()->user()->id : null,
         ]);
+    }
+
+    public function storeItem(ValidateStoreItemRequest $itemRequest, AppRequest $request)
+    {
+
+        $data = $itemRequest->validated();
+
+        $item = $request->items()
+            ->updateOrCreate(
+                ['item_id' => $data['item_id']],
+                [
+                    'quantity' => $data['quantity'],
+                    'unit_price' => $data['unit_price'],
+                    'type' => $request->getClassName(),
+                    'status' => 'pending'
+                ]
+            );
+
+
+        if ($itemRequest->ajax()) {
+            return response()->json([
+                'message' => 'Item saved successfully',
+                'status' => 'success',
+                'data' => $item
+            ], ResponseAlias::HTTP_OK);
+        }
+
+        return redirect()->back()
+            ->with('success', 'Item saved successfully');
+
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function deleteRequestItem(AppRequest $request, $id)
+    {
+        $id = decryptId($id);
+        StockMovementDetail::query()->find($id)->delete();
+
+        if (\request()->ajax()) {
+            return response()->json([
+                'message' => 'Item deleted successfully',
+                'status' => 'success'
+            ], ResponseAlias::HTTP_OK);
+        }
+
+        return redirect()
+            ->back()
+            ->with('success', 'Item deleted successfully');
+
     }
 }

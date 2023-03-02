@@ -191,5 +191,10 @@ class Request extends Model
         return [];
     }
 
+    public function items(): MorphMany
+    {
+        return $this->morphMany(StockMovementDetail::class, 'model', 'model_type', 'model_id');
+    }
+
 
 }

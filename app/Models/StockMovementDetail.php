@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\StockMovementDetail
@@ -16,24 +21,40 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $type
  * @property int $model_id
  * @property string $model_type
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail query()
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail whereItemId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail whereUnitPrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StockMovementDetail whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|StockMovementDetail newModelQuery()
+ * @method static Builder|StockMovementDetail newQuery()
+ * @method static Builder|StockMovementDetail query()
+ * @method static Builder|StockMovementDetail whereCreatedAt($value)
+ * @method static Builder|StockMovementDetail whereId($value)
+ * @method static Builder|StockMovementDetail whereItemId($value)
+ * @method static Builder|StockMovementDetail whereModelId($value)
+ * @method static Builder|StockMovementDetail whereModelType($value)
+ * @method static Builder|StockMovementDetail whereQuantity($value)
+ * @method static Builder|StockMovementDetail whereStatus($value)
+ * @method static Builder|StockMovementDetail whereType($value)
+ * @method static Builder|StockMovementDetail whereUnitPrice($value)
+ * @method static Builder|StockMovementDetail whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class StockMovementDetail extends Model
 {
-    use HasFactory;
+
+    protected $appends = ['total'];
+
+    public function model(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(Item::class);
+    }
+
+    public function getTotalAttribute()
+    {
+        return $this->quantity * $this->unit_price;
+    }
 }
