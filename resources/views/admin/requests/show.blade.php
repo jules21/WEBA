@@ -252,7 +252,7 @@
                                 </div>
                                 <div class="col-md-6 col-xl-4">
                                     <div class="form-group">
-                                        <label  class="font-weight-bold">Phone Number:</label>
+                                        <label class="font-weight-bold">Phone Number:</label>
                                         <div class="form-control-plaintext">
                                             {{ $technician->phone_number }}
                                         </div>
@@ -260,7 +260,7 @@
                                 </div>
                                 <div class="col-md-6 col-xl-4">
                                     <div class="form-group">
-                                        <label  class="font-weight-bold">Address:</label>
+                                        <label class="font-weight-bold">Address:</label>
                                         <div class="form-control-plaintext">
                                             {{ $technician->address }}
                                         </div>
@@ -287,15 +287,15 @@
                             </div>
                         </div>
 
-
                     @else
-                        <div class="alert alert-light-info flex-column alert-custom justify-content-center align-items-center">
+                        <div
+                            class="alert alert-light-info flex-column alert-custom justify-content-center align-items-center">
                             <h1 class="display-6 mb-4">
                                 No technicians assigned yet
                             </h1>
-                            <button type="button" class="btn rounded btn-info" id="addTechBtn">
-                                <i class="flaticon2-add-1"></i>
-                                Add New
+                            <button type="button" class="btn rounded-sm btn-info" id="addTechBtn">
+                                <i class="flaticon2-user"></i>
+                                Add Technician
                             </button>
                         </div>
                     @endif
@@ -382,38 +382,40 @@
                     @endif
                 </div>
 
-                @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
-                    <div class="card mb-3">
-                        <div class="card-body">
+                @if(!in_array($request->status,[\App\Models\Request::APPROVED,\App\Models\Request::REJECTED]))
 
-                            <div class="row justify-content-center">
-                                <div class="col-md-8">
-                                    <h4 class="my-4">Review</h4>
-                                    <form action="{{ route('admin.requests.reviews.save',encryptId($request->id)) }}"
-                                          method="post" id="formSaveReview">
-                                        @csrf
-                                        <div class="form-group row">
-                                            <label for="status" class="col-md-3 col-form-label">Status:</label>
-                                            <div class="col-md-9">
-                                                <select name="status" id="status" class="form-control">
-                                                    <option value="">Select Status</option>
-                                                    @foreach($request->getApprovalStatuses() as $item)
-                                                        <option value="{{$item}}">{{ $item }}</option>
-                                                    @endforeach
-                                                </select>
+                    @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-8">
+                                        <h4 class="my-4">Review</h4>
+                                        <form
+                                            action="{{ route('admin.requests.reviews.save',encryptId($request->id)) }}"
+                                            method="post" id="formSaveReview">
+                                            @csrf
+                                            <div class="form-group row">
+                                                <label for="status" class="col-md-3 col-form-label">Status:</label>
+                                                <div class="col-md-9">
+                                                    <select name="status" id="status" class="form-control">
+                                                        <option value="">Select Status</option>
+                                                        @foreach($request->getApprovalStatuses() as $item)
+                                                            <option value="{{$item}}">{{ $item }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="comment" class="col-md-3 col-form-label">Comment:</label>
-                                            <div class="col-md-9">
+                                            <div class="form-group row">
+                                                <label for="comment" class="col-md-3 col-form-label">Comment:</label>
+                                                <div class="col-md-9">
                                                 <textarea class="form-control" name="comment" id="comment" cols="30"
                                                           rows="5"></textarea>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="form-group row">
-                                            <div class="col-md-9 offset-md-3">
-                                                <button type="submit" class="btn btn-primary">
+                                            <div class="form-group row">
+                                                <div class="col-md-9 offset-md-3">
+                                                    <button type="submit" class="btn btn-primary">
                                                 <span class="svg-icon">
                                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                       stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -421,15 +423,31 @@
                                                         d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                                 </svg>
                                                 </span>
-                                                    Submit Review
-                                                </button>
+                                                        Submit Review
+                                                    </button>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    @endif
+                @endif
+
+                @if($request->status == \App\Models\Request::APPROVED)
+                    <div class="card card-body mb-3">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6>Meter Numbers</h6>
+                            <button type="button" class="btn btn-sm btn-primary">
+                                <i class="flaticon2-plus-1"></i>
+                                Add New
+                            </button>
+                        </div>
+
+
                     </div>
                 @endif
 

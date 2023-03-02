@@ -48,7 +48,7 @@ class RequestTechnicianController extends Controller
             $technician = RequestTechnician::query()->find($id);
             $technician->update($data);
         } else {
-            $technician = $request->technicians()
+            $technician = $request->technician()
                 ->updateOrCreate(
                     ['phone_number' => $data['phone_number']],
                     $data
