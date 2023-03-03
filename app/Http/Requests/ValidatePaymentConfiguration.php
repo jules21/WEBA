@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePaymentTypeRequest extends FormRequest
+class ValidatePaymentConfiguration extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,11 @@ class StorePaymentTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'name_kin'=>'required',
-            'is_active'=>'required',
+            'payment_type_id'=>'required',
+            'request_type_id'=>'required',
+            'operator_id'=>'required',
+            'operation_area'=>'required',
+            'amount'=>'required',
         ];
     }
 }

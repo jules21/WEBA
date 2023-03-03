@@ -207,6 +207,7 @@
     <script>
         $('.nav-user-managements').addClass('menu-item-active  menu-item-open');
         $('.nav-roles').addClass('menu-item-active');
+
         $('#kt_datatable1').DataTable({
             responsive: true
         });
