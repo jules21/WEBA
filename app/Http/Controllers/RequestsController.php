@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Permission;
 use App\Http\Requests\ValidateAppRequest;
 use App\Models\Customer;
 use App\Models\Item;
@@ -67,8 +68,6 @@ class RequestsController extends Controller
      */
     public function newRequests()
     {
-
-
         if (request()->ajax()) {
             $data = AppRequest::query()
                 ->with(['customer', 'requestType'])
@@ -93,6 +92,39 @@ class RequestsController extends Controller
                 })*/
             ->get();
         return view('admin.requests.new_requests', [
+            'users' => $users
+        ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function assignedRequests()
+    {
+        if (request()->ajax()) {
+            $data = AppRequest::query()
+                ->with(['customer', 'requestType', 'requestAssignment.user'])
+                ->where([
+                    ['operator_id', '=', auth()->user()->operator_id],
+                    ['status', '=', AppRequest::ASSIGNED]
+                ])
+                ->whereHas('requestAssignment')
+                ->select('requests.*');
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function (AppRequest $row) {
+                    return ' <a class="btn btn-sm btn-primary rounded" href="' . route('admin.requests.show', encryptId($row->id)) . '">
+                                <span class="">Details</span>
+                             </a>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        $users = User::query()
+            ->where('operator_id', '=', auth()->user()->operator_id)
+            ->get();
+        return view('admin.requests.assigned_requests', [
             'users' => $users
         ]);
     }
@@ -222,5 +254,51 @@ class RequestsController extends Controller
             ]);
     }
 
+
+    /**
+     * @throws Exception
+     */
+    public function myTasks()
+    {
+        if (request()->ajax()) {
+            $data = AppRequest::query()
+                ->with(['customer', 'requestType'])
+                ->where([
+                    ['operator_id', '=', auth()->user()->operator_id]
+                ])
+                ->where(function (Builder $builder) {
+
+                    $user = auth()->user();
+                    if ($user->can(Permission::ReviewRequest)) {
+                        $builder->whereHas('requestAssignment', fn(Builder $builder) => $builder->where('user_id', '=', auth()->id()));
+                    }
+
+                    if ($user->can(Permission::ApproveRequest)) {
+                        $builder->orWhere('status', '=', AppRequest::PROPOSE_TO_APPROVE);
+                    }
+
+                    if ($user->can(Permission::AssignMeterNumber)) {
+                        $builder->orWhere('status', '=', AppRequest::APPROVED);
+                    }
+
+                })
+                ->whereHas('requestAssignment')
+                ->select('requests.*');
+
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function (AppRequest $row) {
+                    return '<a class="btn btn-sm btn-primary rounded" href="' . route('admin.requests.show', encryptId($row->id)) . '">
+                                <span class="">Details</span>
+                             </a>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+
+        return view('admin.requests.my_requests');
+    }
 
 }

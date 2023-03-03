@@ -91,7 +91,7 @@
                         </a>
                     </li>
                     <li class="menu-item nav-all-permissions" aria-haspopup="true">
-                        <a href="{{ route('admin.permissions.index') }}" class="menu-link">
+                        <a href="{{ route('admin.requests.my-tasks') }}" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>

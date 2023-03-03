@@ -160,12 +160,18 @@ class Request extends Model
         return $this->hasMany(RequestAssignment::class);
     }
 
+    public function requestAssignment(): HasOne
+    {
+        return $this->hasOne(RequestAssignment::class);
+    }
+
     // static method to get class name with namespace
     public function getClassName(): string
     {
         return (new ReflectionClass($this))->getShortName();
     }
 
+    const PENDING = 'Pending';
     const ASSIGNED = 'Assigned';
     const PROPOSE_TO_APPROVE = 'Propose to approve';
     const REJECTED = 'Rejected';
@@ -206,6 +212,16 @@ class Request extends Model
     public function meterNumbers(): HasMany
     {
         return $this->hasMany(MeterRequest::class);
+    }
+
+    public function canBeReviewed(): bool
+    {
+        return $this->status != self::PENDING;
+    }
+
+    public function canAddTechnician(): bool
+    {
+        return $this->status == self::ASSIGNED;
     }
 
 
