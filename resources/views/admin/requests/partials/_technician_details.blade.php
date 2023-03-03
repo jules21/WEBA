@@ -33,11 +33,11 @@
 
         <div class="d-flex">
             <button
-                    data-id="{{ $technician->id }}"
-                    data-name="{{ $technician->name }}"
-                    data-phone="{{ $technician->phone_number }}"
-                    data-address="{{ $technician->address }}"
-                    class="btn btn-sm btn-light-primary mr-3 rounded-pill px-5 font-weight-bold js-edit-tech">
+                data-id="{{ $technician->id }}"
+                data-name="{{ $technician->name }}"
+                data-phone="{{ $technician->phone_number }}"
+                data-address="{{ $technician->address }}"
+                class="btn btn-sm btn-light-primary mr-3 rounded-pill px-5 font-weight-bold js-edit-tech">
                 <i class="flaticon2-edit"></i>
                 Edit
             </button>
@@ -51,13 +51,15 @@
     </div>
 @else
     <div
-            class="alert alert-light-info flex-column alert-custom justify-content-center align-items-center">
+        class="alert alert-light-info flex-column alert-custom justify-content-center align-items-center">
         <h1 class="display-6 mb-4">
             No technicians assigned yet
         </h1>
-        <button type="button" class="btn rounded-sm btn-info" id="addTechBtn">
-            <i class="flaticon2-user"></i>
-            Add Technician
-        </button>
+        @if( $request->canAddTechnician())
+            <button type="button" class="btn rounded-sm btn-info" id="addTechBtn">
+                <i class="flaticon2-user"></i>
+                Add Technician
+            </button>
+        @endif
     </div>
 @endif

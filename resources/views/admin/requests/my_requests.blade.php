@@ -71,140 +71,6 @@
         </div>
     </div>
 
-
-
-    <!-- Modal -->
-    {{--  <div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
-           aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title" id="staticBackdropLabel">
-                          Customer
-                      </h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          &times;
-                      </button>
-                  </div>
-                  <form action="{{ route('admin.customers.store') }}"
-                        method="post" id="formSave">
-                      @csrf
-                      <input type="hidden" value="0" id="id" name="id"/>
-                      <div class="modal-body">
-                          <div class="form-group">
-                              <label for="name">Name</label>
-                              <input type="text" name="name" id="name" class="form-control"/>
-                          </div>
-                          <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="legal_type_id">Legal Type</label>
-                                      <select name="legal_type_id" id="legal_type_id" class="form-control ">
-                                          <option value="">Select Legal</option>
-                                          @foreach($legalTypes as $item)
-                                              <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                          @endforeach
-                                      </select>
-                                  </div>
-                              </div>
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="document_type_id">Document Type</label>
-                                      <select name="document_type_id" id="document_type_id" class="form-control">
-                                          <option value="">Select Type</option>
-                                          @foreach($idTypes as $item)
-                                              <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                          @endforeach
-
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="doc_number">Document Number</label>
-                                      <input type="text" name="doc_number" id="doc_number" class="form-control"/>
-                                  </div>
-                              </div>
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="phone">Phone Number</label>
-                                      <input type="tel" name="phone" id="phone" class="form-control"/>
-                                  </div>
-                              </div>
-                          </div>
-
-
-                          <div class="form-group">
-                              <label for="email">Email address</label>
-                              <input type="email" name="email" id="email" class="form-control"/>
-                          </div>
-
-                          <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="province_id">Province</label>
-                                      <select name="province_id" id="province_id" class="form-control ">
-                                          <option value="">Select Province</option>
-                                          @foreach($provinces as $item)
-                                              <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                          @endforeach
-                                      </select>
-                                  </div>
-                              </div>
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="district_id">District</label>
-                                      <select name="district_id" id="district_id" class="form-control ">
-                                          <option value="">Select District</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="sector_id">Sector</label>
-                                      <select name="sector_id" id="sector_id" class="form-control ">
-                                          <option value="">Select Sector</option>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="cell_id">Cell</label>
-                                      <select name="cell_id" id="cell_id" class="form-control ">
-                                          <option value="">Select Cell</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="village_id">Village</label>
-                                      <select name="village_id" id="village_id" class="form-control ">
-                                          <option value="">Select Village</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-
-
-                      </div>
-                      <div class="modal-footer">
-                          <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-                          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                      </div>
-                  </form>
-              </div>
-          </div>
-      </div>
-  --}}
 @endsection
 
 @section('scripts')
@@ -313,7 +179,7 @@
             let dataTable = $('.dataTable').DataTable({
                 serverSide: true,
                 processing: true,
-                ajax: "{{ route('admin.requests.index') }}",
+                ajax: "{!! request()->fullUrl() !!}",
                 columns: [
                     {data: "customer.name", name: "customer.name"},
                     {data: "request_type.name", name: "requestType.name"},

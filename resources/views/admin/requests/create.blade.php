@@ -214,7 +214,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="road_cross_types">Road Crosses</label>
+                                <label for="road_cross_types">Road Pipe Crosses</label>
                                 <div class="row">
                                     @foreach($roadCrossTypes as $item)
                                         <div class="col-md-4">
@@ -249,7 +249,7 @@
                         </div>
                         <div class="col-lg-6">
                             <label>
-                                Do You want to pay for the equipment yourself by submitting an EBM invoice ?
+                                Do You want to pay for the materials yourself by submitting an EBM invoice ?
                             </label>
                             <div class="form-group">
                                 <label class="radio  checkbox-primary">

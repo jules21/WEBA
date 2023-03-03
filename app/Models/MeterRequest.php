@@ -2,38 +2,42 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\MeterRequest
  *
  * @property int $id
  * @property string $status
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property int $request_id
  * @property string $meter_number
  * @property string $subscription_number
  * @property string $last_index
  * @property string $balance
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest query()
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest whereBalance($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest whereLastIndex($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest whereMeterNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest whereRequestId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest whereSubscriptionNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|MeterRequest whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @method static Builder|MeterRequest newModelQuery()
+ * @method static Builder|MeterRequest newQuery()
+ * @method static Builder|MeterRequest query()
+ * @method static Builder|MeterRequest whereBalance($value)
+ * @method static Builder|MeterRequest whereCreatedAt($value)
+ * @method static Builder|MeterRequest whereId($value)
+ * @method static Builder|MeterRequest whereLastIndex($value)
+ * @method static Builder|MeterRequest whereMeterNumber($value)
+ * @method static Builder|MeterRequest whereRequestId($value)
+ * @method static Builder|MeterRequest whereStatus($value)
+ * @method static Builder|MeterRequest whereSubscriptionNumber($value)
+ * @method static Builder|MeterRequest whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class MeterRequest extends Model
 {
-    use HasFactory;
 
     protected $guarded = [];
     public function resolveRouteBinding($value, $field = null)
@@ -41,11 +45,11 @@ class MeterRequest extends Model
         return $this->where('id', '=', decryptId($value))->firstOrFail();
     }
 
-    public function billing(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function billing(): HasOne
     {
         return $this->hasOne(Billing::class, 'subscription_number', 'subscription_number');
     }
-    public function request(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function request(): BelongsTo
     {
         return $this->belongsTo(Request::class);
     }
