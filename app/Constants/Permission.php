@@ -13,5 +13,7 @@ class Permission
     const AssignMeterNumber = 'Assign Meter Number';
     const CreateRequest = 'Create Request';
 
+    const AssignRequest = 'Assign Request';
+
 
 }

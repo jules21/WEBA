@@ -1,5 +1,6 @@
 <?php
 
+use App\Constants\Permission;
 use App\Http\Controllers\AreaOfOperationController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\CustomerController;
@@ -72,17 +73,20 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
         Route::get('/', [RequestsController::class, 'index'])->name('index');
         Route::post('/', [RequestsController::class, 'store'])->name('store');
-        Route::get('/create', [RequestsController::class, 'create'])->name('create');
+        Route::get('/create', [RequestsController::class, 'create'])->name('create')->can(Permission::CreateRequest);
         Route::get('/{request}/show', [RequestsController::class, 'show'])->name('show');
         Route::get('/{request}/edit', [RequestsController::class, 'edit'])->name('edit');
         Route::put('/{request}/update', [RequestsController::class, 'update'])->name('update');
         Route::delete('/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
 
+        Route::group(['middleware' => 'can:'.Permission::AssignRequest], function () {
+            Route::get('/new', [RequestsController::class, 'newRequests'])->name('new');
+            Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
+            Route::post('/requests/re-assign', [RequestAssignmentController::class, 'reAssign'])->name('re-assign');
+            Route::get('/assigned', [RequestsController::class, 'assignedRequests'])->name('assigned');
 
-        Route::get('/new', [RequestsController::class, 'newRequests'])->name('new');
-        Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
-        Route::post('/requests/re-assign', [RequestAssignmentController::class, 'reAssign'])->name('re-assign');
-        Route::get('/assigned', [RequestsController::class, 'assignedRequests'])->name('assigned');
+        });
+
 
         Route::get('/my-tasks', [RequestsController::class, 'myTasks'])->name('my-tasks');
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\Permission;
 use App\Traits\HasAddress;
 use App\Traits\HasStatusColor;
 use Eloquent;
@@ -222,6 +223,20 @@ class Request extends Model
     public function canAddTechnician(): bool
     {
         return $this->status == self::ASSIGNED;
+    }
+
+    public function canBeApprovedByMe(): bool
+    {
+        $user = auth()->user();
+
+        if ($user->can(Permission::ReviewRequest) && $this->status == self::ASSIGNED) {
+            return true;
+        } elseif ($user->can(Permission::ApproveRequest) && $this->status == self::PROPOSE_TO_APPROVE) {
+            return true;
+        } elseif ($user->can(Permission::AssignMeterNumber) && $this->status == self::APPROVED) {
+            return true;
+        }
+        return false;
     }
 
 

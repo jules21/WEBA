@@ -59,11 +59,11 @@
                 <i class="menu-arrow"></i>
                 <ul class="menu-subnav">
                     <li class="menu-item menu-item-parent" aria-haspopup="true">
-                            <span class="menu-link">
-                                <span class="menu-text">User Management</span>
-                            </span>
+                        <span class="menu-link">
+                            <span class="menu-text">User Management</span>
+                        </span>
                     </li>
-                    @can('Create Request')
+                    @can(\App\Constants\Permission::CreateRequest)
                         <li class="menu-item nav-all-users" aria-haspopup="true">
                             <a href="{{route('admin.requests.create')}}" class="menu-link">
                                 <i class="menu-bullet menu-bullet-dot">
@@ -74,22 +74,27 @@
                         </li>
                     @endcan
 
-                    <li class="menu-item nav-all-users" aria-haspopup="true">
-                        <a href="{{route('admin.requests.new')}}" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">New Requests</span>
-                        </a>
-                    </li>
-                    <li class="menu-item nav-roles" aria-haspopup="true">
-                        <a href="{{route('admin.requests.assigned')}}" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">Assigned Requests</span>
-                        </a>
-                    </li>
+                    @can(\App\Constants\Permission::AssignRequest)
+                        <li class="menu-item nav-all-users" aria-haspopup="true">
+                            <a href="{{route('admin.requests.new')}}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Pending Requests</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-item nav-roles" aria-haspopup="true">
+                            <a href="{{route('admin.requests.assigned')}}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Assigned Requests</span>
+                            </a>
+                        </li>
+                    @endcan
+
+
                     <li class="menu-item nav-all-permissions" aria-haspopup="true">
                         <a href="{{ route('admin.requests.my-tasks') }}" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
@@ -98,6 +103,7 @@
                             <span class="menu-text">My Tasks</span>
                         </a>
                     </li>
+
                     <li class="menu-item nav-all-permissions" aria-haspopup="true">
                         <a href="{{route('admin.requests.index')}}" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
