@@ -5,9 +5,13 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
+<<<<<<< HEAD
         "php": "^7.3|^8.0",
         "ext-json": "*",
         "doctrine/dbal": "^3.6",
+=======
+        "php": "^7.4|^8.0",
+>>>>>>> e1cf5dc8f65ec2f3ce1f19ff33b3517ff9e52628
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "hashids/hashids": "^4.1",
@@ -21,6 +25,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
+        "barryvdh/laravel-ide-helper": "^2.13",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/sail": "^1.0.1",

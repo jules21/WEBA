@@ -26,7 +26,6 @@ class ValidatePaymentType extends FormRequest
         return [
             'name'=>'required',
             'name_kin'=>'required',
-            'is_active'=>'required',
         ];
     }
 }

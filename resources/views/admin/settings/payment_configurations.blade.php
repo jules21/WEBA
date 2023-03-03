@@ -35,7 +35,6 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
-            @include('partials._alerts')
             <!--begin::Card-->
             <div class="card card-custom">
                 <div class="card-header flex-wrap border-0 pt-6 pb-0">
@@ -65,7 +64,9 @@
                                 <th>#</th>
                                 <th>Payment Type</th>
                                 <th>Request Type</th>
-                                <th>Operator</th>
+                                @if(auth()->user()->is_super_admin)
+                                    <th>Operator</th>
+                                @endif
                                 <th>Operation Area</th>
                                 <th>Amount</th>
                                 <th>Action</th>
@@ -78,7 +79,9 @@
                                     <td>{{++$key}}</td>
                                     <td>{{$payment->paymentType->name}}</td>
                                     <td>{{$payment->requestType->name}}</td>
-                                    <td>{{$payment->operator->name}}</td>
+                                    @if(auth()->user()->is_super_admin)
+                                        <td>{{$payment->operator->name}}</td>
+                                    @endif
                                     <td>{{$payment->operationArea->name}}</td>
                                     <td>{{$payment->amount}}</td>
                                     <td>

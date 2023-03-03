@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section("title","Request Types")
+@section("title","Payment Types")
 @section('css')
 @endsection
 @section('page-header')
@@ -10,7 +10,7 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-2 mr-5">Request Types</h5>
+                    <h5 class="text-dark font-weight-bold my-2 mr-5">Payment Types</h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -18,7 +18,7 @@
                             <a href="/" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a class="text-muted">Request Types</a>
+                            <a class="text-muted">Payment Types</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -35,12 +35,11 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
-            @include('partials._alerts')
             <!--begin::Card-->
             <div class="card card-custom">
                 <div class="card-header flex-wrap border-0 pt-6 pb-0">
                     <div class="card-title">
-                        <h3 class="card-label">Request Types List</h3>
+                        <h3 class="card-label">Payment Types List</h3>
                     </div>
                     <div class="card-toolbar">
                         <!-- Button trigger modal-->
@@ -94,7 +93,7 @@
                                                    data-kin="{{$type->name_kin}}"
                                                    data-active="{{$type->is_active}}"
                                                    class="dropdown-item js-edit">Edit</a>
-                                                <a href="{{route('admin.request.type.delete',$type->id)}}"
+                                                <a href="{{route('admin.payment.type.delete',$type->id)}}"
                                                    class="dropdown-item js-delete">Delete</a>
                                             </div>
                                         </div>
@@ -117,11 +116,11 @@
     <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.request.type.store')}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.payment.type.store')}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">New Request Type</h4>
+                        <h4 class="modal-title">New Payment Type</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -130,21 +129,12 @@
 
                         <div class="form-group">
                             <label for="name">Name (Eng)</label>
-                            <input type="text" name="name" id="name" class="form-control" required/>
+                            <input type="text" name="name" class="form-control" required/>
                         </div>
 
                         <div class="form-group">
                             <label for="name">Name (Kin)</label>
-                            <input type="text"  name="name_kin" id="name_kin" class="form-control" required/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="active">Active</label>
-                            <select type="text" name="is_active" id="is_active" class="form-control" required>
-                                <option value="">Please Select</option>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
+                            <input type="text"  name="name_kin" class="form-control" required/>
                         </div>
 
                     </div>
@@ -166,12 +156,12 @@
     <div class="modal fade" id="modalUpdate" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.request.type.edit')}}" method="post" id="submissionFormEdit" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.payment.type.edit')}}" method="post" id="submissionFormEdit" class="submissionForm" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" value="0"  id="TypeId" name="TypeId">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Request Type</h4>
+                        <h4 class="modal-title">Edit Payment Type</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -215,8 +205,10 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest(\App\Http\Requests\ValidateRequestType::class,'.submissionForm') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\ValidatePaymentType::class,'.submissionForm') !!}
 
+    <script  src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js" integrity="sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
 
         $(document).ready(function() {
@@ -224,12 +216,14 @@
         } );
 
         $('.nav-settings').addClass('menu-item-active  menu-item-open');
-        $('.nav-request-type').addClass('menu-item-active');
+        $('.nav-payment-type').addClass('menu-item-active');
 
         $(document).on('click', '.js-edit', function (e) {
             e.preventDefault();
             $("#modalUpdate").modal('show');
             console.log($(this).data('name'));
+            console.log($(this).data('kin'));
+            console.log($(this).data('active'));
             var url = $(this).data('url');
             $("#TypeId").val($(this).data('id'));
             $("#edit_name").val($(this).data('name'));

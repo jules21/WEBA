@@ -55,9 +55,9 @@
                         <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Legal Type</th>
                             <th>Doc Number</th>
-                            <th>Address</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -75,7 +75,7 @@
     <!-- Modal -->
     <div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
          aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">
@@ -85,7 +85,7 @@
                         &times;
                     </button>
                 </div>
-                <form action="{{ route('admin.customers.store') }})"
+                <form action="{{ route('admin.customers.store') }}"
                       method="post" id="formSave">
                     @csrf
                     <input type="hidden" value="0" id="id" name="id"/>
@@ -108,11 +108,11 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="doc_type">Document Type</label>
-                                    <select name="doc_type" id="doc_type" class="form-control ">
+                                    <label for="document_type_id">Document Type</label>
+                                    <select name="document_type_id" id="document_type_id" class="form-control">
                                         <option value="">Select Type</option>
                                         @foreach($idTypes as $item)
-                                            <option value="{{ $item }}">{{ $item }}</option>
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
 
                                     </select>
@@ -238,7 +238,7 @@
 
 
             $.ajax({
-                url: "/sectors/" + sectorId,
+                url: "/sectors/" + districtId,
                 method: "GET",
                 success: function (data) {
                     console.log(data);
@@ -285,26 +285,178 @@
             })
         }
 
+        function getDocumentTypes(legalTypeId, selectedDocTypedId) {
+            let docTypeId = $('#document_type_id');
+
+            docTypeId.empty();
+            docTypeId.append('<option value="">Select Doc Type</option>');
+            $.ajax({
+                url: "/documents-types/" + legalTypeId,
+                method: "GET",
+                success: function (data) {
+                    console.log(data);
+                    $.each(data, function (index, value) {
+                        docTypeId.append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                    docTypeId.val(selectedDocTypedId);
+                }
+            })
+
+
+        }
+
 
         $(document).ready(function () {
             $('.nav-customers').addClass('menu-item-active');
+
+            let dataTable = $('.dataTable').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: "{{ route('admin.customers.index') }}",
+                columns: [
+                    {
+                        data: "name", name: "name",
+                        render: function (data, type, row) {
+                            return `<div>
+                                        <div>${data}</div>
+                                        <div class="text-muted  mt-2">${row.legal_type.name}</div>
+                                    </div`
+                        }
+                    },
+                    {
+                        data: "doc_number", name: "doc_number",
+                        render: function (data, type, row) {
+                            return `<div>
+                                        <div>${data}</div>
+                                        <div class="text-muted mt-2">${row.document_type.name}</div>
+                                    </div`
+                        }
+                    },
+                    {data: "email", name: "email"},
+                    {data: "phone", name: "phone"},
+                    {data: "action", name: "action", orderable: false, searchable: false}
+                ]
+            });
 
             $('#addButton').on('click', function () {
                 $('#addModal').modal('show');
             });
 
-            $('#province_id').on('change',function (e) {
-               getDistricts($(this).val());
+            $('#province_id').on('change', function (e) {
+                getDistricts($(this).val());
             });
 
 
-            $('#district_id').on('change',function (e) {
-               getSectors($(this).val());
+            $('#district_id').on('change', function (e) {
+                getSectors($(this).val());
             });
 
 
-            $('#sector_id').on('change',function (e) {
-               getCells($(this).val());
+            $('#sector_id').on('change', function (e) {
+                getCells($(this).val());
+            });
+
+            $('#legal_type_id').on('change', function () {
+                getDocumentTypes($(this).val());
+            });
+
+            $('#formSave').on('submit', function (e) {
+                e.preventDefault();
+
+                let $form = $(this);
+                if (!$form.valid())
+                    return;
+                let $btn = $form.find(":submit");
+
+                $btn.prop("disabled", true)
+                    .addClass("spinner spinner-white spinner-sm spinner-right");
+                $.ajax({
+                    url: $form.attr("action"),
+                    method: "post",
+                    data: $form.serialize(),
+                    dataType: 'json',
+                    success: function (response) {
+                        dataTable.ajax.reload();
+                        $('#addModal').modal('hide');
+                    }, error: function (response) {
+                        Swal.fire({
+                            title: "Error",
+                            icon: "error",
+                            text: "Unable to save customer, try again"
+                        });
+                    },
+                    complete: function () {
+
+                        $btn.prop("disabled", false)
+                            .removeClass("spinner spinner-white spinner-sm spinner-right");
+                    }
+                });
+
+            });
+
+
+            $(document).on('click', '.js-edit', function (e) {
+                e.preventDefault();
+
+                let url = $(this).attr('href');
+
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    success: function (data) {
+                        $('#id').val(data.id);
+                        $('#name').val(data.name);
+                        $('#legal_type_id').val(data.legal_type_id);
+                        $('#document_type_id').val(data.document_type_id);
+                        $('#doc_number').val(data.doc_number);
+                        $('#phone').val(data.phone);
+                        $('#email').val(data.email);
+                        $('#province_id').val(data.province_id);
+                        getDistricts(data.province_id, data.district_id);
+                        getSectors(data.district_id, data.sector_id);
+                        getCells(data.sector_id, data.cell_id);
+                        $('#addModal').modal();
+                    },
+                    error: function (response) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Something went wrong!',
+                        });
+                    }
+                });
+
+            });
+
+
+            $(document).on('click', '.js-delete', function (e) {
+                e.preventDefault();
+
+                let url = $(this).attr('href');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: url,
+                            method: "DELETE",
+                            data: {
+                                "_token": "{{ csrf_token() }}",
+                            },
+                            success: function (data) {
+                                dataTable.ajax.reload();
+                            }
+                        })
+                    }
+                });
+
             });
 
 

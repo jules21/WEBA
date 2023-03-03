@@ -34834,6 +34834,8 @@ button {
 
 .nav.nav-tabs.nav-tabs-line.nav-tabs-line-3x {
   border-bottom-width: 3px; }
+.nav.nav-tabs.nav-tabs-line.nav-tabs-line-5x {
+  border-bottom-width: 5px; }
   .nav.nav-tabs.nav-tabs-line.nav-tabs-line-3x .nav-item {
     margin-bottom: -3px; }
   .nav.nav-tabs.nav-tabs-line.nav-tabs-line-3x .nav-link {

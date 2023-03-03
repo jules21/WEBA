@@ -19,7 +19,7 @@ class PaymentTypeController extends Controller
     public function index()
     {
         $types = PaymentType::query()->orderBy('id','DESC')->get();
-        return view('admin.settings.payment_type.index',compact('types'));
+        return view('admin.settings.payment_types',compact('types'));
     }
 
     /**

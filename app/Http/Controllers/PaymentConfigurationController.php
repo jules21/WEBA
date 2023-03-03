@@ -10,9 +10,18 @@ use Illuminate\Http\Request;
 class PaymentConfigurationController extends Controller
 {
     public function index(){
-        $payments = PaymentConfiguration::query()->with('paymentType','requestType','operator','operationArea')->orderBy('id','DESC')->get();
-        $operators = Operator::all();
-        return view('admin.settings.payment_configurations.index',compact('payments','operators'));
+        $user = auth()->user();
+             if ($user->is_super_admin){
+                 $payments = PaymentConfiguration::query()->with('paymentType','requestType','operator','operationArea')->orderBy('id','DESC')->get();
+                 $operators = Operator::all();
+             }else{
+                 $payments = PaymentConfiguration::query()->with('paymentType','requestType','operator','operationArea')
+                     ->orderBy('id','DESC')
+                     ->where('operator_id',$user->operator_id)->get();
+                 $operators = Operator::all();
+             }
+
+        return view('admin.settings.payment_configurations',compact('payments','operators'));
     }
 
     public function store(Request $request){

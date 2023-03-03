@@ -18,7 +18,7 @@ class RequestTypeController extends Controller
     public function index()
     {
         $types = RequestType::query()->orderBy('id','DESC')->get();
-        return view('admin.settings.request_type.index',compact('types'));
+        return view('admin.settings.request_types',compact('types'));
     }
 
     /**
@@ -43,7 +43,6 @@ class RequestTypeController extends Controller
         $type = new RequestType();
         $type->name=$request->name;
         $type->name_kin=$request->name_kin;
-//        $type->is_active=$request->is_active;
         $type->is_active="1";
 //        return $type;
         $type->save();

@@ -4,8 +4,14 @@ use App\Http\Controllers\AreaOfOperationController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\RequestAssignmentController;
+use App\Http\Controllers\RequestReviewController;
+use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SectorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,7 +32,9 @@ Route::get('/', function () {
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
 Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('villages');
-
+Route::get('/districts/{province}', [DistrictController::class, 'getByProvince'])->name('districts.province');
+Route::get('/sectors/{district}', [SectorController::class, 'getByDistrict'])->name('sectors.district');
+Route::get('/documents-types/{legalType}', [DocumentTypeController::class, 'getByLegalType'])->name('type-document.get-by-legal-type');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -54,8 +62,26 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
         Route::get('/', [CustomerController::class, 'index'])->name('index');
         Route::post('/store', [CustomerController::class, 'store'])->name('store');
-        Route::get('/edit/{customer}', [CustomerController::class, 'edit'])->name('edit');
+        Route::get('/show/{customer}', [CustomerController::class, 'show'])->name('show');
         Route::delete('/delete/{customer}', [CustomerController::class, 'destroy'])->name('delete');
+    });
+
+
+    Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
+        Route::get('/', [RequestsController::class, 'index'])->name('index');
+        Route::post('/', [RequestsController::class, 'store'])->name('store');
+        Route::get('/create', [RequestsController::class, 'create'])->name('create');
+        Route::get('/{request}/show', [RequestsController::class, 'show'])->name('show');
+        Route::get('/{request}/edit', [RequestsController::class, 'edit'])->name('edit');
+        Route::put('/{request}/update', [RequestsController::class, 'update'])->name('update');
+        Route::delete('/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
+
+
+        Route::get('/new', [RequestsController::class, 'newRequests'])->name('new');
+        Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
+        Route::get('/assigned', [RequestsController::class, 'assignedRequests'])->name('assigned');
+
+        Route::post('/{request}/reviews/save', [RequestReviewController::class, 'saveReview'])->name('reviews.save');
     });
 
 
@@ -102,25 +128,25 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::prefix('settings')->group(function () {
 
         //request types
-        Route::get('/request_types',[App\Http\Controllers\RequestTypeController::class,'index'])->name('request.type.index');
+        Route::get('/request_types',[App\Http\Controllers\RequestTypeController::class,'index'])->name('request.types');
         Route::post('/request_type/store',[App\Http\Controllers\RequestTypeController::class,'store'])->name('request.type.store');
         Route::post('/request_type/update',[App\Http\Controllers\RequestTypeController::class,'update'])->name('request.type.edit');
         Route::get('/request_type/delete/{id}',[App\Http\Controllers\RequestTypeController::class,'destroy'])->name('request.type.delete');
 
         //payment types
-        Route::get('/payment_types',[App\Http\Controllers\PaymentTypeController::class,'index'])->name('payment.type.index');
+        Route::get('/payment_types',[App\Http\Controllers\PaymentTypeController::class,'index'])->name('payment.types');
         Route::post('/payment_type/store',[App\Http\Controllers\PaymentTypeController::class,'store'])->name('payment.type.store');
         Route::post('/payment_type/update',[App\Http\Controllers\PaymentTypeController::class,'update'])->name('payment.type.edit');
         Route::get('/payment_type/delete/{id}',[App\Http\Controllers\PaymentTypeController::class,'destroy'])->name('payment.type.delete');
 
         //request duration configurations
-        Route::get('/request_duration_configurations',[App\Http\Controllers\RequestDurationConfigurationController::class,'index'])->name('request.duration.configuration.index');
+        Route::get('/request_duration_configurations',[App\Http\Controllers\RequestDurationConfigurationController::class,'index'])->name('request.duration.configurations');
         Route::post('/request_duration_configuration/store',[App\Http\Controllers\RequestDurationConfigurationController::class,'store'])->name('request.duration.configuration.store');
         Route::post('/request_duration_configuration/update',[App\Http\Controllers\RequestDurationConfigurationController::class,'update'])->name('request.duration.configuration.edit');
         Route::get('/request_duration_configuration/delete/{id}',[App\Http\Controllers\RequestDurationConfigurationController::class,'destroy'])->name('request.duration.configuration.delete');
 
         //payment configurations
-        Route::get('/payment_configurations',[App\Http\Controllers\PaymentConfigurationController::class,'index'])->name('payment.configuration.index');
+        Route::get('/payment_configurations',[App\Http\Controllers\PaymentConfigurationController::class,'index'])->name('payment.configurations');
         Route::post('/payment_configuration/store',[App\Http\Controllers\PaymentConfigurationController::class,'store'])->name('payment.configuration.store');
         Route::post('/payment_configuration/update',[App\Http\Controllers\PaymentConfigurationController::class,'update'])->name('payment.configuration.edit');
         Route::get('/payment_configuration/delete/{id}',[App\Http\Controllers\PaymentConfigurationController::class,'destroy'])->name('payment.configuration.delete');

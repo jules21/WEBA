@@ -10,9 +10,17 @@ use Illuminate\Http\Request;
 class RequestDurationConfigurationController extends Controller
 {
     public function index(){
-        $configurations = RequestDurationConfiguration::with(['requestType','operator','operationArea'])->orderBy('id','DESC')->get();
-        $operators = Operator::all();
-        return view('admin.settings.request_duration_configurations.index',compact('configurations','operators'));
+        $user = auth()->user();
+          if ($user->is_super_admin){
+              $configurations = RequestDurationConfiguration::with(['requestType','operator','operationArea'])->orderBy('id','DESC')->get();
+              $operators = Operator::all();
+          }else
+              $configurations = RequestDurationConfiguration::with(['requestType','operator','operationArea'])
+                  ->orderBy('id','DESC')
+                  ->where('operator_id',$user->operator_id)->get();
+              $operators = Operator::all();
+
+        return view('admin.settings.request_duration_configurations',compact('configurations','operators'));
     }
 
     public function store(ValidateRequestDurationConfiguration $request){
