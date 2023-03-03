@@ -42,7 +42,7 @@
             </a>
         </li>
     @endcan
-    @can('Manage Requests')
+    @canany([\App\Constants\Permission::CreateRequest,\App\Constants\Permission::ApproveRequest,\App\Constants\Permission::AssignMeterNumber,\App\Constants\Permission::ReviewRequest])
         <li class="menu-item menu-item-submenu nav-request-management" aria-haspopup="true" data-menu-toggle="hover">
             <a href="javascript:" class="menu-link menu-toggle">
            <span class="svg-icon menu-icon">
@@ -110,7 +110,7 @@
             </div>
         </li>
 
-    @endcan
+    @endcanany
 
 
 

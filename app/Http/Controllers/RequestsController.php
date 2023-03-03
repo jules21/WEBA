@@ -266,6 +266,7 @@ class RequestsController extends Controller
                 ->where([
                     ['operator_id', '=', auth()->user()->operator_id]
                 ])
+                ->whereHas('requestAssignment', fn(Builder $builder) => $builder->where('user_id', '=', auth()->id()))
                 ->where(function (Builder $builder) {
 
                     $user = auth()->user();
