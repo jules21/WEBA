@@ -34,4 +34,19 @@ use Illuminate\Database\Eloquent\Model;
 class MeterRequest extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where('id', '=', decryptId($value))->firstOrFail();
+    }
+
+    public function billing(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Billing::class, 'subscription_number', 'subscription_number');
+    }
+    public function request(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Request::class);
+    }
 }

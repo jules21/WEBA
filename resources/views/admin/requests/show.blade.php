@@ -71,256 +71,72 @@
 
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="mb-4">
-                            Customer Details
-                        </h5>
-                        <div class="row">
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Name</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->name }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Phone</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->phone }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Email</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->email }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">ID Type</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->documentType->name }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Doc Number</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->doc_number }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Address</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->customer->address }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                @include('admin.requests.partials._customer_details')
+
+                @include('admin.requests.partials._request_details')
+
+                <div class="mb-3">
+                    @include('admin.requests.partials._technician_details')
                 </div>
 
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="mb-4">
-                            Request Details
-                        </h5>
-                        <div class="row">
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Type</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->requestType->name }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Water Usage</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->waterUsage->name }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">
-                                        Number of Meters Requested
-                                    </label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->meter_qty }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">UPI</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->upi }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <div class="font-weight-bold">
-                                        Will the new connection cross a road?
-                                    </div>
-                                    <span class="label label-light-info label-inline rounded-pill">
-                                        {{ $request->new_connection_crosses_road? 'Yes' : 'No' }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Road Type:</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->road_type }}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <div class="font-weight-bold">
-                                        Will you buy the equipments by yourself?
-                                    </div>
-                                    <span class="label label-light-info label-inline rounded-pill">
-                                        {{ $request->equipment_payment? 'Yes' : 'No' }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <div class="font-weight-bold">
-                                        Will you dig the pipeline by yourself?
-                                    </div>
-                                    <span class="label label-light-info label-inline rounded-pill">
-                                        {{ $request->digging_pipeline? 'Yes' : 'No' }}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-xl-4">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">
-                                        Address
-                                    </label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->address }}
-                                    </div>
-                                </div>
-                            </div>
 
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Description</label>
-                                    <div class="form-control-plaintext py-0">
-                                        {{ $request->description }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @if(!$request->equipment_payment)
+                    @include('admin.requests.partials._equipments')
+                @endif
 
-                {{--              TODO  show this tab when user chooes us to buy equipments for him--}}
 
-                <div class="card mb-3">
-                    <div class="card-body">
+                @if(!in_array($request->status,[\App\Models\Request::APPROVED,\App\Models\Request::REJECTED]))
+                    @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
+                        @include('admin.requests.partials._review_form')
+                    @endif
+                @endif
+
+                @if($request->status == \App\Models\Request::APPROVED)
+                    <div class="card card-body mb-3">
+
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="mb-0">Materials</h5>
-                            <button type="button" class="btn btn-sm rounded btn-primary">
-                                <i class="flaticon2-add"></i>
+                            <h6 class="mb-0">Meter Numbers</h6>
+                            <button type="button" class="btn btn-sm btn-primary">
+                                <i class="flaticon2-plus-1"></i>
                                 Add New
                             </button>
                         </div>
-                        <div class="table-responsive border rounded">
-                            <table class="table table-head-solid table-head-custom">
+
+                        <div class="table-responsive">
+                            <table class="table table-head-custom table-head-solid table-hover">
                                 <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th></th>
+                                    <th>Serial Number</th>
+                                    <th>Reading</th>
+                                    <th>Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @for($i=0;$i<5;$i++)
+                                @foreach($request->meterNumbers as $item)
                                     <tr>
-                                        <td>Jack Harmer</td>
-                                        <td>24,000</td>
+                                        <td>{{ $item->serial_number }}</td>
+                                        <td>{{ $item->reading }}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-light-primary btn-icon rounded-circle">
+                                            <a href="{{ route('admin.meter-numbers.edit',$item->id) }}"
+                                               class="btn btn-sm btn-clean btn-icon mr-2"
+                                               title="Edit details">
                                                 <i class="flaticon2-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-light-danger btn-icon rounded-circle">
+                                            </a>
+                                            <a href="{{ route('admin.meter-numbers.destroy',$item->id) }}"
+                                               class="btn btn-sm btn-clean btn-icon"
+                                               title="Delete">
                                                 <i class="flaticon2-trash"></i>
-                                            </button>
+                                            </a>
                                         </td>
                                     </tr>
-                                @endfor
+                                @endforeach
                                 </tbody>
                             </table>
-                        </div>
+
+
+
                     </div>
-                </div>
-
-                <div class="card mb-3">
-                    <div class="card-body">
-
-                        <div class="row justify-content-center">
-                            <div class="col-md-8">
-                                <h4 class="my-4">Review</h4>
-                                <form action="{{ route('admin.requests.reviews.save',encryptId($request->id)) }}"
-                                      method="post" id="formSaveReview">
-                                    @csrf
-                                    <div class="form-group row">
-                                        <label for="status" class="col-md-2 col-form-label">Status:</label>
-                                        <div class="col-md-10">
-                                            <select name="status" id="status" class="form-control">
-                                                <option value="">Select Status</option>
-                                                @foreach($request->getApprovalStatuses() as $item)
-                                                    <option value="{{$item}}">{{ $item }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="comment" class="col-md-2 col-form-label">Comment:</label>
-                                        <div class="col-md-10">
-                                    <textarea class="form-control" name="comment" id="comment" cols="30"
-                                              rows="5"></textarea>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <div class="col-md-10 offset-md-2">
-                                            <button type="submit" class="btn btn-primary">
-                                                <span class="svg-icon">
-                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                  <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                                </svg>
-                                                </span>
-                                                Submit Review
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endif
 
             </div>
             <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="home-tab">
@@ -363,7 +179,6 @@
                 @endif
 
             </div>
-
             <div class="tab-pane fade  " id="contact" role="tabpanel" aria-labelledby="home-tab">
                 <div class="card card-body">
                     @if($flowHistories->count()==0)
@@ -410,8 +225,99 @@
 
                 </div>
             </div>
+        </div>
+    </div>
 
 
+    {{--    add technician modal--}}
+
+    <div class="modal fade" tabindex="-1" id="addTechnicianModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>
+                        Technician
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
+                </div>
+                <form action="{{ route('admin.requests.technician.save',encryptId($request->id)) }}" method="post"
+                      id="saveTechnicianForm">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" value="0" id="tech_id" name="id"/>
+                        <div class="form-group">
+                            <label for="tech_name">Name</label>
+                            <input type="text" name="name" id="tech_name" class="form-control"/>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="tech_phone_number">Phone Number</label>
+                            <input type="tel" name="phone_number" id="tech_phone_number" class="form-control"/>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="tech_address">Address</label>
+                            <input type="tel" name="address" id="tech_address" class="form-control"/>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{--    add modal--}}
+
+    <div class="modal fade" tabindex="-1" id="addModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Material</h5>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
+                </div>
+                <form action="{{ route('admin.requests.save-item',encryptId($request->id)) }}" method="post"
+                      id="saveItemForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="item_id">Item</label>
+                            <select name="item_id" id="item_id" class="form-control select2"
+                                    style="width: 100% !important;">
+                                <option value="">Select Item</option>
+                                @foreach($items as $item)
+                                    <option value="{{$item->id}}">{{$item->name}}
+                                        - RWF {{ number_format($item->selling_price,0) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="unit_price">Unit Price</label>
+                            <input type="number" name="unit_price" id="unit_price" class="form-control"/>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -420,10 +326,18 @@
 @section('scripts')
 
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
-    {!! JsValidator::formRequest(App\Http\Requests\ValidateReviewRequest::class) !!}
+    {!! JsValidator::formRequest(App\Http\Requests\ValidateReviewRequest::class,'#formSaveReview') !!}
+    {!! JsValidator::formRequest(App\Http\Requests\ValidateStoreItemRequest::class,'#saveItemForm') !!}
+    {!! JsValidator::formRequest(App\Http\Requests\ValidateTechnicianRequest::class,'#saveTechnicianForm') !!}
 
     <script>
         $(document).ready(function () {
+
+            $('.dataTable').DataTable();
+
+            $('#addBtn').on('click', function () {
+                $('#addModal').modal('show');
+            });
 
             $('#formSaveReview').on('submit', function (e) {
                 e.preventDefault();
@@ -442,6 +356,143 @@
                 e.target.submit();
 
             });
+
+            $('#saveItemForm').on('submit', function (e) {
+                e.preventDefault();
+
+                let $form = $(this);
+
+                if (!$form.valid())
+                    return false;
+
+                let btn = $form.find('button[type="submit"]');
+
+                btn.addClass('spinner spinner-white spinner-right')
+                    .prop('disabled', true);
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    method: 'post',
+                    data: $form.serialize(),
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong',
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
+                    },
+                    complete: function () {
+                        /*      btn.removeClass('spinner spinner-white spinner-right')
+                                  .prop('disabled', false);*/
+                    }
+                })
+
+            });
+
+            $(document).on('click', '.js-edit', function () {
+                let $itemId = $('#item_id');
+                $itemId.val($(this).data('item_id'));
+                $('#quantity').val($(this).data('quantity'));
+                $('#unit_price').val($(this).data('unit_price'));
+                $itemId.trigger('change');
+                $('#addModal').modal('show');
+            });
+
+            $(document).on('click', '.js-delete', function (e) {
+                e.preventDefault();
+
+                let $this = $(this);
+                let url = $this.data('href');
+
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                }).then(function (result) {
+                    if (result.value) {
+                        $this.prop('disabled', true)
+                            .addClass('spinner spinner-white spinner-right');
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            data: {
+                                _token: $('meta[name="csrf-token"]').attr('content')
+                            },
+                            complete: function () {
+                                $this.prop('disabled', false)
+                                    .removeClass('spinner spinner-white spinner-right');
+                            },
+                            success: function (response) {
+                                location.reload();
+                            },
+                            error: function (xhr) {
+                                Swal.fire(
+                                    'Error!',
+                                    "Unable to delete item, please try again later",
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+
+            });
+
+            $('#addTechBtn').on('click', function () {
+                $('#addTechnicianModal').modal('show');
+            });
+
+            $('#saveTechnicianForm').on('submit', function (e) {
+                e.preventDefault();
+
+                let $form = $(this);
+
+                if (!$form.valid())
+                    return false;
+
+                let btn = $form.find('button[type="submit"]');
+
+                btn.addClass('spinner spinner-white spinner-right')
+                    .prop('disabled', true);
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    method: 'post',
+                    data: $form.serialize(),
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong',
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
+                    },
+                    complete: function () {
+
+                    }
+                })
+            });
+
+            $(document).on('click', '.js-edit-tech', function () {
+                $('#tech_id').val($(this).data(('id')));
+                $('#tech_name').val($(this).data(('name')));
+                $('#tech_phone_number').val($(this).data(('phone')));
+                $('#tech_address').val($(this).data(('address')));
+                $('#addTechnicianModal').modal('show');
+            });
+
         });
     </script>
 @endsection

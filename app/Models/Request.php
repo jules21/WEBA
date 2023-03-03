@@ -10,8 +10,10 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
+use ReflectionClass;
 
 /**
  * App\Models\Request
@@ -161,7 +163,7 @@ class Request extends Model
     // static method to get class name with namespace
     public function getClassName(): string
     {
-        return (new \ReflectionClass($this))->getShortName();
+        return (new ReflectionClass($this))->getShortName();
     }
 
     const ASSIGNED = 'Assigned';
@@ -189,6 +191,21 @@ class Request extends Model
             ];
         }
         return [];
+    }
+
+    public function items(): MorphMany
+    {
+        return $this->morphMany(StockMovementDetail::class, 'model', 'model_type', 'model_id');
+    }
+
+    public function technician(): HasOne
+    {
+        return $this->hasOne(RequestTechnician::class);
+    }
+
+    public function meterNumbers(): HasMany
+    {
+        return $this->hasMany(MeterRequest::class);
     }
 
 

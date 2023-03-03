@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\Billing
@@ -38,4 +39,21 @@ use Illuminate\Database\Eloquent\Model;
 class Billing extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where('id', '=', decryptId($value))->firstOrFail();
+    }
+
+    public function meterRequest(): BelongsTo
+    {
+        return $this->belongsTo(MeterRequest::class, 'subscription_number', 'subscription_number');
+    }
 }

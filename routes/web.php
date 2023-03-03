@@ -10,6 +10,7 @@ use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\RequestAssignmentController;
 use App\Http\Controllers\RequestReviewController;
 use App\Http\Controllers\RequestsController;
+use App\Http\Controllers\RequestTechnicianController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
 use Illuminate\Support\Facades\Route;
@@ -81,7 +82,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
         Route::get('/assigned', [RequestsController::class, 'assignedRequests'])->name('assigned');
 
+        Route::post('/{request}/save-item', [RequestReviewController::class, 'storeItem'])->name('save-item');
+        Route::delete('/{request}/item/{id}/delete', [RequestReviewController::class, 'deleteRequestItem'])->name('delete-request-item');
         Route::post('/{request}/reviews/save', [RequestReviewController::class, 'saveReview'])->name('reviews.save');
+
+        Route::post('/{request}/technician/save', [RequestTechnicianController::class, 'store'])->name('technician.save');
+        Route::delete('/technician/{id}/delete', [RequestTechnicianController::class, 'destroy'])->name('technician.delete');
     });
 
 
