@@ -31,23 +31,25 @@
             </div>
         </div>
 
-        <div class="d-flex">
-            <button
-                data-id="{{ $technician->id }}"
-                data-name="{{ $technician->name }}"
-                data-phone="{{ $technician->phone_number }}"
-                data-address="{{ $technician->address }}"
-                class="btn btn-sm btn-light-primary mr-3 rounded-pill px-5 font-weight-bold js-edit-tech">
-                <i class="flaticon2-edit"></i>
-                Edit
-            </button>
-            <button type="button"
-                    data-href="{{ route('admin.requests.technician.delete',encryptId($technician->id)) }}"
-                    class="btn btn-sm btn-light-danger rounded-pill px-5 font-weight-bold js-delete">
-                <i class="flaticon2-trash"></i>
-                Delete
-            </button>
-        </div>
+        @if($request->status == \App\Models\Request::ASSIGNED)
+            <div class="d-flex">
+                <button
+                    data-id="{{ $technician->id }}"
+                    data-name="{{ $technician->name }}"
+                    data-phone="{{ $technician->phone_number }}"
+                    data-address="{{ $technician->address }}"
+                    class="btn btn-sm btn-light-primary mr-3 rounded-pill px-5 font-weight-bold js-edit-tech">
+                    <i class="flaticon2-edit"></i>
+                    Edit
+                </button>
+                <button type="button"
+                        data-href="{{ route('admin.requests.technician.delete',encryptId($technician->id)) }}"
+                        class="btn btn-sm btn-light-danger rounded-pill px-5 font-weight-bold js-delete">
+                    <i class="flaticon2-trash"></i>
+                    Delete
+                </button>
+            </div>
+        @endif
     </div>
 @else
     <div

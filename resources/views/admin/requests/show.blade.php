@@ -86,7 +86,7 @@
                     @endif
 
 
-                    @if(!in_array($request->status,[\App\Models\Request::APPROVED,\App\Models\Request::REJECTED,\App\Models\Request::PENDING]))
+                    @if( $technician && $request->canBeApprovedByMe())
                         @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
                             @include('admin.requests.partials._review_form')
                         @endif
