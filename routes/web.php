@@ -121,7 +121,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::prefix('stock-management')->name('stock.')->group(function (){
         Route::resource('item-categories', \App\Http\Controllers\ItemCategoryController::class);
         Route::resource('items', \App\Http\Controllers\ItemController::class);
-        Route::get('/items/{operator}/stock', [\App\Http\Controllers\ItemController::class, 'stock'])->name('items.stock');
+        Route::get('/stock-items', [App\Http\Controllers\StockController::class, 'index'])->name('stock-items.index');
+        Route::post('/stock-movements', [App\Http\Controllers\StockController::class, 'movements'])->name('stock-items.movements');
     });
 
 });
@@ -130,4 +131,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//ajax routes
+Route::get('/operation-area', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
 
