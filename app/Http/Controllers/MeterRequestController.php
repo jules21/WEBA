@@ -66,7 +66,7 @@ class MeterRequestController extends Controller
     private function generateSubscriptionNumber(MeterRequest $meterRequest): void
     {
         // generate  8 number prefixed with request id left padded with zeroes
-        $subscriptionNumber ="SN" . str_pad($meterRequest->request_id, 8, '0', STR_PAD_LEFT);
+        $subscriptionNumber ="SN" . str_pad($meterRequest->id, 8, '0', STR_PAD_LEFT);
         $meterRequest->update([
             'subscription_number' => $subscriptionNumber
         ]);

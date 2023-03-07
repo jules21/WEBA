@@ -191,12 +191,13 @@ class Request extends Model
                 self::APPROVED,
                 self::REJECTED
             ];
-        } elseif ($this->status == self::APPROVED) {
+        }
+    /*    elseif ($this->status == self::APPROVED) {
             return [
                 self::ASSIGNING_METER,
                 self::REJECTED
             ];
-        }
+        }*/
         return [];
     }
 
@@ -234,9 +235,16 @@ class Request extends Model
         } elseif ($user->can(Permission::ApproveRequest) && $this->status == self::PROPOSE_TO_APPROVE) {
             return true;
         } elseif ($user->can(Permission::AssignMeterNumber) && $this->status == self::APPROVED) {
-            return true;
+            return false;
         }
         return false;
+    }
+
+    public function canAssignMeterNumber(): bool
+    {
+        return $this->meterNumbers->count() < $this->meter_qty
+            && $this->status == Request::APPROVED
+            && auth()->user()->can(Permission::AssignMeterNumber);
     }
 
 
