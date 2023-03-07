@@ -2,7 +2,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h6 class="mb-0">Meter Numbers</h6>
-        @if($request->meterNumbers->count()<$request->meter_qty)
+        @if($request->canAssignMeterNumber())
             <button type="button" class="btn btn-sm btn-primary" id="addMeterBtn">
                 <i class="flaticon2-plus-1"></i>
                 Add New
@@ -25,16 +25,20 @@
                     <td>{{ $item->subscription_number }}</td>
                     <td>{{ $item->meter_number }}</td>
                     <td>
-                     {{--   <a href="{{ route('admin.meter-numbers.edit',$item->id) }}"
-                           class="btn btn-sm btn-clean btn-icon mr-2"
-                           title="Edit details">
+                        <button type="button"
+                                data-id="{{ $item->id }}"
+                                data-subscription_number="{{ $item->subscription_number }}"
+                                data-meter_number="{{ $item->meter_number }}"
+                                class="btn btn-sm btn-light-primary rounded-circle btn-icon mr-2"
+                                title="Edit details">
                             <i class="flaticon2-edit"></i>
-                        </a>
-                        <a href="{{ route('admin.meter-numbers.destroy',$item->id) }}"
-                           class="btn btn-sm btn-clean btn-icon"
-                           title="Delete">
+                        </button>
+                        <button type="button"
+                                data-href="{{ route('admin.requests.meter-number.destroy',encryptId($item->id)) }}"
+                                class="btn btn-sm  rounded-circle btn-icon btn-light-danger js-delete"
+                                title="Delete">
                             <i class="flaticon2-trash"></i>
-                        </a>--}}
+                        </button>
                     </td>
                 </tr>
             @empty

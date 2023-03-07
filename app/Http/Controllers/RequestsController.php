@@ -312,8 +312,6 @@ class RequestsController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
-
         return view('admin.requests.my_requests');
     }
 

@@ -92,9 +92,9 @@
                         @endif
                     @endif
 
-                    @if($request->status == \App\Models\Request::APPROVED)
-                        @include('admin.requests.partials._assign_meter_numbers')
-                    @endif
+
+                    @include('admin.requests.partials._assign_meter_numbers')
+
                 @endif
 
 

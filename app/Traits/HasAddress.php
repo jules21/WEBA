@@ -38,6 +38,6 @@ trait HasAddress
 
     public function getAddressAttribute(): string
     {
-        return $this->province->name . '-' . $this->district->name . '-' . $this->sector->name . '-' . $this->cell->name??'' . '-' . $this->village->name ?? '';
+        return $this->province->name . '-' . $this->district->name . '-' . $this->sector->name . '-' . $this->cell->name ?? '' . '-' . $this->village->name ?? '';
     }
 }
