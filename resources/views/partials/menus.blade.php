@@ -270,7 +270,7 @@
 
     {{--    @can('Manage Stock')--}}
     <li class="menu-section">
-        <h4 class="menu-text">System Users Section</h4>
+        <h4 class="menu-text">Stock Management Section</h4>
         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
     </li>
     <li class="menu-item menu-item-submenu nav-user-managements" aria-haspopup="true" data-menu-toggle="hover">

@@ -32,7 +32,6 @@
 @endsection
 @section('content')
     <div class="container">
-        @include('partials._alerts')
         <div class="card card-custom">
             <div class="card-header flex-wrap">
                 <h3 class="card-title">Categories</h3>
@@ -47,7 +46,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-separate border table-head-solid table-head-custom" id="kt_datatable1">
+                    <table class="table border table-head-solid table-head-custom" id="kt_datatable1">
                         {{--                    kt_datatable1--}}
                         <thead>
                         <tr>

@@ -33,7 +33,6 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container">
-            @include('partials._alerts')
             <div class="card card-custom gutter-b">
                 <div class="flex-wrap card-header">
                     <div class="card-title">
