@@ -54,7 +54,7 @@
                     </tr>
 
                 @empty
-                    <tr>
+               {{--     <tr>
                         <td colspan="5">
                             <div class="alert alert-light-info alert-custom py-1">
                                 <div class="alert-icon">
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                         </td>
-                    </tr>
+                    </tr>--}}
                 @endforelse
 
                 </tbody>

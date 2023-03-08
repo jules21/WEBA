@@ -1,11 +1,13 @@
 <?php
 
+use App\Constants\Permission;
 use App\Http\Controllers\AreaOfOperationController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DocumentTypeController;
+use App\Http\Controllers\MeterRequestController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\RequestAssignmentController;
 use App\Http\Controllers\RequestReviewController;
@@ -71,16 +73,22 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
         Route::get('/', [RequestsController::class, 'index'])->name('index');
         Route::post('/', [RequestsController::class, 'store'])->name('store');
-        Route::get('/create', [RequestsController::class, 'create'])->name('create');
+        Route::get('/create', [RequestsController::class, 'create'])->name('create')->can(Permission::CreateRequest);
         Route::get('/{request}/show', [RequestsController::class, 'show'])->name('show');
         Route::get('/{request}/edit', [RequestsController::class, 'edit'])->name('edit');
         Route::put('/{request}/update', [RequestsController::class, 'update'])->name('update');
         Route::delete('/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
 
+        Route::group(['middleware' => 'can:'.Permission::AssignRequest], function () {
+            Route::get('/new', [RequestsController::class, 'newRequests'])->name('new');
+            Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
+            Route::post('/requests/re-assign', [RequestAssignmentController::class, 'reAssign'])->name('re-assign');
+            Route::get('/assigned', [RequestsController::class, 'assignedRequests'])->name('assigned');
 
-        Route::get('/new', [RequestsController::class, 'newRequests'])->name('new');
-        Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
-        Route::get('/assigned', [RequestsController::class, 'assignedRequests'])->name('assigned');
+        });
+
+
+        Route::get('/my-tasks', [RequestsController::class, 'myTasks'])->name('my-tasks');
 
         Route::post('/{request}/save-item', [RequestReviewController::class, 'storeItem'])->name('save-item');
         Route::delete('/{request}/item/{id}/delete', [RequestReviewController::class, 'deleteRequestItem'])->name('delete-request-item');
@@ -88,6 +96,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::post('/{request}/technician/save', [RequestTechnicianController::class, 'store'])->name('technician.save');
         Route::delete('/technician/{id}/delete', [RequestTechnicianController::class, 'destroy'])->name('technician.delete');
+
+        Route::post('/{request}/assign-meter-number', [MeterRequestController::class, 'store'])->name('assign-meter-number');
+        Route::delete('/meter-number/{id}/destroy', [MeterRequestController::class, 'destroy'])->name('meter-number.destroy');
     });
 
 

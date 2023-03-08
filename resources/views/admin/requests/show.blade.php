@@ -75,68 +75,28 @@
 
                 @include('admin.requests.partials._request_details')
 
-                <div class="mb-3">
-                    @include('admin.requests.partials._technician_details')
-                </div>
-
-
-                @if(!$request->equipment_payment)
-                    @include('admin.requests.partials._equipments')
-                @endif
-
-
-                @if(!in_array($request->status,[\App\Models\Request::APPROVED,\App\Models\Request::REJECTED]))
-                    @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
-                        @include('admin.requests.partials._review_form')
-                    @endif
-                @endif
-
-                @if($request->status == \App\Models\Request::APPROVED)
-                    <div class="card card-body mb-3">
-
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="mb-0">Meter Numbers</h6>
-                            <button type="button" class="btn btn-sm btn-primary">
-                                <i class="flaticon2-plus-1"></i>
-                                Add New
-                            </button>
-                        </div>
-
-                        <div class="table-responsive">
-                            <table class="table table-head-custom table-head-solid table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Serial Number</th>
-                                    <th>Reading</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($request->meterNumbers as $item)
-                                    <tr>
-                                        <td>{{ $item->serial_number }}</td>
-                                        <td>{{ $item->reading }}</td>
-                                        <td>
-                                            <a href="{{ route('admin.meter-numbers.edit',$item->id) }}"
-                                               class="btn btn-sm btn-clean btn-icon mr-2"
-                                               title="Edit details">
-                                                <i class="flaticon2-edit"></i>
-                                            </a>
-                                            <a href="{{ route('admin.meter-numbers.destroy',$item->id) }}"
-                                               class="btn btn-sm btn-clean btn-icon"
-                                               title="Delete">
-                                                <i class="flaticon2-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-
-
-
+                @if($request->canBeReviewed())
+                    <div class="mb-3">
+                        @include('admin.requests.partials._technician_details')
                     </div>
+
+
+                    @if(!$request->equipment_payment)
+                        @include('admin.requests.partials._equipments')
+                    @endif
+
+
+                    @if( $technician && $request->canBeApprovedByMe())
+                        @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
+                            @include('admin.requests.partials._review_form')
+                        @endif
+                    @endif
+
+
+                    @include('admin.requests.partials._assign_meter_numbers')
+
                 @endif
+
 
             </div>
             <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="home-tab">
@@ -329,6 +289,7 @@
     {!! JsValidator::formRequest(App\Http\Requests\ValidateReviewRequest::class,'#formSaveReview') !!}
     {!! JsValidator::formRequest(App\Http\Requests\ValidateStoreItemRequest::class,'#saveItemForm') !!}
     {!! JsValidator::formRequest(App\Http\Requests\ValidateTechnicianRequest::class,'#saveTechnicianForm') !!}
+    {!! JsValidator::formRequest(App\Http\Requests\ValidateAssignMeterNumber::class,'#saveMeterForm') !!}
 
     <script>
         $(document).ready(function () {
@@ -491,6 +452,46 @@
                 $('#tech_phone_number').val($(this).data(('phone')));
                 $('#tech_address').val($(this).data(('address')));
                 $('#addTechnicianModal').modal('show');
+            });
+
+            $('#addMeterBtn').on('click', function () {
+                $('#addMeterModal').modal('show');
+            });
+
+            $('#saveMeterForm').on('submit', function (e) {
+                e.preventDefault();
+                let $form = $(this);
+
+                if (!$form.valid())
+                    return false;
+
+                let btn = $form.find('button[type="submit"]');
+
+                btn.addClass('spinner spinner-white spinner-right')
+                    .prop('disabled', true);
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    method: 'post',
+                    data: $form.serialize(),
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong',
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
+                        btn.removeClass('spinner spinner-white spinner-right')
+                            .prop('disabled', false);
+                    },
+                    complete: function () {
+
+                    }
+                });
+
             });
 
         });

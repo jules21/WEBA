@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\Permission;
 use App\Traits\HasAddress;
 use App\Traits\HasStatusColor;
 use Eloquent;
@@ -160,12 +161,18 @@ class Request extends Model
         return $this->hasMany(RequestAssignment::class);
     }
 
+    public function requestAssignment(): HasOne
+    {
+        return $this->hasOne(RequestAssignment::class);
+    }
+
     // static method to get class name with namespace
     public function getClassName(): string
     {
         return (new ReflectionClass($this))->getShortName();
     }
 
+    const PENDING = 'Pending';
     const ASSIGNED = 'Assigned';
     const PROPOSE_TO_APPROVE = 'Propose to approve';
     const REJECTED = 'Rejected';
@@ -184,12 +191,13 @@ class Request extends Model
                 self::APPROVED,
                 self::REJECTED
             ];
-        } elseif ($this->status == self::APPROVED) {
+        }
+    /*    elseif ($this->status == self::APPROVED) {
             return [
                 self::ASSIGNING_METER,
                 self::REJECTED
             ];
-        }
+        }*/
         return [];
     }
 
@@ -206,6 +214,37 @@ class Request extends Model
     public function meterNumbers(): HasMany
     {
         return $this->hasMany(MeterRequest::class);
+    }
+
+    public function canBeReviewed(): bool
+    {
+        return $this->status != self::PENDING;
+    }
+
+    public function canAddTechnician(): bool
+    {
+        return $this->status == self::ASSIGNED;
+    }
+
+    public function canBeApprovedByMe(): bool
+    {
+        $user = auth()->user();
+
+        if ($user->can(Permission::ReviewRequest) && $this->status == self::ASSIGNED) {
+            return true;
+        } elseif ($user->can(Permission::ApproveRequest) && $this->status == self::PROPOSE_TO_APPROVE) {
+            return true;
+        } elseif ($user->can(Permission::AssignMeterNumber) && $this->status == self::APPROVED) {
+            return false;
+        }
+        return false;
+    }
+
+    public function canAssignMeterNumber(): bool
+    {
+        return $this->meterNumbers->count() < $this->meter_qty
+            && $this->status == Request::APPROVED
+            && auth()->user()->can(Permission::AssignMeterNumber);
     }
 
 
