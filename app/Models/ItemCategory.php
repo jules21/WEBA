@@ -29,4 +29,10 @@ use Illuminate\Database\Eloquent\Model;
 class ItemCategory extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        "name",
+        "is_meter",
+        "is_active",
+    ];
 }

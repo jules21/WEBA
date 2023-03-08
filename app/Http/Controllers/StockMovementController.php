@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\StockMovementsDataTable;
 use App\Models\StockMovement;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class StockMovementController extends Controller
      */
     public function index()
     {
-        //
+        $datatable =  new StockMovementsDataTable();
+        return $datatable->render('admin.stock.items_movement');
     }
 
     /**

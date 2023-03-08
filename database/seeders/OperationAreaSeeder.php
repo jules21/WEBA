@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\OperationArea;
 use Illuminate\Database\Seeder;
 
 class OperationAreaSeeder extends Seeder
@@ -13,6 +14,6 @@ class OperationAreaSeeder extends Seeder
      */
     public function run()
     {
-        //
+        OperationArea::factory(10)->create();
     }
 }
