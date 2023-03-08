@@ -174,6 +174,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/packaging_unit/update',[App\Http\Controllers\PackagingUnitController::class,'update'])->name('packaging.unit.edit');
         Route::get('/packaging_unit/delete/{id}',[App\Http\Controllers\PackagingUnitController::class,'destroy'])->name('packaging.unit.delete');
 
+        //document types
+        Route::get('/document_types',[App\Http\Controllers\DocumentTypeController::class,'index'])->name('document.types');
+        Route::post('/document_type/store',[App\Http\Controllers\DocumentTypeController::class,'store'])->name('document.type.store');
+        Route::post('/document_type/update',[App\Http\Controllers\DocumentTypeController::class,'update'])->name('document.type.edit');
+        Route::get('/document_type/delete/{id}',[App\Http\Controllers\DocumentTypeController::class,'destroy'])->name('document.type.delete');
+
         //road cross types
         Route::get('/road_cross_types',[App\Http\Controllers\RoadCrossTypeController::class,'index'])->name('road.cross.types');
 

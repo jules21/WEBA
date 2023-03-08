@@ -160,6 +160,16 @@
                     </a>
                 </li>
                 @endcan
+                @can('Manage Document Types')
+                <li class="menu-item nav-document-types" aria-haspopup="true">
+                    <a href="{{ route('admin.document.types') }}" class="menu-link">
+                        <i class="menu-bullet menu-bullet-dot">
+                            <span></span>
+                        </i>
+                        <span class="menu-text">Document Type</span>
+                    </a>
+                </li>
+                @endcan
                 <li class="menu-item nav-request-duration-configuration" aria-haspopup="true">
                     <a href="{{ route('admin.request.duration.configurations') }}" class="menu-link">
                         <i class="menu-bullet menu-bullet-dot">
