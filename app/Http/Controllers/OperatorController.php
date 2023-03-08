@@ -20,12 +20,20 @@ class OperatorController extends Controller
     public function index()
     {
         $data = Operator::with(['legalType'])
-            ->select('operators.*');
+            ->withCount('operationAreas');
 
         if (request()->ajax()) {
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (Operator $row) {
+
+                    $deleteBtn = '';
+                    if ($row->operation_areas_count == 0) {
+                        $deleteBtn = '  <a class="dropdown-item js-delete" href="' . route('admin.operator.delete', encryptId($row->id)) . '">
+                                                         <i class="fas fa-trash"></i>
+                                                         <span class="ml-2">Delete</span>
+                                        </a>';
+                    }
 
                     return '<div class="dropdown">
                                                  <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -40,10 +48,7 @@ class OperatorController extends Controller
                                                          <i class="fas fa-edit"></i>
                                                          <span class="ml-2">Edit</span>
                                                      </a>
-                                                     <a class="dropdown-item js-delete" href="' . route('admin.operator.delete', encryptId($row->id)) . '">
-                                                         <i class="fas fa-trash"></i>
-                                                         <span class="ml-2">Delete</span>
-                                                     </a>
+                                                        ' . $deleteBtn . '
                                                  </div>
                                              </div>';
                 })
@@ -169,7 +174,7 @@ class OperatorController extends Controller
             return $response->json();
         return response()
             ->json([
-                'message' => "Unable to fetch operator details, please check your internet connection and try again"
+                'message' => "Operator with the provided information does not exist"
             ], 400);
     }
 }
