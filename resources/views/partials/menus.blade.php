@@ -170,6 +170,36 @@
                     </a>
                 </li>
                 @endcan
+                @can('Manage Packaging Units')
+                <li class="menu-item nav-packaging-units" aria-haspopup="true">
+                    <a href="{{ route('admin.packaging.units') }}" class="menu-link">
+                        <i class="menu-bullet menu-bullet-dot">
+                            <span></span>
+                        </i>
+                        <span class="menu-text">Packaging Units</span>
+                    </a>
+                </li>
+                @endcan
+                @can('Manage Road Cross Types')
+                <li class="menu-item nav-road-cross-types" aria-haspopup="true">
+                    <a href="{{ route('admin.road.cross.types') }}" class="menu-link">
+                        <i class="menu-bullet menu-bullet-dot">
+                            <span></span>
+                        </i>
+                        <span class="menu-text">Road Cross Types</span>
+                    </a>
+                </li>
+                @endcan
+                @can('Manage Water Usages')
+                <li class="menu-item nav-water-usages" aria-haspopup="true">
+                    <a href="{{ route('admin.water.usages') }}" class="menu-link">
+                        <i class="menu-bullet menu-bullet-dot">
+                            <span></span>
+                        </i>
+                        <span class="menu-text">Water Usages</span>
+                    </a>
+                </li>
+                @endcan
                 <li class="menu-item nav-request-duration-configuration" aria-haspopup="true">
                     <a href="{{ route('admin.request.duration.configurations') }}" class="menu-link">
                         <i class="menu-bullet menu-bullet-dot">

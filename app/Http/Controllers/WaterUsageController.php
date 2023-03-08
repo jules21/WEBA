@@ -15,7 +15,8 @@ class WaterUsageController extends Controller
      */
     public function index()
     {
-        //
+        $waterUsages = WaterUsage::query()->orderBy('id','DESC')->get();
+        return view('admin.settings.water_usages',compact('waterUsages'));
     }
 
     /**

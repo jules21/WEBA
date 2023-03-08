@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section("title","Road Cross Types")
+@section("title","Water Usages")
 @section('css')
 @endsection
 @section('page-header')
@@ -10,7 +10,7 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-2 mr-5">Road Cross Types</h5>
+                    <h5 class="text-dark font-weight-bold my-2 mr-5">Water Usages</h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -18,7 +18,7 @@
                             <a href="/" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a class="text-muted">Road Cross Types</a>
+                            <a class="text-muted">Water Usages</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -39,7 +39,7 @@
             <div class="card card-custom">
                 <div class="card-header flex-wrap border-0 pt-6 pb-0">
                     <div class="card-title">
-                        <h3 class="card-label">Road Cross Types List</h3>
+                        <h3 class="card-label">Water Usages List</h3>
                     </div>
                 </div>
                 <div class="card-body">
@@ -58,11 +58,11 @@
                             </thead>
                             <tbody>
 
-                            @foreach($roads as $key=>$road)
+                            @foreach($waterUsages as $key=>$waterUsage)
                                 <tr>
                                     <td>{{++$key}}</td>
-                                    <td>{{$road->name}}</td>
-                                    <td>{{$road->created_at}}</td>
+                                    <td>{{$waterUsage->name}}</td>
+                                    <td>{{$waterUsage->created_at}}</td>
                                 </tr>
                             @endforeach
 
@@ -89,7 +89,7 @@
         } );
 
         $('.nav-settings').addClass('menu-item-active  menu-item-open');
-        $('.nav-road-cross-types').addClass('menu-item-active');
+        $('.nav-water-usages').addClass('menu-item-active');
 
 
     </script>

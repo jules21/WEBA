@@ -170,7 +170,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/payment_configuration/delete/{id}',[App\Http\Controllers\PaymentConfigurationController::class,'destroy'])->name('payment.configuration.delete');
 
         //packaging units
-        Route::get('/packaging_units',[App\Http\Controllers\PackagingUnitController::class,'index'])->name('payment.configurations');
+        Route::get('/packaging_units',[App\Http\Controllers\PackagingUnitController::class,'index'])->name('packaging.units');
         Route::post('/packaging_unit/store',[App\Http\Controllers\PackagingUnitController::class,'store'])->name('packaging.unit.store');
         Route::post('/packaging_unit/update',[App\Http\Controllers\PackagingUnitController::class,'update'])->name('packaging.unit.edit');
         Route::get('/packaging_unit/delete/{id}',[App\Http\Controllers\PackagingUnitController::class,'destroy'])->name('packaging.unit.delete');
@@ -184,6 +184,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         //road cross types
         Route::get('/road_cross_types',[App\Http\Controllers\RoadCrossTypeController::class,'index'])->name('road.cross.types');
 
+        //water usages
+        Route::get('/water_usages',[App\Http\Controllers\WaterUsageController::class,'index'])->name('water.usages');
     });
 
     Route::prefix('stock-management')->name('stock.')->group(function (){
