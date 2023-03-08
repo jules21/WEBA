@@ -6,6 +6,7 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
@@ -42,9 +43,30 @@ class Purchase extends Model
     const APPROVED = "Approved";
     const REJECTED = "Rejected";
 
+    protected $appends = ['status_color'];
+
     public function movements(): HasMany
     {
         return $this->hasMany(StockMovement::class, 'purchase_id');
+    }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+
+
+    public function getStatusColorAttribute(): string
+    {
+        switch ($this->status) {
+            case self::PENDING:
+                return 'info';
+            case self::APPROVED:
+                return 'success';
+            case self::REJECTED:
+                return 'danger';
+        }
+        return 'secondary';
     }
 
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidatePurchaseRequest;
 use App\Models\Item;
 use App\Models\Purchase;
+use App\Models\Stock;
 use App\Models\StockMovement;
 use App\Models\Supplier;
 use DB;
@@ -21,11 +22,17 @@ class PurchaseController extends Controller
      */
     public function index()
     {
+
         if (\request()->ajax()) {
             $data = Purchase::query()
-                ->with('supplier');
+                ->with(['supplier'])
+                ->where('operation_area_id', '=', auth()->user()->operation_area)
+                ->withCount('movements');
 
-            return datatables()->eloquent($data)
+            return datatables()->of($data)
+                ->editColumn('supplier_nane', function ($row) {
+                    return $row->supplier->name;
+                })
                 ->addColumn('action', function (Purchase $row) {
                     $btn = '<a href="" class="btn btn-primary btn-sm">View</a>';
                     return $btn;
@@ -65,34 +72,42 @@ class PurchaseController extends Controller
     {
         $data = $request->validated();
 
+//        return $data;
+
         DB::beginTransaction();
 
         $purchase = Purchase::create([
             'supplier_id' => $data['supplier_id'],
             'description' => $data['description'],
             'created_by' => auth()->id(),
-            'status' => Purchase::PENDING
+            'status' => Purchase::PENDING,
+            'subtotal' => $data['subtotal'],
+            'tax_amount' => $data['tax_amount'],
+            'tax_net_amount' => $data['tax_amount'],
+            'total' => $data['grand_total'],
+            'operation_area_id' => auth()->user()->operation_area
         ]);
 
-        foreach ($data['items'] as $item) {
-            $itemId = $item['item_id'];
-            $existingItem = Item::query()->find($itemId);
+        foreach ($data['items'] as $key => $item) {
+            $stockItem = Stock::with('item')->where('item_id', '=', $item)->first();
+            $existingItem = Item::find($item);
+            $qty = $data['quantities'][$key];
+            $price = $data['prices'][$key];
             $purchase->movements()->create([
-                'item_id' => $itemId,
+                'item_id' => $item,
                 'operation_area_id' => auth()->user()->operation_area,
-                'opening_qty' => $existingItem->quantity,
-                'qty_in' => $item['quantity'],
+                'opening_qty' => $stockItem->quantity ?? 0,
+                'qty_in' => $qty,
                 'qty_out' => 0,
-                'unit_price' => $item['unit_price'],
-                'description' => "Purchase of {$item['quantity']} {$existingItem->name} from {$purchase->supplier->name}",
+                'unit_price' => $price,
+                'description' => "Purchase of {$qty} {$existingItem->name} at " . number_format($price, 2),
                 'type' => StockMovement::Purchase,
             ]);
         }
-
         DB::commit();
 
         return redirect()
-            ->route('purchases.index')
+            ->route('admin.purchases.index')
             ->with('success', 'Purchase created successfully');
     }
 

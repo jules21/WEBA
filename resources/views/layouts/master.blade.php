@@ -27,18 +27,17 @@
     <link href="{{asset('assets/css/themes/layout/header/menu/light.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('assets/css/themes/layout/brand/dark.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('assets/css/themes/layout/aside/dark.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css"/>
     {{--    <link rel="stylesheet" href="{{ asset('css/master.css') }}">--}}
     <!--end::Layout Themes-->
     @yield("css")
     <link rel="icon" type="image/png" href="{{asset('img/CMS RWSS.png')}}"/>
     <title>@yield('title', 'Home') - CMS RWSS</title>
     <style>
-      /*  .select2 ~ .invalid-feedback {
-            display: none !important
+        label.error {
+            color: #F64E60 !important;
+            font-size: 12px !important;
         }
-
-*/
     </style>
 </head>
 <!--end::Head-->
@@ -51,7 +50,7 @@
 <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
     <!--begin::Logo-->
     <a href="{{ route('admin.dashboard') }}">
-        <img alt="Logo" class="img-fluid h-40px" src="{{asset("img/logo_sm.png")}}" >
+        <img alt="Logo" class="img-fluid h-40px" src="{{asset("img/logo_sm.png")}}">
         {{--        <h3>Airtel</h3>--}}
     </a>
     <!--end::Logo-->
@@ -100,7 +99,7 @@
             <div class="brand flex-column-auto" id="kt_brand">
                 <!--begin::Logo-->
                 <a href="/" class="brand-logo">
-                    <img alt="Logo" class="img-fluid h-40px" src="{{asset("img/logo.png")}}" />
+                    <img alt="Logo" class="img-fluid h-40px" src="{{asset("img/logo.png")}}"/>
                     {{--                    <h2>NPA</h2>--}}
                 </a>
                 <!--end::Logo-->
