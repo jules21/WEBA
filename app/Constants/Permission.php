@@ -15,5 +15,12 @@ class Permission
 
     const AssignRequest = 'Assign Request';
 
+    const  ManageOperationAreas = 'Manage Operation Areas';
+
+    const CreatePurchase = 'Create Purchase';
+    const ManagePurchases = 'Manage Purchases';
+    const ReviewPurchase = 'Review Purchase';
+    const ApprovePurchase = 'Approve Purchase';
+
 
 }

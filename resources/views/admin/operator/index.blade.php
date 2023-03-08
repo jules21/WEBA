@@ -53,7 +53,7 @@
                     <table class="table table-head-custom border table-head-solid table-hover dataTable">
                         <thead>
                         <tr>
-                            <th>Logo</th>
+                            <th>Created At</th>
                             <th>Name</th>
                             <th>Legal Type</th>
                             <th>Doc Number</th>
@@ -122,7 +122,7 @@
                             </div>
                         </div>
 
-                        <div class="alert alert-light-info alert-custom">
+                        <div class="alert alert-light-info alert-custom" style="display: flex;" id="operatorInfo">
                             <div class="alert-icon text-info">
                             <span class="svg-icon svg-icon-3x">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -265,14 +265,16 @@
                                 </div>
                             </div>
 
+                            <div class="d-flex justify-content-end border-top pt-8">
+                                <button type="submit" class="btn btn-primary  mr-2">Save Changes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                </button>
+                            </div>
 
                         </div>
 
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                    </div>
+
                 </form>
             </div>
         </div>
@@ -332,10 +334,9 @@
                 ajax: "{{ route('admin.operator.index') }}",
                 columns: [
                     {
-                        data: 'DT_RowIndex', name: 'DT_RowIndex',
-                        orderable: false, searchable: false,
+                        data: 'created_at', name: 'created_at',
                         render: function (data, type, row, meta) {
-                            return `<img src="${row.logo_url}" alt="Logo" class="img-fluid rounded-circle" width="40" height="40">`;
+                            return (new Date(data)).toLocaleDateString();
                         }
                     },
                     {data: 'name', name: 'name'},
@@ -352,7 +353,7 @@
                     {data: 'address', name: 'address'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
-                "order": [[1, "asc"]],
+                "order": [[0, "desc"]],
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,
@@ -388,6 +389,9 @@
                 btn.prop('disabled', true)
                     .addClass('spinner spinner-white spinner-right');
 
+                let operatorInfo = $('#operatorInfo');
+                operatorInfo.slideDown();
+
                 let results = $('#results');
                 results.slideUp();
                 $('#operator_details').val('');
@@ -400,7 +404,9 @@
                         "identification_number": identificationNumber
                     },
                     success: function (response) {
-                        console.log(response);
+
+                        operatorInfo.slideUp();
+
                         getCells(response.sector_id, response.cell_id);
 
                         $('#operator_details').val(JSON.stringify(response));

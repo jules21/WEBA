@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Purchase
@@ -15,23 +19,32 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $created_by
  * @property int|null $approved_by
  * @property string $status Pending,Approved
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase query()
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereApprovedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereOperationAreaId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereSupplierId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|Purchase newModelQuery()
+ * @method static Builder|Purchase newQuery()
+ * @method static Builder|Purchase query()
+ * @method static Builder|Purchase whereApprovedBy($value)
+ * @method static Builder|Purchase whereCreatedAt($value)
+ * @method static Builder|Purchase whereCreatedBy($value)
+ * @method static Builder|Purchase whereDescription($value)
+ * @method static Builder|Purchase whereId($value)
+ * @method static Builder|Purchase whereOperationAreaId($value)
+ * @method static Builder|Purchase whereStatus($value)
+ * @method static Builder|Purchase whereSupplierId($value)
+ * @method static Builder|Purchase whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class Purchase extends Model
 {
-    use HasFactory;
+
+    const PENDING = "Pending";
+    const APPROVED = "Approved";
+    const REJECTED = "Rejected";
+
+    public function movements(): HasMany
+    {
+        return $this->hasMany(StockMovement::class, 'purchase_id');
+    }
+
 }

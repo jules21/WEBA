@@ -39,6 +39,7 @@ class ValidateAppRequest extends FormRequest
             'road_type' => ['required_if:new_connection_crosses_road,1'],
             'equipment_payment' => ['required', 'string'],
             'digging_pipeline' => ['required', 'string'],
+            'upi_attachment' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:1024']
         ];
     }
 

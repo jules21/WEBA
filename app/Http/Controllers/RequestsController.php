@@ -7,9 +7,11 @@ use App\Http\Requests\ValidateAppRequest;
 use App\Models\Customer;
 use App\Models\Item;
 use App\Models\Province;
+use App\Models\Request;
 use App\Models\Request as AppRequest;
 use App\Models\RequestType;
 use App\Models\RoadCrossType;
+use App\Models\RoadType;
 use App\Models\User;
 use App\Models\WaterUsage;
 use DB;
@@ -39,11 +41,11 @@ class RequestsController extends Controller
                     $buttons = '';
 
                     if ($row->status == AppRequest::PENDING && auth()->user()->can(Permission::CreateRequest)) {
-                        $buttons = '<a class="dropdown-item js-edit" href="' . route('admin.customers.show', encryptId($row->id)) . '">
+                        $buttons = '<a class="dropdown-item js-edit" href="' . route('admin.requests.edit', encryptId($row->id)) . '">
                                         <i class="fas fa-edit"></i>
                                         <span class="ml-2">Edit</span>
                                     </a>
-                                    <a class="dropdown-item js-delete" href="' . route('admin.customers.delete', encryptId($row->id)) . '">
+                                    <a class="dropdown-item js-delete" href="' . route('admin.requests.delete', encryptId($row->id)) . '">
                                         <i class="fas fa-trash"></i>
                                         <span class="ml-2">Delete</span>
                                     </a>';
@@ -92,12 +94,7 @@ class RequestsController extends Controller
                 ->make(true);
         }
 
-        $users = User::query()
-            ->where('operator_id', '=', auth()->user()->operator_id)
-            /*    ->whereHas('roles', function (Builder $query) {
-                    $query->where('name', '=', 'Engineer');
-                })*/
-            ->get();
+        $users = $this->getUsersToAssign();
         return view('admin.requests.new_requests', [
             'users' => $users
         ]);
@@ -128,9 +125,7 @@ class RequestsController extends Controller
                 ->make(true);
         }
 
-        $users = User::query()
-            ->where('operator_id', '=', auth()->user()->operator_id)
-            ->get();
+        $users = $this->getUsersToAssign();
         return view('admin.requests.assigned_requests', [
             'users' => $users
         ]);
@@ -146,6 +141,12 @@ class RequestsController extends Controller
         $id = $request->input('id');
         $data['operator_id'] = auth()->user()->operator_id;
         $data['created_by'] = auth()->id();
+
+        if ($request->hasFile('upi_attachment')) {
+            $dir = $request->file('upi_attachment')->store(Request::UPI_ATTACHMENT_PATH);
+            $data['upi_attachment'] = basename($dir);
+        }
+
         DB::beginTransaction();
         if ($id > 0) {
             $req = AppRequest::query()->find($id);
@@ -228,13 +229,8 @@ class RequestsController extends Controller
         $customers = Customer::query()->orderBy('name')->get();
         $waterUsage = WaterUsage::query()->get();
 
-        $roadTypes = [
-            "Concreted",
-            "Gravelled",
-            "Dirt",
-            "Paved",
-            "Unpaved"
-        ];
+        $roadTypes = RoadType::query()
+            ->pluck('name');
 
         return view('admin.requests.create', [
             'provinces' => $provinces,
@@ -313,6 +309,19 @@ class RequestsController extends Controller
                 ->make(true);
         }
         return view('admin.requests.my_requests');
+    }
+
+    /**
+     * @return User[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\LaravelIdea\Helper\App\Models\_IH_User_C|\LaravelIdea\Helper\App\Models\_IH_User_QB[]
+     */
+    public function getUsersToAssign()
+    {
+        return User::query()
+            ->where([
+                ['operator_id', '=', auth()->user()->operator_id],
+                ['operation_area', '=', auth()->user()->operation_area]
+            ])
+            ->get();
     }
 
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\MeterRequestController;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RequestAssignmentController;
 use App\Http\Controllers\RequestReviewController;
 use App\Http\Controllers\RequestsController;
@@ -99,6 +100,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::post('/{request}/assign-meter-number', [MeterRequestController::class, 'store'])->name('assign-meter-number');
         Route::delete('/meter-number/{id}/destroy', [MeterRequestController::class, 'destroy'])->name('meter-number.destroy');
+    });
+
+    Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
+        Route::get('/', [PurchaseController::class, 'index'])->name('index');
+        Route::post('/store', [PurchaseController::class, 'store'])->name('store');
+        Route::get('/create', [PurchaseController::class, 'create'])->name('create');
+        Route::get('/{purchase}/show', [PurchaseController::class, 'show'])->name('show');
+        Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('edit');
+        Route::put('/{purchase}/update', [PurchaseController::class, 'update'])->name('update');
+        Route::delete('/{purchase}/delete', [PurchaseController::class, 'destroy'])->name('delete');
     });
 
 

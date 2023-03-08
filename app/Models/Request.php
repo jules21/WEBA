@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
 use ReflectionClass;
+use Storage;
 
 /**
  * App\Models\Request
@@ -89,9 +90,19 @@ use ReflectionClass;
  */
 class Request extends Model
 {
-    protected $appends = ['status_color'];
+    protected $appends = ['status_color', 'upi_attachment_url'];
     use HasAddress;
     use HasStatusColor;
+
+    const UPI_ATTACHMENT_PATH = 'requests/upi/';
+
+    public function getUpiAttachmentUrlAttribute(): ?string
+    {
+        $upi_attachment = $this->attributes['upi_attachment'];
+        if ($upi_attachment)
+            return Storage::url(self::UPI_ATTACHMENT_PATH . $upi_attachment);
+        return null;
+    }
 
     public function resolveRouteBinding($value, $field = null)
     {
@@ -192,12 +203,12 @@ class Request extends Model
                 self::REJECTED
             ];
         }
-    /*    elseif ($this->status == self::APPROVED) {
-            return [
-                self::ASSIGNING_METER,
-                self::REJECTED
-            ];
-        }*/
+        /*    elseif ($this->status == self::APPROVED) {
+                return [
+                    self::ASSIGNING_METER,
+                    self::REJECTED
+                ];
+            }*/
         return [];
     }
 

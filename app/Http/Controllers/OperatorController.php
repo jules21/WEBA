@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Permission;
 use App\Http\Requests\StoreOperatorRequest;
 use App\Http\Requests\UpdateOperatorRequest;
 use App\Models\LegalType;
@@ -34,23 +35,28 @@ class OperatorController extends Controller
                                                          <span class="ml-2">Delete</span>
                                         </a>';
                     }
+                    $opAreaBtn = '';
+
+                    if (auth()->user()->can(Permission::ManageOperationAreas)) {
+                        $opAreaBtn = '<a class="dropdown-item" href="' . route('admin.operator.area-of-operation.index', encryptId($row->id)) . '">
+                                         <i class="fas fa-map"></i>
+                                         <span class="ml-2">Area of Operations</span>
+                                      </a>';
+                    }
 
                     return '<div class="dropdown">
-                                                 <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                                                    Options
-                                                 </button>
-                                                 <div class="dropdown-menu border">
-                                                     <a class="dropdown-item" href="' . route('admin.operator.area-of-operation.index', encryptId($row->id)) . '">
-                                                         <i class="fas fa-map"></i>
-                                                         <span class="ml-2">Area of Operations</span>
-                                                     </a>
-                                                     <a class="dropdown-item" href="#">
-                                                         <i class="fas fa-edit"></i>
-                                                         <span class="ml-2">Edit</span>
-                                                     </a>
-                                                        ' . $deleteBtn . '
-                                                 </div>
-                                             </div>';
+                                 <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                    Options
+                                 </button>
+                                 <div class="dropdown-menu border">
+                                        ' . $opAreaBtn . '
+                                     <a class="dropdown-item" href="#">
+                                         <i class="fas fa-edit"></i>
+                                         <span class="ml-2">Edit</span>
+                                     </a>
+                                        ' . $deleteBtn . '
+                                 </div>
+                            </div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);

@@ -128,6 +128,7 @@ class AreaOfOperationController extends Controller
         return response()
             ->json([
                 'message' => 'Unable to fetch area of operations, please try again later',
+                'data'=>$response->json()
             ], 400);
 
     }
