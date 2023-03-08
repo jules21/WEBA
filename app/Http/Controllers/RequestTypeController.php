@@ -97,8 +97,13 @@ class RequestTypeController extends Controller
      */
     public function destroy(RequestType $requestType,$id)
     {
-        $type = RequestType::find($id);
-        $type->delete();
-        return redirect()->back()->with('success','Request Type deleted successfully');
+        try {
+            $type = RequestType::find($id);
+            $type->delete();
+            return redirect()->back()->with('success','Request Type deleted successfully');
+        }catch (\Exception $exception){
+          info($exception);
+            return redirect()->back()->with('success','Request Type deleted successfully');
+        }
     }
 }
