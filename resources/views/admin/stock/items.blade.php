@@ -32,7 +32,6 @@
 @endsection
 @section('content')
     <div class="container">
-        @include('partials._alerts')
         <div class="card card-custom">
             <div class="card-header flex-wrap">
                 <h3 class="card-title">Items</h3>

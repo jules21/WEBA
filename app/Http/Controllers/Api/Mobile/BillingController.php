@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Mobile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BillingResource;
+use App\Http\Resources\MeterRequestResource;
 use App\Models\Billing;
 use App\Models\MeterRequest;
 use Illuminate\Http\Request;
@@ -14,7 +16,7 @@ class BillingController extends Controller
     public function recentRecords()
     {
         $user = auth()->user();
-        $billing = Billing::query()
+        $billings = Billing::query()
             ->with('meterRequest.request.customer')
             ->where('user_id', $user->id)
             ->orderBy('id', 'desc')
@@ -22,13 +24,13 @@ class BillingController extends Controller
         return response()->json([
             'action' => 1,
             'message' => 'Billing Records',
-            'data' => $billing
+            'data' => BillingResource::collection($billings)
         ]);
     }
 
     public function searchSubscriberNumber(Request $request)
     {
-        $meterRequest = MeterRequest::where('subscription_number', $request->subscription_number)
+        $meterRequest = MeterRequest::where('subscription_number', $request->subscriptionNumber)
             ->first();
         if (!$meterRequest) {
             return response()->json([
@@ -37,18 +39,27 @@ class BillingController extends Controller
                 'data' => null
             ]);
         } else {
+            $requestRecord = $meterRequest->request;
+            if ($requestRecord->operator_id != auth()->user()->operator_id) {
+                return response()->json([
+                    'action' => 0,
+                    'message' => 'Your are not authorized to view this record',
+                    'data' => null
+                ]);
+            }
+
             $meterRequest->load('request.customer');
             return response()->json([
                 'action' => 1,
                 'message' => 'Subscription Number found',
-                'data' => $meterRequest
+                'data' => new MeterRequestResource($meterRequest)
             ]);
         }
     }
 
     public function storeBill(Request $request)
     {
-        $meterRequest = MeterRequest::where('subscription_number', $request->subscription_number)
+        $meterRequest = MeterRequest::where('subscription_number', $request->subscriptionNumber)
             ->first();
         if (!$meterRequest) {
             return response()->json([
@@ -66,28 +77,40 @@ class BillingController extends Controller
             $starting_index = $meterRequest->last_index;
         }
         $bill = new Billing();
-        $bill->subscription_number = $request->subscription_number;
+        $bill->subscription_number = $request->subscriptionNumber;
         $bill->meter_number = $meterRequest->meter_number;
-        $bill->last_index = $request->index_number;
+        $bill->last_index = $request->indexNumber;
         $bill->starting_index = $starting_index;
         $bill->user_id = auth()->user()->id;
         $bill->unit_price = 100;
+        $bill->comment = $request->comment;
+        $bill->amount = $bill->unit_price * ($bill->last_index - $bill->starting_index);
+        $bill->balance = $bill->unit_price * ($bill->last_index - $bill->starting_index);
         $bill->save();
-        $bill->update([
-            'amount' => $bill->unit_price * ($bill->last_index - $bill->starting_index),
-            'balance' => $bill->unit_price * ($bill->last_index - $bill->starting_index)
-        ]);
         $bill->load('meterRequest.request.customer');
         $meterRequest->update([
-            'last_index' => $request->index_number,
+            'last_index' => $request->indexNumber,
             'balance' => $meterRequest->balance - $bill->amount,
         ]);
         return response()->json([
             'action' => 1,
-            'message' => 'Bill created',
+            'message' => 'Bill created successfully',
             'data' => $bill
         ]);
+    }
 
-
+    public function meterUnpaidBills($subscriptionNumber)
+    {
+        $billings = Billing::query()
+            ->with('meterRequest.request.customer')
+            ->where('subscription_number', $subscriptionNumber)
+            ->where('balance', '>', 0)
+            ->orderBy('id')
+            ->get();
+        return response()->json([
+            'action' => 1,
+            'message' => 'Billing Records',
+            'data' => BillingResource::collection($billings)
+        ]);
     }
 }

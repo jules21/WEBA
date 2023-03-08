@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Http\Requests\ValidateStoreItemRequest;
 use App\Models\Request as AppRequest;
+use App\Models\Stock;
+use App\Models\StockMovement;
 use App\Models\StockMovementDetail;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -29,6 +31,16 @@ class RequestReviewController extends Controller
         $this->updateRequest($request, $status);
         // save review
         $this->saveHistory($request, $data['comment'], $status);
+
+        // TODO update stock when request is approved
+        if ($status == AppRequest::APPROVED) {
+            $requestItems = $request->items()->with('item')->get();
+            foreach ($requestItems as $requestItem) {
+                $this->updateStock($requestItem);
+                $this->updateStockMovement($requestItem, $request);
+            }
+        }
+
 
         DB::commit();
 
@@ -118,5 +130,39 @@ class RequestReviewController extends Controller
             ->back()
             ->with('success', 'Item deleted successfully');
 
+    }
+
+    /**
+     * @param $requestItem
+     * @return void
+     */
+    public function updateStock($requestItem): void
+    {
+        Stock::query()
+            ->where([
+                ['item_id', $requestItem->item_id],
+                ['operation_area_id', auth()->user()->operation_area]
+            ])
+            ->decrement('quantity', $requestItem->quantity);
+    }
+
+    /**
+     * @param $requestItem
+     * @param AppRequest $request
+     * @return void
+     */
+    public function updateStockMovement($requestItem, AppRequest $request): void
+    {
+        $item = $requestItem->item;
+        $item->stockMovements()
+            ->create([
+                'operation_area_id' => auth()->user()->operation_area,
+                'opening_qty' => $item->quantity,
+                'qty_in' => 0,
+                'qty_out' => $requestItem->quantity,
+                'description' => 'Request approved, stock decreased by ' . $requestItem->quantity,
+                'type' => StockMovement::Sale,
+                'request_id' => $request->id,
+            ]);
     }
 }
