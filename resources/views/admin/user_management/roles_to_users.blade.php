@@ -35,7 +35,6 @@
 
 @section("content")
     <!-- begin:: Content -->
-    @include('partials._alerts')
     <!--end::Notice-->
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
