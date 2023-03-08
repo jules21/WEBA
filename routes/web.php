@@ -122,6 +122,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/add-roles-to-user/{user_id}', [RoleController::class, 'addRoleToUser'])->name('user.add.roles');
         Route::post('/add-roles-to-user/store', [RoleController::class, 'storeRoleToUser'])->name('user.add.roles.store');
         Route::post('/add-permissions-to-role/store', [RoleController::class, 'storePermissionToRole'])->name('permissions_to_role.store');
+        Route::delete('/roles/{role}/delete', [RoleController::class, 'destroy'])->name('roles.delete');
 
         Route::get('/permissions/add-permission-to-user/{user_id}', [App\Http\Controllers\PermissionController::class, 'addPermissionToUser'])->name('user.add.permissions');
         Route::post('/permissions/add-permissions-to-user/store', [App\Http\Controllers\PermissionController::class, 'storePermissionToUser'])->name('permissions_to_user.store');
@@ -179,11 +180,38 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/payment_configuration/update',[App\Http\Controllers\PaymentConfigurationController::class,'update'])->name('payment.configuration.edit');
         Route::get('/payment_configuration/delete/{id}',[App\Http\Controllers\PaymentConfigurationController::class,'destroy'])->name('payment.configuration.delete');
 
+        //packaging units
+        Route::get('/packaging_units',[App\Http\Controllers\PackagingUnitController::class,'index'])->name('packaging.units');
+        Route::post('/packaging_unit/store',[App\Http\Controllers\PackagingUnitController::class,'store'])->name('packaging.unit.store');
+        Route::post('/packaging_unit/update',[App\Http\Controllers\PackagingUnitController::class,'update'])->name('packaging.unit.edit');
+        Route::get('/packaging_unit/delete/{id}',[App\Http\Controllers\PackagingUnitController::class,'destroy'])->name('packaging.unit.delete');
+
+        //document types
+        Route::get('/document_types',[App\Http\Controllers\DocumentTypeController::class,'index'])->name('document.types');
+        Route::post('/document_type/store',[App\Http\Controllers\DocumentTypeController::class,'store'])->name('document.type.store');
+        Route::post('/document_type/update',[App\Http\Controllers\DocumentTypeController::class,'update'])->name('document.type.edit');
+        Route::get('/document_type/delete/{id}',[App\Http\Controllers\DocumentTypeController::class,'destroy'])->name('document.type.delete');
+
+        //road cross types
+        Route::get('/road_cross_types',[App\Http\Controllers\RoadCrossTypeController::class,'index'])->name('road.cross.types');
+
+        //water usages
+        Route::get('/water_usages',[App\Http\Controllers\WaterUsageController::class,'index'])->name('water.usages');
     });
+
+    Route::prefix('stock-management')->name('stock.')->group(function (){
+        Route::resource('item-categories', \App\Http\Controllers\ItemCategoryController::class);
+        Route::resource('items', \App\Http\Controllers\ItemController::class);
+        Route::get('/stock-items', [App\Http\Controllers\StockController::class, 'index'])->name('stock-items.index');
+        Route::get('/stock-movements', [App\Http\Controllers\StockMovementController::class, 'index'])->name('stock-items.movements');
+    });
+
 });
 
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//ajax routes
+Route::get('/operation-area', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
 

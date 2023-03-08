@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
+use App\Models\ItemCategory;
+use App\Models\OperationArea;
+use App\Models\Operator;
 use App\Models\Stock;
 use Illuminate\Http\Request;
 
@@ -12,74 +16,43 @@ class StockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $user = auth()->user();
+        $stock = Stock::query();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        $stock->when($user->operator_id, function ($query) use ($user) {
+            $query->whereHas('operationArea', function ($query) use ($user) {
+                $query->where('operator_id', $user->operator_id);
+            });
+        });
+        $stock->when($user->operation_area, function ($query) use ($user) {
+            $query->where('operation_area_id', $user->operation_area);
+        });
+        $stock->when($request->has('operator_id'), function ($query) use ($request) {
+            $query->whereHas('operationArea', function ($query) use ($request) {
+                $query->whereIn('operator_id', $request->operator_id);
+            });
+        });
+        $stock->when($request->has('operation_area_id'), function ($query) use ($request) {
+            $query->whereIn('operation_area_id', $request->operation_area_id);
+        });
+        $stock->when($request->has('item_category_id'), function ($query) use ($request) {
+            $query->whereHas('item', function ($query) use ($request) {
+                $query->whereIn('item_category_id', $request->item_category_id);
+            });
+        });
+        $stock->when($request->has('item_id'), function ($query) use ($request) {
+            $query->whereIn('item_id', $request->item_id);
+        });
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Stock  $stock
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Stock $stock)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Stock  $stock
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Stock $stock)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Stock  $stock
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Stock $stock)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Stock  $stock
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Stock $stock)
-    {
-        //
+        return view('admin.stock.stock', [
+            'operators' => Operator::query()->get(),
+            'items' => Item::query()->get(),
+            'categories' => ItemCategory::query()->get(),
+            'stocks' => $stock->get(),
+            'operationAreas' => $user->operator_id ? OperationArea::query()->where('operator_id', $user->operator_id)->get() : OperationArea::query()->get(),
+        ]);
     }
 }

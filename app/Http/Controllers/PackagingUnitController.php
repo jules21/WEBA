@@ -15,7 +15,8 @@ class PackagingUnitController extends Controller
      */
     public function index()
     {
-        //
+        $units = PackagingUnit::query()->orderBy('id','DESC')->get();
+        return view('admin.settings.packaging_units',compact('units'));
     }
 
     /**
@@ -36,7 +37,12 @@ class PackagingUnitController extends Controller
      */
     public function store(StorePackagingUnitRequest $request)
     {
-        //
+        $unit = new PackagingUnit();
+        $unit->name=$request->name;
+        $unit->is_active='1';
+        $unit->save();
+//        return $unit;
+        return redirect()->back()->with('success','Packaging Unit Created Successfully');
     }
 
     /**
@@ -70,7 +76,11 @@ class PackagingUnitController extends Controller
      */
     public function update(UpdatePackagingUnitRequest $request, PackagingUnit $packagingUnit)
     {
-        //
+        $unit = $packagingUnit::findOrFail($request->input('UnitId'));
+        $unit->name=$request->name;
+        $unit->is_active=$request->is_active;
+        $unit->save();
+        return redirect()->back()->with('success','Packaging Unit Updated Successfully');
     }
 
     /**
@@ -79,8 +89,10 @@ class PackagingUnitController extends Controller
      * @param  \App\Models\PackagingUnit  $packagingUnit
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PackagingUnit $packagingUnit)
+    public function destroy(PackagingUnit $packagingUnit,$id)
     {
-        //
+        $unit = PackagingUnit::find($id);
+        $unit->delete();
+        return redirect()->back()->with('success','Packaging Unit deleted Successfully');
     }
 }

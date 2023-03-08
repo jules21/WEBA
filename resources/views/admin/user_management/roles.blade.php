@@ -30,8 +30,6 @@
     </div>
 @stop
 @section('content')
-
-    @include('partials._alerts')
     <!--end::Notice-->
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
@@ -95,7 +93,7 @@
                                         Edit
                                     </a>
                                     <a class="delete_btn dropdown-item"
-                                       data-url="">
+                                       data-url="{{route('admin.roles.delete', $role->id)}}">
                                         Delete
                                     </a>
                                 </div>
@@ -196,6 +194,10 @@
         </div>
 
     </div>
+    <form id="delete-form" action="" method="POST" style="display: none;">
+        {{ csrf_field() }}
+        {{ method_field('DELETE') }}
+    </form>
 
 @stop
 
@@ -216,6 +218,23 @@
             $('#_name').val($(this).data('name'));
             $('#_description').val($(this).data('description'));
             $('#edit-role-form').attr('action', $(this).data('url'));
+        });
+
+        $('.delete_btn').click(function (e){
+            e.preventDefault();
+            var url = $(this).data('url');
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+                if (result.value) {
+                    $('#delete-form').attr('action', url);
+                    $('#delete-form').submit();
+                }
+            });
         });
     </script>
 @endsection

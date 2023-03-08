@@ -13,7 +13,7 @@ class UpdatePackagingUnitRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class UpdatePackagingUnitRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required',
+            'is_active'=>'required',
         ];
     }
 }

@@ -2,11 +2,13 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\traits\TruncateTable;
 use Illuminate\Database\Seeder;
 
 class ProvincesTableSeeder extends Seeder
 {
 
+    use TruncateTable;
     /**
      * Auto generated seed file
      *
@@ -14,40 +16,39 @@ class ProvincesTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('provinces')->delete();
-        
+
+        $this->truncate('provinces');
         \DB::table('provinces')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 24,
                 'name' => 'Western Province',
                 'created_at' => '2021-06-23 15:22:07',
                 'updated_at' => '2021-06-23 15:22:07',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 23,
                 'name' => 'Southern Province',
                 'created_at' => '2021-06-23 15:22:07',
                 'updated_at' => '2021-06-23 15:22:07',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 22,
                 'name' => 'Kigali City',
                 'created_at' => '2021-06-23 15:22:07',
                 'updated_at' => '2021-06-23 15:22:07',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 25,
                 'name' => 'Northern Province',
                 'created_at' => '2021-06-23 15:22:07',
                 'updated_at' => '2021-06-23 15:22:07',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 26,
                 'name' => 'Eastern Province',
@@ -55,7 +56,7 @@ class ProvincesTableSeeder extends Seeder
                 'updated_at' => '2021-06-23 15:22:07',
             ),
         ));
-        
-        
+
+
     }
 }
