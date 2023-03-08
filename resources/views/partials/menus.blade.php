@@ -145,6 +145,14 @@
                         <span class="menu-text">Stock</span>
                     </a>
                 </li>
+                <li class="menu-item nav-all-permissions" aria-haspopup="true">
+                    <a href="{{ route('admin.stock.stock-items.movements') }}" class="menu-link">
+                        <i class="menu-bullet menu-bullet-dot">
+                            <span></span>
+                        </i>
+                        <span class="menu-text">Stock Movements</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </li>

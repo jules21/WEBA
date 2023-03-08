@@ -122,7 +122,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::resource('item-categories', \App\Http\Controllers\ItemCategoryController::class);
         Route::resource('items', \App\Http\Controllers\ItemController::class);
         Route::get('/stock-items', [App\Http\Controllers\StockController::class, 'index'])->name('stock-items.index');
-        Route::post('/stock-movements', [App\Http\Controllers\StockController::class, 'movements'])->name('stock-items.movements');
+        Route::get('/stock-movements', [App\Http\Controllers\StockMovementController::class, 'index'])->name('stock-items.movements');
     });
 
 });

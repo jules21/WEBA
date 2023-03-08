@@ -55,9 +55,4 @@ class StockController extends Controller
             'operationAreas' => $user->operator_id ? OperationArea::query()->where('operator_id', $user->operator_id)->get() : OperationArea::query()->get(),
         ]);
     }
-
-    public function movements(){
-        return view('admin.stock.movements');
-    }
-
 }
