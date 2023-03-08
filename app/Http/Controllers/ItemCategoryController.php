@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreItemCategoryRequest;
 use App\Http\Requests\UpdateItemCategoryRequest;
 use App\Models\ItemCategory;
+use Illuminate\Http\JsonResponse;
+use PhpOffice\PhpSpreadsheet\Calculation\Category;
 
 class ItemCategoryController extends Controller
 {
@@ -15,17 +17,9 @@ class ItemCategoryController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('admin.stock.item_categories',[
+            'categories'=>ItemCategory::query()->get()
+        ]);
     }
 
     /**
@@ -36,30 +30,10 @@ class ItemCategoryController extends Controller
      */
     public function store(StoreItemCategoryRequest $request)
     {
-        //
+        ItemCategory::query()->create($request->validated());
+        return redirect()->back()->with('success','Category created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ItemCategory  $itemCategory
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ItemCategory $itemCategory)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\ItemCategory  $itemCategory
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(ItemCategory $itemCategory)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -70,7 +44,8 @@ class ItemCategoryController extends Controller
      */
     public function update(UpdateItemCategoryRequest $request, ItemCategory $itemCategory)
     {
-        //
+        $itemCategory->update($request->validated());
+        return redirect()->back()->with('success','Category updated successfully');
     }
 
     /**
@@ -81,6 +56,8 @@ class ItemCategoryController extends Controller
      */
     public function destroy(ItemCategory $itemCategory)
     {
-        //
+        $itemCategory->delete();
+//        return new JsonResponse(['status'=>'success']);
+        return redirect()->back()->with('success','Category deleted successfully');
     }
 }

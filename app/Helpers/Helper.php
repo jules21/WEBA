@@ -20,4 +20,9 @@ class Helper{
             return $model::factory()->create()->id;
         }
     }
+    public static function isOperator(): bool
+    {
+        $user = auth()->user();
+        return $user->operator_id != null;
+    }
 }
