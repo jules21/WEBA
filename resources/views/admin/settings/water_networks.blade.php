@@ -62,32 +62,22 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Request Type</th>
-                                @if(auth()->user()->is_super_admin)
-                                    <th>Operator</th>
-                                @endif
-                                <th>Operation Area</th>
-                                <th>Processing Days</th>
-                                <th>Active</th>
+                                <th>Name</th>
+                                <th>Distance Covered</th>
+                                <th>Population Covered</th>
+                                <th>Operator</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
 
-                            @foreach($configurations as $key=>$configuration)
+                            @foreach($waterNetworks as $key=>$waterNetwork)
                                 <tr>
                                     <td>{{++$key}}</td>
-                                    <td>{{$configuration->requestType->name}}</td>
-                                    @if(auth()->user()->is_super_admin)
-                                        <td>{{$configuration->operator->name}}</td>
-                                    @endif
-                                    <td>{{$configuration->operationArea->name}}</td>
-                                    <td>{{$configuration->processing_days}}</td>
-                                    @if($configuration->is_active == 1)
-                                        <td><span class="badge badge-success">Yes</span></td>
-                                    @else
-                                        <td><span class="badge badge-danger">No</span></td>
-                                    @endif
+                                    <td>{{$waterNetwork->name}}</td>
+                                    <td>{{$waterNetwork->distance_covered}}</td>
+                                    <td>{{$waterNetwork->population_covered}}</td>
+                                    <td>{{$waterNetwork->operator_id}}</td>
                                     <td>
                                         <div class="dropdown">
                                             <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
@@ -96,14 +86,13 @@
                                                 Action
                                             </button>
                                             <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-                                                <a href="#" data-id="{{$configuration->id}}"
-                                                   data-request="{{$configuration->request_type_id}}"
-                                                   data-operator="{{$configuration->operator_id}}"
-                                                   data-area="{{$configuration->operation_area_id}}"
-                                                   data-days="{{$configuration->processing_days}}"
-                                                   data-active="{{$configuration->is_active}}"
+                                                <a href="#" data-id="{{$waterNetwork->id}}"
+                                                   data-name="{{$waterNetwork->name}}"
+                                                   data-distance="{{$waterNetwork->distance_covered}}"
+                                                   data-population="{{$waterNetwork->population_covered}}"
+                                                   data-days="{{$waterNetwork->operator_id}}"
                                                    class="dropdown-item js-edit">Edit</a>
-                                                <a href="{{route('admin.request.duration.configuration.delete',$configuration->id)}}"
+                                                <a href="{{route('admin.water.network.delete',$waterNetwork->id)}}"
                                                    class="dropdown-item js-delete">Delete</a>
                                             </div>
                                         </div>
@@ -126,11 +115,11 @@
     <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.request.duration.configuration.store')}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.water.network.store')}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">New Request Duration Configuration</h4>
+                        <h4 class="modal-title">New Water Network</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -138,13 +127,18 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="name">Request Type</label>
-                            <select name="request_type_id" id="request_type_id" class="form-control">
-                                <option value="">Please Select Type</option>
-                                @foreach(App\Models\RequestType::all() as $type)
-                                    <option value="{{$type->id}}">{{$type->name}}</option>
-                                @endforeach
-                            </select>
+                            <label for="name">Name</label>
+                            <input type="text"  name="name" id="name" class="form-control" required/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Distance Covered</label>
+                            <input type="number"  name="distance_covered" id="distance_covered" class="form-control" required/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Population Covered</label>
+                            <input type="number"  name="distance_covered" id="distance_covered" class="form-control" required/>
                         </div>
 
                         @if(auth()->user()->operator_id == null)
@@ -160,30 +154,6 @@
                         @else
                             <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                         @endif
-
-                        <div class="form-group">
-                            <label for="name">Operation Area</label>
-                            <select name="operation_area_id" id="operation_area_id" class="form-control">
-                                <option value="">Please Select Type</option>
-                                @foreach(App\Models\OperationArea::all() as $area)
-                                    <option value="{{$area->id}}">{{$area->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="name">Processing Days</label>
-                            <input type="number"  name="processing_days" class="form-control" required/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="active">Active</label>
-                            <select type="text" name="is_active" id="is_active" class="form-control" required>
-                                <option value="">Please Select</option>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -217,19 +187,24 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="name">Request Type</label>
-                            <select name="request_type_id" id="edit_request_type_id" class="form-control">
-                                <option value="">Please Select Type</option>
-                                @foreach(App\Models\RequestType::all() as $type)
-                                    <option value="{{$type->id}}">{{$type->name}}</option>
-                                @endforeach
-                            </select>
+                            <label for="name">Name</label>
+                            <input type="text"  name="name" id="name" class="form-control" required/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Distance Covered</label>
+                            <input type="number"  name="distance_covered" id="distance_covered" class="form-control" required/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Population Covered</label>
+                            <input type="number"  name="distance_covered" id="distance_covered" class="form-control" required/>
                         </div>
 
                         @if(auth()->user()->operator_id == null)
                             <div class="form-group">
                                 <label>Operator</label>
-                                <select name="operator_id" class="form-control select2 kt_select2_2" style="width: 100% !important;" id="edit_operator_id">
+                                <select name="operator_id" class="form-control select2" style="width: 100% !important;" id="kt_select2_1">
                                     <option value="">Select Operator</option>
                                     @foreach($operators as $operator)
                                         <option value="{{$operator->id}}">{{$operator->name}}</option>
@@ -239,30 +214,6 @@
                         @else
                             <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                         @endif
-
-                        <div class="form-group">
-                            <label for="name">Operation Area</label>
-                            <select name="operation_area_id" id="edit_operation_area_id" class="form-control">
-                                <option value="">Please Select Type</option>
-                                @foreach(App\Models\OperationArea::all() as $area)
-                                    <option value="{{$area->id}}">{{$area->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="name">Processing Days</label>
-                            <input type="number"  name="processing_days" id="edit_processing_days" class="form-control" required/>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="active">Active</label>
-                            <select type="text" name="is_active" id="edit_is_active" class="form-control" required>
-                                <option value="">Please Select</option>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                        </div>
 
                     </div>
                     <div class="modal-footer">

@@ -91,8 +91,13 @@ class PackagingUnitController extends Controller
      */
     public function destroy(PackagingUnit $packagingUnit,$id)
     {
-        $unit = PackagingUnit::find($id);
-        $unit->delete();
-        return redirect()->back()->with('success','Packaging Unit deleted Successfully');
+        try {
+            $unit = PackagingUnit::find($id);
+            $unit->delete();
+            return redirect()->back()->with('success','Packaging Unit deleted Successfully');
+        }catch (\Exception $exception){
+            info($exception);
+            return redirect()->back()->with('error','Packaging Unit can not be deleted Successfully');
+        }
     }
 }
