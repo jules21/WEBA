@@ -30,8 +30,6 @@
     </div>
 @stop
 @section('content')
-
-    @include('partials._alerts')
     <!--end::Notice-->
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
@@ -95,7 +93,7 @@
                                         Edit
                                     </a>
                                     <a class="delete_btn dropdown-item"
-                                       data-url="">
+                                       data-url="{{route('admin.roles.delete', $role->id)}}">
                                         Delete
                                     </a>
                                 </div>
@@ -196,6 +194,10 @@
         </div>
 
     </div>
+    <form id="delete-form" action="" method="POST" style="display: none;">
+        {{ csrf_field() }}
+        {{ method_field('DELETE') }}
+    </form>
 
 @stop
 
@@ -229,23 +231,8 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then(function (result) {
                 if (result.value) {
-                    $.ajax({
-                        url: url,
-                        type: 'DELETE',
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                        },
-                        success: function (data) {
-                            if (data.status == 'success') {
-                                swal.fire(
-                                    'Deleted!',
-                                    'Your file has been deleted.',
-                                    'success'
-                                );
-                                location.reload();
-                            }
-                        }
-                    });
+                    $('#delete-form').attr('action', url);
+                    $('#delete-form').submit();
                 }
             });
         });
