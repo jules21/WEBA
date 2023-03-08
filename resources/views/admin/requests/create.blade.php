@@ -36,6 +36,17 @@
     </div>
 
     <div class="container">
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="card shadow-none border">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
@@ -191,7 +202,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="road_type">Road Type</label>
-                                <select name="road_type" id="road_type" class="form-control select2">
+                                <select name="road_type" id="road_type" class="form-control ">
                                     <option value="">Select Road Type</option>
                                     @foreach($roadTypes as $roadType)
                                         <option value="{{ $roadType }}">{{ $roadType }}</option>
@@ -203,7 +214,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="road_cross_types">Road Crosses</label>
+                                <label for="road_cross_types">Road Pipe Crosses</label>
                                 <div class="row">
                                     @foreach($roadCrossTypes as $item)
                                         <div class="col-md-4">
@@ -238,7 +249,7 @@
                         </div>
                         <div class="col-lg-6">
                             <label>
-                                Do You want to pay for the equipment yourself by submitting an EBM invoice ?
+                                Do You want to pay for the materials yourself by submitting an EBM invoice ?
                             </label>
                             <div class="form-group">
                                 <label class="radio  checkbox-primary">

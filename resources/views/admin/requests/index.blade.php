@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title',"Customers")
+@section('title',"Requests")
 
 @section('content')
 
@@ -31,15 +31,16 @@
     </div>
 
 
-    <div class="container">
-        <div class="card shadow-none border">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h4>
-                        Manage Requests
-                    </h4>
+    <div class="card shadow-none border">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>
+                    Manage Requests
+                </h4>
 
-                    <a href="{{ route('admin.requests.create') }}"  class="btn btn-primary btn-sm" id="addButton">
+                @can(\App\Constants\Permission::CreateRequest)
+
+                    <a href="{{ route('admin.requests.create') }}" class="btn btn-primary btn-sm" id="addButton">
                        <span class="svg-icon">
                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
@@ -48,168 +49,171 @@
                        </span>
                         Add New
                     </a>
-                </div>
+
+                @endcan
+            </div>
 
 
-                <div class="table-responsive my-3">
-                    <table class="table table-head-custom border table-head-solid table-hover dataTable">
-                        <thead>
-                        <tr>
-                            <th>Customer</th>
-                            <th>Request Type</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
+            <div class="table-responsive my-3">
+                <table class="table table-head-custom border table-head-solid table-hover dataTable">
+                    <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Request Type</th>
+                        <th>Qty</th>
+                        <th>UPI</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
 
-                </div>
             </div>
         </div>
     </div>
+
 
 
     <!-- Modal -->
-  {{--  <div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">
-                        Customer
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        &times;
-                    </button>
-                </div>
-                <form action="{{ route('admin.customers.store') }}"
-                      method="post" id="formSave">
-                    @csrf
-                    <input type="hidden" value="0" id="id" name="id"/>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control"/>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="legal_type_id">Legal Type</label>
-                                    <select name="legal_type_id" id="legal_type_id" class="form-control ">
-                                        <option value="">Select Legal</option>
-                                        @foreach($legalTypes as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="document_type_id">Document Type</label>
-                                    <select name="document_type_id" id="document_type_id" class="form-control">
-                                        <option value="">Select Type</option>
-                                        @foreach($idTypes as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @endforeach
+    {{--  <div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+           aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">
+                          Customer
+                      </h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          &times;
+                      </button>
+                  </div>
+                  <form action="{{ route('admin.customers.store') }}"
+                        method="post" id="formSave">
+                      @csrf
+                      <input type="hidden" value="0" id="id" name="id"/>
+                      <div class="modal-body">
+                          <div class="form-group">
+                              <label for="name">Name</label>
+                              <input type="text" name="name" id="name" class="form-control"/>
+                          </div>
+                          <div class="row">
+                              <div class="col-lg-6">
+                                  <div class="form-group">
+                                      <label for="legal_type_id">Legal Type</label>
+                                      <select name="legal_type_id" id="legal_type_id" class="form-control ">
+                                          <option value="">Select Legal</option>
+                                          @foreach($legalTypes as $item)
+                                              <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="col-lg-6">
+                                  <div class="form-group">
+                                      <label for="document_type_id">Document Type</label>
+                                      <select name="document_type_id" id="document_type_id" class="form-control">
+                                          <option value="">Select Type</option>
+                                          @foreach($idTypes as $item)
+                                              <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                          @endforeach
 
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
 
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="doc_number">Document Number</label>
-                                    <input type="text" name="doc_number" id="doc_number" class="form-control"/>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="tel" name="phone" id="phone" class="form-control"/>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="email">Email address</label>
-                            <input type="email" name="email" id="email" class="form-control"/>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="province_id">Province</label>
-                                    <select name="province_id" id="province_id" class="form-control ">
-                                        <option value="">Select Province</option>
-                                        @foreach($provinces as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="district_id">District</label>
-                                    <select name="district_id" id="district_id" class="form-control ">
-                                        <option value="">Select District</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="sector_id">Sector</label>
-                                    <select name="sector_id" id="sector_id" class="form-control ">
-                                        <option value="">Select Sector</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="cell_id">Cell</label>
-                                    <select name="cell_id" id="cell_id" class="form-control ">
-                                        <option value="">Select Cell</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="village_id">Village</label>
-                                    <select name="village_id" id="village_id" class="form-control ">
-                                        <option value="">Select Village</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                          <div class="row">
+                              <div class="col-lg-6">
+                                  <div class="form-group">
+                                      <label for="doc_number">Document Number</label>
+                                      <input type="text" name="doc_number" id="doc_number" class="form-control"/>
+                                  </div>
+                              </div>
+                              <div class="col-lg-6">
+                                  <div class="form-group">
+                                      <label for="phone">Phone Number</label>
+                                      <input type="tel" name="phone" id="phone" class="form-control"/>
+                                  </div>
+                              </div>
+                          </div>
 
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
---}}
+                          <div class="form-group">
+                              <label for="email">Email address</label>
+                              <input type="email" name="email" id="email" class="form-control"/>
+                          </div>
+
+                          <div class="row">
+                              <div class="col-lg-6">
+                                  <div class="form-group">
+                                      <label for="province_id">Province</label>
+                                      <select name="province_id" id="province_id" class="form-control ">
+                                          <option value="">Select Province</option>
+                                          @foreach($provinces as $item)
+                                              <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                          @endforeach
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="col-lg-6">
+                                  <div class="form-group">
+                                      <label for="district_id">District</label>
+                                      <select name="district_id" id="district_id" class="form-control ">
+                                          <option value="">Select District</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="row">
+                              <div class="col-lg-6">
+                                  <div class="form-group">
+                                      <label for="sector_id">Sector</label>
+                                      <select name="sector_id" id="sector_id" class="form-control ">
+                                          <option value="">Select Sector</option>
+                                      </select>
+                                  </div>
+                              </div>
+                              <div class="col-lg-6">
+                                  <div class="form-group">
+                                      <label for="cell_id">Cell</label>
+                                      <select name="cell_id" id="cell_id" class="form-control ">
+                                          <option value="">Select Cell</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="row">
+                              <div class="col-lg-6">
+                                  <div class="form-group">
+                                      <label for="village_id">Village</label>
+                                      <select name="village_id" id="village_id" class="form-control ">
+                                          <option value="">Select Village</option>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+
+
+                      </div>
+                      <div class="modal-footer">
+                          <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  --}}
 @endsection
 
 @section('scripts')
-    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
-    {!! JsValidator::formRequest(App\Http\Requests\StoreCustomerRequest::class) !!}
+    {{--  <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
+      {!! JsValidator::formRequest(App\Http\Requests\StoreCustomerRequest::class) !!}--}}
 
     <script>
 
@@ -308,33 +312,23 @@
 
 
         $(document).ready(function () {
-            $('.nav-customers').addClass('menu-item-active');
+            $('.nav-requests').addClass('menu-item-active');
 
             let dataTable = $('.dataTable').DataTable({
                 serverSide: true,
                 processing: true,
-                ajax: "{{ route('admin.customers.index') }}",
+                ajax: "{{ route('admin.requests.index') }}",
                 columns: [
+                    {data: "customer.name", name: "customer.name"},
+                    {data: "request_type.name", name: "requestType.name"},
+                    {data: "meter_qty", name: "meter_qty"},
+                    {data: "upi", name: "upi"},
                     {
-                        data: "name", name: "name",
+                        data: "status", name: "status",
                         render: function (data, type, row) {
-                            return `<div>
-                                        <div>${data}</div>
-                                        <div class="text-muted  mt-2">${row.legal_type.name}</div>
-                                    </div`
-                        }
+                            return `<span class="badge badge-${row.status_color} rounded-pill">${data}</span>`;
+                        },
                     },
-                    {
-                        data: "doc_number", name: "doc_number",
-                        render: function (data, type, row) {
-                            return `<div>
-                                        <div>${data}</div>
-                                        <div class="text-muted mt-2">${row.document_type.name}</div>
-                                    </div`
-                        }
-                    },
-                    {data: "email", name: "email"},
-                    {data: "phone", name: "phone"},
                     {data: "action", name: "action", orderable: false, searchable: false}
                 ]
             });
@@ -359,40 +353,6 @@
 
             $('#legal_type_id').on('change', function () {
                 getDocumentTypes($(this).val());
-            });
-
-            $('#formSave').on('submit', function (e) {
-                e.preventDefault();
-
-                let $form = $(this);
-                if (!$form.valid())
-                    return;
-                let $btn = $form.find(":submit");
-
-                $btn.prop("disabled", true)
-                    .addClass("spinner spinner-white spinner-sm spinner-right");
-                $.ajax({
-                    url: $form.attr("action"),
-                    method: "post",
-                    data: $form.serialize(),
-                    dataType: 'json',
-                    success: function (response) {
-                        dataTable.ajax.reload();
-                        $('#addModal').modal('hide');
-                    }, error: function (response) {
-                        Swal.fire({
-                            title: "Error",
-                            icon: "error",
-                            text: "Unable to save customer, try again"
-                        });
-                    },
-                    complete: function () {
-
-                        $btn.prop("disabled", false)
-                            .removeClass("spinner spinner-white spinner-sm spinner-right");
-                    }
-                });
-
             });
 
 

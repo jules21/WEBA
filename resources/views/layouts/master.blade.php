@@ -27,6 +27,7 @@
     <link href="{{asset('assets/css/themes/layout/header/menu/light.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('assets/css/themes/layout/brand/dark.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('assets/css/themes/layout/aside/dark.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
     {{--    <link rel="stylesheet" href="{{ asset('css/master.css') }}">--}}
     <!--end::Layout Themes-->
     @yield("css")
@@ -50,7 +51,7 @@
 <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
     <!--begin::Logo-->
     <a href="{{ route('admin.dashboard') }}">
-        <img alt="Logo" class="img-fluid rounded-pill" src="{{asset("img/logo.png")}}" width="50"/>
+        <img alt="Logo" class="img-fluid h-40px" src="{{asset("img/logo_sm.png")}}" >
         {{--        <h3>Airtel</h3>--}}
     </a>
     <!--end::Logo-->
@@ -99,7 +100,7 @@
             <div class="brand flex-column-auto" id="kt_brand">
                 <!--begin::Logo-->
                 <a href="/" class="brand-logo">
-                    <img alt="Logo" class="rounded-pill" src="{{asset("img/CMS RWSS.png")}}" width="50"/>
+                    <img alt="Logo" class="img-fluid h-40px" src="{{asset("img/logo.png")}}" />
                     {{--                    <h2>NPA</h2>--}}
                 </a>
                 <!--end::Logo-->
@@ -207,6 +208,7 @@
                     <!--begin::Container-->
                     <div class="container">
                         <input type="hidden" id="currentUrl" value="{{ url()->current() }} ">
+                        @include('partials._alerts')
                         @yield('content')
                     </div>
                     <!--end::Container-->
@@ -424,7 +426,7 @@
 <script src="{{asset('assets/plugins/global/plugins.bundle.js')}}"></script>
 <script src="{{asset('assets/plugins/custom/prismjs/prismjs.bundle.js')}}"></script>
 <script src="{{asset('assets/js/scripts.bundle.js')}}"></script>
-
+<script src="{{asset('assets/plugins/custom/datatables/datatables.bundle.js')}}"></script>
 <script src="{{asset("assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.3")}}"></script>
 @yield("scripts")
 

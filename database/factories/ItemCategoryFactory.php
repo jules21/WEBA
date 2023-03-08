@@ -11,10 +11,12 @@ class ItemCategoryFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name,
+            'is_meter' => $this->faker->boolean,
+            'is_active' => $this->faker->boolean
         ];
     }
 }
