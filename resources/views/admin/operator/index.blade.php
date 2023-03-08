@@ -53,7 +53,7 @@
                     <table class="table table-head-custom border table-head-solid table-hover dataTable">
                         <thead>
                         <tr>
-                            <th>Logo</th>
+                            <th>Created At</th>
                             <th>Name</th>
                             <th>Legal Type</th>
                             <th>Doc Number</th>
@@ -62,36 +62,6 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {{--         @for($i=0;$i<21;$i++)
-                                     <tr>
-                                         <td>
-                                             <img src="https://via.placeholder.com/50" alt="">
-                                         </td>
-                                         <td>Operator 1</td>
-                                         <td>Legal Type 1</td>
-                                         <td>Doc Number 1</td>
-                                         <td>Address 1</td>
-                                         <td>
-                                             <div class="dropdown">
-                                                 <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                                                    Options
-                                                 </button>
-                                                 <div class="dropdown-menu border">
-                                                     <a class="dropdown-item" href="#">
-                                                         <i class="fas fa-edit"></i>
-                                                         <span class="ml-2">Edit</span>
-                                                     </a>
-                                                     <a class="dropdown-item" href="#">
-                                                         <i class="fas fa-trash"></i>
-                                                         <span class="ml-2">Delete</span>
-                                                     </a>
-                                                 </div>
-                                             </div>
-                                         </td>
-                                     </tr>
-
-                                 @endfor--}}
-
 
                         </tbody>
                     </table>
@@ -143,12 +113,32 @@
                                         <input type="text" class="form-control" id="identification_number"
                                                name="identification_number"/>
                                         <div class="input-group-append">
-                                            <button class="btn btn-light-primary" type="button" id="searchButton">
-                                                Check Operator
+                                            <button class="btn btn-primary" type="button" id="searchButton">
+                                                Check
                                             </button>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-light-info alert-custom" style="display: flex;" id="operatorInfo">
+                            <div class="alert-icon text-info">
+                            <span class="svg-icon svg-icon-3x">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="icon icon-tabler icon-tabler-info-circle" width="24" height="24"
+                                         viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                                         stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                    <path d="M12 8l.01 0"></path>
+                                    <path d="M11 12l1 0l0 4l1 0"></path>
+                                </svg>
+                            </span>
+                            </div>
+                            <div class="alert-text">
+                                Operator Details will be displayed here , Please click on check button to get details
+                                after choosing identification type and number.
                             </div>
                         </div>
 
@@ -275,14 +265,16 @@
                                 </div>
                             </div>
 
+                            <div class="d-flex justify-content-end border-top pt-8">
+                                <button type="submit" class="btn btn-primary  mr-2">Save Changes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                </button>
+                            </div>
 
                         </div>
 
                     </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                    </div>
+
                 </form>
             </div>
         </div>
@@ -342,19 +334,26 @@
                 ajax: "{{ route('admin.operator.index') }}",
                 columns: [
                     {
-                        data: 'DT_RowIndex', name: 'DT_RowIndex',
-                        orderable: false, searchable: false,
+                        data: 'created_at', name: 'created_at',
                         render: function (data, type, row, meta) {
-                            return `<img src="${row.logo_url}" alt="Logo" class="img-fluid rounded-circle" width="40" height="40">`;
+                            return (new Date(data)).toLocaleDateString();
                         }
                     },
                     {data: 'name', name: 'name'},
                     {data: 'legal_type.name', name: 'legalType.name'},
-                    {data: 'doc_number', name: 'doc_number'},
+                    {
+                        data: 'doc_number', name: 'doc_number',
+                        render: function (data, type, row, meta) {
+                            return `<div>
+                                        <div class="font-weight-bold">${row.doc_number}</div>
+                                        <div class="text-muted mt-1">${row.id_type}</div>
+                                    </div>`;
+                        }
+                    },
                     {data: 'address', name: 'address'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
-                "order": [[1, "asc"]],
+                "order": [[0, "desc"]],
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,
@@ -387,7 +386,11 @@
                 }
 
                 let btn = $(this);
-                btn.prop('disabled', true);
+                btn.prop('disabled', true)
+                    .addClass('spinner spinner-white spinner-right');
+
+                let operatorInfo = $('#operatorInfo');
+                operatorInfo.slideDown();
 
                 let results = $('#results');
                 results.slideUp();
@@ -401,7 +404,9 @@
                         "identification_number": identificationNumber
                     },
                     success: function (response) {
-                        console.log(response);
+
+                        operatorInfo.slideUp();
+
                         getCells(response.sector_id, response.cell_id);
 
                         $('#operator_details').val(JSON.stringify(response));
@@ -419,21 +424,34 @@
                         results.slideDown();
 
                     },
-                    fail: function () {
-
+                    error: function (response) {
+                        let statusCode = response.status;
+                        let message = 'Something went wrong';
+                        if (statusCode === 400) {
+                            message = response.responseJSON.message;
+                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: message,
+                        });
                     }, complete: function () {
-                        btn.prop('disabled', false);
+                        btn.prop('disabled', false)
+                            .removeClass('spinner spinner-white spinner-right');
                     }
                 };
                 $.ajax(settings);
             });
 
+            let isSubmitting = false;
             $('#formSave').on('submit', function (e) {
                 e.preventDefault();
 
-                if (!$(this).valid()) {
+                if (!$(this).valid() || isSubmitting) {
                     return;
                 }
+
+                isSubmitting = true;
 
                 let btn = $(this).find('button[type="submit"]');
                 btn.prop('disabled', true)
@@ -480,6 +498,7 @@
                         });
 
                     }, complete: function () {
+                        isSubmitting = false;
                         btn.prop('disabled', false)
                             .removeClass('spinner spinner-white spinner-right disabled');
                     }

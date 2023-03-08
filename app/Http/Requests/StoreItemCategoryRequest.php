@@ -13,7 +13,7 @@ class StoreItemCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,16 @@ class StoreItemCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required|string|max:255',
+            'is_meter'=>'required|boolean',
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'name.required'=>'Please enter a name for the category',
+            'name.string'=>'Please enter a valid name for the category',
+            'name.max'=>'Please enter a name with less than 255 characters',
         ];
     }
 }

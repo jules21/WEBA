@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Permission;
 use App\Http\Requests\StoreOperatorRequest;
 use App\Http\Requests\UpdateOperatorRequest;
 use App\Models\LegalType;
@@ -20,32 +21,42 @@ class OperatorController extends Controller
     public function index()
     {
         $data = Operator::with(['legalType'])
-            ->select('operators.*');
+            ->withCount('operationAreas');
 
         if (request()->ajax()) {
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (Operator $row) {
 
-                    return '<div class="dropdown">
-                                                 <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-                                                    Options
-                                                 </button>
-                                                 <div class="dropdown-menu border">
-                                                     <a class="dropdown-item" href="' . route('admin.operator.area-of-operation.index', encryptId($row->id)) . '">
-                                                         <i class="fas fa-map"></i>
-                                                         <span class="ml-2">Area of Operations</span>
-                                                     </a>
-                                                     <a class="dropdown-item" href="#">
-                                                         <i class="fas fa-edit"></i>
-                                                         <span class="ml-2">Edit</span>
-                                                     </a>
-                                                     <a class="dropdown-item js-delete" href="' . route('admin.operator.delete', encryptId($row->id)) . '">
+                    $deleteBtn = '';
+                    if ($row->operation_areas_count == 0) {
+                        $deleteBtn = '  <a class="dropdown-item js-delete" href="' . route('admin.operator.delete', encryptId($row->id)) . '">
                                                          <i class="fas fa-trash"></i>
                                                          <span class="ml-2">Delete</span>
-                                                     </a>
-                                                 </div>
-                                             </div>';
+                                        </a>';
+                    }
+                    $opAreaBtn = '';
+
+                    if (auth()->user()->can(Permission::ManageOperationAreas)) {
+                        $opAreaBtn = '<a class="dropdown-item" href="' . route('admin.operator.area-of-operation.index', encryptId($row->id)) . '">
+                                         <i class="fas fa-map"></i>
+                                         <span class="ml-2">Area of Operations</span>
+                                      </a>';
+                    }
+
+                    return '<div class="dropdown">
+                                 <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                    Options
+                                 </button>
+                                 <div class="dropdown-menu border">
+                                        ' . $opAreaBtn . '
+                                     <a class="dropdown-item" href="#">
+                                         <i class="fas fa-edit"></i>
+                                         <span class="ml-2">Edit</span>
+                                     </a>
+                                        ' . $deleteBtn . '
+                                 </div>
+                            </div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -169,7 +180,7 @@ class OperatorController extends Controller
             return $response->json();
         return response()
             ->json([
-                'message' => "Unable to fetch operator details, please check your internet connection and try again"
+                'message' => "Operator with the provided information does not exist"
             ], 400);
     }
 }

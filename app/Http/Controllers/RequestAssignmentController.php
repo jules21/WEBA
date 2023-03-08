@@ -53,6 +53,47 @@ class RequestAssignmentController extends Controller
     }
 
     /**
+     * @throws Throwable
+     */
+    public function reAssign(ValidateAssignRequest $request)
+    {
+        $data = $request->validated();
+
+        $requestIds = $data['request_ids'];
+        $userId = $data['user_id'];
+
+        $requestAssignments = [];
+
+        DB::beginTransaction();
+        foreach ($requestIds as $requestId) {
+            $appReq = AppRequest::find($requestId);
+            $appReq->requestAssignment()->delete();
+            $requestAssignments[] = [
+                'request_id' => $requestId,
+                'user_id' => $userId,
+                'assigned_by' => auth()->id(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+            $this->saveFlowHistory($appReq, 'Assigned', "Request reassigned");
+        }
+
+        RequestAssignment::insert($requestAssignments);
+
+        DB::commit();
+
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => 'Requests assigned successfully',
+            ], ResponseAlias::HTTP_OK);
+        }
+
+        return redirect()->back()->with('success', 'Requests assigned successfully');
+
+    }
+
+
+    /**
      * @param $requestId
      * @return void
      */
@@ -61,22 +102,24 @@ class RequestAssignmentController extends Controller
         $appRequest = AppRequest::find($requestId);
         $appRequest->status = 'Assigned';
         $appRequest->save();
-        $this->saveFlowHistory($appRequest);
+        $this->saveFlowHistory($appRequest, 'Assigned', 'Request assigned');
     }
 
     /**
      * @param AppRequest $appRequest
+     * @param $status
+     * @param $message
      * @return void
      */
-    public function saveFlowHistory(AppRequest $appRequest): void
+    public function saveFlowHistory(AppRequest $appRequest, $status, $message): void
     {
         // get class name without namespace
         $appRequest->flowHistories()
             ->create([
                 'type' => $appRequest->getClassName(),
-                'status' => 'Assigned',
+                'status' => $status,
                 'user_id' => auth()->id(),
-                'comment' => 'Request assigned  by ' . auth()->user()->name,
+                'comment' => $message,
             ]);
     }
 }

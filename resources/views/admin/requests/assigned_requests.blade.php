@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title',"Requests")
+@section('title',"Assigned Requests")
 
 @section('content')
 
@@ -10,7 +10,7 @@
             <div class="d-flex align-items-center flex-wrap mr-2">
                 <!--begin::Page Title-->
                 <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">
-                    Requests
+                    Assigned
                 </h5>
 
                 <!--end::Page Title-->
@@ -22,7 +22,7 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <span class="text-muted">Request Management</span>
+                        <span class="text-muted">Assigned Requests</span>
                     </li>
                 </ul>
             </div>
@@ -35,18 +35,8 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>
-                    Manage Requests
+                    Assigned Requests
                 </h4>
-
-                <a href="{{ route('admin.requests.create') }}" class="btn btn-primary btn-sm" id="addButton">
-                       <span class="svg-icon">
-                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-6 h-6">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
-                            </svg>
-                       </span>
-                    Add New
-                </a>
             </div>
 
 
@@ -54,11 +44,18 @@
                 <table class="table table-head-custom border table-head-solid table-hover dataTable">
                     <thead>
                     <tr>
+                        <th>
+                            <label class="checkbox my-3 checkbox-primary">
+                                <input type="checkbox" id="checkAll">
+                                <span class="mr-1 rounded-0"></span>All
+                            </label>
+                        </th>
                         <th>Customer</th>
                         <th>Request Type</th>
                         <th>Qty</th>
                         <th>UPI</th>
-                        <th>Status</th>
+                        <th>Assigned To</th>
+                        <th>Created At</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -67,6 +64,19 @@
                     </tbody>
                 </table>
 
+
+                <button type="button" disabled class="btn btn-primary btn-lg rounded mt-4" id="btnAssign">
+                   <span class="svg-icon">
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-6 h-6">
+  <path stroke-linecap="round" stroke-linejoin="round"
+        d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
+</svg>
+
+                   </span>
+                    Re-Assign Selected Requests
+                </button>
+
             </div>
         </div>
     </div>
@@ -74,142 +84,67 @@
 
 
     <!-- Modal -->
-    {{--  <div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
-           aria-labelledby="staticBackdropLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title" id="staticBackdropLabel">
-                          Customer
-                      </h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          &times;
-                      </button>
-                  </div>
-                  <form action="{{ route('admin.customers.store') }}"
-                        method="post" id="formSave">
-                      @csrf
-                      <input type="hidden" value="0" id="id" name="id"/>
-                      <div class="modal-body">
-                          <div class="form-group">
-                              <label for="name">Name</label>
-                              <input type="text" name="name" id="name" class="form-control"/>
-                          </div>
-                          <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="legal_type_id">Legal Type</label>
-                                      <select name="legal_type_id" id="legal_type_id" class="form-control ">
-                                          <option value="">Select Legal</option>
-                                          @foreach($legalTypes as $item)
-                                              <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                          @endforeach
-                                      </select>
-                                  </div>
-                              </div>
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="document_type_id">Document Type</label>
-                                      <select name="document_type_id" id="document_type_id" class="form-control">
-                                          <option value="">Select Type</option>
-                                          @foreach($idTypes as $item)
-                                              <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                          @endforeach
+    <div class="modal fade" id="assignModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                        Assign Request
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
+                </div>
+                <form action="{{ route('admin.requests.re-assign') }}"
+                      method="post" id="assignForm">
+                    @csrf
+                    <div class="modal-body">
 
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
+                        <div class="alert alert-light-success alert-custom">
+                            <div class="alert-icon">
+                                <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Tools/Compass.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                              d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"/>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>
+                            </div>
+                            <div class="alert-text">
+                                <div class="alert-description">
+                                    You are about to re assign <span id="selectedCount"></span>
+                                    selected requests to a user.
+                                </div>
+                            </div>
+                        </div>
 
-                          <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="doc_number">Document Number</label>
-                                      <input type="text" name="doc_number" id="doc_number" class="form-control"/>
-                                  </div>
-                              </div>
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="phone">Phone Number</label>
-                                      <input type="tel" name="phone" id="phone" class="form-control"/>
-                                  </div>
-                              </div>
-                          </div>
-
-
-                          <div class="form-group">
-                              <label for="email">Email address</label>
-                              <input type="email" name="email" id="email" class="form-control"/>
-                          </div>
-
-                          <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="province_id">Province</label>
-                                      <select name="province_id" id="province_id" class="form-control ">
-                                          <option value="">Select Province</option>
-                                          @foreach($provinces as $item)
-                                              <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                          @endforeach
-                                      </select>
-                                  </div>
-                              </div>
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="district_id">District</label>
-                                      <select name="district_id" id="district_id" class="form-control ">
-                                          <option value="">Select District</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="sector_id">Sector</label>
-                                      <select name="sector_id" id="sector_id" class="form-control ">
-                                          <option value="">Select Sector</option>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="cell_id">Cell</label>
-                                      <select name="cell_id" id="cell_id" class="form-control ">
-                                          <option value="">Select Cell</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-
-                          <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="form-group">
-                                      <label for="village_id">Village</label>
-                                      <select name="village_id" id="village_id" class="form-control ">
-                                          <option value="">Select Village</option>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
-
-
-                      </div>
-                      <div class="modal-footer">
-                          <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-                          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                      </div>
-                  </form>
-              </div>
-          </div>
-      </div>
-  --}}
+                        <div class="form-group">
+                            <label for="user_id">Users</label>
+                            <select name="user_id" id="user_id" class="form-control form-control-lg select2"
+                                    style="width: 100% !important;">
+                                <option value="">Select User</option>
+                                @foreach($users as $item)
+                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
-    {{--  <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
-      {!! JsValidator::formRequest(App\Http\Requests\StoreCustomerRequest::class) !!}--}}
+    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
+    {!! JsValidator::formRequest(App\Http\Requests\ValidateAssignRequest::class) !!}
 
     <script>
 
@@ -313,107 +248,149 @@
             let dataTable = $('.dataTable').DataTable({
                 serverSide: true,
                 processing: true,
-                ajax: "{{ route('admin.requests.index') }}",
+                ajax: "{!! request()->fullUrl() !!}",
+                'order': [[6, 'desc']],
                 columns: [
+                    {
+                        data: "id",
+                        name: "id",
+                        orderable: false,
+                        searchable: false,
+                        render: function (data, type, row) {
+                            return `<label class="checkbox my-3 checkbox-primary">
+                                        <input type="checkbox" value="${data}" class="js-users"
+                                               name="users[]">
+                                        <span class="rounded-0"></span>
+
+                                    </label>`;
+                        }
+                    },
                     {data: "customer.name", name: "customer.name"},
                     {data: "request_type.name", name: "requestType.name"},
                     {data: "meter_qty", name: "meter_qty"},
                     {data: "upi", name: "upi"},
+                    {data: "request_assignment.user.name", name: "requestAssignment.user.name", orderable: false, searchable: false},
                     {
-                        data: "status", name: "status",
+                        data: "created_at", name: "created_at",
                         render: function (data, type, row) {
-                            return `<span class="badge badge-${row.status_color} rounded-pill">${data}</span>`;
-                        },
+                            return (new Date(data)).toDateString()
+                        }
                     },
                     {data: "action", name: "action", orderable: false, searchable: false}
-                ]
+                ],
             });
 
-            $('#addButton').on('click', function () {
-                $('#addModal').modal('show');
+            let $btnAssign = $('#btnAssign');
+            let selectedRows = [];
+
+            let $checkAll = $('#checkAll');
+            $checkAll.on('click', function (e) {
+                let $jsUsers = $(".js-users");
+                if ($(this).is(':checked', true)) {
+                    $jsUsers.prop('checked', true);
+                    $btnAssign.prop('disabled', false);
+
+                    $jsUsers.each(function () {
+                        let id = $(this).val();
+                        selectedRows.push(id);
+                    });
+
+                } else {
+                    $jsUsers.prop('checked', false);
+                    $btnAssign.prop('disabled', true);
+                    selectedRows = [];
+                }
             });
 
-            $('#province_id').on('change', function (e) {
-                getDistricts($(this).val());
+            $(document).on('click', '.js-users', function () {
+
+                let self = $(this);
+                let id = self.val();
+                if (self.is(':checked', true)) {
+                    selectedRows.push(id);
+                } else {
+                    let index = selectedRows.indexOf(id);
+                    selectedRows.splice(index, 1);
+                }
+
+                if (selectedRows.length > 0) {
+                    $btnAssign.prop('disabled', false);
+                } else {
+                    $btnAssign.prop('disabled', true);
+                }
+
+                if ($('.js-users:checked').length === $('.js-users').length) {
+                    $checkAll.prop('checked', true);
+                } else {
+                    $checkAll.prop('checked', false);
+                }
+
             });
 
-
-            $('#district_id').on('change', function (e) {
-                getSectors($(this).val());
+            $btnAssign.on('click', function (e) {
+                e.preventDefault();
+                if (selectedRows.length === 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please select at least one request!',
+                    });
+                    return;
+                }
+                $('#selectedCount').text(selectedRows.length);
+                $('#assignModal').modal();
             });
 
-
-            $('#sector_id').on('change', function (e) {
-                getCells($(this).val());
-            });
-
-            $('#legal_type_id').on('change', function () {
-                getDocumentTypes($(this).val());
-            });
-
-
-            $(document).on('click', '.js-edit', function (e) {
+            let isSubmitting = false;
+            $('#assignForm').on('submit', function (e) {
                 e.preventDefault();
 
-                let url = $(this).attr('href');
+                let $form = $(this);
+
+                if (!$form.valid() || isSubmitting) {
+                    return;
+                }
+                isSubmitting = true;
+                let $btn = $form.find('button[type="submit"]');
+                $btn.prop('disabled', true)
+                    .addClass('spinner spinner-white spinner-right');
+
+                let url = $(this).attr('action');
 
                 $.ajax({
                     url: url,
-                    method: "GET",
-                    success: function (data) {
-                        $('#id').val(data.id);
-                        $('#name').val(data.name);
-                        $('#legal_type_id').val(data.legal_type_id);
-                        $('#document_type_id').val(data.document_type_id);
-                        $('#doc_number').val(data.doc_number);
-                        $('#phone').val(data.phone);
-                        $('#email').val(data.email);
-                        $('#province_id').val(data.province_id);
-                        getDistricts(data.province_id, data.district_id);
-                        getSectors(data.district_id, data.sector_id);
-                        getCells(data.sector_id, data.cell_id);
-                        $('#addModal').modal();
+                    method: "POST",
+                    data: {
+                        request_ids: selectedRows,
+                        user_id: $('#user_id').val(),
+                        _token: "{{ csrf_token() }}",
                     },
-                    error: function (response) {
+                    success: function (data) {
+                        $('#assignModal').modal('hide');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Requests assigned successfully!',
+                        });
+                        dataTable.ajax.reload(function () {
+                            selectedRows = [];
+                            $checkAll.prop('checked', false);
+                            $btnAssign.prop('disabled', true);
+                        });
+                    },
+                    error: function (xhr) {
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
                             text: 'Something went wrong!',
                         });
+                    },
+                    complete: function () {
+                        $btn.prop('disabled', false)
+                            .removeClass('spinner spinner-white spinner-right');
+                        isSubmitting = false;
                     }
-                });
-
-            });
-
-
-            $(document).on('click', '.js-delete', function (e) {
-                e.preventDefault();
-
-                let url = $(this).attr('href');
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: url,
-                            method: "DELETE",
-                            data: {
-                                "_token": "{{ csrf_token() }}",
-                            },
-                            success: function (data) {
-                                dataTable.ajax.reload();
-                            }
-                        })
-                    }
-                });
-
+                })
             });
 
 

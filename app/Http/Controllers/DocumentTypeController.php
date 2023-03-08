@@ -22,7 +22,8 @@ class DocumentTypeController extends Controller
      */
     public function index()
     {
-
+        $documents = DocumentType::query()->orderBy('id','DESC')->get();
+        return view('admin.settings.document_type',compact('documents'));
     }
 
     /**
@@ -43,7 +44,10 @@ class DocumentTypeController extends Controller
      */
     public function store(StoreDocumentTypeRequest $request)
     {
-        //
+        $document = new DocumentType();
+        $document->name=$request->name;
+        $document->save();
+        return redirect()->back()->with('success','Document Type created Successfully');
     }
 
     /**
@@ -77,7 +81,10 @@ class DocumentTypeController extends Controller
      */
     public function update(UpdateDocumentTypeRequest $request, DocumentType $documentType)
     {
-        //
+        $document= DocumentType::find($request->input('DocumentId'));
+        $document->name=$request->name;
+        $document->save();
+        return redirect()->back()->with('success','Document Type updated Successfully');
     }
 
     /**
@@ -86,8 +93,15 @@ class DocumentTypeController extends Controller
      * @param \App\Models\DocumentType $documentType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DocumentType $documentType)
+    public function destroy(DocumentType $documentType,$id)
     {
-        //
+        try {
+            $document = DocumentType::find($id);
+            $document->delete();
+            return redirect()->back()->with('success','Document Type deleted Successfully');
+        }catch (\Exception $exception){
+            info($exception);
+            return redirect()->back()->with('error','Document Type can not deleted Successfully');
+        }
     }
 }

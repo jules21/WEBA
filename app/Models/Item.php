@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -45,9 +46,31 @@ class Item extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "item_category_id",
+        "name",
+        "description",
+        "packaging_unit_id",
+        "selling_price",
+        "vatable",
+        "vat_rate",
+    ];
 
-    public function category(): BelongsTo
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(ItemCategory::class, 'item_category_id');
     }
+
+
+    public function stockMovements(): HasMany
+    {
+        return $this->hasMany(StockMovement::class);
+    }
+
+    public function packagingUnit(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(PackagingUnit::class);
+    }
+
 }
+

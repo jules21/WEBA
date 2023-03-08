@@ -1,4 +1,4 @@
-@extends('layouts.master')
+{{--@extends('layouts.master')--}}
 @section('title')
      Profile
 @stop
@@ -34,7 +34,7 @@
     <!--begin::Container-->
     <div class="container">
         <!--begin::Notice-->
-             @include('partials._alerts')
+{{--             @include('partials._alerts')--}}
         <!--end::Notice-->
         <!--begin::Profile Personal Information-->
         <div class="d-flex flex-row">

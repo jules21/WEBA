@@ -55,7 +55,8 @@
                     </h4>
                 </div>
 
-                <form action="{{ route("admin.requests.store") }}" class="mt-4" method="post">
+                <form action="{{ route("admin.requests.store") }}" class="mt-4" method="post"
+                      enctype="multipart/form-data">
                     @csrf
                     <div class="row">
                         <div class="col-lg-6">
@@ -121,6 +122,20 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
+                                <label for="upi_attachment">UPI Attachment </label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="upi_attachment"
+                                           name="upi_attachment">
+                                    <label class="custom-file-label" for="upi_attachment">Choose file</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
                                 <label for="province_id">Province </label>
                                 <select name="province_id" id="province_id" class="form-control select2"
                                         style="width:100% !important;">
@@ -131,9 +146,6 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="district_id">District </label>
@@ -144,6 +156,9 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="sector_id">Sector </label>
@@ -153,8 +168,6 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="cell_id">Cell </label>
@@ -164,6 +177,9 @@
                                 </select>
                             </div>
                         </div>
+
+                    </div>
+                    <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="village_id">Village </label>
@@ -173,9 +189,7 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
+                        <div class="col-6">
                             <div class="form-group">
                                 <label for="description">Description</label>
                                 <textarea name="description" id="description" rows="3" class="form-control"></textarea>
@@ -214,7 +228,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="road_cross_types">Road Crosses</label>
+                                <label for="road_cross_types">Road Pipe Crosses</label>
                                 <div class="row">
                                     @foreach($roadCrossTypes as $item)
                                         <div class="col-md-4">
@@ -249,7 +263,7 @@
                         </div>
                         <div class="col-lg-6">
                             <label>
-                                Do You want to pay for the equipment yourself by submitting an EBM invoice ?
+                                Do You want to pay for the materials yourself by submitting an EBM invoice ?
                             </label>
                             <div class="form-group">
                                 <label class="radio  checkbox-primary">

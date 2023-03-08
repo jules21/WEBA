@@ -15,7 +15,8 @@ class RoadCrossTypeController extends Controller
      */
     public function index()
     {
-        //
+        $roads = RoadCrossType::query()->orderBy('id','DESC')->get();
+        return view('admin.settings.road_cross_types',compact('roads'));
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateOperationAreaRequest;
 use App\Models\OperationArea;
 use App\Models\District;
 use App\Models\Operator;
+use App\Models\Request;
 use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
@@ -128,7 +129,25 @@ class AreaOfOperationController extends Controller
         return response()
             ->json([
                 'message' => 'Unable to fetch area of operations, please try again later',
+                'data'=>$response->json()
             ], 400);
 
     }
+
+    /**
+     * @param Operator $operator
+     * @return mixed
+     */
+    public function getOperationAreasByOperators(Request $request)
+    {
+        return $request->all();
+
+//        $operatorIds = explode(',', $operators);
+//        $operators = Operator::query()->whereIn('id', $operatorIds)->get();
+//        return $operators->map(function($operator){
+//            return $operator->operationAreas;
+//        });
+    }
+
+
 }

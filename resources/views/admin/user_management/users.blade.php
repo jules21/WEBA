@@ -31,9 +31,6 @@
     </div>
 @stop
 @section('content')
-<div class="d-flex flex-column-fluid">
-    <!--begin::Container-->
-
     <div class="card card-custom gutter-b">
         <div class="flex-wrap card-header">
             <div class="card-title">
@@ -190,10 +187,6 @@
             </div>
         </div>
     </div>
-
-</div>
-
-
 @stop
 
 @section('scripts')
