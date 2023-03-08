@@ -98,8 +98,13 @@ class PaymentTypeController extends Controller
      */
     public function destroy(PaymentType $paymentType,$id)
     {
-        $type = PaymentType::find($id);
-        $type->delete();
-        return redirect()->back()->with('success','Payment Type deleted successfully');
+        try {
+            $type = PaymentType::find($id);
+            $type->delete();
+            return redirect()->back()->with('success','Payment Type deleted successfully');
+        }catch (\Exception $exception){
+            info($exception);
+            return redirect()->back()->with('error','Payment Type can not be deleted successfully');
+        }
     }
 }

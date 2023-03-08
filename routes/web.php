@@ -186,6 +186,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         //water usages
         Route::get('/water_usages',[App\Http\Controllers\WaterUsageController::class,'index'])->name('water.usages');
+
+        //water networks
+        Route::get('/water_networks',[App\Http\Controllers\WaterNetworkController::class,'index'])->name('water.networks');
+        Route::post('/water_network/store',[App\Http\Controllers\WaterNetworkController::class,'store'])->name('water.network.store');
+        Route::post('/water_network/update',[App\Http\Controllers\WaterNetworkController::class,'update'])->name('water.network.edit');
+        Route::get('/water_network/delete/{id}',[App\Http\Controllers\WaterNetworkController::class,'destroy'])->name('water.network.delete');
     });
 
     Route::prefix('stock-management')->name('stock.')->group(function (){
