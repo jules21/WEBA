@@ -37,15 +37,14 @@
 
 
 
-    <div class="container">
-        <div class="card shadow-none border">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h4>
-                        {{ $operator->name }} 's Operation Areas
-                    </h4>
+    <div class="card shadow-none border">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>
+                    {{ $operator->name }} 's Operation Areas
+                </h4>
 
-                    <buttont type="button" class="btn btn-primary btn-sm" id="addButton">
+                <buttont type="button" class="btn btn-primary btn-sm" id="addButton">
                        <span class="svg-icon">
                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
@@ -53,32 +52,32 @@
 </svg>
 
                        </span>
-                        Add New
-                    </buttont>
-                </div>
+                    Add New
+                </buttont>
+            </div>
 
 
-                <div class="table-responsive my-3">
-                    <table class="table table-head-custom border table-head-solid table-hover dataTable">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>District</th>
-                            <th>Contact Name</th>
-                            <th>Contact Phone</th>
-                            <th>Contact Email</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
+            <div class="table-responsive my-3">
+                <table class="table table-head-custom border table-head-solid table-hover dataTable">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>District</th>
+                        <th>Contact Name</th>
+                        <th>Contact Phone</th>
+                        <th>Contact Email</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
 
-                </div>
             </div>
         </div>
     </div>
+
 
 
 
@@ -171,7 +170,8 @@
 
 
         $(document).ready(function () {
-            $('.nav-operators').addClass('menu-item-active');
+            $('.nav-operation-areas').addClass('menu-item-active');
+            // $('.nav-operators').addClass('menu-item-active');
 
             let $licences = [];
 
@@ -213,7 +213,7 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Oops...',
-                            text: 'Something went wrong!',
+                            text: 'Unable to fetch area of operations, please try again later',
                         });
                     },
                     complete: function () {
@@ -275,16 +275,20 @@
                 }
             });
 
+            let isSubmitting = false;
+
             $('#formSave').on('submit', function (e) {
                 e.preventDefault();
 
-                if (!$(this).valid()) {
+                if (!$(this).valid() || isSubmitting) {
                     return;
                 }
 
                 let btn = $(this).find('button[type="submit"]');
                 btn.prop('disabled', true)
                     .addClass('spinner spinner-white spinner-right disabled');
+
+                isSubmitting = true;
 
                 let settings = {
                     "url": $(this).attr('action'),
@@ -326,6 +330,7 @@
                     }, complete: function () {
                         btn.prop('disabled', false)
                             .removeClass('spinner spinner-white spinner-right disabled');
+                        isSubmitting = false;
                     }
                 };
                 $.ajax(settings);

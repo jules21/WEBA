@@ -41,5 +41,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class StockMovement extends Model
 {
-    use HasFactory;
+    const Purchase = 'Purchase';
+    const Sale = 'Sale';
+    const Adjustment = 'Adjustment';
 }

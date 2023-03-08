@@ -40,6 +40,17 @@
             </div>
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
+                    <label class="font-weight-bold">UPI Attchment</label>
+                    <div>
+                        <a href="{{ $request->upi_attachment_url }}" class="btn btn-sm btn-light-danger" target="_blank">
+                            <i class="flaticon2-download-2"></i>
+                            Download UPI
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <div class="form-group">
                     <div class="font-weight-bold">
                         Will the new connection cross a road?
                     </div>
