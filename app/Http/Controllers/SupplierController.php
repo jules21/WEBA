@@ -12,12 +12,12 @@ class SupplierController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
         $operators = Operator::all();
-        $suppliers = Supplier::orderBy('id','DESC')->get();
+        $suppliers = Supplier::with('operator')->orderBy('id','DESC')->get();
         return view('admin.settings.suppliers',compact('suppliers','operators'));
     }
 
@@ -39,7 +39,17 @@ class SupplierController extends Controller
      */
     public function store(StoreSupplierRequest $request)
     {
-        //
+        $supplier = new Supplier();
+        $supplier->operator_id=$request->operator_id;
+        $supplier->name=$request->name;
+        $supplier->phone_number=$request->phone_number;
+        $supplier->email=$request->email;
+        $supplier->address=$request->address;
+        $supplier->contact_name=$request->contact_name;
+        $supplier->contact_email=$request->contact_email;
+//        return $supplier;
+        $supplier->save();
+        return redirect()->back()->with('success','Supplier Created Successfully');
     }
 
     /**
@@ -73,7 +83,15 @@ class SupplierController extends Controller
      */
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
-        //
+        $supplier = Supplier::findOrFail($request->input('SupplierId'));
+        $supplier->operator_id=$request->operator_id;
+        $supplier->name=$request->name;
+        $supplier->phone_number=$request->phone_number;
+        $supplier->email=$request->email;
+        $supplier->address=$request->address;
+        $supplier->contact_name=$request->contact_name;
+        $supplier->save();
+        return redirect()->back()->with('success','Supplier updated Successfully');
     }
 
     /**
@@ -82,8 +100,15 @@ class SupplierController extends Controller
      * @param  \App\Models\Supplier  $supplier
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Supplier $supplier)
+    public function destroy(Supplier $supplier,$id)
     {
-        //
+        try {
+            $supplier = Supplier::find($id);
+            $supplier->delete();
+            return redirect()->back()->with('success','Supplier deleted Successfully');
+        }catch (\Exception $exception){
+            info($exception);
+            return redirect()->back()->with('success','Supplier can not be deleted');
+        }
     }
 }
