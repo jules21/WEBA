@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
             'remember_token' => \Illuminate\Support\Str::random(10),
             'created_at' => now(),
             'updated_at' => now(),
+            'is_super_admin' => true,
         ]);
     }
 }
