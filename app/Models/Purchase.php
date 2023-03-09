@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\GetClassName;
+use App\Traits\HasStatusColor;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -38,12 +41,23 @@ use Illuminate\Support\Carbon;
  */
 class Purchase extends Model
 {
+    use GetClassName, HasStatusColor;
 
     const PENDING = "Pending";
+    const SUBMITTED = "Submitted";
     const APPROVED = "Approved";
+
     const REJECTED = "Rejected";
 
     protected $appends = ['status_color'];
+
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $id = decryptId($value);
+
+        return $this->where('id', $id)->firstOrFail();
+    }
 
     public function movements(): HasMany
     {
@@ -56,17 +70,17 @@ class Purchase extends Model
     }
 
 
-    public function getStatusColorAttribute(): string
+    public function flowHistories(): MorphMany
     {
-        switch ($this->status) {
-            case self::PENDING:
-                return 'info';
-            case self::APPROVED:
-                return 'success';
-            case self::REJECTED:
-                return 'danger';
-        }
-        return 'secondary';
+        return $this->morphMany(FlowHistory::class, 'model');
+    }
+
+    public function getApprovalStatuses(): array
+    {
+        return [
+            self::APPROVED,
+            self::REJECTED
+        ];
     }
 
 }

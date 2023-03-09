@@ -77,7 +77,17 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
-            $('.dataTable').DataTable({
+
+            $('.nav-purchases').addClass('menu-item-active menu-item-open');
+
+            @if(request('type')=='all')
+            $('.nav-all-purchases').addClass('menu-item-active');
+            @else
+            $('.nav-my-purchases').addClass('menu-item-active');
+            @endif
+
+
+            let dataTable = $('.dataTable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: window.location.href,
@@ -118,6 +128,101 @@
                 ],
                 order: [[0, 'desc']]
             });
+
+            $(document).on('click', '.js-submit', function (e) {
+
+                e.preventDefault();
+                let url = $(this).attr('href');
+                let method = "patch";
+
+                Swal.fire({
+                    title: "Are you sure ?",
+                    text: "You want to submit this purchase ?",
+                    icon: "warning",
+                    showCancelButton: !0,
+                    confirmButtonText: "Yes, submit it!",
+                    cancelButtonText: "No, cancel!",
+                    reverseButtons: !0
+                }).then(function (results) {
+
+                    if (results.value) {
+                        $.ajax({
+                            url: url,
+                            method: method,
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                            },
+                            success: function (response) {
+                                Swal.fire({
+                                    title: "Success",
+                                    text: "Purchase submitted successfully",
+                                    icon: "success",
+                                });
+                                dataTable.ajax.reload();
+                            },
+                            error: function (response) {
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "Unable to submit purchase",
+                                    icon: "error",
+                                });
+                            }
+                        });
+                    }
+
+                })
+
+            });
+
+
+            // delete purchase
+            $(document).on('click', '.js-delete', function (e) {
+
+                e.preventDefault();
+                let url = $(this).attr('href');
+                let method = "delete";
+
+                Swal.fire({
+                    title: "Are you sure ?",
+                    text: "You want to delete this purchase ?",
+                    icon: "warning",
+                    showCancelButton: !0,
+                    confirmButtonText: "Yes, delete it!",
+                    cancelButtonText: "No, cancel!",
+                    reverseButtons: !0
+                }).then(function (results) {
+
+                    if (results.value) {
+                        $.ajax({
+                            url: url,
+                            method: method,
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                            },
+                            success: function (response) {
+                                Swal.fire({
+                                    title: "Success",
+                                    text: "Purchase deleted successfully",
+                                    icon: "success",
+                                });
+                                dataTable.ajax.reload();
+                            },
+                            error: function (response) {
+                                Swal.fire({
+                                    title: "Error",
+                                    text: "Unable to delete purchase",
+                                    icon: "error",
+                                });
+                            }
+                        });
+                    }
+
+                })
+
+            });
+
         });
     </script>
 @endsection
+
+

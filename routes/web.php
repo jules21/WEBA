@@ -80,7 +80,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::put('/{request}/update', [RequestsController::class, 'update'])->name('update');
         Route::delete('/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
 
-        Route::group(['middleware' => 'can:'.Permission::AssignRequest], function () {
+        Route::group(['middleware' => 'can:' . Permission::AssignRequest], function () {
             Route::get('/new', [RequestsController::class, 'newRequests'])->name('new');
             Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
             Route::post('/requests/re-assign', [RequestAssignmentController::class, 'reAssign'])->name('re-assign');
@@ -104,12 +104,21 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
     Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
         Route::get('/', [PurchaseController::class, 'index'])->name('index');
+        Route::get('/new', [PurchaseController::class, 'index'])->name('new');
+        Route::get('/pending', [PurchaseController::class, 'index'])->name('pending');
         Route::post('/store', [PurchaseController::class, 'store'])->name('store');
         Route::get('/create', [PurchaseController::class, 'create'])->name('create');
+        Route::patch('/{purchase}/submit', [PurchaseController::class, 'submit'])->name('submit');
+
+
         Route::get('/{purchase}/show', [PurchaseController::class, 'show'])->name('show');
         Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('edit');
         Route::put('/{purchase}/update', [PurchaseController::class, 'update'])->name('update');
-        Route::delete('/{purchase}/delete', [PurchaseController::class, 'destroy'])->name('delete');
+        Route::delete('/{purchase}/delete', [PurchaseController::class, 'destroy'])->name('destroy');
+
+
+        Route::post('/{purchase}/submit-review', [PurchaseController::class, 'submitReview'])->name('submit-review');
+
     });
 
 
@@ -157,55 +166,55 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::prefix('settings')->group(function () {
 
         //request types
-        Route::get('/request_types',[App\Http\Controllers\RequestTypeController::class,'index'])->name('request.types');
-        Route::post('/request_type/store',[App\Http\Controllers\RequestTypeController::class,'store'])->name('request.type.store');
-        Route::post('/request_type/update',[App\Http\Controllers\RequestTypeController::class,'update'])->name('request.type.edit');
-        Route::get('/request_type/delete/{id}',[App\Http\Controllers\RequestTypeController::class,'destroy'])->name('request.type.delete');
+        Route::get('/request_types', [App\Http\Controllers\RequestTypeController::class, 'index'])->name('request.types');
+        Route::post('/request_type/store', [App\Http\Controllers\RequestTypeController::class, 'store'])->name('request.type.store');
+        Route::post('/request_type/update', [App\Http\Controllers\RequestTypeController::class, 'update'])->name('request.type.edit');
+        Route::get('/request_type/delete/{id}', [App\Http\Controllers\RequestTypeController::class, 'destroy'])->name('request.type.delete');
 
         //payment types
-        Route::get('/payment_types',[App\Http\Controllers\PaymentTypeController::class,'index'])->name('payment.types');
-        Route::post('/payment_type/store',[App\Http\Controllers\PaymentTypeController::class,'store'])->name('payment.type.store');
-        Route::post('/payment_type/update',[App\Http\Controllers\PaymentTypeController::class,'update'])->name('payment.type.edit');
-        Route::get('/payment_type/delete/{id}',[App\Http\Controllers\PaymentTypeController::class,'destroy'])->name('payment.type.delete');
+        Route::get('/payment_types', [App\Http\Controllers\PaymentTypeController::class, 'index'])->name('payment.types');
+        Route::post('/payment_type/store', [App\Http\Controllers\PaymentTypeController::class, 'store'])->name('payment.type.store');
+        Route::post('/payment_type/update', [App\Http\Controllers\PaymentTypeController::class, 'update'])->name('payment.type.edit');
+        Route::get('/payment_type/delete/{id}', [App\Http\Controllers\PaymentTypeController::class, 'destroy'])->name('payment.type.delete');
 
         //request duration configurations
-        Route::get('/request_duration_configurations',[App\Http\Controllers\RequestDurationConfigurationController::class,'index'])->name('request.duration.configurations');
-        Route::post('/request_duration_configuration/store',[App\Http\Controllers\RequestDurationConfigurationController::class,'store'])->name('request.duration.configuration.store');
-        Route::post('/request_duration_configuration/update',[App\Http\Controllers\RequestDurationConfigurationController::class,'update'])->name('request.duration.configuration.edit');
-        Route::get('/request_duration_configuration/delete/{id}',[App\Http\Controllers\RequestDurationConfigurationController::class,'destroy'])->name('request.duration.configuration.delete');
+        Route::get('/request_duration_configurations', [App\Http\Controllers\RequestDurationConfigurationController::class, 'index'])->name('request.duration.configurations');
+        Route::post('/request_duration_configuration/store', [App\Http\Controllers\RequestDurationConfigurationController::class, 'store'])->name('request.duration.configuration.store');
+        Route::post('/request_duration_configuration/update', [App\Http\Controllers\RequestDurationConfigurationController::class, 'update'])->name('request.duration.configuration.edit');
+        Route::get('/request_duration_configuration/delete/{id}', [App\Http\Controllers\RequestDurationConfigurationController::class, 'destroy'])->name('request.duration.configuration.delete');
 
         //payment configurations
-        Route::get('/payment_configurations',[App\Http\Controllers\PaymentConfigurationController::class,'index'])->name('payment.configurations');
-        Route::post('/payment_configuration/store',[App\Http\Controllers\PaymentConfigurationController::class,'store'])->name('payment.configuration.store');
-        Route::post('/payment_configuration/update',[App\Http\Controllers\PaymentConfigurationController::class,'update'])->name('payment.configuration.edit');
-        Route::get('/payment_configuration/delete/{id}',[App\Http\Controllers\PaymentConfigurationController::class,'destroy'])->name('payment.configuration.delete');
+        Route::get('/payment_configurations', [App\Http\Controllers\PaymentConfigurationController::class, 'index'])->name('payment.configurations');
+        Route::post('/payment_configuration/store', [App\Http\Controllers\PaymentConfigurationController::class, 'store'])->name('payment.configuration.store');
+        Route::post('/payment_configuration/update', [App\Http\Controllers\PaymentConfigurationController::class, 'update'])->name('payment.configuration.edit');
+        Route::get('/payment_configuration/delete/{id}', [App\Http\Controllers\PaymentConfigurationController::class, 'destroy'])->name('payment.configuration.delete');
 
         //packaging units
-        Route::get('/packaging_units',[App\Http\Controllers\PackagingUnitController::class,'index'])->name('packaging.units');
-        Route::post('/packaging_unit/store',[App\Http\Controllers\PackagingUnitController::class,'store'])->name('packaging.unit.store');
-        Route::post('/packaging_unit/update',[App\Http\Controllers\PackagingUnitController::class,'update'])->name('packaging.unit.edit');
-        Route::get('/packaging_unit/delete/{id}',[App\Http\Controllers\PackagingUnitController::class,'destroy'])->name('packaging.unit.delete');
+        Route::get('/packaging_units', [App\Http\Controllers\PackagingUnitController::class, 'index'])->name('packaging.units');
+        Route::post('/packaging_unit/store', [App\Http\Controllers\PackagingUnitController::class, 'store'])->name('packaging.unit.store');
+        Route::post('/packaging_unit/update', [App\Http\Controllers\PackagingUnitController::class, 'update'])->name('packaging.unit.edit');
+        Route::get('/packaging_unit/delete/{id}', [App\Http\Controllers\PackagingUnitController::class, 'destroy'])->name('packaging.unit.delete');
 
         //document types
-        Route::get('/document_types',[App\Http\Controllers\DocumentTypeController::class,'index'])->name('document.types');
-        Route::post('/document_type/store',[App\Http\Controllers\DocumentTypeController::class,'store'])->name('document.type.store');
-        Route::post('/document_type/update',[App\Http\Controllers\DocumentTypeController::class,'update'])->name('document.type.edit');
-        Route::get('/document_type/delete/{id}',[App\Http\Controllers\DocumentTypeController::class,'destroy'])->name('document.type.delete');
+        Route::get('/document_types', [App\Http\Controllers\DocumentTypeController::class, 'index'])->name('document.types');
+        Route::post('/document_type/store', [App\Http\Controllers\DocumentTypeController::class, 'store'])->name('document.type.store');
+        Route::post('/document_type/update', [App\Http\Controllers\DocumentTypeController::class, 'update'])->name('document.type.edit');
+        Route::get('/document_type/delete/{id}', [App\Http\Controllers\DocumentTypeController::class, 'destroy'])->name('document.type.delete');
 
         //road cross types
-        Route::get('/road_cross_types',[App\Http\Controllers\RoadCrossTypeController::class,'index'])->name('road.cross.types');
+        Route::get('/road_cross_types', [App\Http\Controllers\RoadCrossTypeController::class, 'index'])->name('road.cross.types');
 
         //water usages
-        Route::get('/water_usages',[App\Http\Controllers\WaterUsageController::class,'index'])->name('water.usages');
+        Route::get('/water_usages', [App\Http\Controllers\WaterUsageController::class, 'index'])->name('water.usages');
 
         //water networks
-        Route::get('/water_networks',[App\Http\Controllers\WaterNetworkController::class,'index'])->name('water.networks');
-        Route::post('/water_network/store',[App\Http\Controllers\WaterNetworkController::class,'store'])->name('water.network.store');
-        Route::post('/water_network/update',[App\Http\Controllers\WaterNetworkController::class,'update'])->name('water.network.edit');
-        Route::get('/water_network/delete/{id}',[App\Http\Controllers\WaterNetworkController::class,'destroy'])->name('water.network.delete');
+        Route::get('/water_networks', [App\Http\Controllers\WaterNetworkController::class, 'index'])->name('water.networks');
+        Route::post('/water_network/store', [App\Http\Controllers\WaterNetworkController::class, 'store'])->name('water.network.store');
+        Route::post('/water_network/update', [App\Http\Controllers\WaterNetworkController::class, 'update'])->name('water.network.edit');
+        Route::get('/water_network/delete/{id}', [App\Http\Controllers\WaterNetworkController::class, 'destroy'])->name('water.network.delete');
     });
 
-    Route::prefix('stock-management')->name('stock.')->group(function (){
+    Route::prefix('stock-management')->name('stock.')->group(function () {
         Route::resource('item-categories', \App\Http\Controllers\ItemCategoryController::class);
         Route::resource('items', \App\Http\Controllers\ItemController::class);
         Route::get('/stock-items', [App\Http\Controllers\StockController::class, 'index'])->name('stock-items.index');
