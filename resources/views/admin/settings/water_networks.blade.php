@@ -32,84 +32,76 @@
 @stop
 @section('content')
     <!--begin::Entry-->
-    <div class="d-flex flex-column-fluid">
-        <!--begin::Container-->
-        <div class="container">
-            <!--begin::Card-->
-            <div class="card card-custom">
-                <div class="card-header flex-wrap border-0 pt-6 pb-0">
-                    <div class="card-title">
-                        <h3 class="card-label">Water Networks List</h3>
-                    </div>
-                    <div class="card-toolbar">
-                        <!-- Button trigger modal-->
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#exampleModalLong">
-                            <span class="flaticon-add"></span>
-                            Add New Record
-                        </button>
-
-                        <!-- Modal-->
-                    </div>
-                </div>
-                <div class="card-body">
-
-
-                    <!--begin: Datatable-->
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="table">
-                            {{--                    <table class="table table-striped" id="kt_datatable">--}}
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Distance Covered</th>
-                                <th>Population Covered</th>
-                                <th>Operator</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            @foreach($waterNetworks as $key=>$waterNetwork)
-                                <tr>
-                                    <td>{{++$key}}</td>
-                                    <td>{{$waterNetwork->name}}</td>
-                                    <td>{{$waterNetwork->distance_covered}}</td>
-                                    <td>{{$waterNetwork->population_covered}}</td>
-                                    <td>{{$waterNetwork->operator_id}}</td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                Action
-                                            </button>
-                                            <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-                                                <a href="#" data-id="{{$waterNetwork->id}}"
-                                                   data-name="{{$waterNetwork->name}}"
-                                                   data-distance="{{$waterNetwork->distance_covered}}"
-                                                   data-population="{{$waterNetwork->population_covered}}"
-                                                   data-days="{{$waterNetwork->operator_id}}"
-                                                   class="dropdown-item js-edit">Edit</a>
-                                                <a href="{{route('admin.water.network.delete',$waterNetwork->id)}}"
-                                                   class="dropdown-item js-delete">Delete</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!--end: Datatable-->
-                </div>
+    <div class="card card-custom">
+        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+            <div class="card-title">
+                <h3 class="card-label">Water Networks List</h3>
             </div>
-            <!--end::Card-->
+            <div class="card-toolbar">
+                <!-- Button trigger modal-->
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#exampleModalLong">
+                    <span class="flaticon-add"></span>
+                    Add New Record
+                </button>
+
+                <!-- Modal-->
+            </div>
         </div>
-        <!--end::Container-->
+        <div class="card-body">
+
+
+            <!--begin: Datatable-->
+            <div class="table-responsive">
+                <table class="table table-striped" id="table">
+                    {{--                    <table class="table table-striped" id="kt_datatable">--}}
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Distance Covered</th>
+                        <th>Population Covered</th>
+                        <th>Operator</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    @foreach($waterNetworks as $key=>$waterNetwork)
+                        <tr>
+                            <td>{{++$key}}</td>
+                            <td>{{$waterNetwork->name}}</td>
+                            <td>{{$waterNetwork->distance_covered}}</td>
+                            <td>{{$waterNetwork->population_covered}}</td>
+                            <td>{{$waterNetwork->operator->name?? ''}}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        Action
+                                    </button>
+                                    <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                                        <a href="#" data-id="{{$waterNetwork->id}}"
+                                           data-name="{{$waterNetwork->name}}"
+                                           data-distance="{{$waterNetwork->distance_covered}}"
+                                           data-population="{{$waterNetwork->population_covered}}"
+                                           data-operator="{{$waterNetwork->operator_id}}"
+                                           class="dropdown-item js-edit">Edit</a>
+                                        <a href="{{route('admin.water.network.delete',$waterNetwork->id)}}"
+                                           class="dropdown-item js-delete">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!--end: Datatable-->
+        </div>
     </div>
 
     <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog"
@@ -138,13 +130,13 @@
 
                         <div class="form-group">
                             <label for="name">Population Covered</label>
-                            <input type="number"  name="distance_covered" id="distance_covered" class="form-control" required/>
+                            <input type="number"  name="population_covered" id="population_covered" class="form-control" required/>
                         </div>
 
                         @if(auth()->user()->operator_id == null)
                             <div class="form-group">
                                 <label>Operator</label>
-                                <select name="operator_id" class="form-control select2" style="width: 100% !important;" id="kt_select2_1">
+                                <select name="operator_id" class="form-control select2" style="width: 100% !important;">
                                     <option value="">Select Operator</option>
                                     @foreach($operators as $operator)
                                         <option value="{{$operator->id}}">{{$operator->name}}</option>
@@ -174,12 +166,12 @@
     <div class="modal fade" id="modalUpdate" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.request.duration.configuration.edit')}}" method="post" id="submissionFormEdit" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.water.network.edit')}}" method="post" id="submissionFormEdit" class="submissionForm" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" value="0"  id="ConfigurationId" name="ConfigurationId">
+                <input type="hidden" value="0"  id="WaterNetworkId" name="WaterNetworkId">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Request Duration Configuration</h4>
+                        <h4 class="modal-title">Edit Water Network</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -188,23 +180,23 @@
 
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text"  name="name" id="name" class="form-control" required/>
+                            <input type="text"  name="name" id="edit_name" class="form-control" required/>
                         </div>
 
                         <div class="form-group">
                             <label for="name">Distance Covered</label>
-                            <input type="number"  name="distance_covered" id="distance_covered" class="form-control" required/>
+                            <input type="number"  name="distance_covered" id="edit_distance_covered" class="form-control" required/>
                         </div>
 
                         <div class="form-group">
                             <label for="name">Population Covered</label>
-                            <input type="number"  name="distance_covered" id="distance_covered" class="form-control" required/>
+                            <input type="number"  name="population_covered" id="edit_population_covered" class="form-control" required/>
                         </div>
 
                         @if(auth()->user()->operator_id == null)
                             <div class="form-group">
                                 <label>Operator</label>
-                                <select name="operator_id" class="form-control select2" style="width: 100% !important;" id="kt_select2_1">
+                                <select name="operator_id" class="form-control select2" style="width: 100% !important;" id="edit_operator_id">
                                     <option value="">Select Operator</option>
                                     @foreach($operators as $operator)
                                         <option value="{{$operator->id}}">{{$operator->name}}</option>
@@ -242,7 +234,7 @@
         } );
 
         $('.nav-settings').addClass('menu-item-active  menu-item-open');
-        $('.nav-request-duration-configuration').addClass('menu-item-active');
+        $('.nav-water-networks').addClass('menu-item-active');
 
         $(document).on('click', '.js-edit', function (e) {
             e.preventDefault();
@@ -250,11 +242,10 @@
             console.log($(this).data('name'));
             var url = $(this).data('url');
             $("#ConfigurationId").val($(this).data('id'));
-            $("#edit_request_type_id").val($(this).data('request'));
+            $("#edit_name").val($(this).data('name'));
+            $("#edit_distance_covered").val($(this).data('distance'));
+            $("#edit_population_covered").val($(this).data('population'));
             $("#edit_operator_id").val($(this).data('operator'));
-            $("#edit_operation_area_id").val($(this).data('area'));
-            $("#edit_processing_days").val($(this).data('days'));
-            $("#edit_is_active").val($(this).data('active')? 1:0);
             $('#submissionFormEdit').attr('action', url);
         });
 
@@ -279,7 +270,7 @@
         });
 
         // basic
-        $('#kt_select2_1, .kt_select2_2').select2({
+        $('.select2').select2({
             placeholder: 'Select an operator'
         });
 

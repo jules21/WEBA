@@ -97,7 +97,7 @@ class PackagingUnitController extends Controller
             return redirect()->back()->with('success','Packaging Unit deleted Successfully');
         }catch (\Exception $exception){
             info($exception);
-            return redirect()->back()->with('error','Packaging Unit can not be deleted Successfully');
+            return redirect()->back()->with('error','Packaging Unit can not be deleted');
         }
     }
 }

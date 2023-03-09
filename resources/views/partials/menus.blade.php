@@ -288,6 +288,18 @@
                     </a>
                 </li>
                 @endcan
+                @if(auth()->user()->operator_id)
+                    @can('Manage Water Networks')
+                        <li class="menu-item nav-water-networks" aria-haspopup="true">
+                            <a href="{{ route('admin.water.networks') }}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Water Networks</span>
+                            </a>
+                        </li>
+                    @endcan
+                @endif
                 <li class="menu-item nav-request-duration-configuration" aria-haspopup="true">
                     <a href="{{ route('admin.request.duration.configurations') }}" class="menu-link">
                         <i class="menu-bullet menu-bullet-dot">

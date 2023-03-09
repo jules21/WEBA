@@ -101,7 +101,7 @@ class DocumentTypeController extends Controller
             return redirect()->back()->with('success','Document Type deleted Successfully');
         }catch (\Exception $exception){
             info($exception);
-            return redirect()->back()->with('error','Document Type can not be deleted Successfully');
+            return redirect()->back()->with('error','Document Type can not be deleted');
         }
     }
 }

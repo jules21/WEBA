@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
+use App\Models\Operator;
 use App\Models\Supplier;
 
 class SupplierController extends Controller
@@ -15,7 +16,9 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        //
+        $operators = Operator::all();
+        $suppliers = Supplier::orderBy('id','DESC')->get();
+        return view('admin.settings.suppliers',compact('suppliers','operators'));
     }
 
     /**

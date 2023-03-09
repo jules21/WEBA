@@ -52,8 +52,13 @@ class PaymentConfigurationController extends Controller
 
     public function destroy($id){
 
-        $payment = PaymentConfiguration::find($id);
-        $payment->delete();
-        return redirect()->back()->with('success','Payment Configuration deleted successfully');
+        try {
+            $payment = PaymentConfiguration::find($id);
+            $payment->delete();
+            return redirect()->back()->with('success','Payment Configuration deleted successfully');
+        }catch (\Exception $exception){
+            info($exception);
+            return redirect()->back()->with('success','Payment Configuration can not be deleted');
+        }
     }
 }
