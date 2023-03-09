@@ -132,19 +132,19 @@
         </li>
     @endcanany
 
-    @canany([\App\Constants\Permission::CreateRequest,\App\Constants\Permission::ApproveRequest,\App\Constants\Permission::AssignMeterNumber,\App\Constants\Permission::ReviewRequest])
+    @canany([\App\Constants\Permission::CreatePurchase,\App\Constants\Permission::ApproveRequest])
         <li class="menu-item menu-item-submenu nav-purchases" aria-haspopup="true" data-menu-toggle="hover">
             <a href="javascript:" class="menu-link menu-toggle">
            <span class="svg-icon menu-icon">
               <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tags" width="24" height="24"
                    viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round"
                    stroke-linejoin="round">
-   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-   <path
-       d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z"></path>
-   <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path>
-   <path d="M6 9h-.01"></path>
-</svg>
+               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+               <path
+                   d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z"></path>
+               <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path>
+               <path d="M6 9h-.01"></path>
+            </svg>
            </span>
                 <span class="menu-text">Purchases</span>
                 <i class="menu-arrow"></i>
@@ -153,7 +153,7 @@
                 <i class="menu-arrow"></i>
                 <ul class="menu-subnav">
                     @can(\App\Constants\Permission::CreatePurchase)
-                        <li class="menu-item nav-create-purchase  menu-item-active" aria-haspopup="true">
+                        <li class="menu-item nav-create-purchase" aria-haspopup="true">
                             <a href="{{route('admin.purchases.create')}}" class="menu-link">
                                 <i class="menu-bullet menu-bullet-dot">
                                     <span></span>
@@ -163,42 +163,25 @@
                         </li>
                     @endcan
 
-                    @can(\App\Constants\Permission::AssignRequest)
-                        <li class="menu-item nav-all-users" aria-haspopup="true">
-                            <a href="{{route('admin.requests.new')}}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Pending Purchases</span>
-                            </a>
-                        </li>
 
-                        <li class="menu-item nav-roles" aria-haspopup="true">
-                            <a href="{{route('admin.requests.assigned')}}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Assigned Purchases</span>
-                            </a>
-                        </li>
-                    @endcan
-
-
-                    <li class="menu-item nav-all-permissions" aria-haspopup="true">
-                        <a href="{{ route('admin.requests.my-tasks') }}" class="menu-link">
+                    <li class="menu-item nav-my-purchases" aria-haspopup="true">
+                        <a href="{{route('admin.purchases.index')}}" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
-                            <span class="menu-text">My Tasks</span>
+                            <span class="menu-text">
+                                 My Tasks
+                            </span>
                         </a>
                     </li>
-
-                    <li class="menu-item nav-all-permissions" aria-haspopup="true">
-                        <a href="{{route('admin.requests.index')}}" class="menu-link">
+                    <li class="menu-item nav-all-purchases" aria-haspopup="true">
+                        <a href="{{route('admin.purchases.index',['type'=>'all'])}}" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
-                            <span class="menu-text">All Purchases</span>
+                            <span class="menu-text">
+                                All Purchases
+                            </span>
                         </a>
                     </li>
                 </ul>
@@ -249,44 +232,44 @@
                     </li>
                 @endcan
                 @can('Manage Document Types')
-                <li class="menu-item nav-document-types" aria-haspopup="true">
-                    <a href="{{ route('admin.document.types') }}" class="menu-link">
-                        <i class="menu-bullet menu-bullet-dot">
-                            <span></span>
-                        </i>
-                        <span class="menu-text">Document Type</span>
-                    </a>
-                </li>
+                    <li class="menu-item nav-document-types" aria-haspopup="true">
+                        <a href="{{ route('admin.document.types') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Document Type</span>
+                        </a>
+                    </li>
                 @endcan
                 @can('Manage Packaging Units')
-                <li class="menu-item nav-packaging-units" aria-haspopup="true">
-                    <a href="{{ route('admin.packaging.units') }}" class="menu-link">
-                        <i class="menu-bullet menu-bullet-dot">
-                            <span></span>
-                        </i>
-                        <span class="menu-text">Packaging Units</span>
-                    </a>
-                </li>
+                    <li class="menu-item nav-packaging-units" aria-haspopup="true">
+                        <a href="{{ route('admin.packaging.units') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Packaging Units</span>
+                        </a>
+                    </li>
                 @endcan
                 @can('Manage Road Cross Types')
-                <li class="menu-item nav-road-cross-types" aria-haspopup="true">
-                    <a href="{{ route('admin.road.cross.types') }}" class="menu-link">
-                        <i class="menu-bullet menu-bullet-dot">
-                            <span></span>
-                        </i>
-                        <span class="menu-text">Road Cross Types</span>
-                    </a>
-                </li>
+                    <li class="menu-item nav-road-cross-types" aria-haspopup="true">
+                        <a href="{{ route('admin.road.cross.types') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Road Cross Types</span>
+                        </a>
+                    </li>
                 @endcan
                 @can('Manage Water Usages')
-                <li class="menu-item nav-water-usages" aria-haspopup="true">
-                    <a href="{{ route('admin.water.usages') }}" class="menu-link">
-                        <i class="menu-bullet menu-bullet-dot">
-                            <span></span>
-                        </i>
-                        <span class="menu-text">Water Usages</span>
-                    </a>
-                </li>
+                    <li class="menu-item nav-water-usages" aria-haspopup="true">
+                        <a href="{{ route('admin.water.usages') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Water Usages</span>
+                        </a>
+                    </li>
                 @endcan
                 <li class="menu-item nav-request-duration-configuration" aria-haspopup="true">
                     <a href="{{ route('admin.request.duration.configurations') }}" class="menu-link">

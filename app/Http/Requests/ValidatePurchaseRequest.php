@@ -29,7 +29,7 @@ class ValidatePurchaseRequest extends FormRequest
             'items.*' => ['required', 'numeric'],
             'quantities.*' => ['required', 'numeric'],
             'prices.*' => ['required', 'numeric'],
-            'vats.*' => ['required'],
+            'vats.*' => ['required', 'numeric', 'min:0', 'max:100'],
             'subtotal' => ['required', 'numeric', 'min:0'],
             'tax_amount' => ['required', 'numeric', 'min:0'],
             'grand_total' => ['required', 'numeric', 'min:0'],

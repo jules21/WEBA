@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Permission;
 use App\Http\Requests\ValidatePurchaseRequest;
+use App\Http\Requests\ValidateReviewRequest;
 use App\Models\Item;
 use App\Models\Purchase;
 use App\Models\Stock;
@@ -10,8 +12,19 @@ use App\Models\StockMovement;
 use App\Models\Supplier;
 use DB;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
+use LaravelIdea\Helper\App\Models\_IH_Item_C;
+use LaravelIdea\Helper\App\Models\_IH_Item_QB;
+use LaravelIdea\Helper\App\Models\_IH_Supplier_C;
+use LaravelIdea\Helper\App\Models\_IH_Supplier_QB;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
 class PurchaseController extends Controller
@@ -24,18 +37,55 @@ class PurchaseController extends Controller
     {
 
         if (\request()->ajax()) {
+            $type = redirect('type');
+
             $data = Purchase::query()
                 ->with(['supplier'])
                 ->where('operation_area_id', '=', auth()->user()->operation_area)
-                ->withCount('movements');
+                ->withCount('movements')
+                ->where(function (Builder $builder) {
+
+                    if (\request('type') == 'all') {
+                        return;
+                    }
+
+                    $statuses = [];
+                    if (auth()->user()->can(Permission::CreatePurchase)) {
+                        $statuses[] = Purchase::PENDING;
+                    }
+                    if (auth()->user()->can(Permission::ApprovePurchase)) {
+                        $statuses[] = Purchase::SUBMITTED;
+                    }
+
+                    $builder->whereIn('status', $statuses);
+                });
 
             return datatables()->of($data)
                 ->editColumn('supplier_nane', function ($row) {
                     return $row->supplier->name;
                 })
                 ->addColumn('action', function (Purchase $row) {
-                    $btn = '<a href="" class="btn btn-primary btn-sm">View</a>';
-                    return $btn;
+                    $editBtn = '';
+                    $deleteBtn = '';
+                    $submitBtn = '';
+                    if ($row->status == Purchase::PENDING && auth()->user()->can(Permission::CreatePurchase)) {
+                        $submitBtn = '<a href="' . route('admin.purchases.submit', encryptId($row->id)) . '" class="dropdown-item js-submit"><i class="fa fa-cloud-upload-alt mr-2"></i> Submit</a>';
+                        $editBtn = '<a href="' . route('admin.purchases.edit', encryptId($row->id)) . '" class="dropdown-item"><i class="fa fa-edit mr-2"></i> Edit</a>';
+                        $deleteBtn = '<a href="' . route('admin.purchases.destroy', encryptId($row->id)) . '" class="dropdown-item js-delete"><i class="fa fa-trash mr-2"></i> Delete</a>';
+                    }
+                    return '<div class="dropdown">
+                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Action
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="' . route('admin.purchases.show', encryptId($row->id)) . '">
+                                    <i class="fa fa-info-circle mr-2"></i>
+                                    View</a>
+                                    ' . $submitBtn . '
+                                    ' . $editBtn . '
+                                    ' . $deleteBtn . '
+                                </div>
+                            </div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -45,23 +95,50 @@ class PurchaseController extends Controller
 
     }
 
+    /**
+     * @throws Throwable
+     */
+    public function submit(Purchase $purchase)
+    {
+        DB::beginTransaction();
+        if ($purchase->status == Purchase::PENDING) {
+            $purchase->update([
+                'status' => Purchase::SUBMITTED
+            ]);
+        }
+
+        $this->saveFlowHistory($purchase, 'Purchase submitted', Purchase::SUBMITTED);
+
+        DB::commit();
+
+
+        if (\request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Purchase submitted successfully'
+            ]);
+        }
+
+        return redirect()
+            ->route('admin.purchases.index')
+            ->with('success', 'Purchase submitted successfully');
+
+    }
+
 
     public function create()
     {
-        $suppliers = Supplier::query()
-            ->where('operator_id', '=', auth()->user()->operator_id)
-            ->orderBy('name')
-            ->get();
+        $suppliers = $this->getSuppliers();
 
-        $items = Item::query()
-            ->orderBy('name')
-            ->get();
+        $items = $this->getItems();
 
 
         return view('admin.purchases.create', [
             'suppliers' => $suppliers,
             'items' => $items
         ]);
+
+
     }
 
 
@@ -72,38 +149,14 @@ class PurchaseController extends Controller
     {
         $data = $request->validated();
 
-//        return $data;
-
         DB::beginTransaction();
 
-        $purchase = Purchase::create([
-            'supplier_id' => $data['supplier_id'],
-            'description' => $data['description'],
-            'created_by' => auth()->id(),
-            'status' => Purchase::PENDING,
-            'subtotal' => $data['subtotal'],
-            'tax_amount' => $data['tax_amount'],
-            'tax_net_amount' => $data['tax_amount'],
-            'total' => $data['grand_total'],
-            'operation_area_id' => auth()->user()->operation_area
-        ]);
+        $purchase = Purchase::create($this->getPurchaseData($data));
 
-        foreach ($data['items'] as $key => $item) {
-            $stockItem = Stock::with('item')->where('item_id', '=', $item)->first();
-            $existingItem = Item::find($item);
-            $qty = $data['quantities'][$key];
-            $price = $data['prices'][$key];
-            $purchase->movements()->create([
-                'item_id' => $item,
-                'operation_area_id' => auth()->user()->operation_area,
-                'opening_qty' => $stockItem->quantity ?? 0,
-                'qty_in' => $qty,
-                'qty_out' => 0,
-                'unit_price' => $price,
-                'description' => "Purchase of {$qty} {$existingItem->name} at " . number_format($price, 2),
-                'type' => StockMovement::Purchase,
-            ]);
-        }
+        $this->saveItems($data, $purchase);
+
+        $this->saveFlowHistory($purchase, 'Purchase created', Purchase::PENDING);
+
         DB::commit();
 
         return redirect()
@@ -115,34 +168,80 @@ class PurchaseController extends Controller
      * Display the specified resource.
      *
      * @param Purchase $purchase
-     * @return void
+     * @return Application|Factory|View
      */
     public function show(Purchase $purchase)
     {
+        $purchase->load(['movements.item', 'supplier', 'flowHistories.user']);
 
+        $reviews = $purchase->flowHistories
+            ->where('is_comment', '=', true);
+
+        $flowHistories = $purchase->flowHistories
+            ->where('is_comment', '=', false);
+
+        return view('admin.purchases.details', [
+            'purchase' => $purchase,
+            'reviews' => $reviews,
+            'flowHistories' => $flowHistories
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Purchase $purchase
-     * @return Response
-     */
     public function edit(Purchase $purchase)
     {
-        //
+        if ($purchase->status != Purchase::PENDING) {
+            return redirect()
+                ->back()
+                ->with('error', 'Purchase cannot be edited');
+        }
+
+        $suppliers = $this->getSuppliers();
+
+        $items = $this->getItems();
+
+        $purchase->load(['movements.item']);
+
+
+        return view('admin.purchases.create', [
+            'purchase' => $purchase,
+            'suppliers' => $suppliers,
+            'items' => $items
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param ValidatePurchaseRequest $request
      * @param Purchase $purchase
-     * @return Response
+     * @return RedirectResponse
+     * @throws Throwable
      */
-    public function update(Request $request, Purchase $purchase)
+    public function update(ValidatePurchaseRequest $request, Purchase $purchase)
     {
-        //
+        $data = $request->validated();
+
+        if ($purchase->status != Purchase::PENDING) {
+            return redirect()
+                ->back()
+                ->with('error', 'Purchase cannot be edited');
+        }
+
+        DB::beginTransaction();
+
+        $purchase->update($this->getPurchaseData($data));
+
+        $purchase->movements()->delete();
+
+        $this->saveItems($data, $purchase);
+
+        $this->saveFlowHistory($purchase, 'Purchase updated', Purchase::PENDING);
+
+        DB::commit();
+
+        return redirect()
+            ->route('admin.purchases.index')
+            ->with('success', 'Purchase updated successfully');
     }
 
 
@@ -151,10 +250,17 @@ class PurchaseController extends Controller
      */
     public function destroy(Purchase $purchase)
     {
+        if ($purchase->status != Purchase::PENDING) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Purchase cannot be deleted'
+            ], ResponseAlias::HTTP_BAD_REQUEST);
+        }
+
         DB::beginTransaction();
-        $purchase
-            ->movements()
-            ->delete();
+        $purchase->movements()->delete();
+
+        $purchase->flowHistories()->delete();
 
         $purchase->delete();
 
@@ -169,5 +275,152 @@ class PurchaseController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Purchase deleted successfully');
+    }
+
+    /**
+     * @param $purchase
+     * @param $message
+     * @param $status
+     * @param bool $isComment
+     * @return void
+     */
+    public function saveFlowHistory($purchase, $message, $status, $isComment = false): void
+    {
+        $purchase->flowHistories()
+            ->create([
+                'status' => $status,
+                'user_id' => auth()->id(),
+                'comment' => $message,
+                'type' => $purchase->getClassName(),
+                'is_comment' => $isComment
+            ]);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function submitReview(ValidateReviewRequest $request, Purchase $purchase)
+    {
+        $data = $request->validated();
+
+        DB::beginTransaction();
+
+        $status = $data['status'];
+        $this->saveFlowHistory($purchase, $data['comment'], $status, true);
+
+        $purchase->update([
+            'status' => $status,
+            'approved_by' => auth()->id()
+        ]);
+        $this->saveFlowHistory($purchase, "Purchase {$status}", $status);
+
+
+        // if purchase is approved, update stock items quantity if not exist create new
+
+        if ($status == Purchase::APPROVED) {
+            $this->updateStockItems($purchase);
+        }
+
+
+        DB::commit();
+
+        if (\request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Purchase reviewed successfully'
+            ]);
+        }
+
+        return redirect()
+            ->back()
+            ->with('success', 'Purchase reviewed successfully');
+
+    }
+
+    /**
+     * @param Purchase $purchase
+     * @return void
+     */
+    public function updateStockItems(Purchase $purchase): void
+    {
+        foreach ($purchase->movements()->get() as $movement) {
+            $stockItem = Stock::where('item_id', '=', $movement->item_id)
+                ->firstOrCreate([
+                    'item_id' => $movement->item_id,
+                    'operation_area_id' => $movement->operation_area_id,
+                    'quantity' => 0
+                ]);
+
+            $stockItem->update([
+                'quantity' => $stockItem->quantity + $movement->qty_in
+            ]);
+        }
+    }
+
+    /**
+     * @return Supplier[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection|_IH_Supplier_C|_IH_Supplier_QB[]
+     */
+    public function getSuppliers()
+    {
+        return Supplier::query()
+            ->where('operator_id', '=', auth()->user()->operator_id)
+            ->orderBy('name')
+            ->get();
+    }
+
+    /**
+     * @return Item[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection|_IH_Item_C|_IH_Item_QB[]
+     */
+    public function getItems()
+    {
+        return Item::query()
+            ->orderBy('name')
+            ->get();
+    }
+
+    /**
+     * @param array $data
+     * @param $purchase
+     * @return void
+     */
+    public function saveItems(array $data, $purchase): void
+    {
+        foreach ($data['items'] as $key => $item) {
+            $stockItem = Stock::with('item')->where('item_id', '=', $item)->first();
+            $existingItem = Item::find($item);
+            $qty = $data['quantities'][$key];
+            $price = $data['prices'][$key];
+            $vat = $data['vats'][$key];
+            $purchase->movements()->create([
+                'item_id' => $item,
+                'operation_area_id' => auth()->user()->operation_area,
+                'opening_qty' => $stockItem->quantity ?? 0,
+                'qty_in' => $qty,
+                'qty_out' => 0,
+                'unit_price' => $price,
+                'description' => "Purchase of $qty $existingItem->name at " . number_format($price, 2),
+                'type' => StockMovement::Purchase,
+                'vat' => $vat,
+            ]);
+        }
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    public function getPurchaseData(array $data): array
+    {
+        return [
+            'supplier_id' => $data['supplier_id'],
+            'description' => $data['description'],
+            'created_by' => auth()->id(),
+            'status' => Purchase::PENDING,
+            'subtotal' => $data['subtotal'],
+            'tax_amount' => $data['tax_amount'],
+            'tax_net_amount' => $data['tax_amount'],
+            'total' => $data['grand_total'],
+            'operation_area_id' => auth()->user()->operation_area
+        ];
     }
 }

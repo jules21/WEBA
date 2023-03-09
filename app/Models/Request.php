@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Constants\Permission;
+use App\Traits\GetClassName;
 use App\Traits\HasAddress;
 use App\Traits\HasStatusColor;
 use Eloquent;
@@ -93,6 +94,7 @@ class Request extends Model
     protected $appends = ['status_color', 'upi_attachment_url'];
     use HasAddress;
     use HasStatusColor;
+    use GetClassName;
 
     const UPI_ATTACHMENT_PATH = 'requests/upi/';
 
@@ -177,11 +179,6 @@ class Request extends Model
         return $this->hasOne(RequestAssignment::class);
     }
 
-    // static method to get class name with namespace
-    public function getClassName(): string
-    {
-        return (new ReflectionClass($this))->getShortName();
-    }
 
     const PENDING = 'Pending';
     const ASSIGNED = 'Assigned';
