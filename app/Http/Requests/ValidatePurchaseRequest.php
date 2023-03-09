@@ -26,18 +26,13 @@ class ValidatePurchaseRequest extends FormRequest
         return [
             'supplier_id' => ['required', 'exists:suppliers,id'],
             'description' => ['required', 'string'],
-            'items' => [
-                'required',
-                'array',
-                function ($attribute, $value, $fail) {
-                    if (count($value) < 1) {
-                        $fail('At least one item is required');
-                    }
-                }
-            ],
-            'items.*.item_id' => ['required', 'exists:items,id'],
-            'items.*.quantity' => ['required', 'numeric', 'min:1'],
-            'items.*.price' => ['required', 'numeric', 'min:1']
+            'items.*' => ['required', 'numeric'],
+            'quantities.*' => ['required', 'numeric'],
+            'prices.*' => ['required', 'numeric'],
+            'vats.*' => ['required'],
+            'subtotal' => ['required', 'numeric', 'min:0'],
+            'tax_amount' => ['required', 'numeric', 'min:0'],
+            'grand_total' => ['required', 'numeric', 'min:0'],
         ];
     }
 
