@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Constants\Permission;
 use App\Traits\GetClassName;
 use App\Traits\HasStatusColor;
 use Eloquent;
@@ -81,6 +82,13 @@ class Purchase extends Model
             self::APPROVED,
             self::REJECTED
         ];
+    }
+
+    public function canBeReviewed(): bool
+    {
+        return $this->status === self::SUBMITTED
+            && auth()->user()->operation_area
+            && auth()->user()->can(Permission::ApprovePurchase);
     }
 
 }

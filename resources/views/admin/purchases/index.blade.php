@@ -39,14 +39,14 @@
                     Manage Purchases
                 </h4>
 
-                @can(\App\Constants\Permission::CreatePurchase)
+                @if( auth()->user()->can(\App\Constants\Permission::CreatePurchase) && auth()->user()->operation_area)
 
                     <a href="{{ route('admin.purchases.create') }}" class="btn btn-primary btn-sm rounded">
                         <i class="flaticon2-plus-1"></i>
                         Add New
                     </a>
 
-                @endcan
+                @endif
             </div>
 
 

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -56,7 +57,7 @@ class Item extends Model
         "vat_rate",
     ];
 
-    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(ItemCategory::class, 'item_category_id');
     }
@@ -67,9 +68,14 @@ class Item extends Model
         return $this->hasMany(StockMovement::class);
     }
 
-    public function packagingUnit(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function packagingUnit(): BelongsTo
     {
         return $this->belongsTo(PackagingUnit::class);
+    }
+
+    public function stock(): HasOne
+    {
+        return $this->hasOne(Stock::class);
     }
 
 }
