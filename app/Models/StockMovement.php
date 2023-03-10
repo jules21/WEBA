@@ -58,4 +58,14 @@ class StockMovement extends Model
     {
         return ($this->qty_in - $this->qty_out) * $this->unit_price;
     }
+
+    public function operationArea(): BelongsTo
+    {
+        return $this->belongsTo(OperationArea::class);
+    }
+
+    public function details()
+    {
+        return $this->hasMany(StockMovementDetail::class);
+    }
 }
