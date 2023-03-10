@@ -7,6 +7,8 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DocumentTypeController;
+use App\Http\Controllers\ItemCategoryController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MeterRequestController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\PurchaseController;
@@ -215,8 +217,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     });
 
     Route::prefix('stock-management')->name('stock.')->group(function () {
-        Route::resource('item-categories', \App\Http\Controllers\ItemCategoryController::class);
-        Route::resource('items', \App\Http\Controllers\ItemController::class);
+        Route::resource('item-categories', ItemCategoryController::class);
+        Route::resource('items', ItemController::class);
         Route::get('/stock-items', [App\Http\Controllers\StockController::class, 'index'])->name('stock-items.index');
         Route::get('/stock-movements', [App\Http\Controllers\StockMovementController::class, 'index'])->name('stock-items.movements');
     });
