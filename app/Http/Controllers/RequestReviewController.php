@@ -36,9 +36,15 @@ class RequestReviewController extends Controller
         if ($status == AppRequest::APPROVED) {
             $requestItems = $request->items()->with('item')->get();
             foreach ($requestItems as $requestItem) {
-                $this->updateStock($requestItem);
                 $this->updateStockMovement($requestItem, $request);
+                $this->updateStock($requestItem);
             }
+
+            $request->operator
+                ->customers()
+                ->syncWithoutDetaching([
+                    $request->customer_id
+                ]);
         }
 
 
@@ -154,10 +160,11 @@ class RequestReviewController extends Controller
     public function updateStockMovement($requestItem, AppRequest $request): void
     {
         $item = $requestItem->item;
+        $stockItem = $item->stock()->first();
         $item->stockMovements()
             ->create([
                 'operation_area_id' => auth()->user()->operation_area,
-                'opening_qty' => $item->quantity,
+                'opening_qty' => $stockItem->quantity,
                 'qty_in' => 0,
                 'qty_out' => $requestItem->quantity,
                 'description' => 'Request approved, stock decreased by ' . $requestItem->quantity,
