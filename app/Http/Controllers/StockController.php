@@ -19,7 +19,7 @@ class StockController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
-        $stock = Stock::query();
+        $stock = Stock::with('operationArea');
 
         $stock->when($user->operator_id, function ($query) use ($user) {
             $query->whereHas('operationArea', function ($query) use ($user) {

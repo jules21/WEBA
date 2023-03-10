@@ -11,7 +11,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+
 use Illuminate\Support\Carbon;
+
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+
 use Storage;
 
 
@@ -128,6 +132,10 @@ class Operator extends Model
     public function customers(): BelongsToMany
     {
         return $this->belongsToMany(Customer::class, 'customer_operators', 'operator_id', 'customer_id');
+    }
+    public function stocks(): HasManyThrough
+    {
+        return $this->hasManyThrough(Stock::class, OperationArea::class);
     }
 
 

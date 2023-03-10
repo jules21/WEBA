@@ -21,7 +21,8 @@ class SupplierFactory extends Factory
             'address' => $this->faker->address,
             'contact_name' => $this->faker->name,
             'contact_email' => $this->faker->unique()->safeEmail,
-            'operator_id' => Operator::query()->inRandomOrder()->first()->id
+//            'operator_id' => Operator::query()->inRandomOrder()->first()->id
+        'operator_id' => \Helper::getRandomModelId(Operator::class)
         ];
     }
 }
