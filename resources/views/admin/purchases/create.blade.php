@@ -41,7 +41,13 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>
-                    Create New Purchase
+                    @if(isset($purchase))
+                        Edit
+                    @else
+                        New
+                    @endif
+
+                    Purchase
                 </h4>
 
                 <a href="" class="btn btn-light-primary btn-sm" id="addButton">
@@ -49,16 +55,23 @@
                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
-   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-   <path d="M9 13l-4 -4l4 -4m-4 4h11a4 4 0 0 1 0 8h-1"></path>
-</svg>
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                           <path d="M9 13l-4 -4l4 -4m-4 4h11a4 4 0 0 1 0 8h-1"></path>
+                        </svg>
                        </span>
                     Go Back To Purchases
                 </a>
             </div>
 
-            <form action="{{ route('admin.purchases.store') }}" method="post" class="mt-4" id="submitForm">
+            <form
+                    action="{{ isset($purchase)?route('admin.purchases.update',encryptId($purchase->id)): route('admin.purchases.store') }}"
+                    method="post" class="mt-4" id="submitForm">
                 @csrf
+
+                @if(isset($purchase))
+                    @method('PUT')
+                @endif
+
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
@@ -69,7 +82,8 @@
                                     style="width: 100%!important;">
                                 <option value="">Select Supplier</option>
                                 @foreach($suppliers as $supplier)
-                                    <option value="{{ $supplier->id }}">
+                                    <option value="{{ $supplier->id }}"
+                                            {{ $supplier->id == (isset($purchase)?$purchase->supplier_id:'')?'selected':'' }}>
                                         {{ $supplier->name }} - {{ $supplier->phone_number }}
                                     </option>
                                 @endforeach
@@ -96,6 +110,71 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+
+                                @if(isset($purchase))
+                                    @foreach($purchase->movements as $item)
+                                        <tr>
+                                            <td>
+                                                <select name="items[]" class="form-control select2" required
+                                                        style="width: 100%!important;">
+                                                    <option value="">Select Item</option>
+                                                    @foreach($items as $it)
+                                                        <option value="{{ $it->id }}"
+                                                                {{ $it->id== $item->item_id ?'selected':'' }}
+                                                                data-price="{{ $it->selling_price }}"
+                                                                data-vat="{{ $it->vat_rate }}"
+                                                        >
+                                                            {{ $it->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <label id="items[]-error" class="error" for="items[]"
+                                                       style="display: none;"></label>
+                                            </td>
+                                            <td>
+                                                <input type="number" value="{{ $item->qty_in }}" min="0.1" step="0.1"
+                                                       required name="quantities[]"
+                                                       class="form-control form-control-sm w-100px"/>
+                                                <label id="quantities[]-error" class="error" for="quantities[]"
+                                                       style="display: none;"></label>
+                                            </td>
+                                            <td>
+                                                <input type="number" value="{{ $item->unit_price }}" min="1" step="0.5"
+                                                       required name="prices[]"
+                                                       class="form-control form-control-sm w-150px"/>
+                                                <label id="prices[]-error" class="error" for="prices[]"
+                                                       style="display: none;"></label>
+                                            </td>
+                                            <td>
+                                                <span class="total">
+                                                    {{ number_format($item->total) }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <select name="vats[]" required
+                                                        class="form-control form-control-sm w-100px">
+                                                    <option
+                                                            {{ $item->vat==18?"selected":"" }} value="18">
+                                                        VAT ({{$item->item->vat_rate}}%)
+                                                    </option>
+                                                    <option
+                                                            {{ $item->vat==0?"selected":"" }} value="0">
+                                                        NO VAT(0%)
+                                                    </option>
+                                                </select>
+                                                <label id="vats[]-error" class="error" for="vats[]"
+                                                       style="display: none;"></label>
+                                            </td>
+                                            <td>
+                                                <button type="button"
+                                                        class="btn btn-sm btn-light-danger btn-icon font-weight-bold rounded-circle js-delete">
+                                                    <i class="flaticon2-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
                                 </tbody>
                             </table>
                         </div>
@@ -117,7 +196,7 @@
                         <div class="form-group mt-4">
                             <label for="description">Description</label>
                             <textarea name="description" id="description" required cols="30" rows="3"
-                                      class="form-control"></textarea>
+                                      class="form-control">{{ isset($purchase)?$purchase->description:'' }}</textarea>
                         </div>
                     </div>
                     <div class="col-lg-5">
@@ -207,7 +286,7 @@
 
             // create a td element
             td = $('<td></td>');
-            td.append('<input type="number" min="0.1" step="0.1" required name="quantities[]" class="form-control w-150px"/>');
+            td.append('<input type="number" min="0.1" step="0.1" required name="quantities[]" class="form-control form-control-sm w-100px"/>');
             td.append(`<label id="quantities[]-error" class="error" for="quantities[]" style="display: none;"></label>`);
 
             // append td to tr
@@ -215,7 +294,7 @@
 
             // create a td element
             td = $('<td></td>');
-            td.append('<input type="number" min="1" step="0.5" required name="prices[]" class="form-control w-150px"/>');
+            td.append('<input type="number" min="1" step="0.5" required name="prices[]" class="form-control form-control-sm w-150px"/>');
             td.append(`<label id="prices[]-error" class="error" for="prices[]" style="display: none;"></label>`);
 
             // append td to tr
@@ -230,9 +309,9 @@
 
             // create a td element
             td = $('<td></td>');
-            td.append('<select name="vats[]" required id="" class="form-control w-100px">\n' +
+            td.append('<select name="vats[]" required id="" class="form-control form-control-sm w-100px">\n' +
                 '                                            <option value=""></option>\n' +
-                '                                            <option value="1">VAT</option>\n' +
+                '                                            <option value="18">VAT</option>\n' +
                 '                                            <option value="0">NO VAT</option>\n' +
                 '                                        </select>');
             td.append(`<label id="vats[]-error" class="error" for="vats[]" style="display: none;"></label>`);
@@ -242,7 +321,7 @@
 
             // create a td element
             td = $('<td></td>');
-            td.append('<button class="btn btn-icon btn-light-danger rounded-circle js-delete">\n' +
+            td.append('<button class="btn btn-icon btn-light-danger btn-sm rounded-circle js-delete">\n' +
                 '                                            <i class="flaticon2-trash"></i>\n' +
                 '                                        </button>');
 
@@ -256,6 +335,34 @@
             $('.select2').select2();
         }
 
+        function hasDuplicatesItems(form) {
+            let itemElements = $(form).find('select[name="items[]"]');
+            let itemIds = [];
+            itemElements.each(function (index, itemElement) {
+                let itemId = $(itemElement).val();
+                if (itemId !== '') {
+                    itemIds.push(Number(itemId));
+                }
+            });
+
+            // select all duplicates in itemIds
+            itemIds = itemIds.filter((item, index) => itemIds.indexOf(item) !== index);
+            // select all items with given itemIds
+            if (itemIds.length > 0) {
+                let duplicatedItems = items.filter(item => itemIds.includes(item.id));
+                let itemNames = duplicatedItems.map(item => item.name);
+                let message = 'The following items are duplicated: ' + itemNames.join(', ');
+                Swal.fire({
+                    title: 'Error!',
+                    text: message,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+                return true;
+            }
+            return false;
+        }
+
         $(function () {
             $('.nav-purchases').addClass('menu-item-active menu-item-open');
             $('.nav-create-purchase').addClass('menu-item-active');
@@ -266,7 +373,6 @@
                 addItem();
             });
 
-            addItem();
 
             // initialize delete button
             $(document).on('click', '.js-delete', function () {
@@ -278,17 +384,53 @@
                 calculateTotal();
             });
 
+            $(document).on('change', 'select[name="items[]"]', function () {
+                let itemElement = $(this);
+                let itemId = itemElement.val();
+                let item = items.find(item => item.id === parseInt(itemId));
+                let tr = itemElement.closest('tr');
+                tr.find('input[name="prices[]"]').val(item.selling_price);
+                let vatElement = tr.find('select[name="vats[]"]');
+                vatElement.empty();
+                vatElement.append(`<option value="${item.vat_rate}">VAT (${item.vat_rate}%)</option>`);
+                vatElement.append(`<option value="0">NO VAT (0%)</option>`);
+
+                calculateTotal();
+            });
+
+            $form.on('submit', function (e) {
+                e.preventDefault();
+                if (!$form.valid()) {
+                    return;
+                }
+
+                if (hasDuplicatesItems(this))
+                    return;
+
+
+                let $btn = $(this).find('[type="submit"]');
+
+                $btn.addClass('spinner spinner-right spinner-white pr-15').attr('disabled', true);
+
+                e.target.submit();
+
+            });
+
+
+            @if(!isset($purchase))
+            addItem();
+            @else
+            calculateTotal();
+            @endif
+
         });
 
         function calculateTotal() {
-            let total = 0;
             let tax = 0;
-            // let tax_rate = 0.18;
-
             let subTotal = 0;
             $('#itemsTable tbody tr').each(function () {
-
                 let itemElement = $(this).find('select[name="items[]"]');
+
                 let itemId = itemElement.val();
                 let quantity = $(this).find('input[name="quantities[]"]').val();
                 let unit_price = $(this).find('input[name="prices[]"]').val();
@@ -299,7 +441,7 @@
                 if (quantity && unit_price) {
                     let total_price = quantity * unit_price;
                     $(this).find('.total').text(total_price.toLocaleString());
-                    if (vat === '1') {
+                    if (vat !== '0') {
                         let tax_rate = (item.vat_rate / 100).toFixed(2);
                         tax += total_price * tax_rate;
                     }

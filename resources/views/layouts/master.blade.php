@@ -38,6 +38,9 @@
             color: #F64E60 !important;
             font-size: 12px !important;
         }
+        .table td {
+            vertical-align: middle !important;
+        }
     </style>
 </head>
 <!--end::Head-->
