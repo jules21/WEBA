@@ -25,4 +25,10 @@ use Illuminate\Database\Eloquent\Model;
 class DocumentType extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name'
+    ];
+
+
 }

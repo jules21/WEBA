@@ -15,7 +15,7 @@ class AddDocTypeIdToCustomersTable extends Migration
     {
         Schema::table('customers', function (Blueprint $table) {
             $table->dropColumn('doc_type');
-            $table->foreignId('document_type_id')->after('legal_type_id')->constrained();
+            $table->foreignId('document_type_id')->after('legal_type_id')->nullable()->constrained();
         });
     }
 
