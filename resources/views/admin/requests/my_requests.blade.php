@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title',"Requests")
+@section('title',"My Tasks")
 
 @section('content')
 
@@ -54,6 +54,7 @@
                 <table class="table table-head-custom border table-head-solid table-hover dataTable">
                     <thead>
                     <tr>
+                        <th>Created At</th>
                         <th>Customer</th>
                         <th>Request Type</th>
                         <th>Qty</th>
@@ -181,6 +182,11 @@
                 processing: true,
                 ajax: "{!! request()->fullUrl() !!}",
                 columns: [
+                    {data: "created_at", name: "created_at",
+                        render: function (data, type, row) {
+                            return moment(data).format('DD/MM/YYYY');
+                        }
+                    },
                     {data: "customer.name", name: "customer.name"},
                     {data: "request_type.name", name: "requestType.name"},
                     {data: "meter_qty", name: "meter_qty"},
