@@ -104,7 +104,7 @@ class PaymentTypeController extends Controller
             return redirect()->back()->with('success','Payment Type deleted successfully');
         }catch (\Exception $exception){
             info($exception);
-            return redirect()->back()->with('error','Payment Type can not be deleted successfully');
+            return redirect()->back()->with('error','Payment Type can not be deleted');
         }
     }
 }

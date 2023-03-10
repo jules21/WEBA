@@ -147,7 +147,7 @@
 
                 {{--                review form--}}
 
-                @if( auth()->user()->can(\App\Constants\Permission::ApprovePurchase) && $purchase->status == \App\Models\Purchase::SUBMITTED)
+                @if( $purchase->canBeReviewed())
 
                     <div class="row justify-content-center">
                         <div class="col-lg-8">

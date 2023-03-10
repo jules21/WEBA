@@ -103,7 +103,7 @@ class RequestTypeController extends Controller
             return redirect()->back()->with('success','Request Type deleted successfully');
         }catch (\Exception $exception){
           info($exception);
-            return redirect()->back()->with('error','Request Type can not deleted successfully');
+            return redirect()->back()->with('error','Request Type can not deleted');
         }
     }
 }

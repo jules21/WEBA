@@ -214,7 +214,7 @@
 
                         </div>
                         <div class="col-lg-6">
-                            <div class="form-group">
+                            <div class="form-group" id="roadTypeContainer" style="display: none">
                                 <label for="road_type">Road Type</label>
                                 <select name="road_type" id="road_type" class="form-control ">
                                     <option value="">Select Road Type</option>
@@ -397,6 +397,15 @@
 
             $('#sector_id').on('change', function (e) {
                 getCells($(this).val());
+            });
+
+            // radio with name new_connection_crosses_road
+            $('input[name="new_connection_crosses_road"]').on('change', function (e) {
+                if ($(this).val() === '1') {
+                    $('#roadTypeContainer').slideDown();
+                } else {
+                    $('#roadTypeContainer').slideUp();
+                }
             });
 
             $('#formSave').on('submit', function (e) {

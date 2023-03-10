@@ -17,6 +17,9 @@ use App\Models\WaterUsage;
 use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use LaravelIdea\Helper\App\Models\_IH_User_C;
+use LaravelIdea\Helper\App\Models\_IH_User_QB;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
@@ -184,8 +187,9 @@ class RequestsController extends Controller
 
         $items = Item::query()
             ->whereHas('category', fn(Builder $query) => $query->where('is_meter', '=', false))
-            ->orderBy('name')
-            ->get();
+            ->whereHas('stock', fn(Builder $query) => $query->where('quantity', '>', 0))
+                ->orderBy('name')
+                ->get();
 
         $technician = $request->technician()->first();
 
@@ -311,9 +315,7 @@ class RequestsController extends Controller
         return view('admin.requests.my_requests');
     }
 
-    /**
-     * @return User[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\LaravelIdea\Helper\App\Models\_IH_User_C|\LaravelIdea\Helper\App\Models\_IH_User_QB[]
-     */
+
     public function getUsersToAssign()
     {
         return User::query()

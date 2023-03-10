@@ -31,4 +31,8 @@ use Illuminate\Database\Eloquent\Model;
 class WaterNetwork extends Model
 {
     use HasFactory;
+
+    public function operator(){
+        return $this->belongsTo(Operator::class,'operator_id');
+    }
 }
