@@ -285,7 +285,7 @@
                 @endif
                 @can('Manage suppliers')
                     <li class="menu-item nav-suppliers" aria-haspopup="true">
-                        <a href="{{ route('admin.water.usages') }}" class="menu-link">
+                        <a href="{{ route('admin.suppliers') }}" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
