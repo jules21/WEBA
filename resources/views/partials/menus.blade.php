@@ -195,7 +195,7 @@
     </li>
     <li class="menu-item menu-item-submenu nav-user-managements" aria-haspopup="true" data-menu-toggle="hover">
         <a href="javascript:;" class="menu-link menu-toggle">
-            <i class="menu-icon flaticon-users"></i>
+            <i class="menu-icon flaticon2-cube"></i>
             <span class="menu-text">Stock Management</span>
             <i class="menu-arrow"></i>
         </a>

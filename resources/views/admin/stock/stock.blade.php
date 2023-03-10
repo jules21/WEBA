@@ -122,6 +122,7 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
+            initData();
             $("#kt_datatable1").DataTable({responsive:true});
         });
 
@@ -149,6 +150,12 @@
                     });
                 }
             });
+        };
+        const initData = () => {
+            //get current url without query string
+            const url = new URL(window.location.search);
+            let searchParams = new URLSearchParams(url.search);
+            console.log(searchParams.get('c'));  // outputs "m2-m3-m4-m5"
         };
 
     </script>
