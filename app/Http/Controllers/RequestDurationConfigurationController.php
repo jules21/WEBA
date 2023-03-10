@@ -51,8 +51,13 @@ class RequestDurationConfigurationController extends Controller
 
     public function destroy($id){
 
-        $configuration = RequestDurationConfiguration::find($id);
-        $configuration->delete();
-        return redirect()->back()->with('success','Request Duration Configuration deleted successfully');
+        try {
+            $configuration = RequestDurationConfiguration::find($id);
+            $configuration->delete();
+            return redirect()->back()->with('success','Request Duration Configuration deleted successfully');
+        }catch (\Exception $exception){
+            info($exception);
+            return redirect()->back()->with('success','Request Duration Configuration can not be deleted');
+        }
     }
 }

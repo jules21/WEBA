@@ -32,77 +32,66 @@
 @stop
 @section('content')
     <!--begin::Entry-->
-    <div class="d-flex flex-column-fluid">
-        <!--begin::Container-->
-        <div class="container">
-            <!--begin::Card-->
-            <div class="card card-custom">
-                <div class="card-header flex-wrap border-0 pt-6 pb-0">
-                    <div class="card-title">
-                        <h3 class="card-label">Document Types List</h3>
-                    </div>
-                    <div class="card-toolbar">
-                        <!-- Button trigger modal-->
-                        <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#exampleModalLong">
-                            <span class="flaticon-add"></span>
-                            Add New Document
-                        </button>
-
-                        <!-- Modal-->
-                    </div>
-                </div>
-                <div class="card-body">
-
-
-                    <!--begin: Datatable-->
-                    <div class="table-responsive">
-                        <table class="table table-striped" id="table">
-                            {{--                    <table class="table table-striped" id="kt_datatable">--}}
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Created At</th>
-                                <th>Action</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            @foreach($documents as $key=>$document)
-                                <tr>
-                                    <td>{{++$key}}</td>
-                                    <td>{{$document->name}}</td>
-                                    <td>{{$document->created_at}}</td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
-                                                    id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                Action
-                                            </button>
-                                            <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-                                                <a href="#" data-id="{{$document->id}}"
-                                                   data-name="{{$document->name}}"
-                                                   class="dropdown-item js-edit">Edit</a>
-                                                <a href="{{route('admin.document.type.delete',$document->id)}}"
-                                                   class="dropdown-item js-delete">Delete</a>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!--end: Datatable-->
-                </div>
+    <div class="card card-custom">
+        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+            <div class="card-title">
+                <h3 class="card-label">Document Types List</h3>
             </div>
-            <!--end::Card-->
+            <div class="card-toolbar">
+                <!-- Button trigger modal-->
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#exampleModalLong">
+                    <span class="flaticon-add"></span>
+                    Add New Document
+                </button>
+
+                <!-- Modal-->
+            </div>
         </div>
-        <!--end::Container-->
+        <div class="card-body">
+            <!--begin: Datatable-->
+            <div class="table-responsive">
+                <table class="table table-striped" id="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Created At</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    @foreach($documents as $key=>$document)
+                        <tr>
+                            <td>{{++$key}}</td>
+                            <td>{{$document->name}}</td>
+                            <td>{{$document->created_at}}</td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                        Action
+                                    </button>
+                                    <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                                        <a href="#" data-id="{{$document->id}}"
+                                           data-name="{{$document->name}}"
+                                           class="dropdown-item js-edit">Edit</a>
+                                        <a href="{{route('admin.document.type.delete',$document->id)}}"
+                                           class="dropdown-item js-delete">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!--end: Datatable-->
+        </div>
     </div>
 
     <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog"

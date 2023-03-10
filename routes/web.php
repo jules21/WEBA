@@ -208,10 +208,23 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/water_usages', [App\Http\Controllers\WaterUsageController::class, 'index'])->name('water.usages');
 
         //water networks
+
+        Route::get('/water_networks',[App\Http\Controllers\WaterNetworkController::class,'index'])->name('water.networks');
+        Route::post('/water_network/store',[App\Http\Controllers\WaterNetworkController::class,'store'])->name('water.network.store');
+        Route::post('/water_network/update',[App\Http\Controllers\WaterNetworkController::class,'update'])->name('water.network.edit');
+        Route::get('/water_network/delete/{id}',[App\Http\Controllers\WaterNetworkController::class,'destroy'])->name('water.network.delete');
+
+        //suppliers
+        Route::get('/suppliers',[App\Http\Controllers\SupplierController::class,'index'])->name('suppliers');
+        Route::post('/supplier/store',[App\Http\Controllers\SupplierController::class,'store'])->name('supplier.store');
+        Route::post('/supplier/update',[App\Http\Controllers\SupplierController::class,'update'])->name('supplier.edit');
+        Route::get('/supplier/delete/{id}',[App\Http\Controllers\SupplierController::class,'destroy'])->name('supplier.delete');
+
         Route::get('/water_networks', [App\Http\Controllers\WaterNetworkController::class, 'index'])->name('water.networks');
         Route::post('/water_network/store', [App\Http\Controllers\WaterNetworkController::class, 'store'])->name('water.network.store');
         Route::post('/water_network/update', [App\Http\Controllers\WaterNetworkController::class, 'update'])->name('water.network.edit');
         Route::get('/water_network/delete/{id}', [App\Http\Controllers\WaterNetworkController::class, 'destroy'])->name('water.network.delete');
+
     });
 
     Route::prefix('stock-management')->name('stock.')->group(function () {
