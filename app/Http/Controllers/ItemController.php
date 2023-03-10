@@ -36,7 +36,12 @@ class ItemController extends Controller
      */
     public function store(StoreItemRequest $request)
     {
-        Item::query()->create($request->validated());
+        $validated = $request->validated();
+
+        if (!$validated['vatable'])
+            $validated['vat_rate'] = 0;
+
+        Item::query()->create($validated);
         return redirect()->back()->with('success', 'Item created successfully');
     }
 
@@ -49,7 +54,13 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        $item->update($request->validated());
+        $validated = $request->validated();
+
+        if (!$validated['vatable'])
+            $validated['vat_rate'] = 0;
+
+        $item->update($validated);
+
         return redirect()->back()->with('success', 'Item updated successfully');
     }
 
