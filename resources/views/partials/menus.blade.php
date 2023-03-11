@@ -240,11 +240,11 @@
                     </a>
                 </li>
                 <li class="menu-item nav-all-permissions" aria-haspopup="true">
-                    <a href="{{ route('admin.stock.stock-items.movements') }}" class="menu-link">
+                    <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">
                         <i class="menu-bullet menu-bullet-dot">
                             <span></span>
                         </i>
-                        <span class="menu-text">Stock Adjustment</span>
+                        <span class="menu-text">Stock Adjustments</span>
                     </a>
                 </li>
             </ul>

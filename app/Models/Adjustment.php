@@ -32,4 +32,17 @@ use Illuminate\Database\Eloquent\Model;
 class Adjustment extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'status',
+        'description',
+        'operation_area_id',
+        'created_by',
+        'approved_by',
+    ];
+
+    public function operationArea(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(OperationArea::class);
+    }
 }
