@@ -130,7 +130,6 @@
             initData();
             $("#kt_datatable1").DataTable({responsive:true});
         });
-
         $(document).on('change', '#operator', function () {
             let operatorId = $(this).val();
             if (operatorId !== '') {
@@ -140,7 +139,6 @@
                 $('#operation_area').append('<option value="">Select Operation Area</option>');
             }
         });
-
         const getOperationArea = (operatorId) => {
             const url = "{{ route('get-operation-areas') }}";
             $.ajax({
@@ -163,7 +161,6 @@
             const operationAreaId = "{{ request()->get('operation_area_id') ? implode(',', request()->get('operation_area_id')) : '' }}";
             const itemCategoryId = "{{ request()->get('item_category_id') ? implode(',', request()->get('item_category_id')) : '' }}";
             const itemId = "{{ request()->get('item_id') ? implode(',', request()->get('item_id')) : '' }}";
-            console.log(operatorId, operationAreaId, itemCategoryId, itemId);
 
             if (operatorId !== '') {
                 $('#operator').val(operatorId.split(',')).trigger('change');
@@ -180,6 +177,5 @@
             }
 
         };
-
     </script>
 @endsection

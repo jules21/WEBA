@@ -19,11 +19,6 @@ class StockController extends Controller
      */
     public function index(Request $request)
     {
-        $operator_id = $request->operator_id;
-        $operation_area_id = $request->operation_area_id;
-        $item_category_id = $request->item_category_id;
-        $item_id = $request->item_id;
-
         $user = auth()->user();
         $stock = Stock::with('operationArea');
 
