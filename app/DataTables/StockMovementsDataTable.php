@@ -11,6 +11,12 @@ use Yajra\DataTables\Services\DataTable;
 
 class StockMovementsDataTable extends DataTable
 {
+    public $query;
+    public function __construct($query)
+    {
+        $this->query = $query;
+    }
+
     /**
      * Build DataTable class.
      *
@@ -53,14 +59,14 @@ class StockMovementsDataTable extends DataTable
 
                     return substr($item->description, 0, 50) . '...';
             })
-            ->addColumn('action', function($item){
-                return '
-                <a href="'.route('admin.stock.stock-items.movements.show', $item->id).'" class="btn btn-sm btn-light-primary btn-details" title="View details">
-                    Details
-                </a>
-                ';
-            })
-            ->rawColumns(['type', 'action', 'item_id', 'operator_id', 'quantity', 'created_at']);
+//            ->addColumn('action', function($item){
+//                return '
+//                <a href="'.route('admin.stock.stock-items.movements.show', $item->id).'" class="btn btn-sm btn-light-primary btn-details" title="View details">
+//                    Details
+//                </a>
+//                ';
+//            })
+            ->rawColumns(['type', 'item_id', 'operator_id', 'quantity', 'created_at']);
     }
 
     /**
@@ -71,7 +77,7 @@ class StockMovementsDataTable extends DataTable
      */
     public function query(StockMovement $model)
     {
-        return $model->newQuery();
+        return $this->query;
     }
 
     /**
@@ -87,7 +93,7 @@ class StockMovementsDataTable extends DataTable
                     ->addTableClass('table border table-head-custom table-hover  table-head-solid')
                     ->minifiedAjax()
                     ->addTableClass('table table-striped- table-hover table-checkable')
-                    ->orderBy(8);
+                    ->orderBy(9, 'desc');
     }
 
     /**
@@ -128,13 +134,13 @@ class StockMovementsDataTable extends DataTable
             Column::make('created_at')
                 ->title("Created At")
                 ->addClass('text-center'),
-            Column::computed('action')
-                ->title("Action")
-                ->addClass('text-center')
-                ->exportable(false)
-                ->printable(false)
-                ->width(60)
-                ->addClass('text-center')
+//            Column::computed('action')
+//                ->title("Action")
+//                ->addClass('text-center')
+//                ->exportable(false)
+//                ->printable(false)
+//                ->width(60)
+//                ->addClass('text-center')
         ];
     }
 

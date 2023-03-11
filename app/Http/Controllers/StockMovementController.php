@@ -15,7 +15,8 @@ class StockMovementController extends Controller
      */
     public function index()
     {
-        $datatable =  new StockMovementsDataTable();
+        $data = StockMovement::with('item', 'operationArea.operator')->select('stock_movements.*');
+        $datatable =  new StockMovementsDataTable($data);
         return $datatable->render('admin.stock.items_movement');
     }
 

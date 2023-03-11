@@ -138,15 +138,16 @@ class AreaOfOperationController extends Controller
      * @param Operator $operator
      * @return mixed
      */
-    public function getOperationAreasByOperators(Request $request)
+    public function getOperationAreasByOperators()
     {
-        return $request->all();
-
-//        $operatorIds = explode(',', $operators);
-//        $operators = Operator::query()->whereIn('id', $operatorIds)->get();
-//        return $operators->map(function($operator){
-//            return $operator->operationAreas;
-//        });
+//        dd(request()->all());
+        $operatorIds = request()->input('operator_id');
+        $operators = Operator::query()->whereIn('id', $operatorIds)
+            ->with('operationAreas')
+            ->get();
+        return $operators->map(function($operator){
+            return $operator->operationAreas;
+        });
     }
 
 

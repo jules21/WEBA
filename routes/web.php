@@ -70,6 +70,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/store', [CustomerController::class, 'store'])->name('store');
         Route::get('/show/{customer}', [CustomerController::class, 'show'])->name('show');
         Route::delete('/delete/{customer}', [CustomerController::class, 'destroy'])->name('delete');
+        Route::get('/{customer}/connections',[CustomerController::class, 'connections'])->name('connections');
     });
 
 
@@ -233,6 +234,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::resource('item-categories', ItemCategoryController::class);
         Route::resource('items', ItemController::class);
         Route::get('/stock-items', [App\Http\Controllers\StockController::class, 'index'])->name('stock-items.index');
+        Route::get('/stock-items/{stock}', [App\Http\Controllers\StockController::class, 'show'])->name('stock-items.show');
         Route::get('/stock-movements', [App\Http\Controllers\StockMovementController::class, 'index'])->name('stock-items.movements');
         Route::get('/stock-movements/{movement}', [App\Http\Controllers\StockMovementController::class, 'show'])->name('stock-items.movements.show');
     });

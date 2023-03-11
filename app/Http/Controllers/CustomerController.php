@@ -30,6 +30,10 @@ class CustomerController extends Controller
                                                     Options
                                                 </button>
                                                 <div class="dropdown-menu border">
+                                                    <a class="dropdown-item" href="' . route('admin.customers.connections', encryptId($row->id)) . '">
+                                                        <i class="fas fa-link"></i>
+                                                        <span class="ml-2">Connections</span>
+                                                    </a>
                                                     <a class="dropdown-item js-edit" href="' . route('admin.customers.show', encryptId($row->id)) . '">
                                                         <i class="fas fa-edit"></i>
                                                         <span class="ml-2">Edit</span>
@@ -41,7 +45,13 @@ class CustomerController extends Controller
                                                 </div>
                                             </div>';
                 })
-                ->rawColumns(['action', 'name'])
+                ->addColumn('connection', function (Customer $row) {
+                    return '<a href="' . route('admin.customers.connections', encryptId($row->id)) . '">
+
+                                                    <span class="badge badge-primary">'.$row->connections->count().'</span>
+                                                </a>';
+                })
+                ->rawColumns(['action', 'name','connection'])
                 ->make(true);
         }
         $legalTypes = LegalType::all();
@@ -80,6 +90,12 @@ class CustomerController extends Controller
     public function show(Customer $customer)
     {
         return $customer;
+    }
+
+    public function connections(Customer  $customer){
+        return view('admin.customers.connections',[
+            'customer' => $customer
+        ]);
     }
 
 

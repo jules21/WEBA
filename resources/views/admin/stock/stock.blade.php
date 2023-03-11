@@ -95,21 +95,26 @@
                     <table class="table table-head-solid border" id="kt_datatable1">
                         <thead>
                         <tr>
-                            <th>operator</th>
-                            <th>Operation Area</th>
+
                             <th>Product</th>
                             <th>Product Category</th>
                             <th>Quantity</th>
+                            <th>operator</th>
+                            <th>Operation Area</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($stocks as $stock)
                             <tr>
-                                <td>{{ $stock->operator->name ?? '' }}</td>
-                                <td>{{ $stock->operationArea->name ?? '' }}</td>
                                 <td>{{ $stock->item->name ?? '' }}</td>
                                 <td>{{ $stock->item->category->name ?? '' }}</td>
                                 <td>{{ $stock->quantity }}</td>
+                                <td>{{ $stock->operator->name ?? '' }}</td>
+                                <td>{{ $stock->operationArea->name ?? '' }}</td>
+                                <td>
+                                    <a href="{{route('admin.stock.stock-items.show', $stock->id)}}" class="btn btn-sm btn-light-primary">details</a>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
@@ -143,19 +148,37 @@
                 type: 'GET',
                 data: {operator_id: operatorId},
                 success: function (data) {
+
                     $('#operation_area').empty();
                     $('#operation_area').append('<option value="">Select Operation Area</option>');
-                    $.each(data, function (key, value) {
-                        $('#operation_area').append('<option value="' + key + '">' + value + '</option>');
+                    $.each(data[0], function (key, value) {
+                        console.log(value)
+                        $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
                     });
                 }
             });
         };
         const initData = () => {
-            //get current url without query string
-            const url = new URL(window.location.search);
-            let searchParams = new URLSearchParams(url.search);
-            console.log(searchParams.get('c'));  // outputs "m2-m3-m4-m5"
+            const operatorId = "{{ request()->get('operator_id') ? implode(',', request()->get('operator_id')) : '' }}";
+            const operationAreaId = "{{ request()->get('operation_area_id') ? implode(',', request()->get('operation_area_id')) : '' }}";
+            const itemCategoryId = "{{ request()->get('item_category_id') ? implode(',', request()->get('item_category_id')) : '' }}";
+            const itemId = "{{ request()->get('item_id') ? implode(',', request()->get('item_id')) : '' }}";
+            console.log(operatorId, operationAreaId, itemCategoryId, itemId);
+
+            if (operatorId !== '') {
+                $('#operator').val(operatorId.split(',')).trigger('change');
+                getOperationArea(operatorId.split(','));
+            }
+            if (operationAreaId !== '') {
+                $('#operation_area').val(operationAreaId.split(',')).trigger('change');
+            }
+            if (itemCategoryId !== '') {
+                $('#item_category').val(itemCategoryId.split(',')).trigger('change');
+            }
+            if (itemId !== '') {
+                $('#item').val(itemId.split(',')).trigger('change');
+            }
+
         };
 
     </script>
