@@ -239,13 +239,43 @@
                         <span class="menu-text">Stock Movements</span>
                     </a>
                 </li>
-                <li class="menu-item nav-all-permissions" aria-haspopup="true">
-                    <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">
-                        <i class="menu-bullet menu-bullet-dot">
+                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <i class="menu-bullet menu-bullet-line">
                             <span></span>
                         </i>
                         <span class="menu-text">Stock Adjustments</span>
+                        <i class="menu-arrow"></i>
                     </a>
+                    <div class="menu-submenu" kt-hidden-height="120" style="display: none; overflow: hidden;">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            <li class="menu-item" aria-haspopup="true">
+                                <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Create Adjustment</span>
+                                </a>
+                            </li>
+                            <li class="menu-item" aria-haspopup="true">
+                                <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">My Tasks</span>
+                                </a>
+                            </li>
+                            <li class="menu-item" aria-haspopup="true">
+                                <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">All Adjustments</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
         </div>

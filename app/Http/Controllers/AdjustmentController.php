@@ -43,7 +43,8 @@ class AdjustmentController extends Controller
      */
     public function store(StoreAdjustmentRequest $request)
     {
-        Adjustment::query()->create($request->validated());
+        $adjustment =  Adjustment::query()->create($request->validated());
+        $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
         return back()->with('success', 'Adjustment created successfully');
     }
 
@@ -208,8 +209,9 @@ class AdjustmentController extends Controller
                 ->where('operation_area_id', '=', $adjustment->operation_area_id)
                 ->first();
 
+//            dd($movement);
             $stockItem->update([
-                'quantity' => $stockItem->quantity - $movement->qty_in
+                'quantity' => $stockItem->quantity - $movement->qty_out
             ]);
         }
     }
@@ -226,8 +228,8 @@ class AdjustmentController extends Controller
         $adjustment->movements()->create([
             'item_id' => $item_id,
             'opening_qty' => $prevStockItem->quantity ?? 0,
-            'qty_in' => $movement->quantity,
-            'qty_out' => 0,
+            'qty_out' => $movement->quantity,
+            'qty_in' => 0,
             'operation_area_id' => auth()->user()->operation_area,
             'type' => get_class($adjustment),
             'unit_price' => $movement->unit_price ?? 0,

@@ -101,17 +101,13 @@
                     <tr>
                         <th>Item</th>
                         <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Sub Total</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($adjustment->items as $item)
                         <tr>
                             <td>{{ $item->item->name }}</td>
-                            <td>{{ $item->qty_in }}</td>
-                            <td>{{ number_format($item->unit_price) }}</td>
-                            <td>{{ number_format($item->total) }}</td>
+                            <td>{{ $item->quantity }}</td>
                         </tr>
                     @endforeach
                     </tbody>
