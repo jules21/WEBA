@@ -247,6 +247,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         //submit adjustment
         Route::get('/adjustments/{adjustment}/submit', [App\Http\Controllers\AdjustmentController::class, 'submit'])->name('stock-adjustments.submit');
+        //submit review
+        Route::post('/adjustments/{adjustment}/review', [App\Http\Controllers\AdjustmentController::class, 'review'])->name('stock-adjustments.review');
 
     });
 

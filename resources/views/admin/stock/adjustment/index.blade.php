@@ -78,6 +78,10 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-light-primary btn-sm  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
                                         <div class="dropdown-menu" style="">
+                                            <a href="{{route('admin.stock.adjustments.show', $adjustment->id)}}"
+                                               class="dropdown-item">
+                                                More details
+                                            </a>
                                             <a href="{{route('admin.stock.stock-adjustments.items', $adjustment->id)}}"
                                                class="dropdown-item">
                                                 Items
