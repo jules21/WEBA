@@ -172,7 +172,7 @@ class PurchaseController extends Controller
      */
     public function show(Purchase $purchase)
     {
-        $purchase->load(['movements.item', 'supplier', 'flowHistories.user']);
+        $purchase->load(['movementDetails.item', 'supplier', 'flowHistories.user']);
 
         $reviews = $purchase->flowHistories
             ->where('is_comment', '=', true);
@@ -231,7 +231,7 @@ class PurchaseController extends Controller
 
         $purchase->update($this->getPurchaseData($data));
 
-        $purchase->movements()->delete();
+        $purchase->movementDetails()->delete();
 
         $this->saveItems($data, $purchase);
 
@@ -258,7 +258,7 @@ class PurchaseController extends Controller
         }
 
         DB::beginTransaction();
-        $purchase->movements()->delete();
+        $purchase->movementDetails()->delete();
 
         $purchase->flowHistories()->delete();
 
@@ -321,6 +321,10 @@ class PurchaseController extends Controller
             $this->updateStockItems($purchase);
         }
 
+        $purchase->movementDetails()->update([
+            'status' => $status
+        ]);
+
 
         DB::commit();
 
@@ -343,11 +347,13 @@ class PurchaseController extends Controller
      */
     public function updateStockItems(Purchase $purchase): void
     {
-        foreach ($purchase->movements()->get() as $movement) {
+        foreach ($purchase->movementDetails()->get() as $movement) {
+            $this->updateStockMovement($movement, $purchase);
+
             $stockItem = Stock::where('item_id', '=', $movement->item_id)
                 ->firstOrCreate([
                     'item_id' => $movement->item_id,
-                    'operation_area_id' => $movement->operation_area_id,
+                    'operation_area_id' => auth()->user()->operation_area,
                     'quantity' => 0
                 ]);
 
@@ -357,9 +363,7 @@ class PurchaseController extends Controller
         }
     }
 
-    /**
-     * @return Supplier[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection|_IH_Supplier_C|_IH_Supplier_QB[]
-     */
+
     public function getSuppliers()
     {
         return Supplier::query()
@@ -386,21 +390,17 @@ class PurchaseController extends Controller
     public function saveItems(array $data, $purchase): void
     {
         foreach ($data['items'] as $key => $item) {
-            $stockItem = Stock::with('item')->where('item_id', '=', $item)->first();
-            $existingItem = Item::find($item);
+
             $qty = $data['quantities'][$key];
             $price = $data['prices'][$key];
             $vat = $data['vats'][$key];
-            $purchase->movements()->create([
+            $purchase->movementDetails()->create([
                 'item_id' => $item,
-                'operation_area_id' => auth()->user()->operation_area,
-                'opening_qty' => $stockItem->quantity ?? 0,
-                'qty_in' => $qty,
-                'qty_out' => 0,
+                'quantity' => $qty,
                 'unit_price' => $price,
-                'description' => "Purchase of $qty $existingItem->name at " . number_format($price, 2),
                 'type' => StockMovement::Purchase,
                 'vat' => $vat,
+                'status' => Purchase::PENDING,
             ]);
         }
     }
@@ -422,5 +422,30 @@ class PurchaseController extends Controller
             'total' => $data['grand_total'],
             'operation_area_id' => auth()->user()->operation_area
         ];
+    }
+
+    /**
+     * @param $movement
+     * @param Purchase $purchase
+     * @return void
+     */
+    public function updateStockMovement($movement, Purchase $purchase): void
+    {
+        $item_id = $movement->item_id;
+        $item = Item::find($item_id);
+        $prevStockItem = Stock::with('item')
+            ->where('item_id', '=', $item_id)->first();
+
+        $purchase->movements()->create([
+            'item_id' => $item_id,
+            'opening_qty' => $prevStockItem->quantity ?? 0,
+            'qty_in' => $movement->quantity,
+            'qty_out' => 0,
+            'operation_area_id' => auth()->user()->operation_area,
+            'type' => $purchase->getClassName(),
+            'unit_price' => $movement->unit_price,
+            'vat' => $movement->vat,
+            'description' => "Purchase of {$item->name} from {$purchase->supplier->name}  ",
+        ]);
     }
 }

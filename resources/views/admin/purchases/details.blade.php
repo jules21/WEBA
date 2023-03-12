@@ -84,7 +84,7 @@
                     <div class="col-lg-4">
                         {{--                        supplier name --}}
                         <strong class="d-block">Items:</strong>
-                        <input readonly value=" {{ $purchase->movements()->count()}}" class="form-control-plaintext"/>
+                        <input readonly value=" {{ $purchase->movementDetails->count()}}" class="form-control-plaintext"/>
                     </div>
 
                 </div>
@@ -133,7 +133,7 @@
                     </tr>
                     </tfoot>
                     <tbody>
-                    @foreach($purchase->movements as $item)
+                    @foreach($purchase->movementDetails as $item)
                         <tr>
                             <td>{{ $item->item->name }}</td>
                             <td>{{ $item->qty_in }}</td>
