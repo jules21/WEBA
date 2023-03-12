@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * App\Models\Adjustment
@@ -44,5 +45,10 @@ class Adjustment extends Model
     public function operationArea(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(OperationArea::class);
+    }
+
+    public function items(): MorphMany
+    {
+        return $this->morphMany(StockMovementDetail::class, 'model', 'model_type', 'model_id');
     }
 }

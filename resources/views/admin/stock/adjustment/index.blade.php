@@ -64,6 +64,8 @@
                                 <td>
                                     @if($adjustment->status == 'Pending')
                                         <span class="label label-lg font-weight-bold label-light-warning label-inline">Pending</span>
+                                    @elseif($adjustment->status == 'Submitted')
+                                        <span class="label label-lg font-weight-bold label-light-info label-inline">Submitted</span>
                                     @elseif($adjustment->status == 'Approved')
                                         <span class="label label-lg font-weight-bold label-light-success label-inline">Approved</span>
                                     @elseif($adjustment->status == 'Rejected')
@@ -76,18 +78,25 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-light-primary btn-sm  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
                                         <div class="dropdown-menu" style="">
-                                            <a href="#" class=" edit-btn dropdown-item "
-                                               data-toggle="modal"
-                                               data-target="#user_adjustment_edit_modal"
-                                               data-description="{{$adjustment->description}}"
-                                               data-id="{{$adjustment->id}}"
-                                               data-url="{{ route('admin.stock.adjustments.update', $adjustment->id) }}">
-                                                Edit
+                                            <a href="{{route('admin.stock.stock-adjustments.items', $adjustment->id)}}"
+                                               class="dropdown-item">
+                                                Items
                                             </a>
-                                            <a class="delete_btn dropdown-item"
-                                               data-url="{{route('admin.stock.adjustments.destroy', $adjustment->id) }}">
-                                                Delete
-                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            @if($adjustment->status == 'Pending')
+                                                <a href="#" class=" edit-btn dropdown-item "
+                                                   data-toggle="modal"
+                                                   data-target="#user_adjustment_edit_modal"
+                                                   data-description="{{$adjustment->description}}"
+                                                   data-id="{{$adjustment->id}}"
+                                                   data-url="{{ route('admin.stock.adjustments.update', $adjustment->id) }}">
+                                                    Edit
+                                                </a>
+                                                <a class="delete_btn dropdown-item"
+                                                   data-url="{{route('admin.stock.adjustments.destroy', $adjustment->id) }}">
+                                                    Delete
+                                                </a>
+                                            @endif
                                         </div>
                                     </div>
                                 </td>
