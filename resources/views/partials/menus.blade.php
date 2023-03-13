@@ -132,6 +132,14 @@
         </li>
     @endcanany
 
+
+    {{--    @can('Manage Stock')--}}
+    <li class="menu-section">
+        <h4 class="menu-text">Stock Management Section</h4>
+        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+    </li>
+
+
     @canany([\App\Constants\Permission::CreatePurchase,\App\Constants\Permission::ApproveRequest])
         <li class="menu-item menu-item-submenu nav-purchases" aria-haspopup="true" data-menu-toggle="hover">
             <a href="javascript:" class="menu-link menu-toggle">
@@ -146,7 +154,9 @@
                <path d="M6 9h-.01"></path>
             </svg>
            </span>
-                <span class="menu-text">Purchases</span>
+                <span class="menu-text">
+                    Stock In
+                </span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="menu-submenu">
@@ -180,7 +190,7 @@
                                 <span></span>
                             </i>
                             <span class="menu-text">
-                                All Purchases
+                                All
                             </span>
                         </a>
                     </li>
@@ -188,11 +198,7 @@
             </div>
         </li>
     @endcanany
-    {{--    @can('Manage Stock')--}}
-    <li class="menu-section">
-        <h4 class="menu-text">Stock Management Section</h4>
-        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-    </li>
+
     <li class="menu-item menu-item-submenu nav-user-managements" aria-haspopup="true" data-menu-toggle="hover">
         <a href="javascript:;" class="menu-link menu-toggle">
             <i class="menu-icon flaticon-users"></i>
@@ -241,7 +247,9 @@
                 </li>
             </ul>
         </div>
+
     </li>
+
     {{--    @endcan--}}
 
     {{--    @can('Manage System Users')--}}
