@@ -309,6 +309,16 @@
                                 <span class="menu-text">User Management</span>
                             </span>
                 </li>
+                @can('Manage Banks')
+                    <li class="menu-item nav-banks" aria-haspopup="true">
+                        <a href="{{ route('admin.banks') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Banks</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('Manage Request Type')
                     <li class="menu-item nav-request-type" aria-haspopup="true">
                         <a href="{{ route('admin.request.types') }}" class="menu-link">

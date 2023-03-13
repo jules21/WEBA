@@ -227,6 +227,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/water_network/update', [App\Http\Controllers\WaterNetworkController::class, 'update'])->name('water.network.edit');
         Route::get('/water_network/delete/{id}', [App\Http\Controllers\WaterNetworkController::class, 'destroy'])->name('water.network.delete');
 
+        Route::get('/banks', [App\Http\Controllers\PaymentServiceProviderController::class, 'index'])->name('banks');
+        Route::get('/banks/sync', [App\Http\Controllers\PaymentServiceProviderController::class, 'syncBanks'])->name('banks.sync');
+
     });
 
     Route::prefix('stock-management')->name('stock.')->group(function () {
