@@ -20,10 +20,16 @@ class Permission
     const CreatePurchase = 'Create Purchase';
     const ApprovePurchase = 'Approve Purchase';
 
+
     const ManageChartOfAccounts = 'Manage Chart Of Accounts';
     const AssignChartOfAccounts = 'Assign Chart Of Accounts';
     const ManageLedgerMigration = 'Manage Ledger Migration';
     const ManageChartOfAccountTemplates = 'Manage Chart Of Account Templates';
+
+    const CreateAdjustment = 'Create Adjustment';
+    const ApproveAdjustment = 'Approve Adjustment';
+
+
 
 
 }

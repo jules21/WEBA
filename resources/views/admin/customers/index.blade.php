@@ -58,6 +58,7 @@
                             <th>Doc Number</th>
                             <th>Email</th>
                             <th>Phone Number</th>
+                            <th>Connections</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -334,7 +335,14 @@
                     },
                     {data: "email", name: "email"},
                     {data: "phone", name: "phone"},
+                    {data: "connection", name:"connection"},
                     {data: "action", name: "action", orderable: false, searchable: false}
+                ],
+                columnDefs: [
+                    {
+                        targets: 4,
+                        className: 'text-center'
+                    },
                 ]
             });
 

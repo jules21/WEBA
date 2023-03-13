@@ -70,6 +70,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/store', [CustomerController::class, 'store'])->name('store');
         Route::get('/show/{customer}', [CustomerController::class, 'show'])->name('show');
         Route::delete('/delete/{customer}', [CustomerController::class, 'destroy'])->name('delete');
+        Route::get('/{customer}/connections',[CustomerController::class, 'connections'])->name('connections');
     });
 
 
@@ -233,7 +234,22 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::resource('item-categories', ItemCategoryController::class);
         Route::resource('items', ItemController::class);
         Route::get('/stock-items', [App\Http\Controllers\StockController::class, 'index'])->name('stock-items.index');
+        Route::get('/stock-items/{stock}', [App\Http\Controllers\StockController::class, 'show'])->name('stock-items.show');
         Route::get('/stock-movements', [App\Http\Controllers\StockMovementController::class, 'index'])->name('stock-items.movements');
+        Route::get('/stock-movements/{movement}', [App\Http\Controllers\StockMovementController::class, 'show'])->name('stock-items.movements.show');
+
+
+        //stock adjustment
+        Route::resource('/adjustments', \App\Http\Controllers\AdjustmentController::class);
+        Route::get('/adjustments/{adjustment}/items', [App\Http\Controllers\AdjustmentController::class, 'items'])->name('stock-adjustments.items');
+        Route::post('/adjustments/{adjustment}/items', [App\Http\Controllers\AdjustmentController::class, 'addItem'])->name('stock-adjustments.items.add');
+        Route::delete('/adjustments/{adjustment}/items/{item}', [App\Http\Controllers\AdjustmentController::class, 'removeItem'])->name('stock-adjustments.items.remove');
+
+        //submit adjustment
+        Route::get('/adjustments/{adjustment}/submit', [App\Http\Controllers\AdjustmentController::class, 'submit'])->name('stock-adjustments.submit');
+        //submit review
+        Route::post('/adjustments/{adjustment}/review', [App\Http\Controllers\AdjustmentController::class, 'review'])->name('stock-adjustments.review');
+
     });
 
 });
