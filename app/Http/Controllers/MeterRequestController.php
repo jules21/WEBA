@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Status;
 use App\Http\Requests\ValidateAssignMeterNumber;
 use App\Models\MeterRequest;
 use App\Models\Request as AppRequest;
@@ -27,7 +28,7 @@ class MeterRequestController extends Controller
                 ->update($data);
         } else {
             $data['balance'] = 0;
-            $data['status'] = 'Pending';
+            $data['status'] = Status::ACTIVE;
             $data['subscription_number'] = Str::random(8);
             $results = $request->meterNumbers()
                 ->create($data);
@@ -66,7 +67,7 @@ class MeterRequestController extends Controller
     private function generateSubscriptionNumber(MeterRequest $meterRequest): void
     {
         // generate  8 number prefixed with request id left padded with zeroes
-        $subscriptionNumber ="SN" . str_pad($meterRequest->id, 8, '0', STR_PAD_LEFT);
+        $subscriptionNumber = "SN" . str_pad($meterRequest->id, 8, '0', STR_PAD_LEFT);
         $meterRequest->update([
             'subscription_number' => $subscriptionNumber
         ]);

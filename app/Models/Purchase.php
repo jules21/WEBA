@@ -65,6 +65,11 @@ class Purchase extends Model
         return $this->hasMany(StockMovement::class, 'purchase_id');
     }
 
+    public function movementDetails(): MorphMany
+    {
+        return $this->morphMany(StockMovementDetail::class, 'model');
+    }
+
     public function supplier(): BelongsTo
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');

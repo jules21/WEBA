@@ -35,13 +35,21 @@ class Stock extends Model
         'quantity',
     ];
 
-    public function item()
+    protected $appends = ['operator'];
+
+    public function item(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Item::class);
     }
 
-    public function operationArea()
+    public function operationArea(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(OperationArea::class);
+    }
+
+    //has many through inverse
+    public function getOperatorAttribute()
+    {
+        return $this->operationArea->operator;
     }
 }

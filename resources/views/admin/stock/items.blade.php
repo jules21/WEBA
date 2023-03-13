@@ -57,7 +57,7 @@
             <div class="modal-dialog modal-lg" category="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add new category</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Add new Item</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="col-6 form-group">
                                     <label>Vatable</label>
-                                    <select name="vatable" class="form-control">
+                                    <select name="vatable" class="form-control" id="vatable">
                                         <option value="">--select--</option>
                                         <option value="1">Yes</option>
                                         <option value="0">No</option>
@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="col-6 form-group">
                                     <label for="vat_rate">Vat Rate</label>
-                                    <input type="number" name="vat_rate" class="form-control" aria-describedby="emailHelp"
+                                    <input type="number" name="vat_rate" class="form-control" aria-describedby="emailHelp" id="vat_rate"
                                            placeholder="Vat Rate">
                                 </div>
                                 <div class="col-12 form-group">
@@ -231,7 +231,7 @@
         $("#kt_datatable1").DataTable({responsive:true});
         $(document).on('click','.btn-edit', function (e) {
             e.preventDefault();
-            console.log($(this).data('vatable'));
+            $("#_vatable").trigger('change');
             $('#_name').val($(this).data('name'));
               $('#_item_category_id').val($(this).data('item_category_id'));
             $('#_packaging_unit_id').val($(this).data('packaging_unit_id'));
@@ -243,7 +243,7 @@
             $('#edit-category-form').attr('action', $(this).data('url'));
         });
 
-        $(document).on('click', '.btn-delete', function (e){
+        $(document).on('change', '.btn-delete', function (e){
             e.preventDefault();
             var url = $(this).data('url');
             swal.fire({
@@ -258,6 +258,15 @@
                     $('#delete-form').submit();
                 }
             });
+        });
+        $(document).on('change','#vatable,#_vatable',function (e) {
+            e.preventDefault();
+            const el = $(this);
+            if(el.val() == 0){
+                $('#vat_rate,#_vat_rate').attr('disabled',true).val('');
+            }else {
+                $('#vat_rate,#_vat_rate').attr('disabled',false);
+            }
         });
     </script>
 

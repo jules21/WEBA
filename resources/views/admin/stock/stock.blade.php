@@ -105,10 +105,10 @@
                         <tbody>
                         @foreach($stocks as $stock)
                             <tr>
-                                <td>{{ $stock->operator->name }}</td>
-                                <td>{{ $stock->operation_area->name }}</td>
-                                <td>{{ $stock->item->name }}</td>
-                                <td>{{ $stock->item->category->name }}</td>
+                                <td>{{ $stock->operator->name ?? '' }}</td>
+                                <td>{{ $stock->operationArea->name ?? '' }}</td>
+                                <td>{{ $stock->item->name ?? '' }}</td>
+                                <td>{{ $stock->item->category->name ?? '' }}</td>
                                 <td>{{ $stock->quantity }}</td>
                             </tr>
                         @endforeach

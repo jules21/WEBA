@@ -3,10 +3,16 @@
 namespace App\Models;
 
 use App\Traits\HasAddress;
+use Database\Factories\CustomerFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Customer
@@ -22,30 +28,30 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property int|null $sector_id
  * @property int|null $cell_id
  * @property int|null $village_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property int $document_type_id
- * @property-read \App\Models\DocumentType $documentType
- * @property-read \App\Models\LegalType $legalType
- * @method static \Database\Factories\CustomerFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Customer newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Customer query()
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereCellId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereDistrictId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereDocNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereDocumentTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereLegalTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer wherePhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereProvinceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereSectorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Customer whereVillageId($value)
- * @mixin \Eloquent
+ * @property-read DocumentType $documentType
+ * @property-read LegalType $legalType
+ * @method static CustomerFactory factory(...$parameters)
+ * @method static Builder|Customer newModelQuery()
+ * @method static Builder|Customer newQuery()
+ * @method static Builder|Customer query()
+ * @method static Builder|Customer whereCellId($value)
+ * @method static Builder|Customer whereCreatedAt($value)
+ * @method static Builder|Customer whereDistrictId($value)
+ * @method static Builder|Customer whereDocNumber($value)
+ * @method static Builder|Customer whereDocumentTypeId($value)
+ * @method static Builder|Customer whereEmail($value)
+ * @method static Builder|Customer whereId($value)
+ * @method static Builder|Customer whereLegalTypeId($value)
+ * @method static Builder|Customer whereName($value)
+ * @method static Builder|Customer wherePhone($value)
+ * @method static Builder|Customer whereProvinceId($value)
+ * @method static Builder|Customer whereSectorId($value)
+ * @method static Builder|Customer whereUpdatedAt($value)
+ * @method static Builder|Customer whereVillageId($value)
+ * @mixin Eloquent
  */
 class Customer extends Model
 {
@@ -67,7 +73,10 @@ class Customer extends Model
         return $this->belongsTo(DocumentType::class);
     }
 
-
+    public function operators(): BelongsToMany
+    {
+        return $this->belongsToMany(Operator::class, 'customer_operators', 'customer_id', 'operator_id');
+    }
 
 
 }

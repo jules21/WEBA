@@ -2,11 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\DocumentType;
 use App\Models\LegalType;
+use Database\Seeders\traits\TruncateTable;
 use Illuminate\Database\Seeder;
 
 class LegalTypeSeeder extends Seeder
 {
+    use TruncateTable;
     /**
      * Run the database seeds.
      *
@@ -27,8 +30,10 @@ class LegalTypeSeeder extends Seeder
             ['id' => 10, 'name' => 'International Organisation'],
         ];
 
+        $this->truncate('legal_types');
         collect($legalTypes)->each(function ($legalType) {
-            LegalType::query()->updateOrCreate($legalType);
+           $created =  LegalType::query()->updateOrCreate($legalType);
+           $created->documentTypes()->sync(\Helper::getRandomModelId(DocumentType::class));
         });
     }
 }

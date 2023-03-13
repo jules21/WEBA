@@ -44,21 +44,21 @@ class StockMovementsDataTable extends DataTable
             })
             ->addColumn('action', function ($item) {
                 return '<div class="btn-group">
-                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown"
+                                <button type="button" class="btn btn-light-primary btn-sm dropdown-toggle" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
                                     Action
                                 </button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="'.route('admin.stock.item-categories.show', $item->id).'">View</a>
-                                    <a class="dropdown-item" href="'.route('admin.stock.item-categories.edit.edit', $item->id).'">Edit</a>
-                                    <form action="'.route('admin.stock.item-categories.destroy.destroy', $item->id).'" method="POST">
+                                    <a class="dropdown-item" href="'.route('admin.stock.item-categories.edit', $item->id).'">Edit</a>
+                                    <form action="'.route('admin.stock.item-categories.destroy', $item->id).'" method="POST">
                                         '.csrf_field().'
                                         '.method_field('DELETE').'
                                         <button type="submit" class="dropdown-item">Delete</button>
                                     </form>
                                 </div>
                             </div>';
-            });
+            })->rawColumns(['type', 'action', 'item_id', 'operator_id', 'quantity', 'created_at']);
     }
 
     /**
@@ -82,6 +82,7 @@ class StockMovementsDataTable extends DataTable
         return $this->builder()
                     ->setTableId('stockmovements-table')
                     ->columns($this->getColumns())
+                    ->addTableClass('table border table-head-custom table-hover  table-head-solid')
                     ->minifiedAjax()
                     ->addTableClass('table table-striped- table-hover table-checkable')
                     ->orderBy(1);

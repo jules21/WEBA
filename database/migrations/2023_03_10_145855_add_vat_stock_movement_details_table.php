@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDocTypeIdToCustomersTable extends Migration
+class AddVatStockMovementDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddDocTypeIdToCustomersTable extends Migration
      */
     public function up()
     {
-        Schema::table('customers', function (Blueprint $table) {
-            $table->dropColumn('doc_type');
-            $table->foreignId('document_type_id')->after('legal_type_id')->nullable()->constrained();
+        Schema::table('stock_movement_details', function (Blueprint $table) {
+            $table->decimal('vat', 10, 2)->nullable()->after('quantity');
         });
     }
 
@@ -26,8 +25,8 @@ class AddDocTypeIdToCustomersTable extends Migration
      */
     public function down()
     {
-        Schema::table('customers', function (Blueprint $table) {
-            $table->string('doc_type');
+        Schema::table('stock_movement_details', function (Blueprint $table) {
+            $table->dropColumn('vat');
         });
     }
 }

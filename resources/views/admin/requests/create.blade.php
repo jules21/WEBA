@@ -55,7 +55,7 @@
                     </h4>
                 </div>
 
-                <form action="{{ route("admin.requests.store") }}" class="mt-4" method="post"
+                <form action="{{ route("admin.requests.store") }}" class="mt-4" method="post" id="formSave"
                       enctype="multipart/form-data">
                     @csrf
                     <div class="row">
@@ -418,27 +418,8 @@
 
                 $btn.prop("disabled", true)
                     .addClass("spinner spinner-white spinner-sm spinner-right");
-                $.ajax({
-                    url: $form.attr("action"),
-                    method: "post",
-                    data: $form.serialize(),
-                    dataType: 'json',
-                    success: function (response) {
-                        dataTable.ajax.reload();
-                        $('#addModal').modal('hide');
-                    }, error: function (response) {
-                        Swal.fire({
-                            title: "Error",
-                            icon: "error",
-                            text: "Unable to save customer, try again"
-                        });
-                    },
-                    complete: function () {
 
-                        $btn.prop("disabled", false)
-                            .removeClass("spinner spinner-white spinner-sm spinner-right");
-                    }
-                });
+                e.target.submit();
 
             });
 

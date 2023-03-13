@@ -2,10 +2,20 @@
 
 namespace App\Models;
 
+use Database\Factories\OperatorFactory;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+
+use Illuminate\Support\Carbon;
+
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+
 use Storage;
 
 
@@ -24,39 +34,39 @@ use Storage;
  * @property int|null $cell_id
  * @property int|null $village_id
  * @property string|null $logo
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property int|null $clms_id
- * @property-read \App\Models\Cell|null $cell
- * @property-read \App\Models\District|null $district
+ * @property-read Cell|null $cell
+ * @property-read District|null $district
  * @property-read string $full_address
  * @property-read string $logo_url
- * @property-read \App\Models\LegalType $legalType
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OperationArea> $operationAreas
+ * @property-read LegalType $legalType
+ * @property-read Collection<int, OperationArea> $operationAreas
  * @property-read int|null $operation_areas_count
- * @property-read \App\Models\Province|null $province
- * @property-read \App\Models\Sector|null $sector
- * @property-read \App\Models\Village|null $village
- * @method static \Database\Factories\OperatorFactory factory(...$parameters)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Operator newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Operator query()
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereCellId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereClmsId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereDistrictId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereDocNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereIdType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereLegalTypeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereLogo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereProvinceId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereSectorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Operator whereVillageId($value)
- * @mixin \Eloquent
+ * @property-read Province|null $province
+ * @property-read Sector|null $sector
+ * @property-read Village|null $village
+ * @method static OperatorFactory factory(...$parameters)
+ * @method static Builder|Operator newModelQuery()
+ * @method static Builder|Operator newQuery()
+ * @method static Builder|Operator query()
+ * @method static Builder|Operator whereAddress($value)
+ * @method static Builder|Operator whereCellId($value)
+ * @method static Builder|Operator whereClmsId($value)
+ * @method static Builder|Operator whereCreatedAt($value)
+ * @method static Builder|Operator whereDistrictId($value)
+ * @method static Builder|Operator whereDocNumber($value)
+ * @method static Builder|Operator whereId($value)
+ * @method static Builder|Operator whereIdType($value)
+ * @method static Builder|Operator whereLegalTypeId($value)
+ * @method static Builder|Operator whereLogo($value)
+ * @method static Builder|Operator whereName($value)
+ * @method static Builder|Operator whereProvinceId($value)
+ * @method static Builder|Operator whereSectorId($value)
+ * @method static Builder|Operator whereUpdatedAt($value)
+ * @method static Builder|Operator whereVillageId($value)
+ * @mixin Eloquent
  */
 class Operator extends Model
 {
@@ -117,6 +127,15 @@ class Operator extends Model
     public function operationAreas(): HasMany
     {
         return $this->hasMany(OperationArea::class);
+    }
+
+    public function customers(): BelongsToMany
+    {
+        return $this->belongsToMany(Customer::class, 'customer_operators', 'operator_id', 'customer_id');
+    }
+    public function stocks(): HasManyThrough
+    {
+        return $this->hasManyThrough(Stock::class, OperationArea::class);
     }
 
 
