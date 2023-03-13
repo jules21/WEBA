@@ -78,5 +78,15 @@ class Customer extends Model
         return $this->belongsToMany(Operator::class, 'customer_operators', 'customer_id', 'operator_id');
     }
 
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
+    // has many connections through requests
+    public function connections()
+    {
+        return $this->hasManyThrough(MeterRequest::class, Request::class);
+    }
+
 
 }

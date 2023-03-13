@@ -4,14 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOperationAreaRequest;
 use App\Http\Requests\UpdateOperationAreaRequest;
+use App\Models\ChartAccount;
+use App\Models\ChartAccountTemplate;
 use App\Models\OperationArea;
 use App\Models\District;
 use App\Models\Operator;
 use App\Models\Request;
+use DB;
 use Exception;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
+use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
 class AreaOfOperationController extends Controller
@@ -60,12 +65,30 @@ class AreaOfOperationController extends Controller
     }
 
 
+    /**
+     * @throws Throwable
+     */
     public function store(StoreOperationAreaRequest $request, Operator $operator)
     {
         $data = $request->validated();
 
-        $id = $request->input('id');
 
+        // check if the area of operation already exists
+        $areaOfOperation = $operator->operationAreas()
+            ->where('district_id', $data['district_id'])
+            ->first();
+
+        if ($areaOfOperation) {
+            return response()->json([
+                'message' => 'Area of operation already exists',
+                'success' => false,
+                'data' => $areaOfOperation
+            ], ResponseAlias::HTTP_BAD_REQUEST);
+        }
+
+
+        $id = $request->input('id');
+        DB::beginTransaction();
         if ($id > 0) {
             $opArea = OperationArea::query()->find($id);
             $opArea->update($data);
@@ -73,7 +96,11 @@ class AreaOfOperationController extends Controller
             $opArea = $operator
                 ->operationAreas()
                 ->create($data);
+
+            $this->saveChartOfAccounts($opArea);
+
         }
+        DB::commit();
 
         if (request()->ajax()) {
             return \response()
@@ -119,7 +146,6 @@ class AreaOfOperationController extends Controller
         ];
 
 
-
         $response = Http::withHeaders($headers)
             ->post(config('app.CLMS_URL') . '/api/v1/cms-rwss/get-operator/operation-area', $body);
 
@@ -129,7 +155,7 @@ class AreaOfOperationController extends Controller
         return response()
             ->json([
                 'message' => 'Unable to fetch area of operations, please try again later',
-                'data'=>$response->json()
+                'data' => $response->json()
             ], 400);
 
     }
@@ -138,15 +164,41 @@ class AreaOfOperationController extends Controller
      * @param Operator $operator
      * @return mixed
      */
-    public function getOperationAreasByOperators(Request $request)
+    public function getOperationAreasByOperators()
     {
-        return $request->all();
+//        dd(request()->all());
+        $operatorIds = request()->input('operator_id');
+        $operators = Operator::query()->whereIn('id', $operatorIds)
+            ->with('operationAreas')
+            ->get();
+        return $operators->map(function($operator){
+            return $operator->operationAreas;
+        });
+    }
 
-//        $operatorIds = explode(',', $operators);
-//        $operators = Operator::query()->whereIn('id', $operatorIds)->get();
-//        return $operators->map(function($operator){
-//            return $operator->operationAreas;
-//        });
+    /**
+     * @param $opArea
+     * @return void
+     */
+    public function saveChartOfAccounts($opArea): void
+    {
+        ChartAccountTemplate::query()
+            ->each(function ($oldRecord) use ($opArea) {
+                $newRecord = $oldRecord->replicate();
+                // create new record with old record data and add operation_area_id to save as new chart of account
+                $toArray = collect($newRecord->toArray())
+                    ->except(['id', 'created_at', 'updated_at'])
+                    ->toArray();
+
+                ChartAccount::query()->create(
+                    $toArray + [
+                        'operation_area_id' => $opArea->id,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]
+                );
+
+            });
     }
 
 

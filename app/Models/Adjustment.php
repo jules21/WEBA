@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Constants\Permission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * App\Models\Adjustment
@@ -32,4 +34,55 @@ use Illuminate\Database\Eloquent\Model;
 class Adjustment extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'status',
+        'description',
+        'operation_area_id',
+        'created_by',
+        'approved_by',
+    ];
+
+    const PENDING = "Pending";
+    const SUBMITTED = "Submitted";
+    const APPROVED = "Approved";
+
+    const REJECTED = "Rejected";
+
+    protected $appends = ['status_color'];
+
+    public function operationArea(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(OperationArea::class);
+    }
+
+    public function items(): MorphMany
+    {
+        return $this->morphMany(StockMovementDetail::class, 'model', 'model_type', 'model_id');
+    }
+
+    public function flowHistories(): MorphMany
+    {
+        return $this->morphMany(FlowHistory::class, 'model');
+    }
+
+    public function getApprovalStatuses(): array
+    {
+        return [
+            self::APPROVED,
+            self::REJECTED
+        ];
+    }
+
+    public function canBeReviewed(): bool
+    {
+        return $this->status === self::SUBMITTED
+            && auth()->user()->operation_area
+            && auth()->user()->can(Permission::ApproveAdjustment);
+    }
+
+    public function movements(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(StockMovement::class, 'adjustment_id');
+    }
 }
