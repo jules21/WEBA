@@ -146,7 +146,9 @@
         <li class="menu-item menu-item-submenu nav-accounting-settings" aria-haspopup="true" data-menu-toggle="hover">
             <a href="javascript:" class="menu-link menu-toggle">
                    <span class="svg-icon menu-icon">
-                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt-tax" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt-tax"
+                            width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
    <path d="M9 14l6 -6"></path>
    <circle cx="9.5" cy="8.5" r=".5" fill="currentColor"></circle>
@@ -163,11 +165,15 @@
                 <i class="menu-arrow"></i>
                 <ul class="menu-subnav">
 
-                    <x-menu-item title="Assign Chart Of Accounts" item-class="nav-assign-chart-accounts"
+                    <x-menu-item title="Expenses" item-class="nav-assign-chart-accounts"
                                  :route="route('admin.purchases.index')"/>
-                    <x-menu-item title="Ledger Migration" item-class="nav-ledger-migration"
+                    <x-menu-item title="Cash Movements" item-class="nav-ledger-migration"
                                  :route="route('admin.purchases.index')"/>
-                    <x-menu-item title="Chart Of Accounts" item-class="nav-chart-accounts"
+                    <x-menu-item title="Journal Entries" item-class="nav-chart-accounts"
+                                 :route="route('admin.purchases.index')"/>
+                    <x-menu-item title="General Ledger" item-class="nav-chart-accounts"
+                                 :route="route('admin.purchases.index')"/>
+                    <x-menu-item title="Ledger Balances" item-class="nav-chart-accounts"
                                  :route="route('admin.purchases.index')"/>
 
                 </ul>
@@ -179,8 +185,10 @@
         <li class="menu-item menu-item-submenu nav-accounting-settings" aria-haspopup="true" data-menu-toggle="hover">
             <a href="javascript:" class="menu-link menu-toggle">
                    <span class="svg-icon menu-icon">
-                                   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-coins" width="24"
-                                        height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                                   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-coins"
+                                        width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
+                                        fill="none"
                                         stroke-linecap="round" stroke-linejoin="round">
                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                            <path d="M9 14c0 1.657 2.686 3 6 3s6 -1.343 6 -3s-2.686 -3 -6 -3s-6 1.343 -6 3z"></path>
@@ -205,7 +213,7 @@
                     <x-menu-item title="Ledger Migration" item-class="nav-ledger-migration"
                                  :route="route('admin.purchases.index')"/>
                     <x-menu-item title="Chart Of Accounts" item-class="nav-chart-accounts"
-                                 :route="route('admin.purchases.index')"/>
+                                 :route="route('admin.accounting.chart-of-accounts')"/>
 
                 </ul>
             </div>
@@ -335,22 +343,22 @@
                     <div class="menu-submenu" kt-hidden-height="120" style="display: none; overflow: hidden;">
                         <i class="menu-arrow"></i>
                         <ul class="menu-subnav">
-{{--                            <li class="menu-item" aria-haspopup="true">--}}
-{{--                                <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">--}}
-{{--                                    <i class="menu-bullet menu-bullet-dot">--}}
-{{--                                        <span></span>--}}
-{{--                                    </i>--}}
-{{--                                    <span class="menu-text">Create Adjustment</span>--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
-{{--                            <li class="menu-item" aria-haspopup="true">--}}
-{{--                                <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">--}}
-{{--                                    <i class="menu-bullet menu-bullet-dot">--}}
-{{--                                        <span></span>--}}
-{{--                                    </i>--}}
-{{--                                    <span class="menu-text">My Tasks</span>--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
+                            {{--                            <li class="menu-item" aria-haspopup="true">--}}
+                            {{--                                <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">--}}
+                            {{--                                    <i class="menu-bullet menu-bullet-dot">--}}
+                            {{--                                        <span></span>--}}
+                            {{--                                    </i>--}}
+                            {{--                                    <span class="menu-text">Create Adjustment</span>--}}
+                            {{--                                </a>--}}
+                            {{--                            </li>--}}
+                            {{--                            <li class="menu-item" aria-haspopup="true">--}}
+                            {{--                                <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">--}}
+                            {{--                                    <i class="menu-bullet menu-bullet-dot">--}}
+                            {{--                                        <span></span>--}}
+                            {{--                                    </i>--}}
+                            {{--                                    <span class="menu-text">My Tasks</span>--}}
+                            {{--                                </a>--}}
+                            {{--                            </li>--}}
                             <li class="menu-item" aria-haspopup="true">
                                 <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">

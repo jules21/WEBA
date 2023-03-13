@@ -3,6 +3,7 @@
 use App\Constants\Permission;
 use App\Http\Controllers\AreaOfOperationController;
 use App\Http\Controllers\CellController;
+use App\Http\Controllers\ChartAccountController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
@@ -70,7 +71,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/store', [CustomerController::class, 'store'])->name('store');
         Route::get('/show/{customer}', [CustomerController::class, 'show'])->name('show');
         Route::delete('/delete/{customer}', [CustomerController::class, 'destroy'])->name('delete');
-        Route::get('/{customer}/connections',[CustomerController::class, 'connections'])->name('connections');
+        Route::get('/{customer}/connections', [CustomerController::class, 'connections'])->name('connections');
     });
 
 
@@ -118,10 +119,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('edit');
         Route::put('/{purchase}/update', [PurchaseController::class, 'update'])->name('update');
         Route::delete('/{purchase}/delete', [PurchaseController::class, 'destroy'])->name('destroy');
-
-
         Route::post('/{purchase}/submit-review', [PurchaseController::class, 'submitReview'])->name('submit-review');
+    });
 
+    Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
+        Route::get('/chart-of-accounts', [ChartAccountController::class, 'index'])->name('chart-of-accounts');
     });
 
 
@@ -212,16 +214,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         //water networks
 
-        Route::get('/water_networks',[App\Http\Controllers\WaterNetworkController::class,'index'])->name('water.networks');
-        Route::post('/water_network/store',[App\Http\Controllers\WaterNetworkController::class,'store'])->name('water.network.store');
-        Route::post('/water_network/update',[App\Http\Controllers\WaterNetworkController::class,'update'])->name('water.network.edit');
-        Route::get('/water_network/delete/{id}',[App\Http\Controllers\WaterNetworkController::class,'destroy'])->name('water.network.delete');
+        Route::get('/water_networks', [App\Http\Controllers\WaterNetworkController::class, 'index'])->name('water.networks');
+        Route::post('/water_network/store', [App\Http\Controllers\WaterNetworkController::class, 'store'])->name('water.network.store');
+        Route::post('/water_network/update', [App\Http\Controllers\WaterNetworkController::class, 'update'])->name('water.network.edit');
+        Route::get('/water_network/delete/{id}', [App\Http\Controllers\WaterNetworkController::class, 'destroy'])->name('water.network.delete');
 
         //suppliers
-        Route::get('/suppliers',[App\Http\Controllers\SupplierController::class,'index'])->name('suppliers');
-        Route::post('/supplier/store',[App\Http\Controllers\SupplierController::class,'store'])->name('supplier.store');
-        Route::post('/supplier/update',[App\Http\Controllers\SupplierController::class,'update'])->name('supplier.edit');
-        Route::get('/supplier/delete/{id}',[App\Http\Controllers\SupplierController::class,'destroy'])->name('supplier.delete');
+        Route::get('/suppliers', [App\Http\Controllers\SupplierController::class, 'index'])->name('suppliers');
+        Route::post('/supplier/store', [App\Http\Controllers\SupplierController::class, 'store'])->name('supplier.store');
+        Route::post('/supplier/update', [App\Http\Controllers\SupplierController::class, 'update'])->name('supplier.edit');
+        Route::get('/supplier/delete/{id}', [App\Http\Controllers\SupplierController::class, 'destroy'])->name('supplier.delete');
 
         Route::get('/water_networks', [App\Http\Controllers\WaterNetworkController::class, 'index'])->name('water.networks');
         Route::post('/water_network/store', [App\Http\Controllers\WaterNetworkController::class, 'store'])->name('water.network.store');
