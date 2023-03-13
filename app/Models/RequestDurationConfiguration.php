@@ -40,8 +40,7 @@ class RequestDurationConfiguration extends Model
         return $this->belongsTo(Operator::class,'operator_id');
     }
 
-    public function operationArea(): BelongsTo
-    {
+    public function operationArea(){
         return $this->belongsTo(OperationArea::class,'operation_area_id');
     }
 }
