@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title','New Purchase')
+@section('title','Stock In')
 
 @section('content')
 
@@ -10,7 +10,7 @@
             <div class="d-flex align-items-center flex-wrap mr-2">
                 <!--begin::Page Title-->
                 <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">
-                    New Purchase
+                    New Stock In
                 </h5>
 
                 <!--end::Page Title-->
@@ -47,10 +47,10 @@
                         New
                     @endif
 
-                    Purchase
+                    Stock In
                 </h4>
 
-                <a href="" class="btn btn-light-primary btn-sm" id="addButton">
+                <a href="{{ route("admin.purchases.index") }}" class="btn btn-light-primary btn-sm" id="addButton">
                        <span class="svg-icon">
                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-back-up"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
@@ -59,13 +59,13 @@
                            <path d="M9 13l-4 -4l4 -4m-4 4h11a4 4 0 0 1 0 8h-1"></path>
                         </svg>
                        </span>
-                    Go Back To Purchases
+                    Go Back
                 </a>
             </div>
 
             <form
-                    action="{{ isset($purchase)?route('admin.purchases.update',encryptId($purchase->id)): route('admin.purchases.store') }}"
-                    method="post" class="mt-4" id="submitForm">
+                action="{{ isset($purchase)?route('admin.purchases.update',encryptId($purchase->id)): route('admin.purchases.store') }}"
+                method="post" class="mt-4" id="submitForm">
                 @csrf
 
                 @if(isset($purchase))
@@ -83,7 +83,7 @@
                                 <option value="">Select Supplier</option>
                                 @foreach($suppliers as $supplier)
                                     <option value="{{ $supplier->id }}"
-                                            {{ $supplier->id == (isset($purchase)?$purchase->supplier_id:'')?'selected':'' }}>
+                                        {{ $supplier->id == (isset($purchase)?$purchase->supplier_id:'')?'selected':'' }}>
                                         {{ $supplier->name }} - {{ $supplier->phone_number }}
                                     </option>
                                 @endforeach
@@ -132,14 +132,14 @@
                                                        style="display: none;"></label>
                                             </td>
                                             <td>
-                                                <input type="number" value="{{ $item->qty_in }}" min="0.1" step="0.1"
+                                                <input type="number" value="{{ $item->qty_in }}" min="0.1"
                                                        required name="quantities[]"
                                                        class="form-control form-control-sm w-100px"/>
                                                 <label id="quantities[]-error" class="error" for="quantities[]"
                                                        style="display: none;"></label>
                                             </td>
                                             <td>
-                                                <input type="number" value="{{ $item->unit_price }}" min="1" step="0.5"
+                                                <input type="number" value="{{ $item->unit_price }}" min="1"
                                                        required name="prices[]"
                                                        class="form-control form-control-sm w-150px"/>
                                                 <label id="prices[]-error" class="error" for="prices[]"
@@ -154,11 +154,11 @@
                                                 <select name="vats[]" required
                                                         class="form-control form-control-sm w-100px">
                                                     <option
-                                                            {{ $item->vat==18?"selected":"" }} value="18">
+                                                        {{ $item->vat==18?"selected":"" }} value="18">
                                                         VAT ({{$item->item->vat_rate}}%)
                                                     </option>
                                                     <option
-                                                            {{ $item->vat==0?"selected":"" }} value="0">
+                                                        {{ $item->vat==0?"selected":"" }} value="0">
                                                         NO VAT(0%)
                                                     </option>
                                                 </select>
@@ -286,7 +286,7 @@
 
             // create a td element
             td = $('<td></td>');
-            td.append('<input type="number" min="0.1" step="0.1" required name="quantities[]" class="form-control form-control-sm w-100px"/>');
+            td.append('<input type="number" min="0.1"  required name="quantities[]" class="form-control form-control-sm w-100px"/>');
             td.append(`<label id="quantities[]-error" class="error" for="quantities[]" style="display: none;"></label>`);
 
             // append td to tr
@@ -294,7 +294,7 @@
 
             // create a td element
             td = $('<td></td>');
-            td.append('<input type="number" min="1" step="0.5" required name="prices[]" class="form-control form-control-sm w-150px"/>');
+            td.append('<input type="number" min="1"  required name="prices[]" class="form-control form-control-sm w-150px"/>');
             td.append(`<label id="prices[]-error" class="error" for="prices[]" style="display: none;"></label>`);
 
             // append td to tr
