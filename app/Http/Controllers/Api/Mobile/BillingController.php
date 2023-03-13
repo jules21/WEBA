@@ -8,11 +8,13 @@ use App\Http\Resources\MeterRequestResource;
 use App\Models\BillCharge;
 use App\Models\Billing;
 use App\Models\MeterRequest;
+use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
 
 class BillingController extends Controller
 {
     //
+    use UploadFileTrait;
 
     public function recentRecords()
     {
@@ -60,6 +62,7 @@ class BillingController extends Controller
 
     public function storeBill(Request $request)
     {
+        info($request);
         $meterRequest = MeterRequest::where('subscription_number', $request->subscriptionNumber)
             ->first();
         if (!$meterRequest) {
@@ -77,8 +80,8 @@ class BillingController extends Controller
         } else {
             $starting_index = $meterRequest->last_index;
         }
-        $charge = BillCharge::query()->where('operation_area_id', $meterRequest->request->operation_area_id)
-            ->where("water_network_type_id", $meterRequest->request->waaterNetwork->water_network_type_id)
+        $charge = BillCharge::query()->where('operation_area_id', 1)
+            ->where("water_network_type_id", $meterRequest->request->waterNetwork->water_network_type_id)
             ->first();
         if (!$charge) {
             return response()->json([
@@ -88,6 +91,11 @@ class BillingController extends Controller
             ]);
         }
         $bill = new Billing();
+        if ($request->hasFile('image')) {
+            info($request->file('image'));
+            $bill->attachment = $this->uploadFile($request->file('image'), 'bills/');
+        }
+
         $bill->subscription_number = $request->subscriptionNumber;
         $bill->meter_number = $meterRequest->meter_number;
         $bill->last_index = $request->indexNumber;

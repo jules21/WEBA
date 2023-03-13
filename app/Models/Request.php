@@ -255,5 +255,10 @@ class Request extends Model
             && auth()->user()->can(Permission::AssignMeterNumber);
     }
 
+    public function waterNetwork(): BelongsTo
+    {
+        return $this->belongsTo(WaterNetwork::class);
+    }
+
 
 }
