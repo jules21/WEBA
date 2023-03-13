@@ -20,7 +20,7 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('admin.purchases.index') }}" class="text-muted">
+                        <a href="{{ route('admin.stock.adjustments.index') }}" class="text-muted">
                             Stock Adjustments
                         </a>
                     </li>
