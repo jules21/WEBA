@@ -20,5 +20,10 @@ class Permission
     const CreatePurchase = 'Create Purchase';
     const ApprovePurchase = 'Approve Purchase';
 
+    const CreateAdjustment = 'Create Adjustment';
+    const ApproveAdjustment = 'Approve Adjustment';
+
+
+
 
 }

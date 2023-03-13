@@ -39,7 +39,7 @@
 													</svg>
                                                     <!--end::Svg Icon-->
 												</span>
-                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{0}}</span>
+                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{$totalOperators}}</span>
                             <span class="font-weight-bold font-size-sm">Total Operators</span>
                         </div>
                         <!--end::Body-->
@@ -63,8 +63,8 @@
 													</svg>
                                                     <!--end::Svg Icon-->
 												</span>
-                            <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{0}}</span>
-                            <span class="font-weight-bold font-size-sm text-white">Total Consumer</span>
+                            <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{$totalCustomers}}</span>
+                            <span class="font-weight-bold font-size-sm text-white">Total Consumers</span>
                         </div>
                         <!--end::Body-->
                     </div>
@@ -89,7 +89,7 @@
 													</svg>
                                                     <!--end::Svg Icon-->
 												</span>
-                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{0}}</span>
+                            <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block">{{$totalMeters}}</span>
                             <span class="font-weight-bold font-size-sm">Total Meters</span>
                         </div>
                         <!--end::Body-->
@@ -114,8 +114,8 @@
 													</svg>
                                                     <!--end::Svg Icon-->
 												</span>
-                            <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{0}}</span>
-                            <span class="font-weight-bold font-size-sm text-white">Total Network</span>
+                            <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block">{{$totalOperationAreas}}</span>
+                            <span class="font-weight-bold font-size-sm text-white">Total Operating Areas</span>
                         </div>
                         <!--end::Body-->
                     </div>

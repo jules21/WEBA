@@ -43,8 +43,48 @@
                 </div>
             </div>
         </div>
+        <div class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title">
+                            Stock Movement Details
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                        </div>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 @section('scripts')
     {!! $dataTable->scripts() !!}
+    <script>
+        // $(document).on('click','.btn-details', function(e){
+        //     e.preventDefault();
+        //     console.log('clicked');
+        //     const link = $(this);
+        //     link.addClass('spinner spinner-white spinner-right');
+        //     const url = link.attr('href');
+        //     $.ajax({
+        //         url: url,
+        //         method: 'GET',
+        //         success: function (response) {
+        //             link.removeClass('spinner spinner-white spinner-right');
+        //             $('#modal').modal('show');
+        //             $('#modal .modal-title').html('Stock Movement Details');
+        //             $('#modal .modal-body').html(response);
+        //         },
+        //         error: function (error) {
+        //             link.removeClass('spinner spinner-white spinner-right');
+        //             console.log(error);
+        //         }
+        //     })
+        // })
+        </script>
 @endsection
