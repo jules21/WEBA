@@ -143,6 +143,7 @@ class RequestsController extends Controller
 
         $id = $request->input('id');
         $data['operator_id'] = auth()->user()->operator_id;
+        $data['operation_area_id'] = auth()->user()->operation_area;
         $data['created_by'] = auth()->id();
 
         if ($request->hasFile('upi_attachment')) {
@@ -188,8 +189,8 @@ class RequestsController extends Controller
         $items = Item::query()
             ->whereHas('category', fn(Builder $query) => $query->where('is_meter', '=', false))
             ->whereHas('stock', fn(Builder $query) => $query->where('quantity', '>', 0))
-                ->orderBy('name')
-                ->get();
+            ->orderBy('name')
+            ->get();
 
         $technician = $request->technician()->first();
 
