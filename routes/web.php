@@ -250,6 +250,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/adjustments/{adjustment}/items', [App\Http\Controllers\AdjustmentController::class, 'addItem'])->name('stock-adjustments.items.add');
         Route::delete('/adjustments/{adjustment}/items/{item}', [App\Http\Controllers\AdjustmentController::class, 'removeItem'])->name('stock-adjustments.items.remove');
 
+        Route::get('/adjustment/my-tasks', [App\Http\Controllers\AdjustmentController::class, 'myTasks'])->name('stock-adjustments.tasks');
         //submit adjustment
         Route::get('/adjustments/{adjustment}/submit', [App\Http\Controllers\AdjustmentController::class, 'submit'])->name('stock-adjustments.submit');
         //submit review

@@ -148,7 +148,7 @@
                                     </tr>
 
                                 @empty
-                                    {{--     <tr>
+                                        <tr>
                                              <td colspan="5">
                                                  <div class="alert alert-light-info alert-custom py-1">
                                                      <div class="alert-icon">
@@ -159,7 +159,7 @@
                                                      </div>
                                                  </div>
                                              </td>
-                                         </tr>--}}
+                                         </tr>
                                 @endforelse
 
                                 </tbody>
@@ -170,7 +170,7 @@
                 </div>
 
 {{--                submit--}}
-                @if($adjustment->status == \App\Models\Adjustment::PENDING)
+                @if($adjustment->canBeSubmitted())
                     <div class="row justify-content-end mr-2">
                         <a class="btn btn-outline-primary btn-lg submitBtn" href="{{ route("admin.stock.stock-adjustments.submit",encryptId($adjustment->id)) }}">
                             <i class="fas fa-check-circle"></i>

@@ -89,6 +89,13 @@ class Adjustment extends Model
             && auth()->user()->can(Permission::ApproveAdjustment);
     }
 
+    public function canBeSubmitted(): bool
+    {
+        return $this->status === self::PENDING
+            && auth()->user()->operation_area
+            && auth()->user()->can(Permission::CreateAdjustment);
+    }
+
     public function movements(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(StockMovement::class, 'adjustment_id');

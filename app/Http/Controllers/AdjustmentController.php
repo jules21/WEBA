@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Permission;
 use App\Http\Requests\StoreAdjustmentRequest;
 use App\Http\Requests\UpdateAdjustmentRequest;
 use App\Http\Requests\ValidateAdjustmentItemRequest;
@@ -25,24 +26,32 @@ class AdjustmentController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $query = Adjustment::with('operationArea');
-        $query->when($user->operator_id, function ($query) use ($user) {
-            $query->whereHas('operationArea', function ($query) use ($user) {
-                $query->where('operator_id', $user->operator_id);
-            });
-        });
-        $query->when($user->operation_area, function ($query) use ($user) {
-            $query->where('operation_area_id', $user->operation_area);
-        });
+        $query = $this->extracted($user);
         $adjustments = $query->get();
         return view('admin.stock.adjustment.index', compact('adjustments'));
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
+    public function myTasks()
+    {
+        $user = auth()->user();
+        if (!$user->can(Permission::ApproveAdjustment))
+            return redirect()->back()->with('error', 'You are not a reviewer');
+
+        $query = $this->extracted($user);
+        $adjustments = $query->where('status', Adjustment::SUBMITTED)->get();
+        return view('admin.stock.adjustment.index', compact('adjustments'));
+    }
+
+    public function create()
+    {
+        $user = auth()->user();
+        if (!$user->can(Permission::CreateAdjustment))
+            return redirect()->back()->with('error', 'You are not allowed to create adjustment');
+
+        $query = $this->extracted($user);
+        $adjustments = $query->WhereIn('status', [Adjustment::PENDING, Adjustment::SUBMITTED])->get();
+        return view('admin.stock.adjustment.index', compact('adjustments'));
+    }
     public function store(StoreAdjustmentRequest $request)
     {
         $adjustment =  Adjustment::query()->create($request->validated());
@@ -244,5 +253,23 @@ class AdjustmentController extends Controller
             'vat' => $movement->vat ?? 0,
             'description' => "Adjustment of {$item->name} done  due to {$adjustment->description}  ",
         ]);
+    }
+
+    /**
+     * @param $user
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function extracted($user)
+    {
+        $query = Adjustment::with('operationArea');
+        $query->when($user->operator_id, function ($query) use ($user) {
+            $query->whereHas('operationArea', function ($query) use ($user) {
+                $query->where('operator_id', $user->operator_id);
+            });
+        });
+        $query->when($user->operation_area, function ($query) use ($user) {
+            $query->where('operation_area_id', $user->operation_area);
+        });
+        return $query;
     }
 }
