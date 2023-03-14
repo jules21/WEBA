@@ -82,9 +82,10 @@ class CustomerController extends Controller
     {
         $data = $request->validated();
         $id = $request->input('id');
+        // remove input_doc_number from data
+        unset($data['input_doc_number']);
         if ($id > 0) {
             $customer = Customer::query()->find($id);
-
             $customer->update($data);
         } else {
             $customer = Customer::query()
@@ -97,7 +98,8 @@ class CustomerController extends Controller
             ], ResponseAlias::HTTP_CREATED);
         }
 
-        return back();
+        return back()
+            ->with('success', 'Customer created successfully.');
     }
 
 
