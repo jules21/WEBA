@@ -14,7 +14,8 @@ class WaterNetworkTypeController extends Controller
      */
     public function index()
     {
-        //
+        $types = WaterNetworkType::query()->orderBy('id','DESC')->get();
+        return view('admin.settings.water_network_types',compact('types'));
     }
 
     /**
@@ -35,7 +36,10 @@ class WaterNetworkTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $type = new WaterNetworkType();
+        $type->name=$request->name;
+        $type->save();
+        return redirect()->back()->with('sucess','Water Network Type Created Successfully');
     }
 
     /**
@@ -69,7 +73,10 @@ class WaterNetworkTypeController extends Controller
      */
     public function update(Request $request, WaterNetworkType $waterNetworkType)
     {
-        //
+        $type =  WaterNetworkType::findOrFail($request->input('WaterNetworkTypeId'));
+        $type->name=$request->name;
+        $type->save();
+        return redirect()->back()->with('sucess','Water Network Type Updated Successfully');
     }
 
     /**
@@ -78,8 +85,15 @@ class WaterNetworkTypeController extends Controller
      * @param  \App\Models\WaterNetworkType  $waterNetworkType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WaterNetworkType $waterNetworkType)
+    public function destroy(WaterNetworkType $waterNetworkType,$id)
     {
-        //
+        try {
+            $type = WaterNetworkType::find($id);
+            $type->delete();
+            return redirect()->back()->with('sucess','Water Network Type Deleted Successfully');
+        }catch (\Exception $exception){
+            info($exception);
+            return redirect()->back()->with('error','Water Network Type Can not be deleted');
+        }
     }
 }
