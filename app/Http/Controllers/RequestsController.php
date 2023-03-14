@@ -6,6 +6,9 @@ use App\Constants\Permission;
 use App\Http\Requests\ValidateAppRequest;
 use App\Models\Customer;
 use App\Models\Item;
+use App\Models\ItemCategory;
+use App\Models\PaymentConfiguration;
+use App\Models\PaymentType;
 use App\Models\Province;
 use App\Models\Request;
 use App\Models\Request as AppRequest;
@@ -13,13 +16,11 @@ use App\Models\RequestType;
 use App\Models\RoadCrossType;
 use App\Models\RoadType;
 use App\Models\User;
+use App\Models\WaterNetwork;
 use App\Models\WaterUsage;
 use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use LaravelIdea\Helper\App\Models\_IH_User_C;
-use LaravelIdea\Helper\App\Models\_IH_User_QB;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
@@ -31,10 +32,9 @@ class RequestsController extends Controller
      */
     public function index()
     {
-
         $data = AppRequest::query()
             ->with(['customer', 'requestType'])
-            ->where('operator_id', '=', auth()->user()->operator_id)
+            ->where([['operation_area_id', '=', auth()->user()->operation_area]])
             ->select('requests.*');
         if (request()->ajax()) {
 
@@ -83,7 +83,9 @@ class RequestsController extends Controller
         if (request()->ajax()) {
             $data = AppRequest::query()
                 ->with(['customer', 'requestType'])
-                ->where('operator_id', '=', auth()->user()->operator_id)
+                ->where([
+                    ['operation_area_id', '=', auth()->user()->operation_area]
+                ])
                 ->whereDoesntHave('requestAssignments')
                 ->select('requests.*');
             return DataTables::of($data)
@@ -112,7 +114,7 @@ class RequestsController extends Controller
             $data = AppRequest::query()
                 ->with(['customer', 'requestType', 'requestAssignment.user'])
                 ->where([
-                    ['operator_id', '=', auth()->user()->operator_id],
+                    ['operation_area_id', '=', auth()->user()->operation_area],
                     ['status', '=', AppRequest::ASSIGNED]
                 ])
                 ->whereHas('requestAssignment')
@@ -170,14 +172,14 @@ class RequestsController extends Controller
             ], ResponseAlias::HTTP_OK);
         }
 
-        return redirect()->route('admin.requests.index')
+        return redirect()->route('admin.requests.my-tasks')
             ->with('success', 'Request saved successfully');
 
     }
 
     public function show(AppRequest $request)
     {
-        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user');
+        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user', 'paymentDeclarations.paymentConfig');
 
         $reviews = $request->flowHistories->where('is_comment', '=', true);
         $flowHistories = $request->flowHistories->where('is_comment', '=', false);
@@ -192,7 +194,21 @@ class RequestsController extends Controller
             ->orderBy('name')
             ->get();
 
-        $technician = $request->technician()->first();
+        $waterNetworks = WaterNetwork::query()
+            ->where('operation_area_id', '=', auth()->user()->operation_area)
+            ->get();
+
+        $itemCategories = ItemCategory::query()
+            ->where('is_meter', '=', true)
+            ->get();
+
+        $paymentConfig = PaymentConfiguration::query()
+            ->where([
+                ['operation_area_id', '=', auth()->user()->operation_area],
+                ['payment_type_id', '=', PaymentType::CONNECTION_FEE],
+                ['request_type_id', '=', $request->request_type_id]
+            ])
+            ->first();
 
         return view('admin.requests.show', [
             'request' => $request,
@@ -200,7 +216,9 @@ class RequestsController extends Controller
             'flowHistories' => $flowHistories,
             'items' => $items,
             'requestItems' => $requestItems,
-            'technician' => $technician
+            'waterNetworks' => $waterNetworks,
+            'itemCategories' => $itemCategories,
+            'paymentConfig' => $paymentConfig
         ]);
     }
 
@@ -272,7 +290,7 @@ class RequestsController extends Controller
             $data = AppRequest::query()
                 ->with(['customer', 'requestType'])
                 ->where([
-                    ['operator_id', '=', auth()->user()->operator_id]
+                    ['operation_area_id', '=', auth()->user()->operation_area],
                 ])
                 ->where(function (Builder $builder) {
                     $hasPermission = false;

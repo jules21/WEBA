@@ -34,6 +34,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Billing whereUnitPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Billing whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Billing whereUserId($value)
+ * @property string|null $comment
+ * @property string|null $attachment
+ * @property-read \App\Models\MeterRequest|null $meterRequest
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|Billing whereAttachment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Billing whereComment($value)
  * @mixin \Eloquent
  */
 class Billing extends Model
