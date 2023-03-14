@@ -14,8 +14,11 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-    'CLMS_URL'=>env('CLMS_URL','https://licensing.rura.rw'),
-    'CMS-RWSS-Key'=>env('CMS-RWSS-Key','f0b2f01b-2ce6-43aa-8ee8-d959c13135d3'),
+    'CLMS_URL' => env('CLMS_URL', 'https://licensing.rura.rw'),
+    'CMS-RWSS-Key' => env('CMS-RWSS-Key', 'f0b2f01b-2ce6-43aa-8ee8-d959c13135d3'),
+    'NIDA_USERNAME' => env('NIDA_USERNAME', 'Rwanda Utilities Regulatory Authority'),
+    'NIDA_PASSWORD' => env('NIDA_PASSWORD', 'GzBf4EcyGvPfMSVzQBG6C7r!AZs36sPzSfQj!qPvsMvNt-$KTnof_xkQiHVemqJpWpEGbLFz3mP7NURA2YjUdKBv!-bDMKiccf6dMGJiY5t2ZudE6usDf5kn4jMbJb4t'),
+    'NIDA_KEY_PHRASE' => env('NIDA_PASSWORD', 'mL5bCOt1BCqa0ZeAFu6!0?-7n$mByFkBci@B6-Mi$aRCqPS7OvZ5?7coM?5GB7C$s4?R3TKGYY_ZxNSPuv3dWwDmfX69jfXfPUkCRbd@1thq9t7_wrmfdyq$B2Lg2QwS'),
 
     /*
     |--------------------------------------------------------------------------

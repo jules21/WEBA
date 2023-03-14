@@ -91,10 +91,7 @@
                     @csrf
                     <input type="hidden" value="0" id="id" name="id"/>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control"/>
-                        </div>
+
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
@@ -125,7 +122,12 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="doc_number">Document Number</label>
-                                    <input type="text" name="doc_number" id="doc_number" class="form-control"/>
+                                    <div class="d-flex flex-shrink-0">
+                                        <input type="text" name="doc_number" id="doc_number" class="form-control"/>
+                                        <button type="button" class="btn btn-primary ml-2 spinner spinner-sm spinner-right spinner-white" disabled>
+                                            Check
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -136,11 +138,21 @@
                             </div>
                         </div>
 
-
-                        <div class="form-group">
-                            <label for="email">Email address</label>
-                            <input type="email" name="email" id="email" class="form-control"/>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="email">Email address</label>
+                                    <input type="email" name="email" id="email" class="form-control"/>
+                                </div>
+                            </div>
                         </div>
+
 
                         <div class="row">
                             <div class="col-lg-6">
@@ -335,7 +347,7 @@
                     },
                     {data: "email", name: "email"},
                     {data: "phone", name: "phone"},
-                    {data: "connection", name:"connection"},
+                    {data: "connection", name: "connection"},
                     {data: "action", name: "action", orderable: false, searchable: false}
                 ],
                 columnDefs: [
