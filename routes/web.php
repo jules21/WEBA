@@ -68,6 +68,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
     Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
         Route::get('/', [CustomerController::class, 'index'])->name('index');
+        Route::get('/get-nida-id-details/{id}', [CustomerController::class, 'fetchIdentificationFromNIDA'])->name('fetch-identification-from-nida');
         Route::post('/store', [CustomerController::class, 'store'])->name('store');
         Route::get('/show/{customer}', [CustomerController::class, 'show'])->name('show');
         Route::delete('/delete/{customer}', [CustomerController::class, 'destroy'])->name('delete');
