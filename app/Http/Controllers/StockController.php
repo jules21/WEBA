@@ -7,6 +7,7 @@ use App\Models\ItemCategory;
 use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\Stock;
+use App\Models\StockMovement;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
@@ -54,5 +55,14 @@ class StockController extends Controller
             'stocks' => $stock->get(),
             'operationAreas' => $user->operator_id ? OperationArea::query()->where('operator_id', $user->operator_id)->get() : OperationArea::query()->get(),
         ]);
+    }
+    public function show(Stock $stock)
+    {
+        $movements = StockMovement::query()
+                    ->where('item_id', $stock->item_id)
+                    ->where('operation_area_id', $stock->operation_area_id)
+                    ->with('item', 'operationArea.operator')
+                    ->get();
+        return view('admin.stock.stock_details', compact('stock','movements'));
     }
 }

@@ -55,4 +55,10 @@ class OperationArea extends Model
     {
         return $this->belongsTo(District::class);
     }
+
+    public function chartOfAccounts(): HasMany
+    {
+        return $this->hasMany(ChartAccount::class);
+    }
+
 }

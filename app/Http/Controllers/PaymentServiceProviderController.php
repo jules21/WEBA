@@ -10,76 +10,36 @@ class PaymentServiceProviderController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
         //
+        if(auth()->user()->can("Manage banks")) {
+            $banks = PaymentServiceProvider::query()->get();
+            return view('admin.settings.payment_service_provider', compact('banks'));
+        }
+        abort(403, 'Unauthorized action.');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function syncBanks()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PaymentServiceProvider  $paymentServiceProvider
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PaymentServiceProvider $paymentServiceProvider)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\PaymentServiceProvider  $paymentServiceProvider
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PaymentServiceProvider $paymentServiceProvider)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PaymentServiceProvider  $paymentServiceProvider
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PaymentServiceProvider $paymentServiceProvider)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\PaymentServiceProvider  $paymentServiceProvider
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PaymentServiceProvider $paymentServiceProvider)
-    {
-        //
+        try {
+            $response = \Http::withHeaders([
+                'Accept' => 'application/json',
+                'CMS-RWSS-Key' => config('app.CMS-RWSS-Key'),
+            ])->get(config('app.CLMS_URL') . '/api/v1/cms-rwss/get-payment-service-providers');
+            if ($response->failed()) {
+                return redirect()->back()->with('error', 'Something went wrong');
+            }
+            $banks = json_decode($response->body());
+            foreach ($banks as $bank) {
+                PaymentServiceProvider::query()->updateOrCreate(['id' => $bank->id], (array)$bank);
+            }
+            return redirect()->back()->with('success', 'Banks synced successfully');
+        } catch (\Exception $exception) {
+            info($exception->getMessage());
+            return redirect()->back()->with('error', 'Something went wrong');
+        }
     }
 }

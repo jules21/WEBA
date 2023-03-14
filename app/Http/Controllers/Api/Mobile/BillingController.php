@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Api\Mobile;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\BillingResource;
 use App\Http\Resources\MeterRequestResource;
+use App\Models\BillCharge;
 use App\Models\Billing;
 use App\Models\MeterRequest;
+use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
 
 class BillingController extends Controller
 {
     //
+    use UploadFileTrait;
 
     public function recentRecords()
     {
@@ -59,6 +62,7 @@ class BillingController extends Controller
 
     public function storeBill(Request $request)
     {
+        info($request);
         $meterRequest = MeterRequest::where('subscription_number', $request->subscriptionNumber)
             ->first();
         if (!$meterRequest) {
@@ -76,13 +80,28 @@ class BillingController extends Controller
         } else {
             $starting_index = $meterRequest->last_index;
         }
+        $charge = BillCharge::query()->where('operation_area_id', 1)
+            ->where("water_network_type_id", $meterRequest->request->waterNetwork->water_network_type_id)
+            ->first();
+        if (!$charge) {
+            return response()->json([
+                'action' => 0,
+                'message' => 'No charge found,Please contact admin',
+                'data' => null
+            ]);
+        }
         $bill = new Billing();
+        if ($request->hasFile('image')) {
+            info($request->file('image'));
+            $bill->attachment = $this->uploadFile($request->file('image'), 'bills/');
+        }
+
         $bill->subscription_number = $request->subscriptionNumber;
         $bill->meter_number = $meterRequest->meter_number;
         $bill->last_index = $request->indexNumber;
         $bill->starting_index = $starting_index;
         $bill->user_id = auth()->user()->id;
-        $bill->unit_price = 100;
+        $bill->unit_price = $charge->unit_price;
         $bill->comment = $request->comment;
         $bill->amount = $bill->unit_price * ($bill->last_index - $bill->starting_index);
         $bill->balance = $bill->unit_price * ($bill->last_index - $bill->starting_index);
