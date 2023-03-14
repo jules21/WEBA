@@ -78,26 +78,26 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-light-primary btn-sm  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
                                         <div class="dropdown-menu" style="">
-                                            <a href="{{route('admin.stock.adjustments.show', $adjustment->id)}}"
+                                            <a href="{{route('admin.stock.adjustments.show', encryptId($adjustment->id))}}"
                                                class="dropdown-item">
-                                                More details
+                                                Details
                                             </a>
-                                            <a href="{{route('admin.stock.stock-adjustments.items', $adjustment->id)}}"
-                                               class="dropdown-item">
-                                                Items
-                                            </a>
-                                            <div class="dropdown-divider"></div>
+{{--                                            <a href="{{route('admin.stock.stock-adjustments.items', encryptId($adjustment->id))}}"--}}
+{{--                                               class="dropdown-item">--}}
+{{--                                                Items--}}
+{{--                                            </a>--}}
                                             @if($adjustment->status == 'Pending')
+                                                <div class="dropdown-divider"></div>
                                                 <a href="#" class=" edit-btn dropdown-item "
                                                    data-toggle="modal"
                                                    data-target="#user_adjustment_edit_modal"
                                                    data-description="{{$adjustment->description}}"
-                                                   data-id="{{$adjustment->id}}"
-                                                   data-url="{{ route('admin.stock.adjustments.update', $adjustment->id) }}">
+                                                   data-id="{{encryptId($adjustment->id)}}"
+                                                   data-url="{{ route('admin.stock.adjustments.update', encryptId($adjustment->id)) }}">
                                                     Edit
                                                 </a>
                                                 <a class="delete_btn dropdown-item"
-                                                   data-url="{{route('admin.stock.adjustments.destroy', $adjustment->id) }}">
+                                                   data-url="{{route('admin.stock.adjustments.destroy', encryptId($adjustment->id)) }}">
                                                     Delete
                                                 </a>
                                             @endif
@@ -117,11 +117,6 @@
              aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add new adjustment</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
                     <form class="kt-form" id="add-adjustment-form" action="{{route('admin.stock.adjustments.store')}} "
                           method="POST">
                         {{csrf_field()}}
@@ -200,7 +195,10 @@
     {!! JsValidator::formRequest(App\Http\Requests\StoreAdjustmentRequest::class,'#add-adjustment-form') !!}
     {!! JsValidator::formRequest(App\Http\Requests\UpdateAdjustmentRequest::class,'#edit-adjustment-form') !!}
     <script>
-        $("#kt_datatable1").DataTable({responsive:true});
+        $("#kt_datatable1").DataTable({
+            responsive:true,
+            "order": [[ 3, "desc" ]]
+        });
         $('.edit-btn').click(function (e) {
             e.preventDefault();
             $('#_description').val($(this).data('description'));

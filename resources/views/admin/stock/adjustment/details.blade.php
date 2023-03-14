@@ -44,9 +44,6 @@
             <!--end::Toolbar-->
         </div>
     </div>
-
-
-
     <div class="card card-body">
         <ul class="nav nav-light-primary nav-pills" id="myTab" role="tablist">
             <li class="nav-item">
@@ -75,56 +72,122 @@
         <div class="tab-content  mt-5" id="myTabContent">
 
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                <div class="row">
-                    <div class="col-lg-4">
-                        {{--                        supplier name --}}
-                        <strong class="d-block">Items:</strong>
-                        <input readonly value=" {{ $adjustment->items->count()}}" class="form-control-plaintext"/>
-                    </div>
 
-                </div>
-
-
-                <div class="row">
-                    <div class="col-12">
-                        <strong class="d-block">Description:</strong>
-                        <p readonly class="form-control-plaintext">{{ $adjustment->description }}</p>
+                <div class="card card-body mb-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <strong class="d-block">Description:</strong>
+                            <p readonly class="form-control-plaintext">{{ $adjustment->description }}</p>
+                        </div>
                     </div>
                 </div>
 
-                <h6>
-                    Items
-                </h6>
+                <div class="card card-body mb-3">
+                    <div class="p-3 mb-3">
+                        @if($adjustment->status == App\models\Adjustment::PENDING)
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">Items</h5>
+                                <button type="button" class="btn btn-sm rounded btn-primary" id="addBtn">
+                                    <i class="flaticon2-add"></i>
+                                    Add New
+                                </button>
+                            </div>
+                        @endif
+                        <div class="table-responsive">
+                            <table class="table border dataTable rounded table-head-solid table-head-custom" id="">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-right font-weight-bold">Total:</td>
+                                    <td class="font-weight-bolder">
+                                        RWF
+                                        <span id="total">{{ number_format($adjustment->items->sum('total')) }}</span>
+                                    </td>
+                                    <td></td>
+                                </tfoot>
+                                <tbody>
 
-                <table class="table table-head-custom table-head-solid border">
-                    <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Quantity</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($adjustment->items as $item)
-                        <tr>
-                            <td>{{ $item->item->name }}</td>
-                            <td>{{ $item->quantity }}</td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                                @forelse($adjustment->items as $item)
+                                    <tr>
+                                        <td>{{ $item->item->name }}</td>
+                                        <td>
+                                            @if($item->adjustment_type == 'decrease')
+                                                <span class="text-danger">-{{ $item->quantity }}</span>
+                                            @else
+                                                <span class="text-success">+{{ $item->quantity }}</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ number_format($item->unit_price) }}</td>
+                                        <td>RWF {{ number_format($item->total) }}</td>
+                                        <td>
+                                            @if($adjustment->status == \App\Models\Adjustment::PENDING)
+                                                <button
+                                                    data-id="{{ $item->id }}"
+                                                    data-quantity="{{ $item->quantity }}"
+                                                    data-unit_price="{{ $item->unit_price }}"
+                                                    data-item_id="{{ $item->item_id }}"
+                                                    data-adjustment_type="{{ $item->adjustment_type }}"
+                                                    class="btn btn-sm btn-light-primary btn-icon rounded-circle js-edit">
+                                                    <i class="flaticon2-edit"></i>
+                                                </button>
+                                                <button type="button"
+                                                        data-href="{{ route('admin.stock.stock-adjustments.items.remove',[encryptId($adjustment->id),encryptId($item->id)]) }}"
+                                                        class="btn btn-sm btn-light-danger btn-icon rounded-circle js-delete">
+                                                    <i class="flaticon2-trash"></i>
+                                                </button>
+                                            @endif
+                                        </td>
+                                    </tr>
 
+                                @empty
+                                    {{--     <tr>
+                                             <td colspan="5">
+                                                 <div class="alert alert-light-info alert-custom py-1">
+                                                     <div class="alert-icon">
+                                                         <i class="flaticon2-exclamation"></i>
+                                                     </div>
+                                                     <div class="alert-text">
+                                                         No items found, please add some items.
+                                                     </div>
+                                                 </div>
+                                             </td>
+                                         </tr>--}}
+                                @endforelse
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+{{--                submit--}}
+                @if($adjustment->status == \App\Models\Adjustment::PENDING)
+                    <div class="row justify-content-end mr-2">
+                        <a class="btn btn-outline-primary btn-lg submitBtn" href="{{ route("admin.stock.stock-adjustments.submit",encryptId($adjustment->id)) }}">
+                            <i class="fas fa-check-circle"></i>
+                            Submit</a>
+                    </div>
+                @endif
 
                 {{--                review form--}}
 
                 @if( $adjustment->canBeReviewed())
-
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <h4 class="text-center my-4">
                                 Review
                             </h4>
 
-                            <form action="{{ route("admin.stock.stock-adjustments.review",$adjustment->id) }}"
+                            <form action="{{ route("admin.stock.stock-adjustments.review",encryptId($adjustment->id)) }}"
                                   method="post" id="formSaveReview">
                                 @csrf
                                 <div class="form-group">
@@ -164,7 +227,6 @@
                             </form>
                         </div>
                     </div>
-
                 @endif
 
             </div>
@@ -257,13 +319,66 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" tabindex="-1" id="addModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Item</h5>
 
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        &times;
+                    </button>
+                </div>
+                <form action="{{ route('admin.stock.stock-adjustments.items.add',encryptId($adjustment->id)) }}" method="post"
+                      id="saveItemForm">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="item_id">Item</label>
+                            <select name="item_id" id="item_id" class="form-control select2"
+                                    style="width: 100% !important;">
+                                <option value="">Select Item</option>
+                                @foreach($stock as $record)
+                                    <option value="{{$record->item_id}}">{{optional($record->item)->name}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control" min="1" max="{{$record->quantity}}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Adjustment Type</label>
+                            <select name="adjustment_type" id="adjustment-type" class="form-control select2"
+                                    style="width: 100% !important;">
+                                <option value="">Select Type</option>
+                                <option value="increase">Increase</option>
+                                <option value="decrease">Decrease</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="unit_price">Unit Price</label>
+                            <input type="number" name="unit_price" id="unit_price" class="form-control"/>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
 
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     {!! JsValidator::formRequest(App\Http\Requests\ValidateReviewRequest::class,'#formSaveReview') !!}
+    {!! JsValidator::formRequest(App\Http\Requests\ValidateAdjustmentItemRequest::class,'#saveItemForm') !!}
 
     <script>
         $(document).ready(function () {
@@ -287,6 +402,84 @@
 
             });
 
+
+            $('#datatable').DataTable();
+        })
+        $('#addBtn').on('click', function () {
+            $('#addModal').modal('show');
+        });
+        $('#submitBtn').on('click', function (e){
+            e.preventDefault();
+            const url = $(this).data('url');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, submit it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+                    $('#submitBtn').prop('disabled', true)
+                    $('#submitBtn').html('<i class="fa fa-spinner fa-spin"></i> Submitting...');
+                    //redirect to the url
+                    window.location.replace(url);
+                }
+            });
+        })
+        $(document).on('click', '.js-edit', function () {
+            let $itemId = $('#item_id');
+            $itemId.val($(this).data('item_id'));
+            $('#quantity').val($(this).data('quantity'));
+            $('#unit_price').val($(this).data('unit_price'));
+            $('#adjustment-type').val($(this).data('adjustment_type')).trigger('change');
+            $itemId.trigger('change');
+            $('#addModal').modal('show');
+        });
+        $(document).on('click', '.js-delete', function (e) {
+            e.preventDefault();
+
+            let $this = $(this);
+            let url = $this.data('href');
+
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+                    $this.prop('disabled', true)
+                        .addClass('spinner spinner-white spinner-right');
+                    $.ajax({
+                        url: url,
+                        type: 'DELETE',
+                        data: {
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        complete: function () {
+                            $this.prop('disabled', false)
+                                .removeClass('spinner spinner-white spinner-right');
+                        },
+                        success: function (response) {
+                            location.reload();
+                        },
+                        error: function (xhr) {
+                            console.log(xhr);
+                            Swal.fire(
+                                'Error!',
+                                "Unable to delete item, please try again later",
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
 
         });
     </script>

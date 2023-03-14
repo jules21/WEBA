@@ -73,6 +73,7 @@ class AdjustmentController extends Controller
     public function destroy(Adjustment $adjustment)
     {
         try {
+            $adjustment->items()->delete();
             $adjustment->delete();
             return back()->with('success', 'Adjustment deleted successfully');
         } catch (\Exception $e) {
@@ -95,7 +96,8 @@ class AdjustmentController extends Controller
                 [
                     'quantity' => $data['quantity'],
                     'type' => get_class($adjustment),
-                    'unit_price' => 0,
+                    'unit_price' => $data['unit_price'],
+                    'adjustment_type' => $data['adjustment_type'],
                     'status' => 'pending'
                 ]
             );
@@ -115,7 +117,8 @@ class AdjustmentController extends Controller
     }
     public function removeItem(Adjustment $adjustment, $id)
     {
-        StockMovementDetail::query()->find($id)->delete();
+        $id = decryptId($id);
+        $adjustment->items()->where('id', $id)->delete();
 
         if (\request()->ajax()) {
             return response()->json([
@@ -146,10 +149,13 @@ class AdjustmentController extends Controller
         $flowHistories = $adjustment->flowHistories
             ->where('is_comment', '=', false);
 
+        $stock = Stock::query()->where('operation_area_id', $adjustment->operation_area_id)->get();
+
         return view('admin.stock.adjustment.details', [
             'adjustment' => $adjustment,
             'reviews' => $reviews,
-            'flowHistories' => $flowHistories
+            'flowHistories' => $flowHistories,
+            'stock' => $stock
         ]);
     }
 
@@ -209,9 +215,9 @@ class AdjustmentController extends Controller
                 ->where('operation_area_id', '=', $adjustment->operation_area_id)
                 ->first();
 
-//            dd($movement);
+            $quantity = $movement->adjustment_type == 'increase' ? $movement->quantity : -$movement->quantity;
             $stockItem->update([
-                'quantity' => $stockItem->quantity - $movement->qty_out
+                'quantity' => $stockItem->quantity + $quantity
             ]);
         }
     }
@@ -228,8 +234,8 @@ class AdjustmentController extends Controller
         $adjustment->movements()->create([
             'item_id' => $item_id,
             'opening_qty' => $prevStockItem->quantity ?? 0,
-            'qty_out' => $movement->quantity,
-            'qty_in' => 0,
+            'qty_out' => $movement->adjustment_type == 'decrease' ? $movement->quantity : 0,
+            'qty_in' => $movement->adjustment_type == 'increase' ? $movement->quantity : 0,
             'operation_area_id' => auth()->user()->operation_area,
             'type' => get_class($adjustment),
             'unit_price' => $movement->unit_price ?? 0,

@@ -25,4 +25,14 @@ class Helper{
         $user = auth()->user();
         return $user->operator_id != null;
     }
+
+//    public static function movementDetails($operation_area, $item)
+//    {
+//        return StockMovementDetail::query()
+//            ->whereHas('stockMovement', function ($query) use ($operation_area) {
+//                $query->where('operation_area_id', $operation_area);
+//            })
+//            ->where('item_id', $item)
+//            ->get();
+//    }
 }

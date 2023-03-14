@@ -53,7 +53,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Customer whereVillageId($value)
  * @mixin Eloquent
  */
-class Customer extends Model
+class
+Customer extends Model
 {
     use HasFactory;
     use HasAddress;
