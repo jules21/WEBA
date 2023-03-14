@@ -353,8 +353,8 @@
                             <select name="adjustment_type" id="adjustment-type" class="form-control select2"
                                     style="width: 100% !important;">
                                 <option value="">Select Type</option>
-                                <option value="increase">Increase</option>
-                                <option value="decrease">Decrease</option>
+                                <option value="increase">In</option>
+                                <option value="decrease">Out</option>
                             </select>
                         </div>
                         <div class="form-group">
