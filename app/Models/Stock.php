@@ -23,6 +23,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereUpdatedAt($value)
+ * @property-read mixed $operator
+ * @property-read \App\Models\Item $item
+ * @property-read \App\Models\OperationArea $operationArea
  * @mixin \Eloquent
  */
 class Stock extends Model

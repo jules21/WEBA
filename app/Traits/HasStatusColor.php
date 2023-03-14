@@ -8,6 +8,7 @@ trait HasStatusColor
     {
         switch (strtolower($this->status)) {
             case 'pending':
+            case 'active':
                 return 'primary';
             case 'submitted':
             case 'assigned':

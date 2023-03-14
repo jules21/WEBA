@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentServiceProvider whereIp($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentServiceProvider whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentServiceProvider whereUpdatedAt($value)
+ * @property bool $is_active
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentServiceProvider whereIsActive($value)
  * @mixin \Eloquent
  */
 class PaymentServiceProvider extends Model

@@ -24,8 +24,23 @@ class ValidateAssignMeterNumber extends FormRequest
     public function rules(): array
     {
         return [
-            'meter_number'=>['required'],
-            'last_index'=>['required','numeric']
+            'item_category_id' => ['required', 'exists:item_categories,id'],
+            'item_id' => ['required', 'exists:items,id'],
+            'meter_number' => ['required'],
+            'last_index' => ['required', 'numeric']
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'item_category_id.required' => 'Please select an item category',
+            'item_category_id.exists' => 'Please select a valid item category',
+            'item_id.required' => 'Please select an item',
+            'item_id.exists' => 'Please select a valid item',
+            'meter_number.required' => 'Please enter a meter number',
+            'last_index.required' => 'Please enter a last index',
+            'last_index.numeric' => 'Last index must be a number'
         ];
     }
 }

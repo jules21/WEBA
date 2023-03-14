@@ -34,6 +34,12 @@ use Illuminate\Support\Carbon;
  * @method static Builder|MeterRequest whereStatus($value)
  * @method static Builder|MeterRequest whereSubscriptionNumber($value)
  * @method static Builder|MeterRequest whereUpdatedAt($value)
+ * @property int|null $item_category_id
+ * @property int|null $item_id
+ * @property-read \App\Models\Billing|null $billing
+ * @property-read \App\Models\Request $request
+ * @method static Builder|MeterRequest whereItemCategoryId($value)
+ * @method static Builder|MeterRequest whereItemId($value)
  * @mixin Eloquent
  */
 class MeterRequest extends Model

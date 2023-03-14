@@ -29,6 +29,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentServiceProviderAccount whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentServiceProviderAccount wherePaymentServiceProviderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentServiceProviderAccount whereUpdatedAt($value)
+ * @property int|null $ledger_no
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentServiceProviderAccount whereLedgerNo($value)
  * @mixin \Eloquent
  */
 class PaymentServiceProviderAccount extends Model

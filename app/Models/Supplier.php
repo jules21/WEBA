@@ -37,6 +37,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Supplier whereOperatorId($value)
  * @method static Builder|Supplier wherePhoneNumber($value)
  * @method static Builder|Supplier whereUpdatedAt($value)
+ * @property-read \App\Models\Operator|null $operator
  * @mixin Eloquent
  */
 class Supplier extends Model

@@ -36,6 +36,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|StockMovementDetail whereType($value)
  * @method static Builder|StockMovementDetail whereUnitPrice($value)
  * @method static Builder|StockMovementDetail whereUpdatedAt($value)
+ * @property string|null $vat
+ * @property-read mixed $total
+ * @property-read \App\Models\Item $item
+ * @property-read Model|\Eloquent $model
+ * @method static Builder|StockMovementDetail whereVat($value)
  * @mixin Eloquent
  */
 class StockMovementDetail extends Model
