@@ -112,7 +112,7 @@
                                         <td>{{ $item->quantity }}</td>
                                         <td>{{ $item->quantity }}</td>
                                         <td>
-                                            <input type="number" class="form-control w-100px"
+                                            <input type="number" class="form-control w-100px" name="quanties[]"
                                                    value="{{ $item->quantity }}"/>
                                         </td>
                                         <th>
@@ -163,6 +163,26 @@
 
                         </div>
                     @endif
+
+                    <h4>
+                        Collector Details
+                    </h4>
+                    <div class="row mt-3">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="collectorName">Collector Name</label>
+                                <input type="text" required="" class="form-control" id="collectorName"
+                                       name="collectorName" aria-required="true">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="collectorPhone">Collector Phone</label>
+                                <input type="text" required="" class="form-control" id="collectorPhone"
+                                       name="collectorPhone" aria-required="true">
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer bg-light">
                     <button type="button" class="btn btn-primary">
