@@ -44,6 +44,14 @@ class OperatorController extends Controller
                                       </a>';
                     }
 
+                    if (auth()->user()->can(Permission::ManageOperatorUsers)) {
+                        $opAreaBtn .= '<a class="dropdown-item" href="' . route('admin.operator.users', encryptId($row->id)) . '">
+                                         <i class="fas fa-users"></i>
+                                         <span class="ml-2">Users</span>
+                                      </a>';
+                    }
+
+
                     return '<div class="dropdown">
                                  <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                     Options
@@ -127,7 +135,6 @@ class OperatorController extends Controller
             'data' => $operator
         ]);
     }
-
 
     public function update(UpdateOperatorRequest $request, Operator $operator)
     {

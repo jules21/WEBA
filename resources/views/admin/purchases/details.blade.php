@@ -136,7 +136,7 @@
                     @foreach($purchase->movementDetails as $item)
                         <tr>
                             <td>{{ $item->item->name }}</td>
-                            <td>{{ $item->qty_in }}</td>
+                            <td>{{ $item->quantity }}</td>
                             <td>{{ number_format($item->unit_price) }}</td>
                             <td>{{ number_format($item->total) }}</td>
                         </tr>

@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Adjustment;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\Stock;
 use App\Models\StockMovement;
+use App\Models\StockMovementDetail;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
@@ -20,7 +22,7 @@ class StockController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
-        $stock = Stock::with('operationArea');
+        $stock = Stock::with('operationArea','item','item.category');
 
         $stock->when($user->operator_id, function ($query) use ($user) {
             $query->whereHas('operationArea', function ($query) use ($user) {

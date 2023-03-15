@@ -26,6 +26,8 @@ class ValidateAdjustmentItemRequest extends FormRequest
         return [
             'item_id' => ['required'],
             'quantity' => ['required', 'numeric', 'min:1'],
+            'unit_price' => ['required', 'numeric', 'min:1'],
+            'adjustment_type' => ['required', 'in:increase,decrease'],
         ];
     }
 }

@@ -33,9 +33,8 @@ class CustomerController extends Controller
 
     public function index()
     {
-        $data = Customer::with(['legalType', 'documentType'])
+        $data = Customer::with(['legalType','documentType'])
             ->withCount('connections');
-
         if (request()->ajax()) {
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -62,8 +61,9 @@ class CustomerController extends Controller
                 })
                 ->addColumn('connection', function (Customer $row) {
                     return '<a href="' . route('admin.customers.connections', encryptId($row->id)) . '">
-                            <span class="badge badge-primary">' . $row->connections_count . '</span>
-                        </a>';
+
+                                                    <span class="badge badge-primary">'.$row->connections_count.'</span>
+                                                </a>';
                 })
                 ->rawColumns(['action', 'name', 'connection'])
                 ->make(true);

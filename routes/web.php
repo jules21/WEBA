@@ -50,7 +50,6 @@ Route::get('/documents-types/{legalType}', [DocumentTypeController::class, 'getB
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get("/users/profile/{user_id}", [App\Http\Controllers\UserController::class, 'userProfile'])->name("users.profile");
-
     Route::group(['prefix' => 'operators', 'as' => 'operator.'], function () {
 
         Route::get('/', [OperatorController::class, 'index'])->name('index');
@@ -68,8 +67,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/operation-areas/{id}/get', [AreaOfOperationController::class, 'getAreaOfOperations'])->name('get-area-of-operations');
 
-    });
+        Route::get('/{operator}/users', [\App\Http\Controllers\OperatorUserController::class, 'index'])->name('users');
 
+    });
     Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
         Route::get('/', [CustomerController::class, 'index'])->name('index');
         Route::get('/get-nida-id-details/{id}', [CustomerController::class, 'fetchIdentificationFromNIDA'])->name('fetch-identification-from-nida');
@@ -78,8 +78,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::delete('/delete/{customer}', [CustomerController::class, 'destroy'])->name('delete');
         Route::get('/{customer}/connections', [CustomerController::class, 'connections'])->name('connections');
     });
-
-
     Route::group(['prefix' => 'requests', 'as' => 'requests.'], function () {
         Route::get('/', [RequestsController::class, 'index'])->name('index');
         Route::post('/', [RequestsController::class, 'store'])->name('store');
@@ -110,7 +108,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/{request}/assign-meter-number', [MeterRequestController::class, 'store'])->name('assign-meter-number');
         Route::delete('/meter-number/{id}/destroy', [MeterRequestController::class, 'destroy'])->name('meter-number.destroy');
     });
-
     Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
         Route::get('/', [PurchaseController::class, 'index'])->name('index');
         Route::get('/new', [PurchaseController::class, 'index'])->name('new');
@@ -126,12 +123,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::delete('/{purchase}/delete', [PurchaseController::class, 'destroy'])->name('destroy');
         Route::post('/{purchase}/submit-review', [PurchaseController::class, 'submitReview'])->name('submit-review');
     });
-
     Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
         Route::get('/chart-of-accounts', [ChartAccountController::class, 'index'])->name('chart-of-accounts');
     });
-
-
     Route::prefix('user-management')->group(function () {
         //roles routes
         Route::get("/roles", [RoleController::class, 'index'])->name("roles.index");
@@ -161,6 +155,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post("/users/store", [App\Http\Controllers\UserController::class, 'store'])->name("users.store");
         Route::post("/users/update/{user_id}", [App\Http\Controllers\UserController::class, 'update'])->name("users.update");
         Route::get("/users/profile/{user_id}", [App\Http\Controllers\UserController::class, 'userProfile'])->name("users.profile");
+        Route::get("/users/delete/{user_id}", [App\Http\Controllers\UserController::class, 'deleteUser'])->name("users.delete");
 
         //Profile URL
         Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'profile'])->name('profile');
@@ -172,7 +167,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/users/update-password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('user.update.password');
 
     });
-
     Route::prefix('settings')->group(function () {
 
         //request types
@@ -251,7 +245,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/banks/sync', [App\Http\Controllers\PaymentServiceProviderController::class, 'syncBanks'])->name('banks.sync');
 
     });
-
     Route::prefix('stock-management')->name('stock.')->group(function () {
         Route::resource('item-categories', ItemCategoryController::class);
         Route::resource('items', ItemController::class);
@@ -268,11 +261,18 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/adjustments/{adjustment}/items', [App\Http\Controllers\AdjustmentController::class, 'addItem'])->name('stock-adjustments.items.add');
         Route::delete('/adjustments/{adjustment}/items/{item}', [App\Http\Controllers\AdjustmentController::class, 'removeItem'])->name('stock-adjustments.items.remove');
 
+        Route::get('/adjustment/my-tasks', [App\Http\Controllers\AdjustmentController::class, 'myTasks'])->name('stock-adjustments.tasks');
         //submit adjustment
         Route::get('/adjustments/{adjustment}/submit', [App\Http\Controllers\AdjustmentController::class, 'submit'])->name('stock-adjustments.submit');
         //submit review
         Route::post('/adjustments/{adjustment}/review', [App\Http\Controllers\AdjustmentController::class, 'review'])->name('stock-adjustments.review');
 
+    });
+
+    Route::group(['prefix' => 'billings', 'as'=>'billings.'], function (){
+        Route::get('/', [App\Http\Controllers\BillingController::class, 'index'])->name('index');
+        //show details
+        Route::get('/{billing}', [App\Http\Controllers\BillingController::class, 'show'])->name('show');
     });
 
 });

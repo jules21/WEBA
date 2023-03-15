@@ -38,6 +38,12 @@ class Stock extends Model
         'quantity',
     ];
 
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $id = decryptId($value);
+        return $this->where('id', $id)->firstOrFail();
+    }
+
     protected $appends = ['operator'];
 
     public function item(): \Illuminate\Database\Eloquent\Relations\BelongsTo
