@@ -10,16 +10,12 @@ use App\Models\Operator;
 use App\Models\User;
 use App\Models\UserFlowHistory;
 use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Jobs\MailRegisteredUser;
 use App\DataTables\UserDataTable;
 use App\Http\Requests\ValidateUser;
 use App\Http\Requests\ValidateUpdateUser;
-use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -49,6 +45,7 @@ class UserController extends Controller
 
     public function update(ValidateUpdateUser $request, $user_id)
     {
+        dd($request->validated());
         User::query()->find($user_id)->update($request->validated());
         return redirect()->back()->with('success', 'User Updated successfully');
     }
@@ -121,14 +118,6 @@ class UserController extends Controller
         $flow->save();
     }
 
-    public function showUserFlowHistory($user_id)
-    {
-        $id = decryptId($user_id);
-        $user = User::find($id);
-        $histories = UserFlowHistory::where('user_id', $id)->get();
-        return view('admin.user_management.flow_history', compact('user', 'histories'));
-    }
-
     protected function sendSMS(User $user, $message = null): void
     {
         if (is_null($message)) {
@@ -137,6 +126,18 @@ class UserController extends Controller
         // if env is local then send sms
         if (config('app.env') != 'local') {
             SendSms::dispatch($user->telephone, $message);
+        }
+    }
+
+    protected function deleteUser($user_id)
+    {
+        try {
+            $id = decryptId($user_id);
+            $user = User::find($id);
+            $user->delete();
+            return redirect()->back()->with('success', "{$user->name} deleted successfully");
+        }catch (\Exception $exception){
+            return redirect()->back()->with('error', "Unable to delete {$user->name}");
         }
     }
 

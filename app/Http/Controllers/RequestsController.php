@@ -179,7 +179,7 @@ class RequestsController extends Controller
 
     public function show(AppRequest $request)
     {
-        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user', 'paymentDeclarations.paymentConfig');
+        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user', 'paymentDeclarations.paymentConfig.paymentType','meterNumbers.item','meterNumbers.itemCategory');
 
         $reviews = $request->flowHistories->where('is_comment', '=', true);
         $flowHistories = $request->flowHistories->where('is_comment', '=', false);

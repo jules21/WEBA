@@ -38,8 +38,18 @@
             color: #F64E60 !important;
             font-size: 12px !important;
         }
+
         .table td {
             vertical-align: middle !important;
+        }
+
+        .badge-green {
+            color: #ffffff;
+            background-color: #32b354;
+        }
+
+        .text-green {
+            color: #32b354;
         }
     </style>
 </head>

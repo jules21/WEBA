@@ -122,7 +122,6 @@
                             <div class="form-group">
                                 <label>Is Meter</label>
                                 <select name="is_meter" class="form-control">
-                                    <option value="">Select</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select>
