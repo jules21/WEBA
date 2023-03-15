@@ -42,7 +42,8 @@
         },
         "files": [
             "app/Helpers/hashIds.php",
-            "app/Helpers/Helper.php"
+            "app/Helpers/Helper.php",
+            "app/Helpers/globals.php"
         ]
     },
     "autoload-dev": {

@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidateAddWaterNetwork;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Http\Requests\ValidateStoreItemRequest;
+use App\Models\PaymentConfiguration;
 use App\Models\PaymentDeclaration;
+use App\Models\PaymentType;
 use App\Models\Request as AppRequest;
 use App\Models\Stock;
 use App\Models\StockMovement;
 use App\Models\StockMovementDetail;
+use App\Notifications\PaymentNotification;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -33,44 +36,54 @@ class RequestReviewController extends Controller
         $this->updateRequest($request, $status);
         // save review
         $this->saveHistory($request, $data['comment'], $status);
+        $this->saveHistory($request, "Request status marked as '$status'", $status, false);
 
         if ($status == AppRequest::APPROVED) {
 
-            if($request->connection_fee > 0){
+            if ($request->connection_fee > 0) {
+                $connectionConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, $request->request_type_id);
                 $dec = $request->paymentDeclarations()
                     ->create([
                         'amount' => $request->connection_fee,
                         'status' => PaymentDeclaration::ACTIVE,
-                        'payment_configuration_id' => 1,
+                        'payment_configuration_id' => $connectionConfig->id,
                         'type' => "Connection Fee",
                         'balance' => $request->connection_fee,
                         'payment_reference' => 'N/A'
                     ]);
-                $dec->generateReferenceNumber();
+                $ref = $dec->generateReferenceNumber();
+                $formatted = number_format($request->connection_fee, 0);
+                $message = "You have to pay the connection fee of $formatted. Please use the reference number $ref to make the payment.";
+                $request->customer->notify(new PaymentNotification($message));
             }
 
             $requestItems = $request->items()->with('item')->get();
             // save payment declarations for each item
             if ($requestItems->count() > 0) {
                 $sum = $requestItems->sum('total');
-                info($sum);
+                $materialsConfig = getPaymentConfiguration(PaymentType::MATERIALS_FEE, $request->request_type_id);
+
                 $dec = $request->paymentDeclarations()
                     ->create([
                         'amount' => $sum,
                         'status' => PaymentDeclaration::ACTIVE,
-                        'payment_configuration_id' => 1,
+                        'payment_configuration_id' => $materialsConfig->id,
                         'type' => "Materials Fee",
                         'balance' => $sum,
                         'payment_reference' => 'N/A'
                     ]);
-                $dec->generateReferenceNumber();
+                $ref = $dec->generateReferenceNumber();
+                $formatted = number_format($sum, 0);
+                $message = "You have to pay the materials fee of $formatted. Please use the reference number $ref to make the payment.";
+                $request->customer->notify(new PaymentNotification($message));
+
             }
 
 
-            foreach ($requestItems as $requestItem) {
+      /*      foreach ($requestItems as $requestItem) {
                 $this->updateStockMovement($requestItem, $request);
                 $this->updateStock($requestItem);
-            }
+            }*/
 
             $request->operator
                 ->customers()
@@ -94,12 +107,12 @@ class RequestReviewController extends Controller
      * @param $status
      * @return void
      */
-    public function saveHistory(AppRequest $request, $comment, $status): void
+    public function saveHistory(AppRequest $request, $comment, $status, $is_comment = true): void
     {
         $request->flowHistories()->create([
             'comment' => $comment,
             'user_id' => auth()->id(),
-            'is_comment' => true,
+            'is_comment' => $is_comment,
             'status' => $status,
             'type' => $request->getClassName()
         ]);
