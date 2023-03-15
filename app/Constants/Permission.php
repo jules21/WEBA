@@ -29,7 +29,7 @@ class Permission
     const CreateAdjustment = 'Create Adjustment';
     const ApproveAdjustment = 'Approve Adjustment';
 
-
+    const ManageItemDelivery = 'Manage Item Delivery';
 
 
 }
