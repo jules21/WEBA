@@ -48,7 +48,7 @@ class PaymentNotification extends Notification implements ShouldQueue
         return (new MailMessage)
             ->greeting('Hello!')
             ->line($this->message)
-            ->action('View Invoice', url('/'))
+//            ->action('View Invoice', url('/'))
             ->line('Thank you for using our application!');
     }
 
