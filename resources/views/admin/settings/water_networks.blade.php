@@ -61,6 +61,7 @@
                         <th>Name</th>
                         <th>Distance Covered</th>
                         <th>Population Covered</th>
+                        <th>Water Network Type</th>
                         <th>Operator</th>
                         <th>Action</th>
                     </tr>
@@ -73,6 +74,7 @@
                             <td>{{$waterNetwork->name}}</td>
                             <td>{{$waterNetwork->distance_covered}}</td>
                             <td>{{$waterNetwork->population_covered}}</td>
+                            <td>{{$waterNetwork->waterNetworkType->name?? ''}}</td>
                             <td>{{$waterNetwork->operator->name?? ''}}</td>
                             <td>
                                 <div class="dropdown">
@@ -87,6 +89,7 @@
                                            data-distance="{{$waterNetwork->distance_covered}}"
                                            data-population="{{$waterNetwork->population_covered}}"
                                            data-operator="{{$waterNetwork->operator_id}}"
+                                           data-network="{{$waterNetwork->water_network_type_id}}"
                                            class="dropdown-item js-edit">Edit</a>
                                         <a href="{{route('admin.water.network.delete',$waterNetwork->id)}}"
                                            class="dropdown-item js-delete">Delete</a>
@@ -131,6 +134,16 @@
                         <div class="form-group">
                             <label for="name">Population Covered</label>
                             <input type="number"  name="population_covered" id="population_covered" class="form-control" required/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Water Network Type</label>
+                            <select name="water_network_type_id" id="water_network_type_id" class="form-control" required>
+                                <option value="">Please Select Water Network Type</option>
+                                @foreach(App\Models\WaterNetworkType::all() as $type)
+                                    <option value="{{$type->id}}">{{$type->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         @if(auth()->user()->operator_id == null)
@@ -189,6 +202,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="name">Water Network Type</label>
+                            <select name="water_network_type_id" id="edit_water_network_type_id" class="form-control" required>
+                                <option value="">Please Select Water Network Type</option>
+                                @foreach(App\Models\WaterNetworkType::all() as $type)
+                                    <option value="{{$type->id}}">{{$type->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label for="name">Population Covered</label>
                             <input type="number"  name="population_covered" id="edit_population_covered" class="form-control" required/>
                         </div>
@@ -225,7 +248,8 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest(\App\Http\Requests\ValidateRequestDurationConfiguration::class,'.submissionForm') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\StoreWaterNetworkRequest::class,'.submissionForm') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\UpdateWaterNetworkRequest::class,'.submissionForm') !!}
 
     <script>
 
@@ -246,6 +270,7 @@
             $("#edit_distance_covered").val($(this).data('distance'));
             $("#edit_population_covered").val($(this).data('population'));
             $("#edit_operator_id").val($(this).data('operator'));
+            $("#edit_water_network_type_id").val($(this).data('network'));
             $('#submissionFormEdit').attr('action', url);
         });
 

@@ -35,4 +35,8 @@ class WaterNetwork extends Model
     public function operator(){
         return $this->belongsTo(Operator::class,'operator_id');
     }
+
+    public function waterNetworkType(){
+        return $this->belongsTo(WaterNetworkType::class,'water_network_type_id');
+    }
 }
