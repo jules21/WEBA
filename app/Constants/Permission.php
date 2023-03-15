@@ -29,7 +29,15 @@ class Permission
     const CreateAdjustment = 'Create Adjustment';
     const ApproveAdjustment = 'Approve Adjustment';
 
+
     const ManageItemDelivery = 'Manage Item Delivery';
+
+    const ViewAdjustment = 'View Adjustment';
+
+    const ManageOperatorUsers = 'Manage Operator Users';
+
+    const ManageBillings = 'Manage Billings';
+
 
 
 }

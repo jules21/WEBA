@@ -66,7 +66,8 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\Village|null $village
  * @mixin Eloquent
  */
-class Customer extends Model
+class
+Customer extends Model
 {
     use HasFactory,Notifiable;
     use HasAddress;

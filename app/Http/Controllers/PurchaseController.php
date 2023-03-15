@@ -351,14 +351,19 @@ class PurchaseController extends Controller
             $this->updateStockMovement($movement, $purchase);
 
             $stockItem = Stock::where('item_id', '=', $movement->item_id)
-                ->firstOrCreate([
+                ->where('operation_area_id', '=', auth()->user()->operation_area)
+                ->first();
+
+            if (!$stockItem) {
+                $stockItem = Stock::create([
                     'item_id' => $movement->item_id,
                     'operation_area_id' => auth()->user()->operation_area,
                     'quantity' => 0
                 ]);
+            }
 
             $stockItem->update([
-                'quantity' => $stockItem->quantity + $movement->qty_in
+                'quantity' => $stockItem->quantity + $movement->quantity
             ]);
         }
     }

@@ -31,6 +31,7 @@ class ValidateUser extends FormRequest
                 app()->environment('production') ? 'regex:/^[07][0-9]{9}$/' : 'max:20'
             ],
             'operator_id' => 'nullable',
+            'operation_area' => 'nullable',
         ];
     }
 
