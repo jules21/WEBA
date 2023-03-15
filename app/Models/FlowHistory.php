@@ -38,7 +38,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|FlowHistory whereUserId($value)
  * @property bool $is_comment
  * @property-read string $status_color
- * @property-read \App\Models\User $user
+ * @property-read User $user
  * @method static Builder|FlowHistory whereIsComment($value)
  * @mixin Eloquent
  */

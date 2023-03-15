@@ -23,11 +23,22 @@ return [
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
-
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'rura' => [
+        'username' => env('RURA_USERNAME', 'misuser'),
+        'password' => env('RURA_PASSWORD', 'ubutabiire'),
+        'sms_url' => env('RURA_SMS_URL', 'http://10.10.30.26/api/sendsms'),
+        'sender_name' => env('RURA_SENDER_NAME', 'rura')
+    ],
+    'besoft' => [
+        'sms_url' => env('BESOFT_SMS_URL', 'http://sms.besoft.rw/api/v1/client/bulksms'),
+        'token' => env("BESOFT_TOKEN", "oe1MNXW6O8GdKmWM3nCSqoVROQSZD31O"),
+        'sender_name' => env('BESOFT_SENDER_NAME', 'besoft')
+    ]
+
 
 ];

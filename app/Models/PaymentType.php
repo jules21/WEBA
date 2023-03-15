@@ -31,6 +31,8 @@ class PaymentType extends Model
     use HasFactory;
 
     const CONNECTION_FEE = 1;
+    const METERS_FEE = 2;
+    const MATERIALS_FEE = 3;
 
 
 }

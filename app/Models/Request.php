@@ -93,17 +93,17 @@ use Storage;
  * @property string|null $connection_fee
  * @property-read string $address
  * @property-read string|null $upi_attachment_url
- * @property-read Collection<int, \App\Models\StockMovementDetail> $items
+ * @property-read Collection<int, StockMovementDetail> $items
  * @property-read int|null $items_count
- * @property-read Collection<int, \App\Models\MeterRequest> $meterNumbers
+ * @property-read Collection<int, MeterRequest> $meterNumbers
  * @property-read int|null $meter_numbers_count
- * @property-read Collection<int, \App\Models\PaymentDeclaration> $paymentDeclarations
+ * @property-read Collection<int, PaymentDeclaration> $paymentDeclarations
  * @property-read int|null $payment_declarations_count
- * @property-read \App\Models\RequestAssignment|null $requestAssignment
- * @property-read Collection<int, \App\Models\RequestAssignment> $requestAssignments
+ * @property-read RequestAssignment|null $requestAssignment
+ * @property-read Collection<int, RequestAssignment> $requestAssignments
  * @property-read int|null $request_assignments_count
- * @property-read \App\Models\RequestTechnician|null $technician
- * @property-read \App\Models\WaterNetwork|null $waterNetwork
+ * @property-read RequestTechnician|null $technician
+ * @property-read WaterNetwork|null $waterNetwork
  * @method static Builder|Request whereConnectionFee($value)
  * @method static Builder|Request whereOperationAreaId($value)
  * @method static Builder|Request whereUpiAttachment($value)
@@ -249,10 +249,6 @@ class Request extends Model
         return $this->status != self::PENDING && !is_null($this->water_network_id);
     }
 
-    public function canAddTechnician(): bool
-    {
-        return $this->status == self::ASSIGNED;
-    }
 
     public function canBeApprovedByMe(): bool
     {
@@ -263,7 +259,7 @@ class Request extends Model
         } elseif ($user->can(Permission::ApproveRequest) && $this->status == self::PROPOSE_TO_APPROVE) {
             return true;
         } elseif ($user->can(Permission::AssignMeterNumber) && $this->status == self::APPROVED) {
-            return false;
+            return true;
         }
         return false;
     }
@@ -290,6 +286,13 @@ class Request extends Model
         return $this->paymentDeclarations()
             ->where('status', PaymentDeclaration::ACTIVE)
             ->exists();
+    }
+
+    public function canAddMaterials(): bool
+    {
+        return $this->status == Request::ASSIGNED &&
+            auth()->user()->can(Permission::ReviewRequest) &&
+            !$this->equipment_payment;
     }
 
 
