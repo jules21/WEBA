@@ -55,6 +55,19 @@
             </a>
         </li>
     @endif
+    @if(auth()->user()->can(\App\Constants\Permission::ManageBillings))
+        <li class="menu-item nav-billings">
+            <a href="{{route('admin.billings.index',encryptId(auth()->user()->operator_id))}}"
+               class="menu-link">
+                <span class="menu-icon">
+                    <i class="la la-file-invoice-dollar"></i>
+                </span>
+                <span class="menu-text">
+                    Billings
+                </span>
+            </a>
+        </li>
+    @endif
 
 
     @canany([\App\Constants\Permission::CreateRequest,\App\Constants\Permission::ApproveRequest,\App\Constants\Permission::AssignMeterNumber,\App\Constants\Permission::ReviewRequest])

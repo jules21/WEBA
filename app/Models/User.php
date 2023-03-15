@@ -59,11 +59,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @property int|null $institution_id
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
- * @property-read \App\Models\OperationArea|null $operationArea
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Permission> $permissions
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spatie\Permission\Models\Role> $roles
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @method static \Illuminate\Database\Eloquent\Builder|User whereInstitutionId($value)
  * @mixin \Eloquent
  */
@@ -102,5 +97,10 @@ class User extends Authenticatable
     }
     public function operationArea(){
         return $this->belongsTo(OperationArea::class,'operation_area','id');
+    }
+
+    public function bills(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Billing::class, 'user_id', 'id');
     }
 }

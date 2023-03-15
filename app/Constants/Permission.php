@@ -33,6 +33,8 @@ class Permission
 
     const ManageOperatorUsers = 'Manage Operator Users';
 
+    const ManageBillings = 'Manage Billings';
+
 
 
 
