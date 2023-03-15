@@ -138,5 +138,10 @@ class Operator extends Model
         return $this->hasManyThrough(Stock::class, OperationArea::class);
     }
 
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class, 'operator_id');
+    }
+
 
 }

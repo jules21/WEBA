@@ -64,6 +64,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/operation-areas/{id}/get', [AreaOfOperationController::class, 'getAreaOfOperations'])->name('get-area-of-operations');
 
+        Route::get('/{operator}/users', [\App\Http\Controllers\OperatorUserController::class, 'index'])->name('users');
+
     });
 
     Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
@@ -157,6 +159,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post("/users/store", [App\Http\Controllers\UserController::class, 'store'])->name("users.store");
         Route::post("/users/update/{user_id}", [App\Http\Controllers\UserController::class, 'update'])->name("users.update");
         Route::get("/users/profile/{user_id}", [App\Http\Controllers\UserController::class, 'userProfile'])->name("users.profile");
+        Route::get("/users/delete/{user_id}", [App\Http\Controllers\UserController::class, 'deleteUser'])->name("users.delete");
 
         //Profile URL
         Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'profile'])->name('profile');

@@ -31,6 +31,8 @@ class Permission
 
     const ViewAdjustment = 'View Adjustment';
 
+    const ManageOperatorUsers = 'Manage Operator Users';
+
 
 
 
