@@ -14,8 +14,10 @@ use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MeterRequestController;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\OperatorUserController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RequestAssignmentController;
+use App\Http\Controllers\RequestDeliveryController;
 use App\Http\Controllers\RequestReviewController;
 use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\RequestTechnicianController;
@@ -67,7 +69,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/operation-areas/{id}/get', [AreaOfOperationController::class, 'getAreaOfOperations'])->name('get-area-of-operations');
 
-        Route::get('/{operator}/users', [\App\Http\Controllers\OperatorUserController::class, 'index'])->name('users');
+        Route::get('/{operator}/users', [OperatorUserController::class, 'index'])->name('users');
 
     });
     Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
@@ -107,6 +109,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::post('/{request}/assign-meter-number', [MeterRequestController::class, 'store'])->name('assign-meter-number');
         Route::delete('/meter-number/{id}/destroy', [MeterRequestController::class, 'destroy'])->name('meter-number.destroy');
+
+        Route::get('/to-be-delivered', [RequestsController::class, 'toBeDelivered'])->name('to-be-delivered');
+        Route::get('/{request}/item-delivery', [RequestDeliveryController::class, 'index'])->name('delivery-request.index');
     });
     Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
         Route::get('/', [PurchaseController::class, 'index'])->name('index');
@@ -212,17 +217,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/water_usages', [App\Http\Controllers\WaterUsageController::class, 'index'])->name('water.usages');
 
         //water network types
-        Route::get('/water_network_types',[App\Http\Controllers\WaterNetworkTypeController::class,'index'])->name('water.network.types');
-        Route::post('/water_network_type/store',[App\Http\Controllers\WaterNetworkTypeController::class,'store'])->name('water.network.type.store');
-        Route::post('/water_network_type/update',[App\Http\Controllers\WaterNetworkTypeController::class,'update'])->name('water.network.type.edit');
-        Route::get('/water_network_type/delete/{id}',[App\Http\Controllers\WaterNetworkTypeController::class,'destroy'])->name('water.network.type.delete');
+        Route::get('/water_network_types', [App\Http\Controllers\WaterNetworkTypeController::class, 'index'])->name('water.network.types');
+        Route::post('/water_network_type/store', [App\Http\Controllers\WaterNetworkTypeController::class, 'store'])->name('water.network.type.store');
+        Route::post('/water_network_type/update', [App\Http\Controllers\WaterNetworkTypeController::class, 'update'])->name('water.network.type.edit');
+        Route::get('/water_network_type/delete/{id}', [App\Http\Controllers\WaterNetworkTypeController::class, 'destroy'])->name('water.network.type.delete');
 
 
         //water networks
-        Route::get('/water_networks',[App\Http\Controllers\WaterNetworkController::class,'index'])->name('water.networks');
-        Route::post('/water_network/store',[App\Http\Controllers\WaterNetworkController::class,'store'])->name('water.network.store');
-        Route::post('/water_network/update',[App\Http\Controllers\WaterNetworkController::class,'update'])->name('water.network.edit');
-        Route::get('/water_network/delete/{id}',[App\Http\Controllers\WaterNetworkController::class,'destroy'])->name('water.network.delete');
+        Route::get('/water_networks', [App\Http\Controllers\WaterNetworkController::class, 'index'])->name('water.networks');
+        Route::post('/water_network/store', [App\Http\Controllers\WaterNetworkController::class, 'store'])->name('water.network.store');
+        Route::post('/water_network/update', [App\Http\Controllers\WaterNetworkController::class, 'update'])->name('water.network.edit');
+        Route::get('/water_network/delete/{id}', [App\Http\Controllers\WaterNetworkController::class, 'destroy'])->name('water.network.delete');
 
         Route::get('/water_networks', [App\Http\Controllers\WaterNetworkController::class, 'index'])->name('water.networks');
         Route::post('/water_network/store', [App\Http\Controllers\WaterNetworkController::class, 'store'])->name('water.network.store');
@@ -269,7 +274,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
     });
 
-    Route::group(['prefix' => 'billings', 'as'=>'billings.'], function (){
+    Route::group(['prefix' => 'billings', 'as' => 'billings.'], function () {
         Route::get('/', [App\Http\Controllers\BillingController::class, 'index'])->name('index');
         //show details
         Route::get('/{billing}', [App\Http\Controllers\BillingController::class, 'show'])->name('show');

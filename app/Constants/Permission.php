@@ -25,17 +25,11 @@ class Permission
     const AssignChartOfAccounts = 'Assign Chart Of Accounts';
     const ManageLedgerMigration = 'Manage Ledger Migration';
     const ManageChartOfAccountTemplates = 'Manage Chart Of Account Templates';
-
     const CreateAdjustment = 'Create Adjustment';
     const ApproveAdjustment = 'Approve Adjustment';
-
-
     const ManageItemDelivery = 'Manage Item Delivery';
-
     const ViewAdjustment = 'View Adjustment';
-
     const ManageOperatorUsers = 'Manage Operator Users';
-
     const ManageBillings = 'Manage Billings';
 
 

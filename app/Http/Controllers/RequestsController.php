@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\PaymentConfiguration;
+use App\Models\PaymentDeclaration;
 use App\Models\PaymentType;
 use App\Models\Province;
 use App\Models\Request;
@@ -179,7 +180,7 @@ class RequestsController extends Controller
 
     public function show(AppRequest $request)
     {
-        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user', 'paymentDeclarations.paymentConfig.paymentType','meterNumbers.item','meterNumbers.itemCategory');
+        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user', 'paymentDeclarations.paymentConfig.paymentType', 'meterNumbers.item', 'meterNumbers.itemCategory');
 
         $reviews = $request->flowHistories->where('is_comment', '=', true);
         $flowHistories = $request->flowHistories->where('is_comment', '=', false);
@@ -202,13 +203,7 @@ class RequestsController extends Controller
             ->where('is_meter', '=', true)
             ->get();
 
-        $paymentConfig = PaymentConfiguration::query()
-            ->where([
-                ['operation_area_id', '=', auth()->user()->operation_area],
-                ['payment_type_id', '=', PaymentType::CONNECTION_FEE],
-                ['request_type_id', '=', $request->request_type_id]
-            ])
-            ->first();
+        $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, $request->request_type_id);
 
         return view('admin.requests.show', [
             'request' => $request,
@@ -343,6 +338,43 @@ class RequestsController extends Controller
                 ['operation_area', '=', auth()->user()->operation_area]
             ])
             ->get();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function toBeDelivered()
+    {
+        if (request()->ajax()) {
+            $data = AppRequest::query()
+                ->with(['customer', 'requestType'])
+                ->where([
+                    ['operation_area_id', '=', auth()->user()->operation_area],
+                ])
+                ->whereDoesntHave('paymentDeclarations', function (Builder $builder) {
+                    $builder->whereIn('status', [PaymentDeclaration::ACTIVE]);
+                })
+                ->whereIn('status', [AppRequest::METER_ASSIGNED, AppRequest::PARTIALLY_DELIVERED, AppRequest::DELIVERED])
+                ->select('requests.*');
+
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function (AppRequest $row) {
+                    return '<div class="dropdown">
+                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="' . route('admin.requests.show', encryptId($row->id)) . '">Print</a>
+                                    <a class="dropdown-item" href="' . route('admin.requests.delivery-request.index', encryptId($row->id)) . '">Deliveries</a>
+                                </div>
+                            </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('admin.requests.item_delivery');
     }
 
 }

@@ -109,7 +109,7 @@
                                  :route="route('admin.requests.index')"/>
 
                     @can(\App\Constants\Permission::ManageItemDelivery)
-                        <x-menu-item title="Item Delivery" item-class="nav-item-delivery" route=""/>
+                        <x-menu-item title="Item Delivery" item-class="nav-item-delivery" :route="route('admin.requests.to-be-delivered')"/>
                     @endcan
 
                 </ul>
