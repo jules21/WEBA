@@ -445,6 +445,16 @@
                         </a>
                     </li>
                 @endcan
+                @can('Manage Bill Charges')
+                    <li class="menu-item nav-bill-charges" aria-haspopup="true">
+                        <a href="{{ route('admin.bill.charges') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Bill Charges</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('Manage Request Type')
                     <li class="menu-item nav-request-type" aria-haspopup="true">
                         <a href="{{ route('admin.request.types') }}" class="menu-link">
