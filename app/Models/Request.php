@@ -87,6 +87,27 @@ use Storage;
  * @method static Builder|Request whereUpi($value)
  * @method static Builder|Request whereVillageId($value)
  * @method static Builder|Request whereWaterUsageId($value)
+ * @property string|null $upi_attachment
+ * @property int|null $water_network_id
+ * @property int|null $operation_area_id
+ * @property string|null $connection_fee
+ * @property-read string $address
+ * @property-read string|null $upi_attachment_url
+ * @property-read Collection<int, \App\Models\StockMovementDetail> $items
+ * @property-read int|null $items_count
+ * @property-read Collection<int, \App\Models\MeterRequest> $meterNumbers
+ * @property-read int|null $meter_numbers_count
+ * @property-read Collection<int, \App\Models\PaymentDeclaration> $paymentDeclarations
+ * @property-read int|null $payment_declarations_count
+ * @property-read \App\Models\RequestAssignment|null $requestAssignment
+ * @property-read Collection<int, \App\Models\RequestAssignment> $requestAssignments
+ * @property-read int|null $request_assignments_count
+ * @property-read \App\Models\RequestTechnician|null $technician
+ * @property-read \App\Models\WaterNetwork|null $waterNetwork
+ * @method static Builder|Request whereConnectionFee($value)
+ * @method static Builder|Request whereOperationAreaId($value)
+ * @method static Builder|Request whereUpiAttachment($value)
+ * @method static Builder|Request whereWaterNetworkId($value)
  * @mixin Eloquent
  */
 class Request extends Model
@@ -185,7 +206,7 @@ class Request extends Model
     const PROPOSE_TO_APPROVE = 'Propose to approve';
     const REJECTED = 'Rejected';
     const APPROVED = 'Approved';
-    const ASSIGNING_METER = 'Assigning meter';
+    const METER_ASSIGNED = "Meter Assigned";
 
     public function getApprovalStatuses(): array
     {
@@ -199,13 +220,12 @@ class Request extends Model
                 self::APPROVED,
                 self::REJECTED
             ];
+        } elseif ($this->status == self::APPROVED) {
+            return [
+                self::METER_ASSIGNED,
+                self::REJECTED
+            ];
         }
-        /*    elseif ($this->status == self::APPROVED) {
-                return [
-                    self::ASSIGNING_METER,
-                    self::REJECTED
-                ];
-            }*/
         return [];
     }
 
@@ -226,7 +246,7 @@ class Request extends Model
 
     public function canBeReviewed(): bool
     {
-        return $this->status != self::PENDING;
+        return $this->status != self::PENDING && !is_null($this->water_network_id);
     }
 
     public function canAddTechnician(): bool
@@ -258,6 +278,18 @@ class Request extends Model
     public function waterNetwork(): BelongsTo
     {
         return $this->belongsTo(WaterNetwork::class);
+    }
+
+    public function paymentDeclarations(): HasMany
+    {
+        return $this->hasMany(PaymentDeclaration::class);
+    }
+
+    public function pendingPayments(): bool
+    {
+        return $this->paymentDeclarations()
+            ->where('status', PaymentDeclaration::ACTIVE)
+            ->exists();
     }
 
 

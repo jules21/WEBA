@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|District whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District whereProvinceId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Sector> $sectors
  * @mixin \Eloquent
  */
 class District extends Model

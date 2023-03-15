@@ -41,6 +41,16 @@ use Illuminate\Support\Carbon;
  * @method static Builder|StockMovement whereRequestId($value)
  * @method static Builder|StockMovement whereType($value)
  * @method static Builder|StockMovement whereUpdatedAt($value)
+ * @property float|null $unit_price
+ * @property float $vat
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $details
+ * @property-read int|null $details_count
+ * @property-read mixed $total
+ * @property-read \App\Models\Item $item
+ * @property-read \App\Models\OperationArea $operationArea
+ * @property-read \App\Models\Purchase|null $purchase
+ * @method static Builder|StockMovement whereUnitPrice($value)
+ * @method static Builder|StockMovement whereVat($value)
  * @mixin Eloquent
  */
 class StockMovement extends Model

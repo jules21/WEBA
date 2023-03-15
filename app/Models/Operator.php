@@ -66,6 +66,11 @@ use Storage;
  * @method static Builder|Operator whereSectorId($value)
  * @method static Builder|Operator whereUpdatedAt($value)
  * @method static Builder|Operator whereVillageId($value)
+ * @property-read Collection<int, \App\Models\Customer> $customers
+ * @property-read int|null $customers_count
+ * @property-read Collection<int, \App\Models\OperationArea> $operationAreas
+ * @property-read Collection<int, \App\Models\Stock> $stocks
+ * @property-read int|null $stocks_count
  * @mixin Eloquent
  */
 class Operator extends Model

@@ -42,7 +42,8 @@
                 <div class="form-group">
                     <label class="font-weight-bold">UPI Attchment</label>
                     <div>
-                        <a href="{{ $request->upi_attachment_url }}" class="btn btn-sm btn-light-danger" target="_blank">
+                        <a href="{{ $request->upi_attachment_url }}" class="btn btn-sm btn-light-danger"
+                           target="_blank">
                             <i class="flaticon2-download-2"></i>
                             Download UPI
                         </a>
@@ -99,15 +100,107 @@
             </div>
 
         </div>
+
+        <div class="form-group">
+            <label class="font-weight-bold">Description</label>
+            <div class="form-control-plaintext py-0">
+                {{ $request->description }}
+            </div>
+        </div>
+
         <div class="row">
-            <div class="col-12">
-                <div class="form-group">
-                    <label class="font-weight-bold">Description</label>
-                    <div class="form-control-plaintext py-0">
-                        {{ $request->description }}
-                    </div>
+            <div class="col-lg-12">
+                <div class="card card-body">
+                    <h4>
+                        Water Network & Connection Fee
+                    </h4>
+                    @if($request->status == \App\Models\Request::ASSIGNED)
+                        <form action="{{ route('admin.requests.add-water-network', encryptId($request->id)) }}"
+                              method="post" id="saveWaterNetworkForm">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-4 my-2">
+                                    <div class="form-group">
+                                        <label for="connection_fee">Connection Fee</label>
+                                        <input type="number" name="connection_fee" id="connection_fee"
+                                               class="form-control"
+                                               value="{{ $request->connection_fee??$paymentConfig->amount??'' }}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 my-2">
+                                    <div class="form-group">
+                                        <label for="water_network_id">
+                                            <span class="font-weight-bold">Water Network</span>
+                                        </label>
+                                        <select name="water_network_id" id="water_network_id" class="form-control">
+                                            <option value="">
+                                                Please Select Water Network
+                                            </option>
+                                            @foreach($waterNetworks as $item)
+                                                <option value="{{ $item->id }}"
+                                                    {{ $request->water_network_id == $item->id ? 'selected' : '' }}>
+                                                    {{ $item->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 my-2">
+                                    <div class="form-group">
+                                        <div style="visibility: hidden" class="mb-1">
+                                            Save Button
+                                        </div>
+                                        <button type="submit"
+                                                class="btn btn-light-primary" id="addWaterNetwork">
+                                            Save Changes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    @elseif(!is_null($request->water_network_id))
+                        <div class="row mt-4">
+                            <div class="col-lg-6">
+                                <label for="">
+                                    <span class="font-weight-bold">Water Network</span>
+                                </label>
+                                <div class="form-control-plaintext py-0">
+                                    {{ $request->waterNetwork->name }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">
+                                    <span class="font-weight-bold">Connection Fee</span>
+                                </label>
+                                <div class="form-control-plaintext py-0">
+                                   RWF {{ number_format($request->connection_fee,0) }}
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
+
+
+        @if(is_null($request->water_network_id))
+            <div class="alert alert-light-warning alert-custom alert-notice p-2 rounded-0">
+                <div class="alert-icon text-warning">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shield-exclamation"
+                         width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
+                         fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path
+                            d="M15.04 19.745c-.942 .551 -1.964 .976 -3.04 1.255a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 .195 6.015"></path>
+                        <path d="M19 16v3"></path>
+                        <path d="M19 22v.01"></path>
+                    </svg>
+                </div>
+                <div class="alert-text">
+                    Please add the water network to proceed.
+                </div>
+            </div>
+        @endif
+
     </div>
 </div>

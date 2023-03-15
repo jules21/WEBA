@@ -30,6 +30,13 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
+ * @property-read int|null $flow_histories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $items
+ * @property-read int|null $items_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
+ * @property-read int|null $movements_count
+ * @property-read \App\Models\OperationArea $operationArea
  * @mixin \Eloquent
  */
 class Adjustment extends Model

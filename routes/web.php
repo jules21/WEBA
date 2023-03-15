@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants\Permission;
+use App\Http\Controllers\AdjustmentController;
 use App\Http\Controllers\AreaOfOperationController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\ChartAccountController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DocumentTypeController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MeterRequestController;
@@ -35,6 +37,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/money', [HomeController::class, 'generateQrCodeFromExcelFile'])->name('file-excel-from-code-qr-generate');
 
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
@@ -92,7 +96,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
             Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
             Route::post('/requests/re-assign', [RequestAssignmentController::class, 'reAssign'])->name('re-assign');
             Route::get('/assigned', [RequestsController::class, 'assignedRequests'])->name('assigned');
-
         });
 
 
@@ -100,6 +103,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::post('/{request}/save-item', [RequestReviewController::class, 'storeItem'])->name('save-item');
         Route::delete('/{request}/item/{id}/delete', [RequestReviewController::class, 'deleteRequestItem'])->name('delete-request-item');
+        Route::post('/{req}/add-water-network', [RequestReviewController::class, 'addWaterNetwork'])->name('add-water-network');
         Route::post('/{request}/reviews/save', [RequestReviewController::class, 'saveReview'])->name('reviews.save');
 
         Route::post('/{request}/technician/save', [RequestTechnicianController::class, 'store'])->name('technician.save');
@@ -242,6 +246,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::prefix('stock-management')->name('stock.')->group(function () {
         Route::resource('item-categories', ItemCategoryController::class);
         Route::resource('items', ItemController::class);
+        Route::get('/items-by-category/{categoryId}', [ItemController::class, 'itemsByCategory'])->name('items.by-category');
         Route::get('/stock-items', [App\Http\Controllers\StockController::class, 'index'])->name('stock-items.index');
         Route::get('/stock-items/{stock}', [App\Http\Controllers\StockController::class, 'show'])->name('stock-items.show');
         Route::get('/stock-movements', [App\Http\Controllers\StockMovementController::class, 'index'])->name('stock-items.movements');
@@ -249,7 +254,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
 
         //stock adjustment
-        Route::resource('/adjustments', \App\Http\Controllers\AdjustmentController::class);
+        Route::resource('/adjustments', AdjustmentController::class);
         Route::get('/adjustments/{adjustment}/items', [App\Http\Controllers\AdjustmentController::class, 'items'])->name('stock-adjustments.items');
         Route::post('/adjustments/{adjustment}/items', [App\Http\Controllers\AdjustmentController::class, 'addItem'])->name('stock-adjustments.items.add');
         Route::delete('/adjustments/{adjustment}/items/{item}', [App\Http\Controllers\AdjustmentController::class, 'removeItem'])->name('stock-adjustments.items.remove');

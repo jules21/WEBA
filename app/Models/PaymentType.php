@@ -20,9 +20,17 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentType whereUpdatedAt($value)
+ * @property string|null $name_kin
+ * @property bool $is_active
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentType whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentType whereNameKin($value)
  * @mixin \Eloquent
  */
 class PaymentType extends Model
 {
     use HasFactory;
+
+    const CONNECTION_FEE = 1;
+
+
 }

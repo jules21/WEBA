@@ -51,6 +51,18 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Customer whereSectorId($value)
  * @method static Builder|Customer whereUpdatedAt($value)
  * @method static Builder|Customer whereVillageId($value)
+ * @property-read \App\Models\Cell|null $cell
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MeterRequest> $connections
+ * @property-read int|null $connections_count
+ * @property-read \App\Models\District|null $district
+ * @property-read string $address
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Operator> $operators
+ * @property-read int|null $operators_count
+ * @property-read \App\Models\Province|null $province
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Request> $requests
+ * @property-read int|null $requests_count
+ * @property-read \App\Models\Sector|null $sector
+ * @property-read \App\Models\Village|null $village
  * @mixin Eloquent
  */
 class

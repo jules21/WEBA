@@ -38,6 +38,22 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Purchase whereStatus($value)
  * @method static Builder|Purchase whereSupplierId($value)
  * @method static Builder|Purchase whereUpdatedAt($value)
+ * @property string|null $subtotal
+ * @property string|null $tax_amount
+ * @property string|null $tax_net_amount
+ * @property string|null $total
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
+ * @property-read int|null $flow_histories_count
+ * @property-read string $status_color
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $movementDetails
+ * @property-read int|null $movement_details_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
+ * @property-read int|null $movements_count
+ * @property-read \App\Models\Supplier $supplier
+ * @method static Builder|Purchase whereSubtotal($value)
+ * @method static Builder|Purchase whereTaxAmount($value)
+ * @method static Builder|Purchase whereTaxNetAmount($value)
+ * @method static Builder|Purchase whereTotal($value)
  * @mixin Eloquent
  */
 class Purchase extends Model
