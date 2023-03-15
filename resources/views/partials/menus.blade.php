@@ -534,6 +534,26 @@
                         </a>
                     </li>
                 @endcan
+                @can('Manage Water Network Types')
+                    <li class="menu-item nav-water-network-types" aria-haspopup="true">
+                        <a href="{{ route('admin.water.network.types') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Water Network Types</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('Manage Water Network')
+                    <li class="menu-item nav-water-networks" aria-haspopup="true">
+                        <a href="{{ route('admin.water.networks') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Water Network</span>
+                        </a>
+                    </li>
+                @endcan
                 <li class="menu-item nav-request-duration-configuration" aria-haspopup="true">
                     <a href="{{ route('admin.request.duration.configurations') }}" class="menu-link">
                         <i class="menu-bullet menu-bullet-dot">
