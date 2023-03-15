@@ -34,6 +34,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereOperatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChartAccount> $chartOfAccounts
+ * @property-read int|null $chart_of_accounts_count
  * @mixin \Eloquent
  */
 class OperationArea extends Model

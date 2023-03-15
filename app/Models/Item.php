@@ -41,6 +41,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Item whereUpdatedAt($value)
  * @method static Builder|Item whereVatRate($value)
  * @method static Builder|Item whereVatable($value)
+ * @property-read \App\Models\ItemCategory $category
+ * @property-read \App\Models\PackagingUnit $packagingUnit
+ * @property-read \App\Models\Stock|null $stock
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $stockMovements
+ * @property-read int|null $stock_movements_count
  * @mixin Eloquent
  */
 class Item extends Model

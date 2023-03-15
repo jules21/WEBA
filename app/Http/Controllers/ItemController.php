@@ -9,17 +9,20 @@ use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\Operator;
 use App\Models\PackagingUnit;
+use Exception;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 
 class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        $items = Item::query()->select('items.*')->with('category','packagingUnit');
+        $items = Item::query()->select('items.*')->with('category', 'packagingUnit');
         $dataTable = new ItemsDataTable($items);
         return $dataTable->render('admin.stock.items', [
             'categories' => ItemCategory::query()->get(),
@@ -31,8 +34,8 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreItemRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreItemRequest $request
+     * @return RedirectResponse
      */
     public function store(StoreItemRequest $request)
     {
@@ -48,9 +51,9 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateItemRequest  $request
-     * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
+     * @param UpdateItemRequest $request
+     * @param Item $item
+     * @return RedirectResponse
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
@@ -67,15 +70,15 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
+     * @param Item $item
+     * @return RedirectResponse
      */
     public function destroy(Item $item)
     {
         try {
             $item->delete();
             return redirect()->back()->with('success', 'Item deleted successfully');
-        }catch (\Exception $exception){
+        } catch (Exception $exception) {
             info('Item cannot be deleted', [
                 'item' => $item->toArray(),
                 'exception' => $exception->getMessage()
@@ -88,7 +91,13 @@ class ItemController extends Controller
     {
         return view('admin.stock.stock', [
             'operator' => $operator,
-            'items' => Item::query()->select('items.*')->with('category','packagingUnit')->get()
+            'items' => Item::query()->select('items.*')->with('category', 'packagingUnit')->get()
         ]);
+    }
+
+    public function itemsByCategory($categoryId)
+    {
+        $category = ItemCategory::query()->findOrFail($categoryId);
+        return $category->items()->get();
     }
 }
