@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Constants\Permission;
+use App\Traits\HasStatusColor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -29,11 +30,18 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
+ * @property-read int|null $flow_histories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $items
+ * @property-read int|null $items_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
+ * @property-read int|null $movements_count
+ * @property-read \App\Models\OperationArea $operationArea
  * @mixin \Eloquent
  */
 class Adjustment extends Model
 {
-    use HasFactory;
+    use HasFactory, HasStatusColor;
 
     protected $fillable = [
         'status',
@@ -50,6 +58,13 @@ class Adjustment extends Model
     const REJECTED = "Rejected";
 
     protected $appends = ['status_color'];
+
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $id = decryptId($value);
+        return $this->where('id','=', $id)->firstOrFail();
+    }
 
     public function operationArea(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -79,6 +94,13 @@ class Adjustment extends Model
         return $this->status === self::SUBMITTED
             && auth()->user()->operation_area
             && auth()->user()->can(Permission::ApproveAdjustment);
+    }
+
+    public function canBeSubmitted(): bool
+    {
+        return $this->status === self::PENDING
+            && auth()->user()->operation_area
+            && auth()->user()->can(Permission::CreateAdjustment);
     }
 
     public function movements(): \Illuminate\Database\Eloquent\Relations\HasMany

@@ -26,6 +26,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereOperatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork wherePopulationCovered($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereUpdatedAt($value)
+ * @property int|null $water_network_type_id
+ * @property int|null $operation_area_id
+ * @property-read \App\Models\Operator $operator
+ * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereOperationAreaId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereWaterNetworkTypeId($value)
  * @mixin \Eloquent
  */
 class WaterNetwork extends Model
@@ -34,5 +39,9 @@ class WaterNetwork extends Model
 
     public function operator(){
         return $this->belongsTo(Operator::class,'operator_id');
+    }
+
+    public function waterNetworkType(){
+        return $this->belongsTo(WaterNetworkType::class,'water_network_type_id');
     }
 }

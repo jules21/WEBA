@@ -36,6 +36,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|FlowHistory whereType($value)
  * @method static Builder|FlowHistory whereUpdatedAt($value)
  * @method static Builder|FlowHistory whereUserId($value)
+ * @property bool $is_comment
+ * @property-read string $status_color
+ * @property-read User $user
+ * @method static Builder|FlowHistory whereIsComment($value)
  * @mixin Eloquent
  */
 class FlowHistory extends Model

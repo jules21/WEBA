@@ -13,7 +13,7 @@ class UpdateBillChargeRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdateBillChargeRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'water_network_type_id'=>'required',
+            'operation_area_id'=>'required',
+            'unit_price'=>'required',
         ];
     }
 }

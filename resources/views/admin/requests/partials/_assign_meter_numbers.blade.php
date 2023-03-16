@@ -16,7 +16,11 @@
             <tr>
                 <th>Subscription Number</th>
                 <th>Meter Number></th>
+                <th>Category</th>
+                <th>Item</th>
+                @if($request->canAssignMeterNumber())
                 <th>Actions</th>
+                @endif
             </tr>
             </thead>
             <tbody>
@@ -24,22 +28,29 @@
                 <tr>
                     <td>{{ $item->subscription_number }}</td>
                     <td>{{ $item->meter_number }}</td>
-                    <td>
-                        <button type="button"
-                                data-id="{{ $item->id }}"
-                                data-subscription_number="{{ $item->subscription_number }}"
-                                data-meter_number="{{ $item->meter_number }}"
-                                class="btn btn-sm btn-light-primary rounded-circle btn-icon mr-2"
-                                title="Edit details">
-                            <i class="flaticon2-edit"></i>
-                        </button>
-                        <button type="button"
-                                data-href="{{ route('admin.requests.meter-number.destroy',encryptId($item->id)) }}"
-                                class="btn btn-sm  rounded-circle btn-icon btn-light-danger js-delete"
-                                title="Delete">
-                            <i class="flaticon2-trash"></i>
-                        </button>
-                    </td>
+                    <td>{{ $item->itemCategory->name }}</td>
+                    <td>{{ $item->item->name }}</td>
+                    @if($request->canAssignMeterNumber())
+                        <td>
+                            <button type="button"
+                                    data-id="{{ $item->id }}"
+                                    data-item_category_id="{{ $item->item_category_id }}"
+                                    data-item_id="{{ $item->item_id }}"
+                                    data-subscription_number="{{ $item->subscription_number }}"
+                                    data-meter_number="{{ $item->meter_number }}"
+                                    data-last_index="{{ $item->last_index }}"
+                                    class="btn btn-sm btn-light-primary rounded-circle btn-icon mr-2 js-edit-meter"
+                                    title="Edit details">
+                                <i class="flaticon2-edit"></i>
+                            </button>
+                            <button type="button"
+                                    data-href="{{ route('admin.requests.meter-number.destroy',encryptId($item->id)) }}"
+                                    class="btn btn-sm  rounded-circle btn-icon btn-light-danger js-delete"
+                                    title="Delete">
+                                <i class="flaticon2-trash"></i>
+                            </button>
+                        </td>
+                    @endif
                 </tr>
             @empty
                 <tr>
@@ -71,7 +82,32 @@
                   id="saveMeterForm">
                 @csrf
                 <div class="modal-body">
-                    <input type="hidden" value="0" id="tech_id" name="id"/>
+                    <input type="hidden" value="0" name="id" id="meter_id"/>
+
+                    <div class="form-group">
+                        <label for="category_id">
+                            Meter Category
+                        </label>
+                        <select name="item_category_id" id="category_id" class="form-control  select2"
+                                style="width: 100%!important;">
+                            <option value="">Select Category</option>
+                            @foreach($itemCategories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="item_meter_id">
+                            Meter
+                        </label>
+                        <select name="item_id" id="item_meter_id" class="form-control select2"
+                                style="width: 100%!important;">
+                            <option value="">Select Meter</option>
+                        </select>
+                    </div>
+
+
                     <div class="form-group">
                         <label for="meter_number">Meter Number</label>
                         <input type="text" name="meter_number" id="meter_number" class="form-control"/>

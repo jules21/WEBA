@@ -113,7 +113,7 @@
                                 <td>{{ $stock->operator->name ?? '' }}</td>
                                 <td>{{ $stock->operationArea->name ?? '' }}</td>
                                 <td>
-                                    <a href="{{route('admin.stock.stock-items.show', $stock->id)}}" class="btn btn-sm btn-light-primary">details</a>
+                                    <a href="{{route('admin.stock.stock-items.show',encryptId( $stock->id))}}" class="btn btn-sm btn-light-primary">details</a>
                                 </td>
                             </tr>
                         @endforeach

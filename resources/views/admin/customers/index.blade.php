@@ -91,15 +91,12 @@
                     @csrf
                     <input type="hidden" value="0" id="id" name="id"/>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control"/>
-                        </div>
+
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="legal_type_id">Legal Type</label>
-                                    <select name="legal_type_id" id="legal_type_id" class="form-control ">
+                                    <select name="legal_type_id" id="legal_type_id" class="form-control" required>
                                         <option value="">Select Legal</option>
                                         @foreach($legalTypes as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -110,7 +107,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="document_type_id">Document Type</label>
-                                    <select name="document_type_id" id="document_type_id" class="form-control">
+                                    <select name="document_type_id" id="document_type_id" class="form-control" required>
                                         <option value="">Select Type</option>
                                         @foreach($idTypes as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -125,28 +122,47 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="doc_number">Document Number</label>
-                                    <input type="text" name="doc_number" id="doc_number" class="form-control"/>
+                                    <div class="d-flex flex-shrink-0">
+                                        <input type="hidden" name="doc_number" id="doc_number" class="form-control"
+                                               required/>
+                                        <input type="text" id="input_doc_number" class="form-control" required/>
+                                        <button type="button" id="btnCheckIdDetails"
+                                                class="btn btn-primary ml-2">
+                                            Check
+                                        </button>
+                                    </div>
+                                    <label id="input_doc_number-error" class="error" for="input_doc_number"></label>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="tel" name="phone" id="phone" class="form-control"/>
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" required/>
                                 </div>
                             </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="email">Email address</label>
-                            <input type="email" name="email" id="email" class="form-control"/>
                         </div>
 
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" name="phone" id="phone" class="form-control" required/>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="email">Email address</label>
+                                    <input type="email" name="email" id="email" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
                                     <label for="province_id">Province</label>
-                                    <select name="province_id" id="province_id" class="form-control ">
+                                    <select name="province_id" id="province_id" class="form-control" required>
                                         <option value="">Select Province</option>
                                         @foreach($provinces as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -157,7 +173,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="district_id">District</label>
-                                    <select name="district_id" id="district_id" class="form-control ">
+                                    <select name="district_id" id="district_id" class="form-control" required>
                                         <option value="">Select District</option>
                                     </select>
                                 </div>
@@ -168,7 +184,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="sector_id">Sector</label>
-                                    <select name="sector_id" id="sector_id" class="form-control ">
+                                    <select name="sector_id" id="sector_id" class="form-control" required>
                                         <option value="">Select Sector</option>
                                     </select>
                                 </div>
@@ -176,7 +192,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="cell_id">Cell</label>
-                                    <select name="cell_id" id="cell_id" class="form-control ">
+                                    <select name="cell_id" id="cell_id" class="form-control" required>
                                         <option value="">Select Cell</option>
                                     </select>
                                 </div>
@@ -187,7 +203,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="village_id">Village</label>
-                                    <select name="village_id" id="village_id" class="form-control ">
+                                    <select name="village_id" id="village_id" class="form-control">
                                         <option value="">Select Village</option>
                                     </select>
                                 </div>
@@ -208,8 +224,9 @@
 @endsection
 
 @section('scripts')
-    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
-    {!! JsValidator::formRequest(App\Http\Requests\StoreCustomerRequest::class) !!}
+    {{--    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
+        {!! JsValidator::formRequest(App\Http\Requests\StoreCustomerRequest::class) !!}--}}
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
 
     <script>
 
@@ -288,7 +305,6 @@
 
         function getDocumentTypes(legalTypeId, selectedDocTypedId) {
             let docTypeId = $('#document_type_id');
-
             docTypeId.empty();
             docTypeId.append('<option value="">Select Doc Type</option>');
             $.ajax({
@@ -309,6 +325,8 @@
 
         $(document).ready(function () {
             $('.nav-customers').addClass('menu-item-active');
+            let $formSave = $('#formSave');
+            $formSave.validate();
 
             let dataTable = $('.dataTable').DataTable({
                 serverSide: true,
@@ -335,7 +353,7 @@
                     },
                     {data: "email", name: "email"},
                     {data: "phone", name: "phone"},
-                    {data: "connection", name:"connection"},
+                    {data: "connection", name: "connection"},
                     {data: "action", name: "action", orderable: false, searchable: false}
                 ],
                 columnDefs: [
@@ -364,11 +382,80 @@
                 getCells($(this).val());
             });
 
-            $('#legal_type_id').on('change', function () {
+            let $legalTypeId = $('#legal_type_id');
+            $legalTypeId.on('change', function () {
                 getDocumentTypes($(this).val());
             });
 
-            $('#formSave').on('submit', function (e) {
+            let $inputDocNumber = $('#input_doc_number');
+            let $documentTypeId = $('#document_type_id');
+            $documentTypeId.on('change', function () {
+                let docTypeId = $(this).val();
+                if (docTypeId === "{{ config('app.NATIONAL_ID') }}") {
+                    $inputDocNumber.attr('maxlength', '16');
+                } else {
+                    $inputDocNumber.attr('maxlength', '10');
+                }
+            });
+
+            $('#btnCheckIdDetails').on('click', function () {
+                let docNumber = $inputDocNumber.val();
+                let legalTypeId = $legalTypeId.val();
+                let documentTypeId = $documentTypeId.val();
+                if (docNumber && legalTypeId && documentTypeId) {
+                    let url = "{{ route("admin.customers.fetch-identification-from-nida",":id") }}";
+                    url = url.replace(':id', docNumber);
+
+                    $inputDocNumber.attr('disabled', true);
+                    $legalTypeId.attr('disabled', true);
+                    $documentTypeId.attr('disabled', true);
+
+                    let btn = $(this);
+                    btn.attr('disabled', true);
+                    btn.addClass('spinner spinner-white spinner-right');
+
+                    $.ajax({
+                        url: url,
+                        method: "get",
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.status === 'success') {
+                                $('#input_name').val(response.data.name);
+                                $('#input_email').val(response.data.email);
+                                $('#input_phone').val(response.data.phone);
+                                $('#input_address').val(response.data.address);
+                                $('#province_id').val(response.data.province_id);
+                                getDistricts(response.data.province_id, response.data.district_id);
+                                getSectors(response.data.district_id, response.data.sector_id);
+                                getCells(response.data.sector_id, response.data.cell_id);
+                                getVillages(response.data.cell_id, response.data.village_id);
+                            } else {
+                                Swal.fire({
+                                    title: "Error",
+                                    icon: "error",
+                                    text: response.message
+                                });
+                            }
+                        }, error: function (response) {
+                            Swal.fire({
+                                title: "Error",
+                                icon: "error",
+                                text: "Unable to check id details, try again"
+                            });
+                        },
+                        complete: function () {
+                            btn.attr('disabled', false);
+                            btn.removeClass('spinner spinner-white spinner-right');
+                            $inputDocNumber.prop("disabled", false);
+                            $legalTypeId.prop("disabled", false);
+                            $documentTypeId.prop("disabled", false);
+                        }
+                    });
+                }
+
+            });
+
+            $formSave.on('submit', function (e) {
                 e.preventDefault();
 
                 let $form = $(this);
@@ -414,8 +501,8 @@
                     success: function (data) {
                         $('#id').val(data.id);
                         $('#name').val(data.name);
-                        $('#legal_type_id').val(data.legal_type_id);
-                        $('#document_type_id').val(data.document_type_id);
+                        $legalTypeId.val(data.legal_type_id);
+                        $documentTypeId.val(data.document_type_id);
                         $('#doc_number').val(data.doc_number);
                         $('#phone').val(data.phone);
                         $('#email').val(data.email);

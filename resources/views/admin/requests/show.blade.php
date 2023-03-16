@@ -42,6 +42,8 @@
 
 
 
+
+
     <div class="card card-body">
         <ul class="nav nav-light-primary nav-pills" id="myTab" role="tablist">
             <li class="nav-item">
@@ -66,6 +68,20 @@
                     Flow History
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link font-weight-bolder" id="payments-tab" data-toggle="tab" href="#payments">
+                    <span class="svg-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt" width="24"
+                             height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                           <path
+                               d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2"></path>
+                        </svg>
+                    </span>
+                    Payments
+                </a>
+            </li>
         </ul>
         <div class="tab-content  mt-5" id="myTabContent">
 
@@ -76,30 +92,46 @@
                 @include('admin.requests.partials._request_details')
 
                 @if($request->canBeReviewed())
-                    <div class="mb-3">
-                        @include('admin.requests.partials._technician_details')
-                    </div>
-
+                    {{--     <div class="mb-3">
+                             @include('admin.requests.partials._technician_details')
+                         </div>--}}
 
                     @if(!$request->equipment_payment)
                         @include('admin.requests.partials._equipments')
                     @endif
+                    @if($request->pendingPayments(\App\Models\PaymentType::METERS_FEE))
+                        <div class="alert alert-outline-warning alert-notice alert-custom">
+                            <div class="alert-icon text-warning">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="icon icon-tabler icon-tabler-shield-exclamation" width="24" height="24"
+                                     viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path
+                                        d="M15.04 19.745c-.942 .551 -1.964 .976 -3.04 1.255a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 .195 6.015"></path>
+                                    <path d="M19 16v3"></path>
+                                    <path d="M19 22v.01"></path>
+                                </svg>
+                            </div>
+                            <div class="alert-text">
+                                Please make sure to pay all pending payments before adding meters numbers to this
+                                request
+                            </div>
+                        </div>
+                    @endif
+                    @include('admin.requests.partials._assign_meter_numbers')
 
 
-                    @if( $technician && $request->canBeApprovedByMe())
+                    @if( $request->canBeApprovedByMe())
                         @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
                             @include('admin.requests.partials._review_form')
                         @endif
                     @endif
-
-
-                    @include('admin.requests.partials._assign_meter_numbers')
-
                 @endif
 
 
             </div>
-            <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="home-tab">
                 @if($reviews->count() == 0)
                     <div class="alert alert-light-info alert-custom ">
                         <div class="alert-icon text-info">
@@ -139,7 +171,7 @@
                 @endif
 
             </div>
-            <div class="tab-pane fade  " id="contact" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="home-tab">
                 <div class="card card-body">
                     @if($flowHistories->count()==0)
                         <div class="alert alert-light-info alert-custom ">
@@ -184,6 +216,39 @@
                     @endif
 
                 </div>
+            </div>
+            <div class="tab-pane fade" id="payments">
+                <table class="table table-head-solid table-head-custom border">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Payment Reference</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @forelse($request->paymentDeclarations as $payment)
+                        <tr>
+                            <td>{{ $payment->paymentConfig->paymentType->name }}</td>
+                            <td>{{ number_format($payment->amount) }}</td>
+                            <td>{{ $payment->payment_reference }}</td>
+                            <td>
+                                <span
+                                    class="label label-lg font-weight-bold label-light-{{ $payment->status_color }} label-inline rounded-pill">
+                                    {{ ucfirst($payment->status) }}
+                                </span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                No payment declaration yet for this request
+                            </td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -288,17 +353,96 @@
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     {!! JsValidator::formRequest(App\Http\Requests\ValidateReviewRequest::class,'#formSaveReview') !!}
     {!! JsValidator::formRequest(App\Http\Requests\ValidateStoreItemRequest::class,'#saveItemForm') !!}
-    {!! JsValidator::formRequest(App\Http\Requests\ValidateTechnicianRequest::class,'#saveTechnicianForm') !!}
     {!! JsValidator::formRequest(App\Http\Requests\ValidateAssignMeterNumber::class,'#saveMeterForm') !!}
+    {!! JsValidator::formRequest(App\Http\Requests\ValidateAddWaterNetwork::class,'#saveWaterNetworkForm') !!}
 
     <script>
+
+        let getItems = function (categoryId, selectedItemId) {
+            let url = "{{ route('admin.stock.items.by-category',':id') }}";
+            url = url.replace(':id', categoryId);
+            let $itemSelect = $('#item_meter_id');
+            $itemSelect.empty();
+            $.ajax({
+                url: url,
+                method: 'get',
+                dataType: 'json',
+                success: function (response) {
+                    $itemSelect.append('<option value="">Select Item</option>');
+                    $.each(response, function (index, item) {
+                        let selected = '';
+                        if (Number(selectedItemId) === Number(item.id))
+                            selected = 'selected';
+                        $itemSelect.append('<option value="' + item.id + '" ' + selected + '>' + item.name + ' - RWF ' + item.selling_price + '</option>');
+                    });
+                    $itemSelect.trigger('change');
+                },
+                error: function (error) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: "Unable to get items, please try again later",
+                        icon: 'error',
+                        confirmButtonText: 'Ok'
+                    });
+                }
+            });
+        }
+
+        let isSubmitting = false;
         $(document).ready(function () {
 
+            let $saveMeterForm = $('#saveMeterForm');
+            $saveMeterForm.validate();
+
+            let $saveWaterNetworkForm = $('#saveWaterNetworkForm');
+            $saveWaterNetworkForm.validate();
+
             $('.dataTable').DataTable();
+
+            let $categoryId = $('#category_id');
+            $categoryId.on('change', function () {
+                let categoryId = $(this).val();
+                if (categoryId)
+                    getItems(categoryId, 0);
+            });
+
+            $saveWaterNetworkForm.on('submit', function (e) {
+                e.preventDefault();
+
+                let $form = $(this);
+
+                if (!$form.valid())
+                    return false;
+
+                let btn = $form.find('button[type="submit"]');
+
+                btn.addClass('spinner spinner-white spinner-right')
+                    .prop('disabled', true);
+
+                $.ajax({
+                    url: $form.attr('action'),
+                    method: 'post',
+                    data: $form.serialize(),
+                    success: function (response) {
+                        location.reload();
+                    },
+                    error: function (error) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: "Unable to save water network, please try again later",
+                            icon: 'error',
+                            confirmButtonText: 'Ok'
+                        });
+                        btn.removeClass('spinner spinner-white spinner-right')
+                            .prop('disabled', false);
+                    },
+                });
+            });
 
             $('#addBtn').on('click', function () {
                 $('#addModal').modal('show');
             });
+
 
             $('#formSaveReview').on('submit', function (e) {
                 e.preventDefault();
@@ -408,90 +552,72 @@
 
             });
 
-            $('#addTechBtn').on('click', function () {
-                $('#addTechnicianModal').modal('show');
-            });
-
-            $('#saveTechnicianForm').on('submit', function (e) {
-                e.preventDefault();
-
-                let $form = $(this);
-
-                if (!$form.valid())
-                    return false;
-
-                let btn = $form.find('button[type="submit"]');
-
-                btn.addClass('spinner spinner-white spinner-right')
-                    .prop('disabled', true);
-
-                $.ajax({
-                    url: $form.attr('action'),
-                    method: 'post',
-                    data: $form.serialize(),
-                    success: function (response) {
-                        location.reload();
-                    },
-                    error: function (xhr, status, error) {
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'Something went wrong',
-                            icon: 'error',
-                            confirmButtonText: 'Ok'
-                        });
-                    },
-                    complete: function () {
-
-                    }
-                })
-            });
-
-            $(document).on('click', '.js-edit-tech', function () {
-                $('#tech_id').val($(this).data(('id')));
-                $('#tech_name').val($(this).data(('name')));
-                $('#tech_phone_number').val($(this).data(('phone')));
-                $('#tech_address').val($(this).data(('address')));
-                $('#addTechnicianModal').modal('show');
-            });
 
             $('#addMeterBtn').on('click', function () {
                 $('#addMeterModal').modal('show');
             });
-
-            $('#saveMeterForm').on('submit', function (e) {
+            $saveMeterForm.on('submit', function (e) {
                 e.preventDefault();
                 let $form = $(this);
-
-                if (!$form.valid())
+                if (!$form.valid() || isSubmitting)
                     return false;
 
                 let btn = $form.find('button[type="submit"]');
 
-                btn.addClass('spinner spinner-white spinner-right')
-                    .prop('disabled', true);
+                btn.prop('disabled', true);
+                btn.addClass('spinner spinner-white spinner-right');
 
+                isSubmitting = true;
                 $.ajax({
                     url: $form.attr('action'),
                     method: 'post',
                     data: $form.serialize(),
                     success: function (response) {
                         location.reload();
+                        isSubmitting = false;
                     },
                     error: function (xhr, status, error) {
+                        isSubmitting = false;
                         Swal.fire({
                             title: 'Error!',
                             text: 'Something went wrong',
                             icon: 'error',
                             confirmButtonText: 'Ok'
                         });
-                        btn.removeClass('spinner spinner-white spinner-right')
-                            .prop('disabled', false);
+                        btn.removeClass('spinner spinner-white spinner-right');
+                        btn.prop('disabled', false);
                     },
                     complete: function () {
 
                     }
                 });
 
+            });
+
+            let $itemMeterId = $('#item_meter_id');
+            $('.js-edit-meter').on('click', function (e) {
+                e.preventDefault();
+                let catId = $(this).data('item_category_id');
+                $categoryId.val(catId);
+                getItems(catId, $(this).data('item_id'));
+                $itemMeterId.val($(this).data('item_id'));
+                $('#meter_number').val($(this).data('meter_number'));
+                $('#last_index').val($(this).data('last_index'));
+                $('#addMeterModal').modal('show');
+
+                $categoryId.trigger('change');
+            });
+
+            $('#addMeterModal').on('hidden.bs.modal', function () {
+                $saveMeterForm.trigger('reset');
+                $saveMeterForm.validate().resetForm();
+                $saveMeterForm.find('button[type="submit"]').removeClass('spinner spinner-white spinner-right')
+                    .prop('disabled', false);
+
+                $categoryId.val('');
+                $categoryId.trigger('change');
+                $itemMeterId.val('');
+                $itemMeterId.trigger('change');
             });
 
         });

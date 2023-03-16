@@ -58,6 +58,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @property int|null $institution_id
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereInstitutionId($value)
  * @mixin \Eloquent
  */
 class User extends Authenticatable
@@ -95,5 +97,10 @@ class User extends Authenticatable
     }
     public function operationArea(){
         return $this->belongsTo(OperationArea::class,'operation_area','id');
+    }
+
+    public function bills(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Billing::class, 'user_id', 'id');
     }
 }

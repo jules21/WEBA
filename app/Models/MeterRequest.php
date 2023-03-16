@@ -34,12 +34,19 @@ use Illuminate\Support\Carbon;
  * @method static Builder|MeterRequest whereStatus($value)
  * @method static Builder|MeterRequest whereSubscriptionNumber($value)
  * @method static Builder|MeterRequest whereUpdatedAt($value)
+ * @property int|null $item_category_id
+ * @property int|null $item_id
+ * @property-read \App\Models\Billing|null $billing
+ * @property-read \App\Models\Request $request
+ * @method static Builder|MeterRequest whereItemCategoryId($value)
+ * @method static Builder|MeterRequest whereItemId($value)
  * @mixin Eloquent
  */
 class MeterRequest extends Model
 {
 
     protected $guarded = [];
+
     public function resolveRouteBinding($value, $field = null)
     {
         return $this->where('id', '=', decryptId($value))->firstOrFail();
@@ -49,8 +56,19 @@ class MeterRequest extends Model
     {
         return $this->hasOne(Billing::class, 'subscription_number', 'subscription_number');
     }
+
     public function request(): BelongsTo
     {
         return $this->belongsTo(Request::class);
+    }
+
+    public function itemCategory(): BelongsTo
+    {
+        return $this->belongsTo(ItemCategory::class);
+    }
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(Item::class);
     }
 }

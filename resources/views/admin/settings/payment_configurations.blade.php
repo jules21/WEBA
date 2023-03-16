@@ -73,12 +73,12 @@
                     @foreach($payments as $key=>$payment)
                         <tr>
                             <td>{{++$key}}</td>
-                            <td>{{$payment->paymentType->name}}</td>
-                            <td>{{$payment->requestType->name}}</td>
+                            <td>{{$payment->paymentType->name?? ''}}</td>
+                            <td>{{$payment->requestType->name?? ''}}</td>
                             @if(auth()->user()->is_super_admin)
-                                <td>{{$payment->operator->name}}</td>
+                                <td>{{$payment->operator->name?? ''}}</td>
                             @endif
-                            <td>{{$payment->operationArea->name}}</td>
+                            <td>{{$payment->operationArea->name?? ''}}</td>
                             <td>{{$payment->amount}}</td>
                             <td>
                                 <div class="dropdown">

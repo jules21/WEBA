@@ -6,6 +6,10 @@ use App\Constants\Permission;
 use App\Http\Requests\ValidateAppRequest;
 use App\Models\Customer;
 use App\Models\Item;
+use App\Models\ItemCategory;
+use App\Models\PaymentConfiguration;
+use App\Models\PaymentDeclaration;
+use App\Models\PaymentType;
 use App\Models\Province;
 use App\Models\Request;
 use App\Models\Request as AppRequest;
@@ -13,13 +17,11 @@ use App\Models\RequestType;
 use App\Models\RoadCrossType;
 use App\Models\RoadType;
 use App\Models\User;
+use App\Models\WaterNetwork;
 use App\Models\WaterUsage;
 use DB;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use LaravelIdea\Helper\App\Models\_IH_User_C;
-use LaravelIdea\Helper\App\Models\_IH_User_QB;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
@@ -31,10 +33,9 @@ class RequestsController extends Controller
      */
     public function index()
     {
-
         $data = AppRequest::query()
             ->with(['customer', 'requestType'])
-            ->where('operator_id', '=', auth()->user()->operator_id)
+            ->where([['operation_area_id', '=', auth()->user()->operation_area]])
             ->select('requests.*');
         if (request()->ajax()) {
 
@@ -83,7 +84,9 @@ class RequestsController extends Controller
         if (request()->ajax()) {
             $data = AppRequest::query()
                 ->with(['customer', 'requestType'])
-                ->where('operator_id', '=', auth()->user()->operator_id)
+                ->where([
+                    ['operation_area_id', '=', auth()->user()->operation_area]
+                ])
                 ->whereDoesntHave('requestAssignments')
                 ->select('requests.*');
             return DataTables::of($data)
@@ -112,7 +115,7 @@ class RequestsController extends Controller
             $data = AppRequest::query()
                 ->with(['customer', 'requestType', 'requestAssignment.user'])
                 ->where([
-                    ['operator_id', '=', auth()->user()->operator_id],
+                    ['operation_area_id', '=', auth()->user()->operation_area],
                     ['status', '=', AppRequest::ASSIGNED]
                 ])
                 ->whereHas('requestAssignment')
@@ -143,6 +146,7 @@ class RequestsController extends Controller
 
         $id = $request->input('id');
         $data['operator_id'] = auth()->user()->operator_id;
+        $data['operation_area_id'] = auth()->user()->operation_area;
         $data['created_by'] = auth()->id();
 
         if ($request->hasFile('upi_attachment')) {
@@ -169,14 +173,14 @@ class RequestsController extends Controller
             ], ResponseAlias::HTTP_OK);
         }
 
-        return redirect()->route('admin.requests.index')
+        return redirect()->route('admin.requests.my-tasks')
             ->with('success', 'Request saved successfully');
 
     }
 
     public function show(AppRequest $request)
     {
-        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user');
+        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user', 'paymentDeclarations.paymentConfig.paymentType', 'meterNumbers.item', 'meterNumbers.itemCategory');
 
         $reviews = $request->flowHistories->where('is_comment', '=', true);
         $flowHistories = $request->flowHistories->where('is_comment', '=', false);
@@ -188,10 +192,18 @@ class RequestsController extends Controller
         $items = Item::query()
             ->whereHas('category', fn(Builder $query) => $query->where('is_meter', '=', false))
             ->whereHas('stock', fn(Builder $query) => $query->where('quantity', '>', 0))
-                ->orderBy('name')
-                ->get();
+            ->orderBy('name')
+            ->get();
 
-        $technician = $request->technician()->first();
+        $waterNetworks = WaterNetwork::query()
+            ->where('operation_area_id', '=', auth()->user()->operation_area)
+            ->get();
+
+        $itemCategories = ItemCategory::query()
+            ->where('is_meter', '=', true)
+            ->get();
+
+        $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, $request->request_type_id);
 
         return view('admin.requests.show', [
             'request' => $request,
@@ -199,7 +211,9 @@ class RequestsController extends Controller
             'flowHistories' => $flowHistories,
             'items' => $items,
             'requestItems' => $requestItems,
-            'technician' => $technician
+            'waterNetworks' => $waterNetworks,
+            'itemCategories' => $itemCategories,
+            'paymentConfig' => $paymentConfig
         ]);
     }
 
@@ -271,7 +285,7 @@ class RequestsController extends Controller
             $data = AppRequest::query()
                 ->with(['customer', 'requestType'])
                 ->where([
-                    ['operator_id', '=', auth()->user()->operator_id]
+                    ['operation_area_id', '=', auth()->user()->operation_area],
                 ])
                 ->where(function (Builder $builder) {
                     $hasPermission = false;
@@ -324,6 +338,43 @@ class RequestsController extends Controller
                 ['operation_area', '=', auth()->user()->operation_area]
             ])
             ->get();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function toBeDelivered()
+    {
+        if (request()->ajax()) {
+            $data = AppRequest::query()
+                ->with(['customer', 'requestType'])
+                ->where([
+                    ['operation_area_id', '=', auth()->user()->operation_area],
+                ])
+                ->whereDoesntHave('paymentDeclarations', function (Builder $builder) {
+                    $builder->whereIn('status', [PaymentDeclaration::ACTIVE]);
+                })
+                ->whereIn('status', [AppRequest::METER_ASSIGNED, AppRequest::PARTIALLY_DELIVERED, AppRequest::DELIVERED])
+                ->select('requests.*');
+
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function (AppRequest $row) {
+                    return '<div class="dropdown">
+                                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="' . route('admin.requests.show', encryptId($row->id)) . '">Print</a>
+                                    <a class="dropdown-item" href="' . route('admin.requests.delivery-request.index', encryptId($row->id)) . '">Deliveries</a>
+                                </div>
+                            </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('admin.requests.item_delivery');
     }
 
 }

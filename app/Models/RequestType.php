@@ -20,6 +20,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|RequestType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RequestType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RequestType whereUpdatedAt($value)
+ * @property bool $is_active
+ * @property string|null $name_kin
+ * @method static \Illuminate\Database\Eloquent\Builder|RequestType whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RequestType whereNameKin($value)
  * @mixin \Eloquent
  */
 class RequestType extends Model

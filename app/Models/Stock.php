@@ -23,6 +23,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereUpdatedAt($value)
+ * @property-read mixed $operator
+ * @property-read \App\Models\Item $item
+ * @property-read \App\Models\OperationArea $operationArea
  * @mixin \Eloquent
  */
 class Stock extends Model
@@ -34,6 +37,12 @@ class Stock extends Model
         'item_id',
         'quantity',
     ];
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $id = decryptId($value);
+        return $this->where('id', $id)->firstOrFail();
+    }
 
     protected $appends = ['operator'];
 
