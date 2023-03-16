@@ -5,7 +5,7 @@
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
                 <label class="font-weight-bolder" for="customer_name">Customer Name</label>
-                <div class="form-control-plaintext"> {{ $billing->customer_name }}</div>
+                <div class="form-control-plaintext"> {{ $billing->meterRequest->request->customer->name ?? '-' }}</div>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
@@ -22,8 +22,8 @@
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
-                <label class="font-weight-bolder" for="user_id">User Id</label>
-                <div class="form-control-plaintext"> {{ $billing->user_id }}</div>
+                <label class="font-weight-bolder" for="user_id">Officer</label>
+                <div class="form-control-plaintext"> {{ $billing->user->name ?? '-' }}</div>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
@@ -47,13 +47,13 @@
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
                 <label class="font-weight-bolder" for="amount">Amount</label>
-                <div class="form-control-plaintext"> {{ $billing->amount }}</div>
+                <div class="form-control-plaintext"> {{ $billing->amount .'RWF' }}</div>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
                 <label class="font-weight-bolder" for="balance">Balance</label>
-                <div class="form-control-plaintext"> {{ $billing->balance }}</div>
+                <div class="form-control-plaintext"> {{ $billing->balance .'RWF' }}</div>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
@@ -65,13 +65,13 @@
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
                 <label class="font-weight-bolder" for="comment">Comment</label>
-                <div class="form-control-plaintext"> {{ $billing->comment }}</div>
+                <div class="form-control-plaintext"> {{ $billing->comment ?? '-' }}</div>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
                 <label class="font-weight-bolder" for="attachment">Attachment</label>
-                <div class="form-control-plaintext"> {{ $billing->attachment }}</div>
+                <div class="form-control-plaintext"> {{ $billing->attachment ?? '-' }}</div>
             </div>
         </div>
     </div>

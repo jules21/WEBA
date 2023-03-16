@@ -10,6 +10,7 @@ use App\Models\Billing;
 use App\Models\MeterRequest;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
+use function GuzzleHttp\Promise\iter_for;
 
 class BillingController extends Controller
 {
@@ -62,60 +63,67 @@ class BillingController extends Controller
 
     public function storeBill(Request $request)
     {
-        info($request);
-        $meterRequest = MeterRequest::where('subscription_number', $request->subscriptionNumber)
-            ->first();
-        if (!$meterRequest) {
-            return response()->json([
-                'action' => 0,
-                'message' => 'Subscription Number not found',
-                'data' => null
+        $user = auth()->user();
+        if ($user->can('Make Billing')) {
+            $meterRequest = MeterRequest::where('subscription_number', $request->subscriptionNumber)
+                ->first();
+            if (!$meterRequest) {
+                return response()->json([
+                    'action' => 0,
+                    'message' => 'Subscription Number not found',
+                    'data' => null
+                ]);
+            }
+            $exist = Billing::where('subscription_number', $request->subscription_number)
+                ->orderBy('id', 'desc')
+                ->first();
+            if ($exist) {
+                $starting_index = $exist->last_index;
+            } else {
+                $starting_index = $meterRequest->last_index;
+            }
+            $charge = BillCharge::query()->where('operation_area_id', $meterRequest->request->operation_area_id)
+                ->where("water_network_type_id", $meterRequest->request->waterNetwork->water_network_type_id)
+                ->first();
+            if (!$charge) {
+                return response()->json([
+                    'action' => 0,
+                    'message' => 'No charge found,Please contact admin',
+                    'data' => null
+                ]);
+            }
+            $bill = new Billing();
+            if ($request->hasFile('meterImage')) {
+                //convert image from base64 to file and save it to storage
+                $bill->attachment = $this->uploadFile($request->meterImage, 'public/meter_images');
+            }
+            $bill->subscription_number = $request->subscriptionNumber;
+            $bill->meter_number = $meterRequest->meter_number;
+            $bill->last_index = $request->indexNumber;
+            $bill->starting_index = $starting_index;
+            $bill->user_id = auth()->user()->id;
+            $bill->unit_price = $charge->unit_price;
+            $bill->comment = $request->comment;
+            $bill->amount = $bill->unit_price * ($bill->last_index - $bill->starting_index);
+            $bill->balance = $bill->unit_price * ($bill->last_index - $bill->starting_index);
+            $bill->save();
+            $bill->load('meterRequest.request.customer');
+            $meterRequest->update([
+                'last_index' => $request->indexNumber,
+                'balance' => $meterRequest->balance - $bill->amount,
             ]);
-        }
-        $exist = Billing::where('subscription_number', $request->subscription_number)
-            ->orderBy('id', 'desc')
-            ->first();
-        if ($exist) {
-            $starting_index = $exist->last_index;
+            return response()->json([
+                'action' => 1,
+                'message' => 'Bill created successfully',
+                'data' => $bill
+            ]);
         } else {
-            $starting_index = $meterRequest->last_index;
-        }
-        $charge = BillCharge::query()->where('operation_area_id', 1)
-            ->where("water_network_type_id", $meterRequest->request->waterNetwork->water_network_type_id)
-            ->first();
-        if (!$charge) {
             return response()->json([
                 'action' => 0,
-                'message' => 'No charge found,Please contact admin',
+                'message' => 'You are not authorized to make billing',
                 'data' => null
             ]);
         }
-        $bill = new Billing();
-        if ($request->hasFile('image')) {
-            info($request->file('image'));
-            $bill->attachment = $this->uploadFile($request->file('image'), 'bills/');
-        }
-
-        $bill->subscription_number = $request->subscriptionNumber;
-        $bill->meter_number = $meterRequest->meter_number;
-        $bill->last_index = $request->indexNumber;
-        $bill->starting_index = $starting_index;
-        $bill->user_id = auth()->user()->id;
-        $bill->unit_price = $charge->unit_price;
-        $bill->comment = $request->comment;
-        $bill->amount = $bill->unit_price * ($bill->last_index - $bill->starting_index);
-        $bill->balance = $bill->unit_price * ($bill->last_index - $bill->starting_index);
-        $bill->save();
-        $bill->load('meterRequest.request.customer');
-        $meterRequest->update([
-            'last_index' => $request->indexNumber,
-            'balance' => $meterRequest->balance - $bill->amount,
-        ]);
-        return response()->json([
-            'action' => 1,
-            'message' => 'Bill created successfully',
-            'data' => $bill
-        ]);
     }
 
     public function meterUnpaidBills($subscriptionNumber)

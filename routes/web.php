@@ -275,6 +275,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/', [App\Http\Controllers\BillingController::class, 'index'])->name('index');
         //show details
         Route::get('/{billing}', [App\Http\Controllers\BillingController::class, 'show'])->name('show');
+        //customer billings
+        Route::get('/customer/{customer}', [App\Http\Controllers\BillingController::class, 'customerBillings'])->name('customer');
     });
 
 });
