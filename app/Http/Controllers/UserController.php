@@ -45,7 +45,6 @@ class UserController extends Controller
 
     public function update(ValidateUpdateUser $request, $user_id)
     {
-        dd($request->validated());
         User::query()->find($user_id)->update($request->validated());
         return redirect()->back()->with('success', 'User Updated successfully');
     }
