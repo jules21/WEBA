@@ -48,6 +48,10 @@ class CustomerController extends Controller
                                     <i class="fas fa-link"></i>
                                     <span class="ml-2">Connections</span>
                                 </a>
+                                <a class="dropdown-item" href="' . route('admin.billings.customer', encryptId($row->id)) . '">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <span class="ml-2">Bills</span>
+                                </a>
                                 <a class="dropdown-item js-edit" href="' . route('admin.customers.show', encryptId($row->id)) . '">
                                     <i class="fas fa-edit"></i>
                                     <span class="ml-2">Edit</span>
