@@ -9,7 +9,7 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-2 mr-5">Billings </h5>
+                    <h5 class="text-dark font-weight-bold my-2 mr-5">Billing </h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -17,7 +17,7 @@
                             <a href="/" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a class="text-muted">Billings</a>
+                            <a class="text-muted">Billing</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -40,7 +40,7 @@
                        @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
                            {{ $customer->name ?? '' }}
                        @endif
-                        Billings</h3>
+                        Customers Billing</h3>
                 </div>
                 <div class="card-body">
                     @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
@@ -58,6 +58,7 @@
                                         </select>
                                     </div>
                                 @endunless
+                                @unless(Helper::hasOperationArea())
                                 <div class="col-md-3 form-group">
                                     <label for="operation_area">Operation Area</label>
                                     <select name="operation_area_id[]" id="operation_area" class="form-control select2"
@@ -67,12 +68,15 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                @endunless
                                 <div class="col-md-3 form-group">
                                     <label for="items">Customer Field Officer</label>
                                     <select name="customer_field_officer_id[]" id="customer_field_officer" class="form-control select2"
                                             data-placeholder="Select Customer Field Officer" multiple="multiple">
                                         @foreach($customerFieldOfficers ?? [] as $customerFieldOfficer)
-                                            <option value="{{ $customerFieldOfficer->id }}">{{ $customerFieldOfficer->name }}</option>
+                                            <option value="{{ $customerFieldOfficer->id }}"
+                                            {{request()->get('customer_field_officer_id') == $customerFieldOfficer->id ? 'selected' : ''}}
+                                            >{{ $customerFieldOfficer->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

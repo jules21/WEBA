@@ -25,4 +25,10 @@ class Helper{
         $user = auth()->user();
         return $user->operator_id != null;
     }
+
+    public static function hasOperationArea(): bool
+    {
+        $user = auth()->user();
+        return $user->operation_area != null;
+    }
 }
