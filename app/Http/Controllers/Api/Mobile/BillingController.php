@@ -63,6 +63,7 @@ class BillingController extends Controller
 
     public function storeBill(Request $request)
     {
+        $user = auth()->user();
         if ($user->can('Make Billing')) {
             $meterRequest = MeterRequest::where('subscription_number', $request->subscriptionNumber)
                 ->first();
