@@ -112,6 +112,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/to-be-delivered', [RequestsController::class, 'toBeDelivered'])->name('to-be-delivered');
         Route::get('/{request}/item-delivery', [RequestDeliveryController::class, 'index'])->name('delivery-request.index');
+        Route::post('/{request}/item-delivery', [RequestDeliveryController::class, 'store'])->name('delivery-request.store');
+        Route::get('/delivery/{id}/items', [RequestDeliveryController::class, 'items'])->name('delivery.items');
+        Route::get('/delivery/{id}/print-delivery', [RequestDeliveryController::class, 'deliveryNote'])->name('print-delivery');
     });
     Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
         Route::get('/', [PurchaseController::class, 'index'])->name('index');

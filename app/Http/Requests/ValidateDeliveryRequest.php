@@ -11,7 +11,7 @@ class ValidateDeliveryRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return auth()->check();
     }
@@ -21,10 +21,16 @@ class ValidateDeliveryRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'q'
+            'quantities' => ['nullable', 'array'],
+            'quantities.*' => ['nullable', 'numeric', 'min:0'],
+            'items' => ['nullable', 'array'],
+            'items.*' => ['nullable', 'numeric', 'min:0'],
+            'delivered_by_name' => ['required', 'string', 'max:255'],
+            'delivered_by_phone' => ['required', 'string', 'max:255'],
+            'remaining_items' => ['nullable', 'array'],
         ];
     }
 }

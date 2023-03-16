@@ -5,17 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidateAddWaterNetwork;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Http\Requests\ValidateStoreItemRequest;
-use App\Models\PaymentConfiguration;
+use App\Models\MeterRequest;
 use App\Models\PaymentDeclaration;
 use App\Models\PaymentType;
 use App\Models\Request as AppRequest;
-use App\Models\Stock;
-use App\Models\StockMovement;
 use App\Models\StockMovementDetail;
 use App\Notifications\PaymentNotification;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
@@ -129,40 +125,6 @@ class RequestReviewController extends Controller
 
     }
 
-    /**
-     * @param $requestItem
-     * @return void
-     */
-    public function updateStock($requestItem): void
-    {
-        Stock::query()
-            ->where([
-                ['item_id', $requestItem->item_id],
-                ['operation_area_id', auth()->user()->operation_area]
-            ])
-            ->decrement('quantity', $requestItem->quantity);
-    }
-
-    /**
-     * @param $requestItem
-     * @param AppRequest $request
-     * @return void
-     */
-    public function updateStockMovement($requestItem, AppRequest $request): void
-    {
-        $item = $requestItem->item;
-        $stockItem = $item->stock()->first();
-        $item->stockMovements()
-            ->create([
-                'operation_area_id' => auth()->user()->operation_area,
-                'opening_qty' => $stockItem->quantity,
-                'qty_in' => 0,
-                'qty_out' => $requestItem->quantity,
-                'description' => 'Request approved, stock decreased by ' . $requestItem->quantity,
-                'type' => StockMovement::Sale,
-                'request_id' => $request->id,
-            ]);
-    }
 
     /**
      * @throws Throwable
@@ -283,6 +245,20 @@ class RequestReviewController extends Controller
                 ]);
         } else if ($status == AppRequest::METER_ASSIGNED) {
             $this->declareMetersFee($request);
+            $meters = $request->meterNumbers()->with('item')->get();
+            // update stock movement details
+            $meters->each(function ($meter) use ($request) {
+                $request->items()
+                    ->create([
+                        'quantity' => 1,
+                        'type' => $request->getClassName(),
+                        'status' => 'pending',
+                        'item_id' => $meter->item_id,
+                        'unit_price' => $meter->item->selling_price
+                    ]);
+            });
+
+
         }
     }
 }
