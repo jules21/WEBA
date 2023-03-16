@@ -23,7 +23,7 @@ class LoginController extends Controller
                 'message' => 'Invalid Credentials'
             ]);
         $user = $request->user();
-        if ($user->can('Make Billing')) {
+//        if ($user->can('Make Billing')) {
             return response()->json([
                 'action' => 1,
                 'token' => auth()->user()->createToken('API Token')->plainTextToken,
@@ -38,12 +38,12 @@ class LoginController extends Controller
                 'operating_area_id' => $user->operationArea->id ?? null,
                 'id' => $user->id
             ]);
-        } else {
-            return response()->json([
-                'action' => 0,
-                'message' => 'You are not authorized to make Billing'
-            ]);
-        }
+//        } else {
+//            return response()->json([
+//                'action' => 0,
+//                'message' => 'You are not authorized to make Billing'
+//            ]);
+//        }
 
     }
 
