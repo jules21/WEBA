@@ -20,7 +20,6 @@ class BillingResource extends JsonResource
         } elseif ($this->balance < $this->amount) {
             $status = 'Partial';
         }
-
         if (now()->diffInDays($this->created_at) > 30) {
             $status = 'Overdue';
         }
@@ -34,6 +33,7 @@ class BillingResource extends JsonResource
             'customer' => $this->meterRequest->request->customer,
             'amount' => $this->amount,
             'created_at' => optional($this->created_at)->format('Y-m-d H:i:s'),
+            'comment' => $this->comment,
         ];
     }
 }

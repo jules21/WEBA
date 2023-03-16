@@ -10,6 +10,7 @@ use App\Models\Billing;
 use App\Models\MeterRequest;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
+use function GuzzleHttp\Promise\iter_for;
 
 class BillingController extends Controller
 {
@@ -80,7 +81,7 @@ class BillingController extends Controller
         } else {
             $starting_index = $meterRequest->last_index;
         }
-        $charge = BillCharge::query()->where('operation_area_id', 1)
+        $charge = BillCharge::query()->where('operation_area_id', $meterRequest->request->operation_area_id)
             ->where("water_network_type_id", $meterRequest->request->waterNetwork->water_network_type_id)
             ->first();
         if (!$charge) {
@@ -91,11 +92,10 @@ class BillingController extends Controller
             ]);
         }
         $bill = new Billing();
-        if ($request->hasFile('image')) {
-            info($request->file('image'));
-            $bill->attachment = $this->uploadFile($request->file('image'), 'bills/');
+        if ($request->hasFile('meterImage')) {
+            //convert image from base64 to file and save it to storage
+            $bill->attachment= $this->uploadFile($request->meterImage, 'public/meter_images');
         }
-
         $bill->subscription_number = $request->subscriptionNumber;
         $bill->meter_number = $meterRequest->meter_number;
         $bill->last_index = $request->indexNumber;
