@@ -46,6 +46,7 @@ class MeterRequest extends Model
 {
 
     protected $guarded = [];
+
     public function resolveRouteBinding($value, $field = null)
     {
         return $this->where('id', '=', decryptId($value))->firstOrFail();
@@ -55,8 +56,19 @@ class MeterRequest extends Model
     {
         return $this->hasOne(Billing::class, 'subscription_number', 'subscription_number');
     }
+
     public function request(): BelongsTo
     {
         return $this->belongsTo(Request::class);
+    }
+
+    public function itemCategory(): BelongsTo
+    {
+        return $this->belongsTo(ItemCategory::class);
+    }
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(Item::class);
     }
 }

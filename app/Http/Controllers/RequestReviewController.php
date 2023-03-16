@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidateAddWaterNetwork;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Http\Requests\ValidateStoreItemRequest;
+use App\Models\PaymentConfiguration;
 use App\Models\PaymentDeclaration;
+use App\Models\PaymentType;
 use App\Models\Request as AppRequest;
 use App\Models\Stock;
 use App\Models\StockMovement;
 use App\Models\StockMovementDetail;
+use App\Notifications\PaymentNotification;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -33,55 +37,9 @@ class RequestReviewController extends Controller
         $this->updateRequest($request, $status);
         // save review
         $this->saveHistory($request, $data['comment'], $status);
-
-        if ($status == AppRequest::APPROVED) {
-
-            if($request->connection_fee > 0){
-                $dec = $request->paymentDeclarations()
-                    ->create([
-                        'amount' => $request->connection_fee,
-                        'status' => PaymentDeclaration::ACTIVE,
-                        'payment_configuration_id' => 1,
-                        'type' => "Connection Fee",
-                        'balance' => $request->connection_fee,
-                        'payment_reference' => 'N/A'
-                    ]);
-                $dec->generateReferenceNumber();
-            }
-
-            $requestItems = $request->items()->with('item')->get();
-            // save payment declarations for each item
-            if ($requestItems->count() > 0) {
-                $sum = $requestItems->sum('total');
-                info($sum);
-                $dec = $request->paymentDeclarations()
-                    ->create([
-                        'amount' => $sum,
-                        'status' => PaymentDeclaration::ACTIVE,
-                        'payment_configuration_id' => 1,
-                        'type' => "Materials Fee",
-                        'balance' => $sum,
-                        'payment_reference' => 'N/A'
-                    ]);
-                $dec->generateReferenceNumber();
-            }
-
-
-            foreach ($requestItems as $requestItem) {
-                $this->updateStockMovement($requestItem, $request);
-                $this->updateStock($requestItem);
-            }
-
-            $request->operator
-                ->customers()
-                ->syncWithoutDetaching([
-                    $request->customer_id
-                ]);
-        }
-
-
+        $this->saveHistory($request, "Request status marked as '$status'", $status, false);
+        $this->takeDecision($status, $request);
         DB::commit();
-
         return redirect()
             ->back()
             ->with('success', 'Review saved successfully');
@@ -92,14 +50,15 @@ class RequestReviewController extends Controller
      * @param AppRequest $request
      * @param $comment
      * @param $status
+     * @param bool $is_comment
      * @return void
      */
-    public function saveHistory(AppRequest $request, $comment, $status): void
+    public function saveHistory(AppRequest $request, $comment, $status, bool $is_comment = true): void
     {
         $request->flowHistories()->create([
             'comment' => $comment,
             'user_id' => auth()->id(),
-            'is_comment' => true,
+            'is_comment' => $is_comment,
             'status' => $status,
             'type' => $request->getClassName()
         ]);
@@ -228,5 +187,102 @@ class RequestReviewController extends Controller
         return redirect()
             ->back()
             ->with('success', 'Water network added successfully');
+    }
+
+    /**
+     * @param AppRequest $request
+     * @return void
+     */
+    public function declareMetersFee(AppRequest $request): void
+    {
+        $meters = $request->meterNumbers()->with('item')->get();
+        $metersConfig = getPaymentConfiguration(PaymentType::METERS_FEE, $request->request_type_id);
+        $sum = $meters->sum('item.selling_price');
+        $dec = $request->paymentDeclarations()
+            ->create([
+                'amount' => $sum,
+                'status' => PaymentDeclaration::ACTIVE,
+                'payment_configuration_id' => $metersConfig->id,
+                'type' => "Meters Fee",
+                'balance' => $sum,
+                'payment_reference' => 'N/A'
+            ]);
+        $ref = $dec->generateReferenceNumber();
+        $formatted = number_format($sum);
+        $message = "You have to pay the meters fee of $formatted. Please use the reference number $ref to make the payment.";
+        $request->customer->notify(new PaymentNotification($message));
+    }
+
+    /**
+     * @param Collection $requestItems
+     * @param AppRequest $request
+     * @return void
+     */
+    public function declareMaterialsFee(Collection $requestItems, AppRequest $request): void
+    {
+        $sum = $requestItems->sum('total');
+        $materialsConfig = getPaymentConfiguration(PaymentType::MATERIALS_FEE, $request->request_type_id);
+
+        $dec = $request->paymentDeclarations()
+            ->create([
+                'amount' => $sum,
+                'status' => PaymentDeclaration::ACTIVE,
+                'payment_configuration_id' => $materialsConfig->id,
+                'type' => "Materials Fee",
+                'balance' => $sum,
+                'payment_reference' => 'N/A'
+            ]);
+        $ref = $dec->generateReferenceNumber();
+        $formatted = number_format($sum);
+        $message = "You have to pay the materials fee of $formatted. Please use the reference number $ref to make the payment.";
+        $request->customer->notify(new PaymentNotification($message));
+    }
+
+    /**
+     * @param AppRequest $request
+     * @return void
+     */
+    public function declareConnectionFee(AppRequest $request): void
+    {
+        $connectionConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, $request->request_type_id);
+        $dec = $request->paymentDeclarations()
+            ->create([
+                'amount' => $request->connection_fee,
+                'status' => PaymentDeclaration::ACTIVE,
+                'payment_configuration_id' => $connectionConfig->id,
+                'type' => "Connection Fee",
+                'balance' => $request->connection_fee,
+                'payment_reference' => 'N/A'
+            ]);
+        $ref = $dec->generateReferenceNumber();
+        $formatted = number_format($request->connection_fee);
+        $message = "You have to pay the connection fee of $formatted. Please use the reference number $ref to make the payment.";
+        $request->customer->notify(new PaymentNotification($message));
+    }
+
+    /**
+     * @param $status
+     * @param AppRequest $request
+     * @return void
+     */
+    public function takeDecision($status, AppRequest $request): void
+    {
+        if ($status == AppRequest::APPROVED) {
+            if ($request->connection_fee > 0) {
+                $this->declareConnectionFee($request);
+            }
+            $requestItems = $request->items()->with('item')->get();
+            // save payment declarations for each item
+            if ($requestItems->count() > 0) {
+                $this->declareMaterialsFee($requestItems, $request);
+            }
+            $request->operator
+                ->customers()
+                ->syncWithoutDetaching([
+                    $request->customer_id
+                ]);
+        } else if ($status == AppRequest::METER_ASSIGNED) {
+            $this->declareMetersFee($request);
+        }
     }
 }

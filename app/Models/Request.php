@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
@@ -93,17 +94,17 @@ use Storage;
  * @property string|null $connection_fee
  * @property-read string $address
  * @property-read string|null $upi_attachment_url
- * @property-read Collection<int, \App\Models\StockMovementDetail> $items
+ * @property-read Collection<int, StockMovementDetail> $items
  * @property-read int|null $items_count
- * @property-read Collection<int, \App\Models\MeterRequest> $meterNumbers
+ * @property-read Collection<int, MeterRequest> $meterNumbers
  * @property-read int|null $meter_numbers_count
- * @property-read Collection<int, \App\Models\PaymentDeclaration> $paymentDeclarations
+ * @property-read Collection<int, PaymentDeclaration> $paymentDeclarations
  * @property-read int|null $payment_declarations_count
- * @property-read \App\Models\RequestAssignment|null $requestAssignment
- * @property-read Collection<int, \App\Models\RequestAssignment> $requestAssignments
+ * @property-read RequestAssignment|null $requestAssignment
+ * @property-read Collection<int, RequestAssignment> $requestAssignments
  * @property-read int|null $request_assignments_count
- * @property-read \App\Models\RequestTechnician|null $technician
- * @property-read \App\Models\WaterNetwork|null $waterNetwork
+ * @property-read RequestTechnician|null $technician
+ * @property-read WaterNetwork|null $waterNetwork
  * @method static Builder|Request whereConnectionFee($value)
  * @method static Builder|Request whereOperationAreaId($value)
  * @method static Builder|Request whereUpiAttachment($value)
@@ -112,10 +113,22 @@ use Storage;
  */
 class Request extends Model
 {
-    protected $appends = ['status_color', 'upi_attachment_url'];
+    protected $appends = ['status_color', 'upi_attachment_url', 'total_qty', 'total_delivered'];
     use HasAddress;
     use HasStatusColor;
     use GetClassName;
+
+
+    const PENDING = 'Pending';
+    const ASSIGNED = 'Assigned';
+    const PROPOSE_TO_APPROVE = 'Propose to approve';
+    const REJECTED = 'Rejected';
+    const APPROVED = 'Approved';
+    const METER_ASSIGNED = "Meter Assigned";
+    const PARTIALLY_DELIVERED = "Partially Delivered";
+    const DELIVERED = "Delivered";
+    const CANCELLED = "Cancelled";
+
 
     const UPI_ATTACHMENT_PATH = 'requests/upi/';
 
@@ -201,13 +214,6 @@ class Request extends Model
     }
 
 
-    const PENDING = 'Pending';
-    const ASSIGNED = 'Assigned';
-    const PROPOSE_TO_APPROVE = 'Propose to approve';
-    const REJECTED = 'Rejected';
-    const APPROVED = 'Approved';
-    const METER_ASSIGNED = "Meter Assigned";
-
     public function getApprovalStatuses(): array
     {
         if ($this->status == self::ASSIGNED) {
@@ -249,10 +255,6 @@ class Request extends Model
         return $this->status != self::PENDING && !is_null($this->water_network_id);
     }
 
-    public function canAddTechnician(): bool
-    {
-        return $this->status == self::ASSIGNED;
-    }
 
     public function canBeApprovedByMe(): bool
     {
@@ -263,7 +265,7 @@ class Request extends Model
         } elseif ($user->can(Permission::ApproveRequest) && $this->status == self::PROPOSE_TO_APPROVE) {
             return true;
         } elseif ($user->can(Permission::AssignMeterNumber) && $this->status == self::APPROVED) {
-            return false;
+            return true;
         }
         return false;
     }
@@ -285,11 +287,45 @@ class Request extends Model
         return $this->hasMany(PaymentDeclaration::class);
     }
 
-    public function pendingPayments(): bool
+    public function pendingPayments($withoutPaymentTypeId = null): bool
     {
         return $this->paymentDeclarations()
             ->where('status', PaymentDeclaration::ACTIVE)
+            ->when($withoutPaymentTypeId, function ($query) use ($withoutPaymentTypeId) {
+                $query->whereHas('paymentConfig', function ($query) use ($withoutPaymentTypeId) {
+                    $query->where('payment_type_id', '!=', $withoutPaymentTypeId);
+                });
+            })
             ->exists();
+    }
+
+
+    public function canAddMaterials(): bool
+    {
+        return $this->status == Request::ASSIGNED &&
+            auth()->user()->can(Permission::ReviewRequest) &&
+            !$this->equipment_payment;
+    }
+
+    public function deliveries(): HasMany
+    {
+        return $this->hasMany(RequestDelivery::class, 'request_id');
+    }
+
+    public function deliveryDetails(): HasManyThrough
+    {
+        return $this->hasManyThrough(RequestDeliveryDetail::class, RequestDelivery::class, 'request_id', 'request_delivery_id');
+    }
+
+
+    public function getTotalQtyAttribute()
+    {
+        return $this->items()->sum('quantity') + $this->meterNumbers()->count();
+    }
+
+    public function getTotalDeliveredAttribute()
+    {
+        return $this->deliveryDetails()->sum('quantity');
     }
 
 

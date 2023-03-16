@@ -45,11 +45,13 @@ class PaymentDeclaration extends Model
 
     const ACTIVE = 'active';
 
-    public function generateReferenceNumber($prefix = 'REF', $length = 6)
+    public function generateReferenceNumber($prefix = 'REF', $length = 6): string
     {
         $number = str_pad($this->id, $length, '0', STR_PAD_LEFT);
-        $this->payment_reference = $prefix . $number;
+        $ref = $prefix . $number;
+        $this->payment_reference = $ref;
         $this->save();
+        return $ref;
     }
 
     public function request(): BelongsTo

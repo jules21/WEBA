@@ -88,58 +88,30 @@
                 <ul class="menu-subnav">
                     <li class="menu-item menu-item-parent" aria-haspopup="true">
                         <span class="menu-link">
-                            <span class="menu-text">User Management</span>
+                            <span class="menu-text">Requests</span>
                         </span>
                     </li>
                     @can(\App\Constants\Permission::CreateRequest)
-                        <li class="menu-item nav-all-users" aria-haspopup="true">
-                            <a href="{{route('admin.requests.create')}}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Create New Request</span>
-                            </a>
-                        </li>
+                        <x-menu-item title="Create New Request" item-class="nav-pending-requests"
+                                     :route="route('admin.requests.create')"/>
                     @endcan
 
                     @can(\App\Constants\Permission::AssignRequest)
-                        <li class="menu-item nav-all-users" aria-haspopup="true">
-                            <a href="{{route('admin.requests.new')}}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Pending Requests</span>
-                            </a>
-                        </li>
-
-                        <li class="menu-item nav-roles" aria-haspopup="true">
-                            <a href="{{route('admin.requests.assigned')}}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Assigned Requests</span>
-                            </a>
-                        </li>
+                        <x-menu-item title="Pending Requests" item-class="nav-pending-requests"
+                                     :route="route('admin.requests.new')"/>
+                        <x-menu-item title="Assigned Requests" item-class="nav-my-tasks"
+                                     :route="route('admin.requests.assigned')"/>
                     @endcan
 
 
-                    <li class="menu-item nav-all-permissions" aria-haspopup="true">
-                        <a href="{{ route('admin.requests.my-tasks') }}" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">My Tasks</span>
-                        </a>
-                    </li>
+                    <x-menu-item title="My Tasks" item-class="nav-my-tasks" :route="route('admin.requests.my-tasks')"/>
+                    <x-menu-item title="All Requests" item-class="nav-all-requests"
+                                 :route="route('admin.requests.index')"/>
 
-                    <li class="menu-item nav-all-permissions" aria-haspopup="true">
-                        <a href="{{route('admin.requests.index')}}" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">All Requests</span>
-                        </a>
-                    </li>
+                    @can(\App\Constants\Permission::ManageItemDelivery)
+                        <x-menu-item title="Item Delivery" item-class="nav-item-delivery" :route="route('admin.requests.to-be-delivered')"/>
+                    @endcan
+
                 </ul>
             </div>
         </li>
@@ -473,6 +445,16 @@
                         </a>
                     </li>
                 @endcan
+                @can('Manage Bill Charges')
+                    <li class="menu-item nav-bill-charges" aria-haspopup="true">
+                        <a href="{{ route('admin.bill.charges') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Bill Charges</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('Manage Request Type')
                     <li class="menu-item nav-request-type" aria-haspopup="true">
                         <a href="{{ route('admin.request.types') }}" class="menu-link">
@@ -552,6 +534,26 @@
                                 <span></span>
                             </i>
                             <span class="menu-text">Suppliers</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('Manage Water Network Types')
+                    <li class="menu-item nav-water-network-types" aria-haspopup="true">
+                        <a href="{{ route('admin.water.network.types') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Water Network Types</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('Manage Water Network')
+                    <li class="menu-item nav-water-networks" aria-haspopup="true">
+                        <a href="{{ route('admin.water.networks') }}" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Water Network</span>
                         </a>
                     </li>
                 @endcan
