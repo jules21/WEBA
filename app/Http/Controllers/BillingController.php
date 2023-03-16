@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\BillingDataTable;
 use App\Models\Billing;
+use App\Models\Customer;
 use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\User;
@@ -102,6 +103,17 @@ class BillingController extends Controller
     public function show(Billing $billing)
     {
         return view('admin.billings._details', compact('billing'));
+    }
+
+    public function customerBillings(Customer $customer)
+    {
+        $billings = Billing::query()->whereHas('meterRequest', function ($query) use ($customer) {
+            $query->whereHas('request', function ($query) use ($customer) {
+                $query->where('customer_id', $customer->id);
+            });
+        });
+        $datatable = new BillingDataTable($billings);
+        return $datatable->render('admin.billings.index', compact('customer'));
     }
 
 }

@@ -63,7 +63,7 @@
                     <i class="la la-file-invoice-dollar"></i>
                 </span>
                 <span class="menu-text">
-                    Billings
+                    Billing
                 </span>
             </a>
         </li>

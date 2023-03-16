@@ -36,63 +36,69 @@
         <div class="card">
             <div class="card-content card-custom">
                 <div class="card-header pb-1 pt-3">
-                    <h3>Billings</h3>
+                    <h3>
+                       @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
+                           {{ $customer->name ?? '' }}
+                       @endif
+                        Billings</h3>
                 </div>
                 <div class="card-body">
-                    <form action="#" id="filter-form">
-                        <div class="row">
-                            @unless(Helper::isOperator())
+                    @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
+                        <form action="#" id="filter-form">
+                            <div class="row">
+                                @unless(Helper::isOperator())
+                                    <div class="col-md-3 form-group">
+                                        <label for="operator">Operator</label>
+                                        <select name="operator_id[]" id="operator" class="form-control select2"
+                                                data-placeholder="Select Operator" multiple="multiple">
+                                            {{--                                    <option value="">Select Operator</option>--}}
+                                            @foreach($operators ?? [] as $operator)
+                                                <option value="{{ $operator->id }}">{{ $operator->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endunless
                                 <div class="col-md-3 form-group">
-                                    <label for="operator">Operator</label>
-                                    <select name="operator_id[]" id="operator" class="form-control select2"
-                                            data-placeholder="Select Operator" multiple="multiple">
-                                        {{--                                    <option value="">Select Operator</option>--}}
-                                        @foreach($operators ?? [] as $operator)
-                                            <option value="{{ $operator->id }}">{{ $operator->name }}</option>
+                                    <label for="operation_area">Operation Area</label>
+                                    <select name="operation_area_id[]" id="operation_area" class="form-control select2"
+                                            data-placeholder="Select Operation Area" multiple="multiple">
+                                        @foreach($operationAreas  ?? [] as $operationArea)
+                                            <option value="{{ $operationArea->id }}">{{ $operationArea->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                            @endunless
-                            <div class="col-md-3 form-group">
-                                <label for="operation_area">Operation Area</label>
-                                <select name="operation_area_id[]" id="operation_area" class="form-control select2"
-                                        data-placeholder="Select Operation Area" multiple="multiple">
-                                    @foreach($operationAreas  ?? [] as $operationArea)
-                                        <option value="{{ $operationArea->id }}">{{ $operationArea->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <label for="items">Customer Field Officer</label>
-                                <select name="customer_field_officer_id[]" id="customer_field_officer" class="form-control select2"
-                                        data-placeholder="Select Customer Field Officer" multiple="multiple">
-                                    @foreach($customerFieldOfficers ?? [] as $customerFieldOfficer)
-                                        <option value="{{ $customerFieldOfficer->id }}">{{ $customerFieldOfficer->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <label for="items">Meter Number</label>
-                                 <input type="text" name="meter_number" id="meter_number" class="form-control" placeholder="Meter Number">
-                            </div>
+                                <div class="col-md-3 form-group">
+                                    <label for="items">Customer Field Officer</label>
+                                    <select name="customer_field_officer_id[]" id="customer_field_officer" class="form-control select2"
+                                            data-placeholder="Select Customer Field Officer" multiple="multiple">
+                                        @foreach($customerFieldOfficers ?? [] as $customerFieldOfficer)
+                                            <option value="{{ $customerFieldOfficer->id }}">{{ $customerFieldOfficer->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label for="items">Meter Number</label>
+                                    <input type="text" name="meter_number" id="meter_number" class="form-control" placeholder="Meter Number" value="{{request()->get('meter_number')}}">
+                                </div>
                                 <div class="col-md-3 form-group">
                                     <label for="items">Subscription Number</label>
-                                    <input type="text" name="subscription_number" id="subscription_number" class="form-control" placeholder="Subscription Number">
+                                    <input type="text" name="subscription_number" id="subscription_number" class="form-control" placeholder="Subscription Number" value="{{request()->get('subscription_number')}}">
                                 </div>
 
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary btn-sm mr-2">
-                                    <i class="fas fa-search"></i>
-                                    Filter</button>
-                                <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
                             </div>
-                        </div>
-                    </form>
-                    <hr>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-sm mr-2">
+                                        <i class="fas fa-search"></i>
+                                        Filter</button>
+                                    <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
+                                </div>
+                            </div>
+                        </form>
+                        <hr>
+                    @endif
                     <div class="table-responsive">
-                        {{$dataTable->table(['class' => 'table table-bordered table-hover table-checkable dataTable no-footer dtr-inline'], true)}}
+                        {{$dataTable->table(['class' => 'table table-head-solid border'])}}
                     </div>
 
                 </div>
