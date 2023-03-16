@@ -53,6 +53,7 @@
                                     </select>
                                 </div>
                             @endunless
+                            @unless(Helper::hasOperationArea())
                             <div class="col-md-3 form-group">
                                 <label for="operation_area">Operation Area</label>
                                 <select name="operation_area_id[]" id="operation_area" class="form-control select2"
@@ -62,6 +63,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @endunless
                             <div class="col-md-3 form-group">
                                 <label for="items">Item Category</label>
                                 <select name="item_category_id[]" id="item_category" class="form-control select2"
