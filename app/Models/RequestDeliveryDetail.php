@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\RequestDeliveryDetail
@@ -31,5 +32,13 @@ use Illuminate\Database\Eloquent\Model;
  */
 class RequestDeliveryDetail extends Model
 {
-    use HasFactory;
+    public function requestItem(): BelongsTo
+    {
+        return $this->belongsTo(StockMovementDetail::class, 'stock_movement_detail_id');
+    }
+
+    public function getTotalAttribute()
+    {
+        return $this->quantity * $this->requestItem->unit_price;
+    }
 }

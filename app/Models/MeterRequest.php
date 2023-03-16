@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\GetClassName;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
@@ -44,6 +46,7 @@ use Illuminate\Support\Carbon;
  */
 class MeterRequest extends Model
 {
+    use GetClassName;
 
     protected $guarded = [];
 
@@ -70,5 +73,15 @@ class MeterRequest extends Model
     public function item(): BelongsTo
     {
         return $this->belongsTo(Item::class);
+    }
+
+    public function deliveryItems(): HasMany
+    {
+        return $this->hasMany(RequestDeliveryDetail::class, 'meter_request_id');
+    }
+
+    public function stockMovementDetails()
+    {
+        return $this->morphMany(StockMovementDetail::class, 'model');
     }
 }

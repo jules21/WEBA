@@ -274,7 +274,8 @@ class Request extends Model
     {
         return $this->meterNumbers->count() < $this->meter_qty
             && $this->status == Request::APPROVED
-            && auth()->user()->can(Permission::AssignMeterNumber);
+            && auth()->user()->can(Permission::AssignMeterNumber)
+            && !$this->pendingPayments(PaymentType::METERS_FEE);
     }
 
     public function waterNetwork(): BelongsTo

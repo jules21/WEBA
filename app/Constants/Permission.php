@@ -20,7 +20,6 @@ class Permission
     const CreatePurchase = 'Create Purchase';
     const ApprovePurchase = 'Approve Purchase';
 
-
     const ManageChartOfAccounts = 'Manage Chart Of Accounts';
     const AssignChartOfAccounts = 'Assign Chart Of Accounts';
     const ManageLedgerMigration = 'Manage Ledger Migration';
@@ -31,6 +30,13 @@ class Permission
     const ViewAdjustment = 'View Adjustment';
     const ManageOperatorUsers = 'Manage Operator Users';
     const ManageBillings = 'Manage Billings';
+
+    const ManageExpenses = 'Manage Expenses';
+    const ManageCashMovements = 'Manage Cash Movements';
+    const ManageJournalEntries = 'Manage Journal Entries';
+    const ViewGeneralLedger = 'View General Ledger';
+    const ViewLedgerBalance = 'View Ledger Balance';
+
     const ManageSystemUsers = 'Manage System Users';
     const ManageRoles = 'Manage Roles';
     const ManagePermissions = 'Manage Permissions';
@@ -54,9 +60,6 @@ class Permission
     const ManageWaterNetwork = 'Manage Water Network';
     const ManageRequestDurationConfigurations = 'Manage Request Duration Configurations';
     const ManagePaymentConfigurations = 'Manage Payment Configurations';
-
-
-
 
 
 

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
 
@@ -46,7 +47,7 @@ use Illuminate\Support\Carbon;
 class StockMovementDetail extends Model
 {
 
-    protected $appends = ['total'];
+    protected $appends = ['total', 'delivered_items'];
 
     public function model(): MorphTo
     {
@@ -61,5 +62,20 @@ class StockMovementDetail extends Model
     public function getTotalAttribute()
     {
         return $this->quantity * $this->unit_price;
+    }
+
+    public function deliveryItems(): HasMany
+    {
+        return $this->hasMany(RequestDeliveryDetail::class, 'stock_movement_detail_id');
+    }
+
+    public function getDeliveredItemsAttribute()
+    {
+        return $this->deliveryItems()->sum('quantity');
+    }
+
+    public function getRemainingItemsAttribute()
+    {
+        return $this->quantity - $this->delivered_items;
     }
 }
