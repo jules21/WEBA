@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
+        "ext-gd": "*",
         "ext-json": "*",
         "doctrine/dbal": "^3.6",
         "fruitcake/laravel-cors": "^2.0",
@@ -18,11 +19,11 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
+        "owen-it/laravel-auditing": "^13.4",
         "proengsoft/laravel-jsvalidation": "^4.7",
         "simplesoftwareio/simple-qrcode": "~4",
         "spatie/laravel-permission": "^5.9",
-        "yajra/laravel-datatables": "^1.5",
-        "ext-gd": "*"
+        "yajra/laravel-datatables": "^1.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",

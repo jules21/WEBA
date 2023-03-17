@@ -9,12 +9,14 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DocumentTypeController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\MeterRequestController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OperatorUserController;
+use App\Http\Controllers\PaymentServiceProviderAccountController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RequestAssignmentController;
 use App\Http\Controllers\RequestDeliveryController;
@@ -133,6 +135,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     });
     Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
         Route::get('/chart-of-accounts', [ChartAccountController::class, 'index'])->name('chart-of-accounts');
+        Route::get("/bank-accounts", [PaymentServiceProviderAccountController::class, 'index'])->name("bank-accounts.index");
+        Route::post("/bank-accounts/store", [PaymentServiceProviderAccountController::class, 'store'])->name("bank-accounts.store");
+        Route::delete("/bank-accounts/{id}/delete", [PaymentServiceProviderAccountController::class, 'destroy'])->name("bank-accounts.delete");
+        Route::get("/bank-accounts/{paymentServiceProviderAccount}/show", [PaymentServiceProviderAccountController::class, 'show'])->name("bank-accounts.show");
+
+        Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses');
+        Route::post('/expenses/store', [ExpenseController::class, 'store'])->name('expenses.store');
+        Route::get('/expenses/{expense}/show', [ExpenseController::class, 'show'])->name('expenses.show');
+        Route::delete('/expenses/{expense}/delete', [ExpenseController::class, 'destroy'])->name('expenses.delete');
+        Route::get('/expenses/{id}/expense-ledgers', [ExpenseController::class, 'getExpenseLedgers'])->name('expense-ledgers');
+
     });
     Route::prefix('user-management')->group(function () {
         //roles routes

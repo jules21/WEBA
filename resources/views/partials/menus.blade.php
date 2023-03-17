@@ -154,8 +154,8 @@
                     <i class="menu-arrow"></i>
                     <ul class="menu-subnav">
                         @can(\App\Constants\Permission::ManageExpenses)
-                            <x-menu-item title="Expenses" item-class="nav-assign-chart-accounts"
-                                         :route="route('admin.purchases.index')"/>
+                            <x-menu-item title="Expenses" item-class="nav-expenses"
+                                         :route="route('admin.accounting.expenses')"/>
                         @endcan
 
                         @can(\App\Constants\Permission::ManageCashMovements)
@@ -218,6 +218,8 @@
                                      :route="route('admin.purchases.index')"/>
                         <x-menu-item title="Chart Of Accounts" item-class="nav-chart-accounts"
                                      :route="route('admin.accounting.chart-of-accounts')"/>
+                        <x-menu-item title="Bank Accounts" item-class="nav-bank-accounts"
+                                     :route="route('admin.accounting.bank-accounts.index')"/>
 
                     </ul>
                 </div>

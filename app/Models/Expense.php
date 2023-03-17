@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\Expense
@@ -17,25 +22,47 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $expense_category
  * @property int $payment_ledger
  * @property int $user_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Expense newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Expense newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Expense query()
- * @method static \Illuminate\Database\Eloquent\Builder|Expense whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Expense whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Expense whereDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Expense whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Expense whereExpenseCategory($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Expense whereExpenseLedger($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Expense whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Expense whereOperationAreaId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Expense wherePaymentLedger($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Expense whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Expense whereUserId($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|Expense newModelQuery()
+ * @method static Builder|Expense newQuery()
+ * @method static Builder|Expense query()
+ * @method static Builder|Expense whereAmount($value)
+ * @method static Builder|Expense whereCreatedAt($value)
+ * @method static Builder|Expense whereDate($value)
+ * @method static Builder|Expense whereDescription($value)
+ * @method static Builder|Expense whereExpenseCategory($value)
+ * @method static Builder|Expense whereExpenseLedger($value)
+ * @method static Builder|Expense whereId($value)
+ * @method static Builder|Expense whereOperationAreaId($value)
+ * @method static Builder|Expense wherePaymentLedger($value)
+ * @method static Builder|Expense whereUpdatedAt($value)
+ * @method static Builder|Expense whereUserId($value)
+ * @mixin Eloquent
  */
-class Expense extends Model
+class Expense extends Model implements Auditable
 {
-    use HasFactory;
+    use \OwenIt\Auditing\Auditable;
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where('id', decryptId($value))->firstOrFail();
+    }
+
+    public function expenseCategory(): BelongsTo
+    {
+        return $this->belongsTo(ChartAccount::class, 'expense_category');
+    }
+
+    public function expenseLedger(): BelongsTo
+    {
+        return $this->belongsTo(ChartAccount::class, 'expense_ledger');
+    }
+
+    public function paymentLedger(): BelongsTo
+    {
+        return $this->belongsTo(ChartAccount::class, 'payment_ledger');
+    }
+
+
 }
