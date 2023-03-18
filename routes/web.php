@@ -3,6 +3,7 @@
 use App\Constants\Permission;
 use App\Http\Controllers\AdjustmentController;
 use App\Http\Controllers\AreaOfOperationController;
+use App\Http\Controllers\CashMovementController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\ChartAccountController;
 use App\Http\Controllers\CustomerController;
@@ -145,6 +146,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/expenses/{expense}/show', [ExpenseController::class, 'show'])->name('expenses.show');
         Route::delete('/expenses/{expense}/delete', [ExpenseController::class, 'destroy'])->name('expenses.delete');
         Route::get('/expenses/{id}/expense-ledgers', [ExpenseController::class, 'getExpenseLedgers'])->name('expense-ledgers');
+
+        Route::get("/cash-movements", [CashMovementController::class, 'index'])->name("cash-movements.index");
+        Route::post("/cash-movements/store", [CashMovementController::class, 'store'])->name("cash-movements.store");
+        Route::delete("/cash-movements/{id}/delete", [CashMovementController::class, 'destroy'])->name("cash-movements.delete");
+        Route::get("/cash-movements/{cashMovement}/show", [CashMovementController::class, 'show'])->name("cash-movements.show");
+
 
     });
     Route::prefix('user-management')->group(function () {
