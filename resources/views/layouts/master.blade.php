@@ -63,7 +63,7 @@
 <div id="kt_header_mobile" class="header-mobile align-items-center header-mobile-fixed">
     <!--begin::Logo-->
     <a href="{{ route('admin.dashboard') }}">
-        <img alt="Logo" class="img-fluid h-40px" src="{{asset("img/logo_sm.png")}}">
+        <img alt="Logo" class="img-fluid h-40px" src="{{asset("img/logo.svg")}}">
         {{--        <h3>Airtel</h3>--}}
     </a>
     <!--end::Logo-->
@@ -112,7 +112,7 @@
             <div class="brand flex-column-auto" id="kt_brand">
                 <!--begin::Logo-->
                 <a href="/" class="brand-logo">
-                    <img alt="Logo" class="img-fluid h-40px" src="{{asset("img/logo.png")}}"/>
+                    <img alt="Logo" class="img-fluid h-50px" src="{{asset("img/logo.svg")}}"/>
                     {{--                    <h2>NPA</h2>--}}
                 </a>
                 <!--end::Logo-->
