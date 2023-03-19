@@ -347,7 +347,7 @@
                     method: 'get',
                     success: function (response) {
                         $('#addModal').modal('show');
-                        $('#expenseId').val(response.id);
+                        $('#entryId').val(response.id);
 
                         $('#debit_ledger_croup').val(response.debit_ledger_croup);
                         getLedgers(response.debit_ledger_croup,$('#debit_ledger'), response.debit_ledger);
