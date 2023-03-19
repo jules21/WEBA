@@ -128,4 +128,12 @@ class PaymentServiceProviderAccountController extends Controller
             'message' => 'Payment Service Provider Account deleted successfully.',
         ]);
     }
+
+    public function accountsByServiceProvider($id)
+    {
+        $paymentServiceProvider = PaymentServiceProvider::query()
+            ->findOrFail($id);
+        $accounts = $paymentServiceProvider->accounts()->get();
+        return response()->json($accounts);
+    }
 }

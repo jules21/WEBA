@@ -159,8 +159,8 @@
                         @endcan
 
                         @can(\App\Constants\Permission::ManageCashMovements)
-                            <x-menu-item title="Cash Movements" item-class="nav-ledger-migration"
-                                         :route="route('admin.purchases.index')"/>
+                            <x-menu-item title="Cash Movements" item-class="nav-cash-movements"
+                                         :route="route('admin.accounting.cash-movements.index')"/>
                         @endcan
 
                         @can(\App\Constants\Permission::ManageJournalEntries)
