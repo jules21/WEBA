@@ -14,6 +14,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\MeterRequestController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OperatorUserController;
@@ -153,6 +154,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post("/cash-movements/store", [CashMovementController::class, 'store'])->name("cash-movements.store");
         Route::delete("/cash-movements/{id}/delete", [CashMovementController::class, 'destroy'])->name("cash-movements.delete");
         Route::get("/cash-movements/{cashMovement}/show", [CashMovementController::class, 'show'])->name("cash-movements.show");
+
+        Route::get('/journal-entries', [JournalEntryController::class, 'index'])->name('journal-entries');
+        Route::post('/journal-entries/store', [JournalEntryController::class, 'store'])->name('journal-entries.store');
+        Route::get('/journal-entries/{journalEntry}/show', [JournalEntryController::class, 'show'])->name('journal-entries.show');
+        Route::delete('/journal-entries/{journalEntry}/delete', [JournalEntryController::class, 'destroy'])->name('journal-entries.delete');
 
 
     });

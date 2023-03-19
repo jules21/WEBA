@@ -164,8 +164,8 @@
                         @endcan
 
                         @can(\App\Constants\Permission::ManageJournalEntries)
-                            <x-menu-item title="Journal Entries" item-class="nav-chart-accounts"
-                                         :route="route('admin.purchases.index')"/>
+                            <x-menu-item title="Journal Entries" item-class="nav-journal-entries"
+                                         :route="route('admin.accounting.journal-entries')"/>
                         @endcan
 
                         @can(\App\Constants\Permission::ViewGeneralLedger)

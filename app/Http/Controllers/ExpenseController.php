@@ -5,16 +5,18 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidateExpenseRequest;
 use App\Models\ChartAccount;
 use App\Models\Expense;
+use Exception;
+use function request;
 
 class ExpenseController extends Controller
 {
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function index()
     {
-        if (\request()->ajax()) {
+        if (request()->ajax()) {
             $data = Expense::query()
                 ->with(['expenseLedger', 'paymentLedger'])
                 ->where('operation_area_id', auth()->user()->operation_area)
