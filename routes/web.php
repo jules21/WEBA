@@ -140,6 +140,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post("/bank-accounts/store", [PaymentServiceProviderAccountController::class, 'store'])->name("bank-accounts.store");
         Route::delete("/bank-accounts/{id}/delete", [PaymentServiceProviderAccountController::class, 'destroy'])->name("bank-accounts.delete");
         Route::get("/bank-accounts/{paymentServiceProviderAccount}/show", [PaymentServiceProviderAccountController::class, 'show'])->name("bank-accounts.show");
+        Route::get("/bank-accounts/{paymentServiceProviderAccount}/edit", [PaymentServiceProviderAccountController::class, 'accountsByServiceProvider'])
+            ->name("provider-service-by-accounts");
 
         Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses');
         Route::post('/expenses/store', [ExpenseController::class, 'store'])->name('expenses.store');

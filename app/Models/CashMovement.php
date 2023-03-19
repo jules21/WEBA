@@ -49,8 +49,19 @@ use Illuminate\Support\Carbon;
  */
 class CashMovement extends Model
 {
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where('id', decryptId($value))->firstOrFail();
+    }
+
     public function paymentServiceProvider(): BelongsTo
     {
         return $this->belongsTo(PaymentServiceProvider::class, 'psp_id');
+    }
+
+    public function paymentServiceProviderAccount(): BelongsTo
+    {
+        return $this->belongsTo(PaymentServiceProviderAccount::class, 'psp_account_id');
     }
 }
