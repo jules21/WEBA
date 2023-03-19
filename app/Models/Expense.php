@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasEncryptId;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,11 +44,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Expense extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-
-    public function resolveRouteBinding($value, $field = null)
-    {
-        return $this->where('id', decryptId($value))->firstOrFail();
-    }
+    use HasEncryptId;
 
     public function expenseCategory(): BelongsTo
     {
