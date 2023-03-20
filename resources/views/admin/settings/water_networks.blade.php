@@ -62,7 +62,10 @@
                         <th>Distance Covered</th>
                         <th>Population Covered</th>
                         <th>Water Network Type</th>
+                        @if(auth()->user()->is_super_admin)
                         <th>Operator</th>
+                        @endif
+                        <th>Operation Area</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -75,7 +78,10 @@
                             <td>{{$waterNetwork->distance_covered}}</td>
                             <td>{{$waterNetwork->population_covered}}</td>
                             <td>{{$waterNetwork->waterNetworkType->name?? ''}}</td>
-                            <td>{{$waterNetwork->operator->name?? ''}}</td>
+                            @if(auth()->user()->is_super_admin)
+                                <td>{{$waterNetwork->operator->name?? ''}}</td>
+                            @endif
+                            <td>{{$waterNetwork->operationArea->name?? ''}}</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
@@ -90,6 +96,7 @@
                                            data-population="{{$waterNetwork->population_covered}}"
                                            data-operator="{{$waterNetwork->operator_id}}"
                                            data-network="{{$waterNetwork->water_network_type_id}}"
+                                           data-area="{{$waterNetwork->operation_area_id}}"
                                            class="dropdown-item js-edit">Edit</a>
                                         <a href="{{route('admin.water.network.delete',$waterNetwork->id)}}"
                                            class="dropdown-item js-delete">Delete</a>
@@ -160,12 +167,24 @@
                             <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                         @endif
 
-                        <div class="form-group">
-                            <label for="name">Operation Area</label>
-                            <select type="text" name="operation_area_id" id="operation_area_id" class="form-control">
-                                <option value="">Please Select Operation Area</option>
-                            </select>
-                        </div>
+                        @if(auth()->user()->operator_id == null)
+                            <div class="form-group">
+                                <label for="name">Operation Area</label>
+                                <select type="text" name="operation_area_id" id="operation_area_id" class="form-control">
+                                    <option value="">Please Select Operation Area</option>
+                                </select>
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <label for="name">Operation Area</label>
+                                <select type="text" name="operation_area_id" id="operation_area_id" class="form-control">
+                                    <option value="">Please Select Operation Area</option>
+                                    @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                        <option value="{{$area->id}}">{{$area->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
 
                     </div>
                     <div class="modal-footer">
@@ -209,6 +228,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="name">Population Covered</label>
+                            <input type="number"  name="population_covered" id="edit_population_covered" class="form-control" required/>
+                        </div>
+
+                        <div class="form-group">
                             <label for="name">Water Network Type</label>
                             <select name="water_network_type_id" id="edit_water_network_type_id" class="form-control" required>
                                 <option value="">Please Select Water Network Type</option>
@@ -218,15 +242,10 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="name">Population Covered</label>
-                            <input type="number"  name="population_covered" id="edit_population_covered" class="form-control" required/>
-                        </div>
-
                         @if(auth()->user()->operator_id == null)
                             <div class="form-group">
                                 <label>Operator</label>
-                                <select name="operator_id" class="form-control select2" style="width: 100% !important;" id="edit_operator_id">
+                                <select name="operator_id" class="form-control select2" id="edit_operator_id" style="width: 100% !important;">
                                     <option value="">Select Operator</option>
                                     @foreach($operators as $operator)
                                         <option value="{{$operator->id}}">{{$operator->name}}</option>
@@ -239,24 +258,22 @@
 
                         @if(auth()->user()->operator_id == null)
                             <div class="form-group">
-                                <label>Operator</label>
-                                <select name="operator_id" class="form-control select2" style="width: 100% !important;" id="edit_operator_id">
-                                    <option value="">Select Operator</option>
-                                    @foreach($operators as $operator)
-                                        <option value="{{$operator->id}}">{{$operator->name}}</option>
-                                    @endforeach
+                                <label for="name">Operation Area</label>
+                                <select type="text" name="operation_area_id" id="edit_operation_area_id" class="form-control">
+                                    <option value="">Please Select Operation Area</option>
                                 </select>
                             </div>
                         @else
-                            <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
+                            <div class="form-group">
+                                <label for="name">Operation Area</label>
+                                <select type="text" name="operation_area_id" id="edit_operation_area_id" class="form-control">
+                                    <option value="">Please Select Operation Area</option>
+                                    @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                        <option value="{{$area->id}}">{{$area->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         @endif
-
-                        <div class="form-group">
-                            <label for="name">Operation Area</label>
-                            <select type="text" name="operation_area_id" id="operation_area_id" class="form-control">
-                                <option value="">Please Select Operation Area</option>
-                            </select>
-                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -293,12 +310,13 @@
             $("#modalUpdate").modal('show');
             console.log($(this).data('name'));
             var url = $(this).data('url');
-            $("#ConfigurationId").val($(this).data('id'));
+            $("#WaterNetworkId").val($(this).data('id'));
             $("#edit_name").val($(this).data('name'));
             $("#edit_distance_covered").val($(this).data('distance'));
             $("#edit_population_covered").val($(this).data('population'));
             $("#edit_operator_id").val($(this).data('operator'));
             $("#edit_water_network_type_id").val($(this).data('network'));
+            $("#edit_operation_area_id").val($(this).data('area'));
             $('#submissionFormEdit').attr('action', url);
         });
 
@@ -328,7 +346,7 @@
         });
 
         $('#exampleModal').on('hidden.bs.modal', function (e) {
-            $('#TypeId').val(0);
+            $('#WaterNetworkId').val(0);
         });
 
         $(document).ready(function (){
