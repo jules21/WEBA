@@ -6,6 +6,7 @@ use App\Imports\ClientImport;
 use App\Jobs\SendSms;
 use App\Mail\MailResetPassword;
 use App\Models\Branch;
+use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\User;
 use App\Models\UserFlowHistory;
@@ -30,7 +31,8 @@ class UserController extends Controller
         });
         $data = $data->orderBy('updated_at', 'desc')->select("users.*")->get();
         $dataTable = new UserDataTable($data);
-        return $dataTable->render('admin.user_management.users',['operators'=>Operator::all()]);
+        $operationAreas = OperationArea::query()->where('operator_id', $operator_id)->get();
+        return $dataTable->render('admin.user_management.users',['operators'=>Operator::all(),'operationAreas'=>$operationAreas]);
     }
 
 
