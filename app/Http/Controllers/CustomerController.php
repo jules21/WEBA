@@ -33,7 +33,8 @@ class CustomerController extends Controller
                 'status' => 400
             ]);
         }
-        $url = app()->environment('local') ? "http://localhost:3000/data" : "https://licensing.rura.rw/search-id-number?id=$id";
+
+        $url = config('services.CLMS_NIDA_URL') . "?id=$id";
         $response = Http::get($url);
         if ($response->status() !== ResponseAlias::HTTP_OK) {
             return response()->json([
