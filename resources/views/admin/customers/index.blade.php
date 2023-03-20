@@ -123,13 +123,13 @@
                                 <div class="form-group">
                                     <label for="doc_number">Document Number</label>
                                     <div class="d-flex flex-shrink-0">
-                                 {{--       <input type="hidden" name="doc_number" id="doc_number" class="form-control"
-                                               required/>--}}
-                                       <input type="text" id="doc_number" name="doc_number" class="form-control" required/>
-                                        {{-- <button type="button" id="btnCheckIdDetails"
+                                        <input type="text" id="doc_number" name="doc_number"
+                                               class="form-control"
+                                               required/>
+                                        <button type="button" id="btnCheckIdDetails"
                                                 class="btn btn-primary ml-2">
                                             Check
-                                        </button>--}}
+                                        </button>
                                     </div>
                                     <label id="input_doc_number-error" class="error" for="input_doc_number"></label>
                                 </div>
@@ -366,6 +366,12 @@
 
             $('#addButton').on('click', function () {
                 $('#addModal').modal('show');
+                $('#id').val(0);
+            });
+            $('#addModal').on('hidden.bs.modal', function () {
+                $formSave.trigger('reset');
+                $formSave.validate().resetForm();
+                $formSave.find('.error').removeClass('error');
             });
 
             $('#province_id').on('change', function (e) {
@@ -382,30 +388,36 @@
                 getCells($(this).val());
             });
 
+            let $inputDocNumber = $('#doc_number');
+            let $documentTypeId = $('#document_type_id');
             let $legalTypeId = $('#legal_type_id');
             $legalTypeId.on('change', function () {
                 getDocumentTypes($(this).val());
+                $documentTypeId.trigger('change');
             });
 
-            let $inputDocNumber = $('#input_doc_number');
-            let $documentTypeId = $('#document_type_id');
+            let $btnCheckIdDetails = $('#btnCheckIdDetails');
+            let $name = $('#name');
             $documentTypeId.on('change', function () {
                 let docTypeId = $(this).val();
+                $name.val("");
                 if (docTypeId === "{{ config('app.NATIONAL_ID') }}") {
                     $inputDocNumber.attr('maxlength', '16');
+                    $name.attr('disabled', true);
+                    $btnCheckIdDetails.show();
                 } else {
-                    $inputDocNumber.attr('maxlength', '10');
+                    $inputDocNumber.attr('maxlength', '21');
+                    $name.attr('disabled', false);
+                    $btnCheckIdDetails.hide();
                 }
             });
 
-            $('#btnCheckIdDetails').on('click', function () {
+            $btnCheckIdDetails.on('click', function () {
                 let docNumber = $inputDocNumber.val();
                 let legalTypeId = $legalTypeId.val();
                 let documentTypeId = $documentTypeId.val();
                 if (docNumber && legalTypeId && documentTypeId) {
-                    let url = "{{ route("admin.customers.fetch-identification-from-nida",":id") }}";
-                    url = url.replace(':id', docNumber);
-
+                    let url = "{{ route("admin.customers.fetch-identification-from-nida") }}?id=" + docNumber + "&id_type=" + documentTypeId;
                     $inputDocNumber.attr('disabled', true);
                     $legalTypeId.attr('disabled', true);
                     $documentTypeId.attr('disabled', true);
@@ -419,21 +431,25 @@
                         method: "get",
                         dataType: 'json',
                         success: function (response) {
-                            if (response.status === 'success') {
-                                $('#input_name').val(response.data.name);
-                                $('#input_email').val(response.data.email);
-                                $('#input_phone').val(response.data.phone);
-                                $('#input_address').val(response.data.address);
-                                $('#province_id').val(response.data.province_id);
-                                getDistricts(response.data.province_id, response.data.district_id);
-                                getSectors(response.data.district_id, response.data.sector_id);
-                                getCells(response.data.sector_id, response.data.cell_id);
-                                getVillages(response.data.cell_id, response.data.village_id);
+                            if (response.documentNumber) {
+                                let surnames = response.surnames;
+                                let foreName = response.foreName;
+                                if (surnames || foreName) {
+                                    $name.val((surnames ? surnames + " " : '') + (foreName ? foreName : ''));
+                                }
+                            } else if (response.content && response.status) {
+                                Swal.fire({
+                                    title: 'Error',
+                                    text: response.content,
+                                    icon: 'error',
+                                    confirmButtonText: 'Ok'
+                                });
                             } else {
                                 Swal.fire({
-                                    title: "Error",
-                                    icon: "error",
-                                    text: response.message
+                                    title: 'Error',
+                                    text: "Something went wrong, please try again later",
+                                    icon: 'error',
+                                    confirmButtonText: 'Ok'
                                 });
                             }
                         }, error: function (response) {
@@ -465,25 +481,33 @@
 
                 $btn.prop("disabled", true)
                     .addClass("spinner spinner-white spinner-sm spinner-right");
+                // find all inputs and remove disabled attribute
+                $form.find('input, select, textarea').prop('disabled', false);
+                let data = $form.serialize();
+                // add disabled attribute to inputs
+                $form.find('input, select, textarea').prop('disabled', true);
+
                 $.ajax({
                     url: $form.attr("action"),
                     method: "post",
-                    data: $form.serialize(),
+                    data: data,
                     dataType: 'json',
                     success: function (response) {
                         dataTable.ajax.reload();
                         $('#addModal').modal('hide');
                     }, error: function (response) {
+                        let message = response.responseJSON.message ?? 'Something went wrong, please try again later';
                         Swal.fire({
                             title: "Error",
                             icon: "error",
-                            text: "Unable to save customer, try again"
+                            text: message
                         });
                     },
                     complete: function () {
-
                         $btn.prop("disabled", false)
                             .removeClass("spinner spinner-white spinner-sm spinner-right");
+
+                        $form.find('input, select, textarea').prop('disabled', false);
                     }
                 });
 
@@ -500,9 +524,11 @@
                     method: "GET",
                     success: function (data) {
                         $('#id').val(data.id);
-                        $('#name').val(data.name);
+                        $name.val(data.name);
                         $legalTypeId.val(data.legal_type_id);
-                        $documentTypeId.val(data.document_type_id);
+                        let docTypeId = data.document_type_id;
+                        $documentTypeId.val(docTypeId);
+
                         $('#doc_number').val(data.doc_number);
                         $('#phone').val(data.phone);
                         $('#email').val(data.email);
@@ -511,6 +537,10 @@
                         getSectors(data.district_id, data.sector_id);
                         getCells(data.sector_id, data.cell_id);
                         $('#addModal').modal();
+
+                    /*    if (Number(docTypeId) === Number("{{ config('app.NATIONAL_ID') }}")) {
+                            $btnCheckIdDetails.trigger('click');
+                        }*/
                     },
                     error: function (response) {
                         Swal.fire({

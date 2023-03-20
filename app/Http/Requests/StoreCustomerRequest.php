@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreCustomerRequest extends FormRequest
 {
@@ -26,7 +27,11 @@ class StoreCustomerRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'document_type_id' => ['required'],
-            'doc_number' => ['required', 'string', 'max:255'],
+            'doc_number' => [
+                'required',
+                'string',
+                'max:255',
+            ],
 //            'input_doc_number' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],

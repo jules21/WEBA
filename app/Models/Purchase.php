@@ -109,7 +109,7 @@ class Purchase extends Model
     {
         return $this->status === self::SUBMITTED
             && auth()->user()->operation_area
-            && auth()->user()->can(Permission::ApprovePurchase);
+            && auth()->user()->can(Permission::ApproveStockIn);
     }
 
 }

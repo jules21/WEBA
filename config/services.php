@@ -38,7 +38,8 @@ return [
         'sms_url' => env('BESOFT_SMS_URL', 'http://sms.besoft.rw/api/v1/client/bulksms'),
         'token' => env("BESOFT_TOKEN", "oe1MNXW6O8GdKmWM3nCSqoVROQSZD31O"),
         'sender_name' => env('BESOFT_SENDER_NAME', 'besoft')
-    ]
+    ],
+    'CLMS_NIDA_URL'=>env('CLMS_NIDA_URL','https://licensing.rura.rw/search-id-number'),
 
 
 ];

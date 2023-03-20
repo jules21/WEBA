@@ -39,7 +39,7 @@
                     Manage Purchases
                 </h4>
 
-                @if( auth()->user()->can(\App\Constants\Permission::CreatePurchase) && auth()->user()->operation_area)
+                @if( auth()->user()->can(\App\Constants\Permission::StockInItems) && auth()->user()->operation_area)
 
                     <a href="{{ route('admin.purchases.create') }}" class="btn btn-primary btn-sm rounded">
                         <i class="flaticon2-plus-1"></i>
