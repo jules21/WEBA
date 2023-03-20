@@ -140,7 +140,6 @@ class AreaOfOperationController extends Controller
         ];
 
         $operatorID = decryptId($id);
-        info($operatorID);
         $body = [
             "operatorId" => $operatorID
         ];
@@ -149,8 +148,14 @@ class AreaOfOperationController extends Controller
         $response = Http::withHeaders($headers)
             ->post(config('app.CLMS_URL') . '/api/v1/cms-rwss/get-operator/operation-area', $body);
 
-        if ($response->status() == 200)
-            return $response->json();
+        if ($response->status() == 200) {
+            $json = $response->json();
+//            $operationAreas = OperationArea::query()->where('operator_id', $operatorID)->get();
+            // extract area_of_operations from the response json
+//            $areas = collect($json)->pluck('area_of_operations');
+//            info($areas);
+            return $json;
+        }
 
         return response()
             ->json([
@@ -161,7 +166,6 @@ class AreaOfOperationController extends Controller
     }
 
     /**
-     * @param Operator $operator
      * @return mixed
      */
     public function getOperationAreasByOperators()
@@ -171,7 +175,7 @@ class AreaOfOperationController extends Controller
         $operators = Operator::query()->whereIn('id', $operatorIds)
             ->with('operationAreas')
             ->get();
-        return $operators->map(function($operator){
+        return $operators->map(function ($operator) {
             return $operator->operationAreas;
         });
     }
