@@ -492,7 +492,7 @@
         </div>
 
         </li>
-    @endcanany
+{{--    @endcanany--}}
 
     @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles, \App\Constants\Permission::ManagePermissions])
         <li class="menu-section">
