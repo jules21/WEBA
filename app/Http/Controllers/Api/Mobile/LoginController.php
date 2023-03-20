@@ -23,20 +23,28 @@ class LoginController extends Controller
                 'message' => 'Invalid Credentials'
             ]);
         $user = $request->user();
-        return response()->json([
-            'action' => 1,
-            'token' => auth()->user()->createToken('API Token')->plainTextToken,
-            'message' => 'Login Successful',
-            'name' => $user->name,
-            'email' => $user->email,
-            'phone' => $user->role,
-            'permissions' => $user->permissions,
-            'operator_name' => $user->operator->name ?? null,
-            'operator_id' => $user->operator->id ?? null,
-            'operating_area_name' => $user->operationArea->name ?? null,
-            'operating_area_id' => $user->operationArea->id ?? null,
-            'id'=>$user->id
-        ]);
+//        if ($user->can('Make Billing')) {
+            return response()->json([
+                'action' => 1,
+                'token' => auth()->user()->createToken('API Token')->plainTextToken,
+                'message' => 'Login Successful',
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'permissions' => $user->permissions,
+                'operator_name' => $user->operator->name ?? null,
+                'operator_id' => $user->operator->id ?? null,
+                'operating_area_name' => $user->operationArea->name ?? null,
+                'operating_area_id' => $user->operationArea->id ?? null,
+                'id' => $user->id
+            ]);
+//        } else {
+//            return response()->json([
+//                'action' => 0,
+//                'message' => 'You are not authorized to make Billing'
+//            ]);
+//        }
+
     }
 
     public function logout(Request $request)
@@ -48,7 +56,8 @@ class LoginController extends Controller
         ]);
     }
 
-    public function changePassword(Request $request){
+    public function changePassword(Request $request)
+    {
         $request->validate([
             'old_password' => 'required',
             'new_password' => 'required',

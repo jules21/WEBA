@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Billing;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BillingResource extends JsonResource
@@ -20,10 +21,11 @@ class BillingResource extends JsonResource
         } elseif ($this->balance < $this->amount) {
             $status = 'Partial';
         }
-
         if (now()->diffInDays($this->created_at) > 30) {
             $status = 'Overdue';
         }
+        $totalAmount = Billing::query()
+        ->where('meter_request_id', $this->meter_request_id)->sum('balance');
         return [
             'id' => $this->id,
             'subscription_number' => $this->subscription_number,
@@ -34,6 +36,9 @@ class BillingResource extends JsonResource
             'customer' => $this->meterRequest->request->customer,
             'amount' => $this->amount,
             'created_at' => optional($this->created_at)->format('Y-m-d H:i:s'),
+            'comment' => $this->comment,
+            'user' => $this->user,
+            'total_amount' => $totalAmount,
         ];
     }
 }

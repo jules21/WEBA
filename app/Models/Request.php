@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
@@ -112,10 +113,22 @@ use Storage;
  */
 class Request extends Model
 {
-    protected $appends = ['status_color', 'upi_attachment_url'];
+    protected $appends = ['status_color', 'upi_attachment_url', 'total_qty', 'total_delivered'];
     use HasAddress;
     use HasStatusColor;
     use GetClassName;
+
+
+    const PENDING = 'Pending';
+    const ASSIGNED = 'Assigned';
+    const PROPOSE_TO_APPROVE = 'Propose to approve';
+    const REJECTED = 'Rejected';
+    const APPROVED = 'Approved';
+    const METER_ASSIGNED = "Meter Assigned";
+    const PARTIALLY_DELIVERED = "Partially Delivered";
+    const DELIVERED = "Delivered";
+    const CANCELLED = "Cancelled";
+
 
     const UPI_ATTACHMENT_PATH = 'requests/upi/';
 
@@ -201,13 +214,6 @@ class Request extends Model
     }
 
 
-    const PENDING = 'Pending';
-    const ASSIGNED = 'Assigned';
-    const PROPOSE_TO_APPROVE = 'Propose to approve';
-    const REJECTED = 'Rejected';
-    const APPROVED = 'Approved';
-    const METER_ASSIGNED = "Meter Assigned";
-
     public function getApprovalStatuses(): array
     {
         if ($this->status == self::ASSIGNED) {
@@ -268,7 +274,8 @@ class Request extends Model
     {
         return $this->meterNumbers->count() < $this->meter_qty
             && $this->status == Request::APPROVED
-            && auth()->user()->can(Permission::AssignMeterNumber);
+            && auth()->user()->can(Permission::AssignMeterNumber)
+            && !$this->pendingPayments(PaymentType::METERS_FEE);
     }
 
     public function waterNetwork(): BelongsTo
@@ -281,18 +288,45 @@ class Request extends Model
         return $this->hasMany(PaymentDeclaration::class);
     }
 
-    public function pendingPayments(): bool
+    public function pendingPayments($withoutPaymentTypeId = null): bool
     {
         return $this->paymentDeclarations()
             ->where('status', PaymentDeclaration::ACTIVE)
+            ->when($withoutPaymentTypeId, function ($query) use ($withoutPaymentTypeId) {
+                $query->whereHas('paymentConfig', function ($query) use ($withoutPaymentTypeId) {
+                    $query->where('payment_type_id', '!=', $withoutPaymentTypeId);
+                });
+            })
             ->exists();
     }
+
 
     public function canAddMaterials(): bool
     {
         return $this->status == Request::ASSIGNED &&
             auth()->user()->can(Permission::ReviewRequest) &&
             !$this->equipment_payment;
+    }
+
+    public function deliveries(): HasMany
+    {
+        return $this->hasMany(RequestDelivery::class, 'request_id');
+    }
+
+    public function deliveryDetails(): HasManyThrough
+    {
+        return $this->hasManyThrough(RequestDeliveryDetail::class, RequestDelivery::class, 'request_id', 'request_delivery_id');
+    }
+
+
+    public function getTotalQtyAttribute()
+    {
+        return $this->items()->sum('quantity') + $this->meterNumbers()->count();
+    }
+
+    public function getTotalDeliveredAttribute()
+    {
+        return $this->deliveryDetails()->sum('quantity');
     }
 
 

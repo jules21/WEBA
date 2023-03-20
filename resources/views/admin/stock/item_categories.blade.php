@@ -209,6 +209,12 @@
     {!! JsValidator::formRequest(App\Http\Requests\StoreItemCategoryRequest::class,'#add-category-form') !!}
     {!! JsValidator::formRequest(App\Http\Requests\UpdateItemCategoryRequest::class,'#edit-category-form') !!}
     <script>
+
+        $(document).ready(function () {
+            $('.nav-stock-managements').addClass('menu-item-active menu-item-open');
+            $('.nav-item-categories').addClass('menu-item-active');
+        });
+
         $("#kt_datatable1").DataTable({responsive:true});
         $('.edit-btn').click(function (e) {
             e.preventDefault();

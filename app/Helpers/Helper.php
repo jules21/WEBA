@@ -25,4 +25,16 @@ class Helper{
         $user = auth()->user();
         return $user->operator_id != null;
     }
+
+    public static function hasOperationArea(): bool
+    {
+        $user = auth()->user();
+        return $user->operation_area != null;
+    }
+
+    public static function isSuperAdmin(): bool
+    {
+        $user = auth()->user();
+        return $user->is_super_admin || auth()->user()->operator_id == null;
+    }
 }

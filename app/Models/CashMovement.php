@@ -2,8 +2,12 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\CashMovement
@@ -21,29 +25,43 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $reference_no
  * @property int $operation_area_id
  * @property int $user_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement query()
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereCurrencyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereDestinationLedger($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereOperationAreaId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement wherePspAccountId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement wherePspId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereReferenceNo($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereSourceLedger($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereTransactionType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CashMovement whereUserId($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|CashMovement newModelQuery()
+ * @method static Builder|CashMovement newQuery()
+ * @method static Builder|CashMovement query()
+ * @method static Builder|CashMovement whereAmount($value)
+ * @method static Builder|CashMovement whereCreatedAt($value)
+ * @method static Builder|CashMovement whereCurrencyId($value)
+ * @method static Builder|CashMovement whereDate($value)
+ * @method static Builder|CashMovement whereDescription($value)
+ * @method static Builder|CashMovement whereDestinationLedger($value)
+ * @method static Builder|CashMovement whereId($value)
+ * @method static Builder|CashMovement whereOperationAreaId($value)
+ * @method static Builder|CashMovement wherePspAccountId($value)
+ * @method static Builder|CashMovement wherePspId($value)
+ * @method static Builder|CashMovement whereReferenceNo($value)
+ * @method static Builder|CashMovement whereSourceLedger($value)
+ * @method static Builder|CashMovement whereTransactionType($value)
+ * @method static Builder|CashMovement whereUpdatedAt($value)
+ * @method static Builder|CashMovement whereUserId($value)
+ * @mixin Eloquent
  */
 class CashMovement extends Model
 {
-    use HasFactory;
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        return $this->where('id', decryptId($value))->firstOrFail();
+    }
+
+    public function paymentServiceProvider(): BelongsTo
+    {
+        return $this->belongsTo(PaymentServiceProvider::class, 'psp_id');
+    }
+
+    public function paymentServiceProviderAccount(): BelongsTo
+    {
+        return $this->belongsTo(PaymentServiceProviderAccount::class, 'psp_account_id');
+    }
 }

@@ -123,13 +123,13 @@
                                 <div class="form-group">
                                     <label for="doc_number">Document Number</label>
                                     <div class="d-flex flex-shrink-0">
-                                        <input type="hidden" name="doc_number" id="doc_number" class="form-control"
-                                               required/>
-                                        <input type="text" id="input_doc_number" class="form-control" required/>
-                                        <button type="button" id="btnCheckIdDetails"
+                                 {{--       <input type="hidden" name="doc_number" id="doc_number" class="form-control"
+                                               required/>--}}
+                                       <input type="text" id="doc_number" name="doc_number" class="form-control" required/>
+                                        {{-- <button type="button" id="btnCheckIdDetails"
                                                 class="btn btn-primary ml-2">
                                             Check
-                                        </button>
+                                        </button>--}}
                                     </div>
                                     <label id="input_doc_number-error" class="error" for="input_doc_number"></label>
                                 </div>

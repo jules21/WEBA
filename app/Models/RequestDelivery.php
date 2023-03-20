@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\RequestDelivery
@@ -15,23 +20,31 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $delivered_by_name
  * @property string|null $delivered_by_phone
  * @property string|null $delivery_date
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery query()
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery whereBatchNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery whereDeliveredByName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery whereDeliveredByPhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery whereDeliveryDate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery whereDoneBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery whereRequestId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RequestDelivery whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|RequestDelivery newModelQuery()
+ * @method static Builder|RequestDelivery newQuery()
+ * @method static Builder|RequestDelivery query()
+ * @method static Builder|RequestDelivery whereBatchNumber($value)
+ * @method static Builder|RequestDelivery whereCreatedAt($value)
+ * @method static Builder|RequestDelivery whereDeliveredByName($value)
+ * @method static Builder|RequestDelivery whereDeliveredByPhone($value)
+ * @method static Builder|RequestDelivery whereDeliveryDate($value)
+ * @method static Builder|RequestDelivery whereDoneBy($value)
+ * @method static Builder|RequestDelivery whereId($value)
+ * @method static Builder|RequestDelivery whereRequestId($value)
+ * @method static Builder|RequestDelivery whereUpdatedAt($value)
+ * @mixin Eloquent
  */
 class RequestDelivery extends Model
 {
-    use HasFactory;
+    public function details(): HasMany
+    {
+        return $this->hasMany(RequestDeliveryDetail::class, 'request_delivery_id');
+    }
+
+    public function request(): BelongsTo
+    {
+        return $this->belongsTo(Request::class);
+    }
 }
