@@ -27,7 +27,7 @@ class StoreCustomerRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'document_type_id' => ['required'],
             'doc_number' => ['required', 'string', 'max:255'],
-            'input_doc_number' => ['required', 'string', 'max:255'],
+//            'input_doc_number' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
             'legal_type_id' => ['required'],
