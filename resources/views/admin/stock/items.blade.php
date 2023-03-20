@@ -228,6 +228,10 @@
     {!! JsValidator::formRequest(App\Http\Requests\UpdateItemRequest::class,'#edit-category-form') !!}
     {!! $dataTable->scripts() !!}
     <script>
+        $(document).ready(function () {
+            $('.nav-stock-managements').addClass('menu-item-active menu-item-open');
+            $('.nav-items').addClass('menu-item-active');
+        });
         $("#kt_datatable1").DataTable({responsive:true});
         $(document).on('click','.btn-edit', function (e) {
             e.preventDefault();
@@ -242,7 +246,6 @@
             $('#_status').val($(this).data('is_active'));
             $('#edit-category-form').attr('action', $(this).data('url'));
         });
-
         $(document).on('change', '.btn-delete', function (e){
             e.preventDefault();
             var url = $(this).data('url');

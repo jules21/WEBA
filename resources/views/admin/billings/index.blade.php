@@ -124,6 +124,7 @@
     {{$dataTable->scripts()}}
     <script>
         $(document).ready(function () {
+            $('.nav-billings').addClass('menu-item-active');
             initData();
             $("#kt_datatable1").DataTable({responsive:true});
         });
