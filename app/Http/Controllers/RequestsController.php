@@ -244,7 +244,9 @@ class RequestsController extends Controller
     {
         $provinces = Province::query()->get();
         $requestTypes = RequestType::query()->get();
-        $customers = Customer::query()->orderBy('name')->get();
+        $customers = Customer::query()
+            ->where('operator_id', '=', auth()->user()->operator_id)
+            ->orderBy('name')->get();
         $waterUsage = WaterUsage::query()->get();
 
         $roadTypes = RoadType::query()

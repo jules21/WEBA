@@ -50,10 +50,10 @@ class PurchaseController extends Controller
                     }
 
                     $statuses = [];
-                    if (auth()->user()->can(Permission::CreatePurchase)) {
+                    if (auth()->user()->can(Permission::StockInItems)) {
                         $statuses[] = Purchase::PENDING;
                     }
-                    if (auth()->user()->can(Permission::ApprovePurchase)) {
+                    if (auth()->user()->can(Permission::ApproveStockIn)) {
                         $statuses[] = Purchase::SUBMITTED;
                     }
 
@@ -68,7 +68,7 @@ class PurchaseController extends Controller
                     $editBtn = '';
                     $deleteBtn = '';
                     $submitBtn = '';
-                    if ($row->status == Purchase::PENDING && auth()->user()->can(Permission::CreatePurchase)) {
+                    if ($row->status == Purchase::PENDING && auth()->user()->can(Permission::StockInItems)) {
                         $submitBtn = '<a href="' . route('admin.purchases.submit', encryptId($row->id)) . '" class="dropdown-item js-submit"><i class="fa fa-cloud-upload-alt mr-2"></i> Submit</a>';
                         $editBtn = '<a href="' . route('admin.purchases.edit', encryptId($row->id)) . '" class="dropdown-item"><i class="fa fa-edit mr-2"></i> Edit</a>';
                         $deleteBtn = '<a href="' . route('admin.purchases.destroy', encryptId($row->id)) . '" class="dropdown-item js-delete"><i class="fa fa-trash mr-2"></i> Delete</a>';

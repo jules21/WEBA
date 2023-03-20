@@ -69,7 +69,7 @@ use Illuminate\Support\Carbon;
 class
 Customer extends Model
 {
-    use HasFactory,Notifiable;
+    use HasFactory, Notifiable;
     use HasAddress;
 
     public function resolveRouteBinding($value, $field = null)
@@ -92,14 +92,25 @@ Customer extends Model
         return $this->belongsToMany(Operator::class, 'customer_operators', 'customer_id', 'operator_id');
     }
 
-    public function requests()
+    public function operator(): BelongsTo
+    {
+        return $this->belongsTo(Operator::class, 'operator_id');
+    }
+
+    public function requests(): HasMany
     {
         return $this->hasMany(Request::class);
     }
+
     // has many connections through requests
     public function connections()
     {
         return $this->hasManyThrough(MeterRequest::class, Request::class);
+    }
+
+    public function operationArea(): BelongsTo
+    {
+        return $this->belongsTo(OperationArea::class);
     }
 
 

@@ -7,7 +7,6 @@ class Permission
 
     const ManageOperators = 'Manage Operators';
     const ManageCustomers = 'Manage Customers';
-    const ManageRequests = 'Manage Requests';
     const ReviewRequest = 'Review Request';
     const ApproveRequest = 'Approve Request';
     const AssignMeterNumber = 'Assign Meter Number';
@@ -17,8 +16,8 @@ class Permission
 
     const  ManageOperationAreas = 'Manage Operation Areas';
 
-    const CreatePurchase = 'Create Purchase';
-    const ApprovePurchase = 'Approve Purchase';
+    const StockInItems = 'Stock In Items';
+    const ApproveStockIn = 'Approve Stock In';
 
     const ManageChartOfAccounts = 'Manage Chart Of Accounts';
     const AssignChartOfAccounts = 'Assign Chart Of Accounts';
@@ -60,12 +59,6 @@ class Permission
     const ManageWaterNetwork = 'Manage Water Network';
     const ManageRequestDurationConfigurations = 'Manage Request Duration Configurations';
     const ManagePaymentConfigurations = 'Manage Payment Configurations';
-
-
-
-
-
-
 
 
 }

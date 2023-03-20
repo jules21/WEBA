@@ -10,30 +10,49 @@ use App\Models\IdType;
 use App\Models\LegalType;
 use App\Models\Province;
 use DataTables;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
+use LaravelIdea\Helper\App\Models\_IH_Customer_QB;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class CustomerController extends Controller
 {
-    public function fetchIdentificationFromNIDA($id)
+    public function fetchIdentificationFromNIDA()
     {
-        $response = Http::post("https://onlineauthentication.nida.gov.rw/onlineauthentication/claimtoken", [
-            "username" => config('app.NIDA_USERNAME'),
-            "password" => config('app.NIDA_PASSWORD')
-        ]);
-        $res = Http::withToken(explode(" ", $response->body())[1])
-            ->post("https://onlineauthentication.nida.gov.rw/onlineauthentication/getcitizen", [
-                "documentNumber" => $id,
-                "keyPhrase" => config('app.NIDA_KEY_PHRASE')
+        $id = request('id');
+        $idType = request('id_type');
+
+        $customer = $this->getCustomer($idType, $id);
+
+        if (!is_null($customer)) {
+            return \response()->json([
+                'content' => "Operator with the provided Doc Number already exists.",
+                'status' => 400
             ]);
-        return json_decode($res->body(), true);
+        }
+
+        $url = config('services.CLMS_NIDA_URL') . "?id=$id";
+        $response = Http::get($url);
+        if ($response->status() !== ResponseAlias::HTTP_OK) {
+            return response()->json([
+                'message' => 'Failed to fetch data from NIDA',
+                'errors' => $response->json()
+            ], ResponseAlias::HTTP_BAD_REQUEST);
+        }
+        return json_decode($response->body(), true);
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function index()
     {
-        $data = Customer::with(['legalType','documentType'])
+        $data = Customer::with(['legalType', 'documentType'])
+            ->where('operator_id', '=', auth()->user()->operator_id)
             ->withCount('connections');
         if (request()->ajax()) {
             return DataTables::of($data)
@@ -66,7 +85,7 @@ class CustomerController extends Controller
                 ->addColumn('connection', function (Customer $row) {
                     return '<a href="' . route('admin.customers.connections', encryptId($row->id)) . '">
 
-                                                    <span class="badge badge-primary">'.$row->connections_count.'</span>
+                                                    <span class="badge badge-primary">' . $row->connections_count . '</span>
                                                 </a>';
                 })
                 ->rawColumns(['action', 'name', 'connection'])
@@ -85,9 +104,22 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         $data = $request->validated();
+        $customer = $this->getCustomer(
+            $data['document_type_id'],
+            $data['doc_number']
+        );
+
+        if (!is_null($customer)) {
+            return \response()->json([
+                'message' => "Operator with the provided Doc Number already exists.",
+                'status' => 400
+            ], ResponseAlias::HTTP_BAD_REQUEST);
+        }
+
         $id = $request->input('id');
         // remove input_doc_number from data
-        unset($data['input_doc_number']);
+//        unset($data['input_doc_number']);
+        $data['operator_id'] = auth()->user()->operator_id;
         if ($id > 0) {
             $customer = Customer::query()->find($id);
             $customer->update($data);
@@ -98,7 +130,8 @@ class CustomerController extends Controller
 
         if (request()->ajax()) {
             return response()->json([
-                'message' => 'Customer created successfully'
+                'message' => 'Customer created successfully',
+                'data' => $customer
             ], ResponseAlias::HTTP_CREATED);
         }
 
@@ -130,5 +163,20 @@ class CustomerController extends Controller
             ], ResponseAlias::HTTP_NO_CONTENT);
         }
         return back();
+    }
+
+    /**
+     * @param $idType
+     * @param $id
+     * @return Customer|Builder|Model|_IH_Customer_QB|object|null
+     */
+    public function getCustomer($idType, $id)
+    {
+        return Customer::query()
+            ->where([
+                ['document_type_id', '=', $idType],
+                ['doc_number', '=', $id],
+                ['operator_id', '=', auth()->user()->operator_id]
+            ])->first();
     }
 }
