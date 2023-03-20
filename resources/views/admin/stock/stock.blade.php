@@ -129,6 +129,9 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
+        $('.nav-stock-managements').addClass('menu-item-active menu-item-open');
+        $('.nav-stock').addClass('menu-item-active');
+
             initData();
             $("#kt_datatable1").DataTable({responsive:true});
         });

@@ -198,9 +198,34 @@
     {!! JsValidator::formRequest(App\Http\Requests\StoreAdjustmentRequest::class,'#add-adjustment-form') !!}
     {!! JsValidator::formRequest(App\Http\Requests\UpdateAdjustmentRequest::class,'#edit-adjustment-form') !!}
     <script>
-        $("#kt_datatable1").DataTable({
-            responsive:true,
-            "order": [[ 3, "desc" ]]
+        $(document).ready(function () {
+            $('.nav-stock-managements').addClass('menu-item-open');
+            $('.nav-stock-adjustments').addClass('menu-item-open');
+            $('.nav-adjustments-all').addClass('menu-item-active');
+            const currentRoute = @JSON(Route::currentRouteName());
+            console.log(currentRoute)
+            // currentRoute == 'admin.stock.adjustments.index'
+            //     ? $('.nav-adjustments-all').addClass('menu-item-active')
+            //     : currentRoute == 'admin.stock.adjustments.create'
+            //         ? $('.nav-adjustments-create').addClass('menu-item-active')
+            //         : $('.nav-adjustments-my-tasks').addClass('menu-item-active')
+            if(currentRoute == 'admin.stock.adjustments.index') {
+                $('.nav-adjustments-all').addClass('menu-item-active')
+            } else
+            if (currentRoute == 'admin.stock.adjustments.create') {
+                $('.nav-adjustments-create').addClass('menu-item-active')
+            } else if (currentRoute == 'admin.stock.stock-adjustments.tasks') {
+                $('.nav-adjustments-my-tasks').addClass('menu-item-active')
+            } else {
+                $('.nav-adjustments-all').addClass('menu-item-active')
+            }
+
+            $("#kt_datatable1").DataTable({
+                responsive:true,
+                "order": [[ 3, "desc" ]]
+            });
+
+
         });
         $('.edit-btn').click(function (e) {
             e.preventDefault();

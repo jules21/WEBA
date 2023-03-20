@@ -89,10 +89,10 @@
                                     <input type="text" name="phone" class="form-control" aria-describedby="emailHelp"
                                            placeholder="Phone">
                                 </div>
-                                @if(auth()->user()->operator_id == null)
+                                @if(Helper::isSuperAdmin())
                                     <div class="col-md-12 form-group">
                                         <label>Operator</label>
-                                        <select name="operator_id" class="form-control select2" style="width: 100% !important;" id="kt_select2_1">
+                                        <select name="operator_id" class="form-control select2 operator_id" style="width: 100% !important;">
                                             <option value="">Select Operator</option>
                                             @foreach($operators as $operator)
                                                 <option value="{{$operator->id}}">{{$operator->name}}</option>
@@ -102,9 +102,20 @@
                                 @else
                                     <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                                 @endif
-                            </div>
+                                @if(Helper::isOperator() || Helper::isSuperAdmin())
+                                    <div class="col-md-12 form-group">
+                                        <label>Operation Area</label>
+                                        <select name="operation_area" class="form-control select2 operation_area_id" style="width: 100% !important;">
+                                            <option value="">Select Operation Area</option>
+                                            @foreach($operationAreas ?? [] as $operationArea)
+                                                <option value="{{$operationArea->id}}">{{$operationArea->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
 
-                        </div>
+                                @endif
+                            </div>
+                            </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal"><span
                                     class="la la-close"></span> Close
@@ -149,10 +160,10 @@
                                            aria-describedby="emailHelp"
                                            placeholder="Telephone">
                                 </div>
-                                @if(auth()->user()->operator_id == null)
+                                @if(Helper::isSuperAdmin())
                                     <div class="col-md-12 form-group">
                                         <label>Operator</label>
-                                        <select id="operator_id" name="operator_id" class="form-control select2" style="width: 100% !important;"  id="kt_select2_2">
+                                        <select name="operator_id" class="form-control select2 operator_id" style="width: 100% !important;">
                                             <option value="">Select Operator</option>
                                             @foreach($operators as $operator)
                                                 <option value="{{$operator->id}}">{{$operator->name}}</option>
@@ -161,6 +172,18 @@
                                     </div>
                                 @else
                                     <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
+                                @endif
+                                @if(Helper::isOperator() || Helper::isSuperAdmin())
+                                    <div class="col-md-12 form-group">
+                                        <label>Operation Area</label>
+                                        <select name="operation_area" class="form-control select2 operation_area_id" style="width: 100% !important;" id="kt_select2_1">
+                                            <option value="">Select Operation Area</option>
+                                            @foreach($operationAreas ?? [] as $operationArea)
+                                                <option value="{{$operationArea->id}}">{{$operationArea->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                 @endif
                                 <div class="col-md-12 form-group">
                                     <label for="status">Active</label>
@@ -209,15 +232,43 @@
             $("#telephone").val($(button).data("phone"));
             $("#status").val($(button).data("status"));
             $("#operator_id").val($(button).data("operator"));
+            $("#operation_area").val($(button).data("operation_area"));
+
+            $(".operator_id").select2().trigger('change');
+            $(".operation_area_id").select2().trigger('change');
+
             $('#edit-user-form').attr("action", $(this).data('url'));
             var modal = $(this);
             modal.find('form').attr('action', href)
         })
 
-        // basic
-        $('#kt_select2_1, #kt_select2_2').select2({
-            placeholder: 'Select an operator'
+        $(document).on('change', '.operator_id', function () {
+            let operatorId = $(this).val();
+            if (operatorId !== '') {
+                getOperationArea(Array.from(operatorId));
+            } else {
+                $('.operation_area_id').empty();
+                $('.operation_area_id').append('<option value="">Select Operation Area</option>');
+            }
         });
+        const getOperationArea = (operatorId) => {
+            const url = "{{ route('get-operation-areas') }}";
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {operator_id: operatorId},
+                success: function (data) {
+
+                    $('.operation_area_id').empty();
+                    $('.operation_area_id').append('<option value="">Select Operation Area</option>');
+                    $.each(data[0], function (key, value) {
+                        console.log(value)
+                        $('.operation_area_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                }
+            });
+        };
+
 
     </script>
 
