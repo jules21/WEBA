@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreWaterNetworkRequest;
 use App\Http\Requests\UpdateWaterNetworkRequest;
+use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\WaterNetwork;
 use App\Models\User;
@@ -13,7 +14,7 @@ class WaterNetworkController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -36,7 +37,7 @@ class WaterNetworkController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreWaterNetworkRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreWaterNetworkRequest $request)
     {
@@ -81,7 +82,7 @@ class WaterNetworkController extends Controller
      *
      * @param  \App\Http\Requests\UpdateWaterNetworkRequest  $request
      * @param  \App\Models\WaterNetwork  $waterNetwork
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateWaterNetworkRequest $request, WaterNetwork $waterNetwork)
     {
@@ -103,7 +104,7 @@ class WaterNetworkController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\WaterNetwork  $waterNetwork
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(WaterNetwork $waterNetwork,$id)
     {
@@ -115,5 +116,10 @@ class WaterNetworkController extends Controller
             info($exception);
             return redirect()->back()->with('error','Water Network can not be deleted Successfully');
         }
+    }
+
+    public function loadAreaOperation($id){
+        $areas = OperationArea::where('operator_id',$id)->get();
+        return response()->json($areas);
     }
 }

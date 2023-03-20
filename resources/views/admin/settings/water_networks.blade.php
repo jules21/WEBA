@@ -160,6 +160,13 @@
                             <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                         @endif
 
+                        <div class="form-group">
+                            <label for="name">Operation Area</label>
+                            <select type="text" name="operation_area_id" id="operation_area_id" class="form-control">
+                                <option value="">Please Select Operation Area</option>
+                            </select>
+                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <div class="btn-group">
@@ -229,6 +236,27 @@
                         @else
                             <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                         @endif
+
+                        @if(auth()->user()->operator_id == null)
+                            <div class="form-group">
+                                <label>Operator</label>
+                                <select name="operator_id" class="form-control select2" style="width: 100% !important;" id="edit_operator_id">
+                                    <option value="">Select Operator</option>
+                                    @foreach($operators as $operator)
+                                        <option value="{{$operator->id}}">{{$operator->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @else
+                            <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
+                        @endif
+
+                        <div class="form-group">
+                            <label for="name">Operation Area</label>
+                            <select type="text" name="operation_area_id" id="operation_area_id" class="form-control">
+                                <option value="">Please Select Operation Area</option>
+                            </select>
+                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -301,6 +329,28 @@
 
         $('#exampleModal').on('hidden.bs.modal', function (e) {
             $('#TypeId').val(0);
+        });
+
+        $(document).ready(function (){
+            $('select[name="operator_id"]').on('change',function (){
+                var OperatorId = $(this).val();
+                // alert(OperatorId);
+                if (OperatorId){
+                    $.ajax({
+
+                        url:'/admin/settings/operation_areas/'+OperatorId,
+                        type:"GET",
+                        dataType:"json",
+                        success:function(data){
+                            // alert(data);
+                            $('select[name="operation_area_id"]').empty();
+                            $.each(data,function (key,value){
+                                $('select[name="operation_area_id"]').append('<option value="'+value.id+'">'+value.name+'</option>');
+                            })
+                        }
+                    })
+                }
+            });
         });
 
     </script>
