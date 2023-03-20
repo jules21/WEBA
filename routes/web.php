@@ -3,18 +3,22 @@
 use App\Constants\Permission;
 use App\Http\Controllers\AdjustmentController;
 use App\Http\Controllers\AreaOfOperationController;
+use App\Http\Controllers\CashMovementController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\ChartAccountController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DocumentTypeController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\MeterRequestController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OperatorUserController;
+use App\Http\Controllers\PaymentServiceProviderAccountController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RequestAssignmentController;
 use App\Http\Controllers\RequestDeliveryController;
@@ -112,6 +116,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/to-be-delivered', [RequestsController::class, 'toBeDelivered'])->name('to-be-delivered');
         Route::get('/{request}/item-delivery', [RequestDeliveryController::class, 'index'])->name('delivery-request.index');
+        Route::post('/{request}/item-delivery', [RequestDeliveryController::class, 'store'])->name('delivery-request.store');
+        Route::get('/delivery/{id}/items', [RequestDeliveryController::class, 'items'])->name('delivery.items');
+        Route::get('/delivery/{id}/print-delivery', [RequestDeliveryController::class, 'deliveryNote'])->name('print-delivery');
     });
     Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
         Route::get('/', [PurchaseController::class, 'index'])->name('index');
@@ -130,6 +137,30 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     });
     Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
         Route::get('/chart-of-accounts', [ChartAccountController::class, 'index'])->name('chart-of-accounts');
+        Route::get("/bank-accounts", [PaymentServiceProviderAccountController::class, 'index'])->name("bank-accounts.index");
+        Route::post("/bank-accounts/store", [PaymentServiceProviderAccountController::class, 'store'])->name("bank-accounts.store");
+        Route::delete("/bank-accounts/{id}/delete", [PaymentServiceProviderAccountController::class, 'destroy'])->name("bank-accounts.delete");
+        Route::get("/bank-accounts/{paymentServiceProviderAccount}/show", [PaymentServiceProviderAccountController::class, 'show'])->name("bank-accounts.show");
+        Route::get("/bank-accounts/{paymentServiceProviderAccount}/edit", [PaymentServiceProviderAccountController::class, 'accountsByServiceProvider'])
+            ->name("provider-service-by-accounts");
+
+        Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses');
+        Route::post('/expenses/store', [ExpenseController::class, 'store'])->name('expenses.store');
+        Route::get('/expenses/{expense}/show', [ExpenseController::class, 'show'])->name('expenses.show');
+        Route::delete('/expenses/{expense}/delete', [ExpenseController::class, 'destroy'])->name('expenses.delete');
+        Route::get('/expenses/{id}/expense-ledgers', [ExpenseController::class, 'getExpenseLedgers'])->name('expense-ledgers');
+
+        Route::get("/cash-movements", [CashMovementController::class, 'index'])->name("cash-movements.index");
+        Route::post("/cash-movements/store", [CashMovementController::class, 'store'])->name("cash-movements.store");
+        Route::delete("/cash-movements/{id}/delete", [CashMovementController::class, 'destroy'])->name("cash-movements.delete");
+        Route::get("/cash-movements/{cashMovement}/show", [CashMovementController::class, 'show'])->name("cash-movements.show");
+
+        Route::get('/journal-entries', [JournalEntryController::class, 'index'])->name('journal-entries');
+        Route::post('/journal-entries/store', [JournalEntryController::class, 'store'])->name('journal-entries.store');
+        Route::get('/journal-entries/{journalEntry}/show', [JournalEntryController::class, 'show'])->name('journal-entries.show');
+        Route::delete('/journal-entries/{journalEntry}/delete', [JournalEntryController::class, 'destroy'])->name('journal-entries.delete');
+
+
     });
     Route::prefix('user-management')->group(function () {
         //roles routes
