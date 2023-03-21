@@ -104,17 +104,6 @@ class CustomerController extends Controller
     public function store(StoreCustomerRequest $request)
     {
         $data = $request->validated();
-        $customer = $this->getCustomer(
-            $data['document_type_id'],
-            $data['doc_number']
-        );
-
-        if (!is_null($customer)) {
-            return \response()->json([
-                'message' => "Operator with the provided Doc Number already exists.",
-                'status' => 400
-            ], ResponseAlias::HTTP_BAD_REQUEST);
-        }
 
         $id = $request->input('id');
         // remove input_doc_number from data
