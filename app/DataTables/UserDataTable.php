@@ -75,6 +75,7 @@ class UserDataTable extends DataTable
                                        data-gender="'.$item->gender.'"
                                        data-id="'.$item->id.'"
                                        data-operator="'.$item->operator_id.'"
+                                       data-operation_area="'.$item->operation_area.'"
                                        data-national_id="'.$item->national_id.'"
                                        data-status="'.$item->status.'"
                                        data-url="'.route("admin.users.update",$item->id).'"> Edit</a>';
