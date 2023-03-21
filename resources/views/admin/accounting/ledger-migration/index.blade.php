@@ -40,6 +40,20 @@
         </div>
     </div>
 
+    <div class="alert alert-danger alert-custom alert-notice rounded-sm py-1 px-3">
+        <div class="alert-icon">
+            <i class="flaticon2-exclamation"></i>
+        </div>
+        <div class="alert-text d-flex">
+            <strong>
+                Warning!
+            </strong>
+            <p class="ml-2 mb-0">
+                Please make sure that you have migrated all the ledgers from the old system to the new system.
+            </p>
+        </div>
+    </div>
+
     <div class="card card-body">
 
 
@@ -55,7 +69,7 @@
             </button>
         </div>
         <div class="table-responsive my-3">
-            <table class="table table-head-custom border table-head-solid table-hover dataTable">
+            <table class="table table-head-custom border table-head-solid  dataTable rounded">
                 <thead>
                 <tr>
                     <th>Ledger Category</th>
@@ -75,22 +89,26 @@
                         <td>{{ $item->ledgerGroup->ledger_description }}</td>
                         <td>{{ $item->ledgerCategory->ledger_description }}</td>
                         <td>{{ $item->ledger->ledger_no }}</td>
-                        <td>{{ $item->amount }}</td>
-                        <td>{{ $item->balance_type }}</td>
+                        <td>{{ number_format($item->amount) }}</td>
                         <td>
-                            <button type="button" class="btn btn-light-primary btn-sm btn-icon rounded-circle">
-                                <i class="flaticon2-edit"></i>
-                            </button>
-                            <button type="button" class="btn btn-light-danger btn-sm btn-icon rounded-circle">
+                            <span
+                                class="label label-inline  label-light-{{ $item->balance_color }} rounded-pill font-weight-bolder">{{ $item->balance_type }}</span>
+                        </td>
+                        <td>
+                            {{--      <button type="button" class="btn btn-light-primary btn-sm btn-icon rounded-circle js-edit">
+                                      <i class="flaticon2-edit"></i>
+                                  </button>--}}
+                            <a href="{{ route('admin.accounting.ledger-migration.delete',encryptId($item->id)) }}"
+                               class="btn btn-light-danger btn-sm btn-icon rounded-circle js-delete">
                                 <i class="flaticon2-trash"></i>
-                            </button>
+                            </a>
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
 
-            <div class="d-flex justify-content-between mt-4">
+            <div class="d-flex justify-content-between mt-10">
                 <div>
                     Total Debit : <strong>{{ number_format($totalDebits) }}</strong>
                 </div>
@@ -101,6 +119,13 @@
                     Difference : <strong>{{ number_format($totalBalance) }}</strong>
                 </div>
             </div>
+
+            @if($totalBalance == 0)
+                <button class="btn btn-success float-right mt-10 rounded" type="button">
+                    <i class="fa fa-check-circle"></i>
+                    Validate Ledger Migration
+                </button>
+            @endif
 
         </div>
     </div>
@@ -166,7 +191,9 @@
                                 Balance Type
                             </label>
                             <select class="form-control" name="balance_type" id="balance_type">
-                                <option value=""></option>
+                                <option value="">
+                                    Select Balance Type
+                                </option>
                                 @foreach(\App\Constants\BalanceType::types() as $item)
                                     <option value="{{ $item }}">{{ $item }}</option>
                                 @endforeach

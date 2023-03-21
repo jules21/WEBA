@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Constants\BalanceType;
 use App\Traits\HasEncryptId;
+use App\Traits\HasStatusColor;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -56,12 +58,12 @@ class LedgerMigration extends Model
 
     public function ledger(): BelongsTo
     {
-        return $this->belongsTo(ChartAccount::class, 'ledger_no');
+        return $this->belongsTo(ChartAccount::class, 'ledger_id');
     }
 
-    public function totalCredit()
+    public function getBalanceColorAttribute(): string
     {
-
+        return $this->balance_type == BalanceType::DEBIT ? 'info' : 'success';
 
     }
 }
