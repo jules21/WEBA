@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Constants\BalanceType;
 use App\Models\Request;
 
 trait HasStatusColor
@@ -19,9 +20,11 @@ trait HasStatusColor
             case 'approved':
             case 'paid':
             case 'delivered':
+            case strtolower(BalanceType::CREDIT):
                 return 'success';
             case 'rejected':
             case 'cancelled':
+            case strtolower(BalanceType::DEBIT):
                 return 'danger';
             case 'meter assigned':
                 return 'green';
