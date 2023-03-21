@@ -33,7 +33,12 @@ class StoreCustomerRequest extends FormRequest
                 'string',
                 'max:255',
                 Rule::unique('customers')->where(function ($query) {
-                    return $query->where('document_type_id', request('document_type_id'));
+                    return $query->where([
+                        ['document_type_id', '=', request('document_type_id')],
+                        ['document_type_id', '=', request('document_type_id')],
+                        ['operator_id', '=', auth()->user()->operator_id],
+                        ['id', '!=', request('id')]
+                    ]);
                 }),
                 new  ValidateDocNumber()
             ],
