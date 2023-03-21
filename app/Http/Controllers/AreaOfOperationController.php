@@ -71,11 +71,12 @@ class AreaOfOperationController extends Controller
     public function store(StoreOperationAreaRequest $request, Operator $operator)
     {
         $data = $request->validated();
-
-
         // check if the area of operation already exists
         $areaOfOperation = $operator->operationAreas()
-            ->where('district_id', $data['district_id'])
+            ->where([
+                ['district_id', '=', $data['district_id']??0],
+                ['id', '!=', $data['id'] ?? 0]
+            ])
             ->first();
 
         if ($areaOfOperation) {
@@ -91,6 +92,7 @@ class AreaOfOperationController extends Controller
         DB::beginTransaction();
         if ($id > 0) {
             $opArea = OperationArea::query()->find($id);
+            unset($data['district_id']);
             $opArea->update($data);
         } else {
             $opArea = $operator
