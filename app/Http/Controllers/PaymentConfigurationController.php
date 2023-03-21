@@ -12,7 +12,8 @@ class PaymentConfigurationController extends Controller
     public function index(){
         $user = auth()->user();
              if ($user->is_super_admin){
-                 $payments = PaymentConfiguration::query()->with('paymentType','requestType','operator','operationArea')->orderBy('id','DESC')->get();
+                 $payments = PaymentConfiguration::query()->with('paymentType','requestType','operator','operationArea')
+                     ->orderBy('id','DESC')->get();
                  $operators = Operator::all();
              }else{
                  $payments = PaymentConfiguration::query()->with('paymentType','requestType','operator','operationArea')

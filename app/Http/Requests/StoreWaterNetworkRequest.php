@@ -29,6 +29,7 @@ class StoreWaterNetworkRequest extends FormRequest
             'population_covered'=>'required',
             'operator_id'=>'required',
             'water_network_type_id'=>'required',
+            'operation_area_id'=>'required',
         ];
     }
 }
