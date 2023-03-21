@@ -62,6 +62,7 @@
                         <th>Distance Covered</th>
                         <th>Population Covered</th>
                         <th>Water Network Type</th>
+                        <th>Water Network Status</th>
                         @if(auth()->user()->is_super_admin)
                         <th>Operator</th>
                         @endif
@@ -78,6 +79,7 @@
                             <td>{{$waterNetwork->distance_covered}}</td>
                             <td>{{$waterNetwork->population_covered}}</td>
                             <td>{{$waterNetwork->waterNetworkType->name?? ''}}</td>
+                            <td>{{$waterNetwork->waterNetworkStatus->name?? ''}}</td>
                             @if(auth()->user()->is_super_admin)
                                 <td>{{$waterNetwork->operator->name?? ''}}</td>
                             @endif
@@ -97,6 +99,7 @@
                                            data-operator="{{$waterNetwork->operator_id}}"
                                            data-network="{{$waterNetwork->water_network_type_id}}"
                                            data-area="{{$waterNetwork->operation_area_id}}"
+                                           data-status="{{$waterNetwork->water_network_status_id}}"
                                            class="dropdown-item js-edit">Edit</a>
                                         <a href="{{route('admin.water.network.delete',$waterNetwork->id)}}"
                                            class="dropdown-item js-delete">Delete</a>
@@ -141,6 +144,16 @@
                         <div class="form-group">
                             <label for="name">Population Covered</label>
                             <input type="number"  name="population_covered" id="population_covered" class="form-control" required/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Water Network Status </label>
+                            <select name="water_network_status_id" id="water_network_status_id" class="form-control" required>
+                                <option value="">Please Select Water Network Status</option>
+                                @foreach(App\Models\WaterNetworkStatus::all() as $status)
+                                    <option value="{{$status->id}}">{{$status->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -233,6 +246,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="name">Water Network Status </label>
+                            <select name="water_network_status_id" id="edit_water_network_status_id" class="form-control" required>
+                                <option value="">Please Select Water Network Status</option>
+                                @foreach(App\Models\WaterNetworkStatus::all() as $status)
+                                    <option value="{{$status->id}}">{{$status->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
                             <label for="name">Water Network Type</label>
                             <select name="water_network_type_id" id="edit_water_network_type_id" class="form-control" required>
                                 <option value="">Please Select Water Network Type</option>
@@ -317,6 +340,7 @@
             $("#edit_operator_id").val($(this).data('operator'));
             $("#edit_water_network_type_id").val($(this).data('network'));
             $("#edit_operation_area_id").val($(this).data('area'));
+            $("#edit_water_network_status_id").val($(this).data('status'));
             $('#submissionFormEdit').attr('action', url);
         });
 

@@ -48,4 +48,8 @@ class WaterNetwork extends Model
     public function operationArea(){
         return $this->belongsTo(OperationArea::class,'operation_area_id');
     }
+
+    public function waterNetworkStatus(){
+        return $this->belongsTo(WaterNetworkStatus::class,'water_network_status_id');
+    }
 }
