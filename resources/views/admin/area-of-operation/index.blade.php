@@ -99,10 +99,6 @@
                     @csrf
                     <input type="hidden" value="0" id="id" name="id"/>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control"/>
-                        </div>
 
                         <div class="form-group">
                             <label for="district_id">District</label>
@@ -115,6 +111,12 @@
                             </select>
                             {{--                            <span id="district_id-error" class="invalid-feedback"></span>--}}
                         </div>
+
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" class="form-control"/>
+                        </div>
+
 
                         <div class="card card-body border-primary border-2 mb-3 p-2 rounded-0"
                              style="border-style: dotted !important;display: none" id="resultsContent">

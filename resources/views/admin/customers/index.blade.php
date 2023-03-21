@@ -86,7 +86,7 @@
                         &times;
                     </button>
                 </div>
-                <form action="{{ route('admin.customers.store') }}"
+                <form action="{{ route('admin.customers.store') }}" novalidate
                       method="post" id="formSave">
                     @csrf
                     <input type="hidden" value="0" id="id" name="id"/>
@@ -102,6 +102,7 @@
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
                                     </select>
+                                    <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -112,8 +113,8 @@
                                         @foreach($idTypes as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
-
                                     </select>
+                                    <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
                         </div>
@@ -123,21 +124,24 @@
                                 <div class="form-group">
                                     <label for="doc_number">Document Number</label>
                                     <div class="d-flex flex-shrink-0">
-                                        <input type="text" id="doc_number" name="doc_number"
-                                               class="form-control"
-                                               required/>
+                                        <div class="w-100">
+                                            <input type="text" id="doc_number" name="doc_number"
+                                                   class="form-control"
+                                                   required/>
+                                            <span class="invalid-feedback small"></span>
+                                        </div>
                                         <button type="button" id="btnCheckIdDetails"
-                                                class="btn btn-primary ml-2">
+                                                class="btn btn-primary ml-2 align-self-start">
                                             Check
                                         </button>
                                     </div>
-                                    <label id="input_doc_number-error" class="error" for="input_doc_number"></label>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="name">Name</label>
                                     <input type="text" name="name" id="name" class="form-control" required/>
+                                    <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
                         </div>
@@ -147,12 +151,14 @@
                                 <div class="form-group">
                                     <label for="phone">Phone Number</label>
                                     <input type="tel" name="phone" id="phone" class="form-control" required/>
+                                    <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="email">Email address</label>
                                     <input type="email" name="email" id="email" class="form-control"/>
+                                    <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
                         </div>
@@ -168,6 +174,7 @@
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                         @endforeach
                                     </select>
+                                    <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -176,6 +183,7 @@
                                     <select name="district_id" id="district_id" class="form-control" required>
                                         <option value="">Select District</option>
                                     </select>
+                                    <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
                         </div>
@@ -187,6 +195,7 @@
                                     <select name="sector_id" id="sector_id" class="form-control" required>
                                         <option value="">Select Sector</option>
                                     </select>
+                                    <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -195,6 +204,7 @@
                                     <select name="cell_id" id="cell_id" class="form-control" required>
                                         <option value="">Select Cell</option>
                                     </select>
+                                    <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
                         </div>
@@ -206,6 +216,7 @@
                                     <select name="village_id" id="village_id" class="form-control">
                                         <option value="">Select Village</option>
                                     </select>
+                                    <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +237,7 @@
 @section('scripts')
     {{--    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
         {!! JsValidator::formRequest(App\Http\Requests\StoreCustomerRequest::class) !!}--}}
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>
+    {{--    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>--}}
 
     <script>
 
@@ -322,11 +333,12 @@
 
         }
 
+        let globalDocNumber = '';
 
         $(document).ready(function () {
             $('.nav-customers').addClass('menu-item-active');
             let $formSave = $('#formSave');
-            $formSave.validate();
+            // $formSave.validate();
 
             let dataTable = $('.dataTable').DataTable({
                 serverSide: true,
@@ -388,7 +400,8 @@
                 getCells($(this).val());
             });
 
-            let $inputDocNumber = $('#doc_number');
+            let $docNumber = $('#doc_number');
+            let $inputDocNumber = $docNumber;
             let $documentTypeId = $('#document_type_id');
             let $legalTypeId = $('#legal_type_id');
             $legalTypeId.on('change', function () {
@@ -412,6 +425,17 @@
                 }
             });
 
+            $docNumber.on('keyup', function () {
+                if (globalDocNumber !== $(this).val()) {
+                    $('#name').val("");
+                }
+                if ($documentTypeId.val() === "{{ config('app.NATIONAL_ID') }}") {
+                  if ($(this).val().length === 16) {
+                    $btnCheckIdDetails.trigger('click');
+                  }
+                }
+            });
+
             $btnCheckIdDetails.on('click', function () {
                 let docNumber = $inputDocNumber.val();
                 let legalTypeId = $legalTypeId.val();
@@ -421,6 +445,8 @@
                     $inputDocNumber.attr('disabled', true);
                     $legalTypeId.attr('disabled', true);
                     $documentTypeId.attr('disabled', true);
+
+                    globalDocNumber = docNumber;
 
                     let btn = $(this);
                     btn.attr('disabled', true);
@@ -475,8 +501,8 @@
                 e.preventDefault();
 
                 let $form = $(this);
-                if (!$form.valid())
-                    return;
+                /*     if (!$form.valid())
+                         return;*/
                 let $btn = $form.find(":submit");
 
                 $btn.prop("disabled", true)
@@ -486,6 +512,11 @@
                 let data = $form.serialize();
                 // add disabled attribute to inputs
                 $form.find('input, select, textarea').prop('disabled', true);
+
+                // find all inputs and remove is-invalid class and invalid-feedback text content from any closet sibling
+                $form.find('input, select, textarea').removeClass('is-invalid');
+                $form.find('.invalid-feedback').html('');
+
 
                 $.ajax({
                     url: $form.attr("action"),
@@ -502,12 +533,26 @@
                             icon: "error",
                             text: message
                         });
+
+                        if (response.responseJSON.errors) {
+                            let errors = response.responseJSON.errors;
+                            for (let key in errors) {
+                                let error = errors[key];
+                                let $input = $form.find('[name="' + key + '"]');
+                                $input.addClass('is-invalid');
+                                $input.closest('.form-group').find('.invalid-feedback').html(error[0]);
+                            }
+                        }
+
                     },
                     complete: function () {
                         $btn.prop("disabled", false)
                             .removeClass("spinner spinner-white spinner-sm spinner-right");
 
                         $form.find('input, select, textarea').prop('disabled', false);
+                        if ($documentTypeId.val() === "{{ config('app.NATIONAL_ID') }}") {
+                            $name.attr('disabled', true);
+                        }
                     }
                 });
 
@@ -529,7 +574,7 @@
                         let docTypeId = data.document_type_id;
                         $documentTypeId.val(docTypeId);
 
-                        $('#doc_number').val(data.doc_number);
+                        $docNumber.val(data.doc_number);
                         $('#phone').val(data.phone);
                         $('#email').val(data.email);
                         $('#province_id').val(data.province_id);
@@ -538,7 +583,7 @@
                         getCells(data.sector_id, data.cell_id);
                         $('#addModal').modal();
 
-                    /*    if (Number(docTypeId) === Number("{{ config('app.NATIONAL_ID') }}")) {
+                        /*    if (Number(docTypeId) === Number("{{ config('app.NATIONAL_ID') }}")) {
                             $btnCheckIdDetails.trigger('click');
                         }*/
                     },
