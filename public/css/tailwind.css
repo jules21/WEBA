@@ -270,6 +270,14 @@
     --tw-text-opacity: 1 !important;
     color: rgb(209 213 219 / var(--tw-text-opacity)) !important
 }
+.tw-text-gray-400 {
+    --tw-text-opacity: 1 !important;
+    color: rgb(156 163 175 / var(--tw-text-opacity)) !important
+}
+.tw-text-gray-500 {
+    --tw-text-opacity: 1 !important;
+    color: rgb(107 114 128 / var(--tw-text-opacity)) !important
+}
 .tw-opacity-50 {
     opacity: 0.5 !important
 }
@@ -278,6 +286,16 @@
 }
 .hover\:tw-border-0:hover {
     border-width: 0px !important
+}
+.hover\:tw-border:hover {
+    border-width: 1px !important
+}
+.hover\:tw-border-2:hover {
+    border-width: 2px !important
+}
+.hover\:tw-border-accent:hover {
+    --tw-border-opacity: 1 !important;
+    border-color: rgb(166 206 57 / var(--tw-border-opacity)) !important
 }
 .hover\:tw-bg-\[\#86B700\]:hover {
     --tw-bg-opacity: 1 !important;
@@ -308,6 +326,9 @@
 .hover\:tw-bg-accent\/50:hover {
     background-color: rgb(166 206 57 / 0.5) !important
 }
+.hover\:tw-bg-accent\/80:hover {
+    background-color: rgb(166 206 57 / 0.8) !important
+}
 .hover\:tw-text-white:hover {
     --tw-text-opacity: 1 !important;
     color: rgb(255 255 255 / var(--tw-text-opacity)) !important
@@ -315,6 +336,10 @@
 .tw-group:hover .group-hover\:tw-bg-white {
     --tw-bg-opacity: 1 !important;
     background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important
+}
+.tw-group:hover .group-hover\:tw-text-white {
+    --tw-text-opacity: 1 !important;
+    color: rgb(255 255 255 / var(--tw-text-opacity)) !important
 }
 @media (min-width: 768px) {
     .md\:tw-text-2xl {

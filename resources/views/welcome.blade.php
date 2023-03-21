@@ -12,6 +12,9 @@
                         SYSTEM(CMS)
                     </h1>
                 </div>
+                <h5 class="mb-4 text-accent font-weight-bold">
+                    For Rural Water Supply Services
+                </h5>
                 <p class="tw-text-gray-300 mb-4">
                     Empowering Private Water Operators for Sustainable Water Management - Reducing
                     Financial Loss and Non-Revenue Water .
