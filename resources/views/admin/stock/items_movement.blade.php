@@ -31,7 +31,7 @@
     <!--end::Subheader-->
 @endsection
 @section('content')
-    <div class="container">
+    <div class="">
         <div class="card card-custom">
             <div class="card-header flex-wrap">
                 <h3 class="card-title">Stock Movements</h3>
@@ -65,6 +65,8 @@
 @section('scripts')
     {!! $dataTable->scripts() !!}
     <script>
+        $('.nav-stock-managements').addClass('menu-item-active menu-item-open');
+        $('.nav-stock-movements').addClass('menu-item-active');
         // $(document).on('click','.btn-details', function(e){
         //     e.preventDefault();
         //     console.log('clicked');

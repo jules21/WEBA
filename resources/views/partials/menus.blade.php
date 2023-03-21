@@ -342,7 +342,7 @@
                                 </li>
                             @endcan
                             @can(\App\Constants\Permission::ManageStockMovements)
-                                <li class="menu-item nav-all-permissions" aria-haspopup="true">
+                                <li class="menu-item nav-stock-movements" aria-haspopup="true">
                                     <a href="{{ route('admin.stock.stock-items.movements') }}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
