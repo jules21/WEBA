@@ -149,7 +149,8 @@
 
 
         $(document).ready(function () {
-            $('.nav-requests').addClass('menu-item-active');
+            $('.nav-request-management').addClass('menu-item-active menu-item-open');
+            $('.nav-pending-requests').addClass('menu-item-active');
 
             let dataTable = $('.dataTable').DataTable({
                 serverSide: true,

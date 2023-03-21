@@ -92,14 +92,14 @@
                             </span>
                         </li>
                         @can(\App\Constants\Permission::CreateRequest)
-                            <x-menu-item title="Create New Request" item-class="nav-pending-requests"
+                            <x-menu-item title="Create New Request" item-class="nav-create-request"
                                          :route="route('admin.requests.create')"/>
                         @endcan
 
                         @can(\App\Constants\Permission::AssignRequest)
                             <x-menu-item title="Pending Requests" item-class="nav-pending-requests"
                                          :route="route('admin.requests.new')"/>
-                            <x-menu-item title="Assigned Requests" item-class="nav-my-tasks"
+                            <x-menu-item title="Assigned Requests" item-class="nav-assigned-requests"
                                          :route="route('admin.requests.assigned')"/>
                         @endcan
 
