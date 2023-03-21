@@ -114,7 +114,7 @@
                     <h4>
                         Water Network & Connection Fee
                     </h4>
-                    @if($request->status == \App\Models\Request::ASSIGNED)
+                    @if($request->status == \App\Models\Request::ASSIGNED && auth()->user()->can(\App\Constants\Permission::ReviewRequest))
                         <form action="{{ route('admin.requests.add-water-network', encryptId($request->id)) }}"
                               method="post" id="saveWaterNetworkForm">
                             @csrf
@@ -173,7 +173,7 @@
                                     <span class="font-weight-bold">Connection Fee</span>
                                 </label>
                                 <div class="form-control-plaintext py-0">
-                                   RWF {{ number_format($request->connection_fee,0) }}
+                                    RWF {{ number_format($request->connection_fee,0) }}
                                 </div>
                             </div>
                         </div>
