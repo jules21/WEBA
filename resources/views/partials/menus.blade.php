@@ -1,6 +1,6 @@
-    <ul class="menu-nav">
-        <li class="menu-item nav-dashboard">
-            <a href="{{route('admin.dashboard')}}" class="menu-link">
+<ul class="menu-nav">
+    <li class="menu-item nav-dashboard">
+        <a href="{{route('admin.dashboard')}}" class="menu-link">
                <span class="svg-icon menu-icon">
                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
@@ -9,70 +9,68 @@
                 </svg>
 
                </span>
-                <span class="menu-text">Dashboard</span>
+            <span class="menu-text">Dashboard</span>
+        </a>
+    </li>
+    @can(\App\Constants\Permission::ManageOperators)
+        <li class="menu-item nav-operators">
+            <a href="{{route('admin.operator.index')}}" class="menu-link">
+               <span class="svg-icon menu-icon">
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
+                    </svg>
+               </span>
+                <span class="menu-text">Operators</span>
             </a>
         </li>
-        @can(\App\Constants\Permission::ManageOperators)
-            <li class="menu-item nav-operators">
-                <a href="{{route('admin.operator.index')}}" class="menu-link">
-               <span class="svg-icon menu-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor"
-                             class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>
-                </svg>
-               </span>
-                    <span class="menu-text">Operators</span>
-                </a>
-            </li>
-        @endcan
-        @can(\App\Constants\Permission::ManageCustomers)
-            <li class="menu-item nav-customers">
-                <a href="{{route('admin.customers.index')}}" class="menu-link">
+    @endcan
+    @if( auth()->user()->can(\App\Constants\Permission::ManageCustomers) && auth()->user()->operator_id)
+        <li class="menu-item nav-customers">
+            <a href="{{route('admin.customers.index')}}" class="menu-link">
                <span class="svg-icon menu-icon">
                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                           stroke="currentColor" class="w-6 h-6">
-      <path stroke-linecap="round" stroke-linejoin="round"
-            d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"/>
-    </svg>
-
+                      <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5zm6-10.125a1.875 1.875 0 11-3.75 0 1.875 1.875 0 013.75 0zm1.294 6.336a6.721 6.721 0 01-3.17.789 6.721 6.721 0 01-3.168-.789 3.376 3.376 0 016.338 0z"/>
+                    </svg>
                </span>
-                    <span class="menu-text">Customers</span>
-                </a>
-            </li>
-        @endcan
-        @if(auth()->user()->can(\App\Constants\Permission::ManageOperationAreas) && auth()->user()->operator_id)
-            <li class="menu-item nav-operation-areas">
-                <a href="{{route('admin.operator.area-of-operation.index',encryptId(auth()->user()->operator_id))}}"
-                   class="menu-link">
+                <span class="menu-text">Customers</span>
+            </a>
+        </li>
+    @endif
+    @if(auth()->user()->can(\App\Constants\Permission::ManageOperationAreas) && auth()->user()->operator_id)
+        <li class="menu-item nav-operation-areas">
+            <a href="{{route('admin.operator.area-of-operation.index',encryptId(auth()->user()->operator_id))}}"
+               class="menu-link">
                     <span class="menu-icon">
                         <i class="fas fa-map"></i>
                     </span>
-                    <span class="menu-text">
+                <span class="menu-text">
                         Operation Areas
                     </span>
-                </a>
-            </li>
-        @endif
-        @if(auth()->user()->can(\App\Constants\Permission::ManageBillings))
-            <li class="menu-item nav-billings">
-                <a href="{{route('admin.billings.index')}}"
-                   class="menu-link">
+            </a>
+        </li>
+    @endif
+    @if(auth()->user()->can(\App\Constants\Permission::ManageBillings))
+        <li class="menu-item nav-billings">
+            <a href="{{route('admin.billings.index')}}"
+               class="menu-link">
                     <span class="menu-icon">
                         <i class="la la-file-invoice-dollar"></i>
                     </span>
-                    <span class="menu-text">
+                <span class="menu-text">
                         Billing
                     </span>
-                </a>
-            </li>
-        @endif
+            </a>
+        </li>
+    @endif
 
 
-        @canany([\App\Constants\Permission::CreateRequest,\App\Constants\Permission::ApproveRequest,\App\Constants\Permission::AssignMeterNumber,\App\Constants\Permission::ReviewRequest])
-            <li class="menu-item menu-item-submenu nav-request-management" aria-haspopup="true" data-menu-toggle="hover">
-                <a href="javascript:" class="menu-link menu-toggle">
+    @canany([\App\Constants\Permission::CreateRequest,\App\Constants\Permission::ApproveRequest,\App\Constants\Permission::AssignMeterNumber,\App\Constants\Permission::ReviewRequest])
+        <li class="menu-item menu-item-submenu nav-request-management" aria-haspopup="true" data-menu-toggle="hover">
+            <a href="javascript:" class="menu-link menu-toggle">
                <span class="svg-icon menu-icon">
                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6">
@@ -80,60 +78,60 @@
                             d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/>
                     </svg>
                </span>
-                    <span class="menu-text">Requests</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="menu-submenu">
-                    <i class="menu-arrow"></i>
-                    <ul class="menu-subnav">
-                        <li class="menu-item menu-item-parent" aria-haspopup="true">
+                <span class="menu-text">Requests</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="menu-submenu">
+                <i class="menu-arrow"></i>
+                <ul class="menu-subnav">
+                    <li class="menu-item menu-item-parent" aria-haspopup="true">
                             <span class="menu-link">
                                 <span class="menu-text">Requests</span>
                             </span>
-                        </li>
-                        @can(\App\Constants\Permission::CreateRequest)
-                            <x-menu-item title="Create New Request" item-class="nav-create-request"
-                                         :route="route('admin.requests.create')"/>
-                        @endcan
+                    </li>
+                    @can(\App\Constants\Permission::CreateRequest)
+                        <x-menu-item title="Create New Request" item-class="nav-create-request"
+                                     :route="route('admin.requests.create')"/>
+                    @endcan
 
-                        @can(\App\Constants\Permission::AssignRequest)
-                            <x-menu-item title="Pending Requests" item-class="nav-pending-requests"
-                                         :route="route('admin.requests.new')"/>
-                            <x-menu-item title="Assigned Requests" item-class="nav-assigned-requests"
-                                         :route="route('admin.requests.assigned')"/>
-                        @endcan
-
-
-                        <x-menu-item title="My Tasks" item-class="nav-my-tasks" :route="route('admin.requests.my-tasks')"/>
-                        <x-menu-item title="All Requests" item-class="nav-all-requests"
-                                     :route="route('admin.requests.index')"/>
-
-                        @can(\App\Constants\Permission::ManageItemDelivery)
-                            <x-menu-item title="Item Delivery" item-class="nav-item-delivery"
-                                         :route="route('admin.requests.to-be-delivered')"/>
-                        @endcan
-
-                    </ul>
-                </div>
-            </li>
-        @endcanany
+                    @can(\App\Constants\Permission::AssignRequest)
+                        <x-menu-item title="Pending Requests" item-class="nav-pending-requests"
+                                     :route="route('admin.requests.new')"/>
+                        <x-menu-item title="Assigned Requests" item-class="nav-assigned-requests"
+                                     :route="route('admin.requests.assigned')"/>
+                    @endcan
 
 
+                    <x-menu-item title="My Tasks" item-class="nav-my-tasks" :route="route('admin.requests.my-tasks')"/>
+                    <x-menu-item title="All Requests" item-class="nav-all-requests"
+                                 :route="route('admin.requests.index')"/>
 
-        @canany(accountingAllPermissions())
-            {{--    @can('Manage Stock')--}}
-            <li class="menu-section">
-                <h4 class="menu-text">
-                    Accounting & Finance
-                </h4>
-                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-            </li>
+                    @can(\App\Constants\Permission::ManageItemDelivery)
+                        <x-menu-item title="Item Delivery" item-class="nav-item-delivery"
+                                     :route="route('admin.requests.to-be-delivered')"/>
+                    @endcan
+
+                </ul>
+            </div>
+        </li>
+    @endcanany
 
 
-            @canany(accountingPermissions())
-                <li class="menu-item menu-item-submenu nav-accounting-settings" aria-haspopup="true"
-                    data-menu-toggle="hover">
-                    <a href="javascript:" class="menu-link menu-toggle">
+
+    @canany(accountingAllPermissions())
+        {{--    @can('Manage Stock')--}}
+        <li class="menu-section">
+            <h4 class="menu-text">
+                Accounting & Finance
+            </h4>
+            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+        </li>
+
+
+        @canany(accountingPermissions())
+            <li class="menu-item menu-item-submenu nav-accounting-settings" aria-haspopup="true"
+                data-menu-toggle="hover">
+                <a href="javascript:" class="menu-link menu-toggle">
                        <span class="svg-icon menu-icon">
                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt-tax"
                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
@@ -145,51 +143,52 @@
                        <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2"></path>
                     </svg>
                        </span>
-                        <span class="menu-text">
+                    <span class="menu-text">
                         Accounting
                     </span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="menu-submenu">
-                        <i class="menu-arrow"></i>
-                        <ul class="menu-subnav">
-                            @can(\App\Constants\Permission::ManageExpenses)
-                                <x-menu-item title="Expenses" item-class="nav-expenses"
-                                             :route="route('admin.accounting.expenses')"/>
-                            @endcan
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="menu-submenu">
+                    <i class="menu-arrow"></i>
+                    <ul class="menu-subnav">
+                        @can(\App\Constants\Permission::ManageExpenses)
+                            <x-menu-item title="Expenses" item-class="nav-expenses"
+                                         :route="route('admin.accounting.expenses')"/>
+                        @endcan
 
-                            @can(\App\Constants\Permission::ManageCashMovements)
-                                <x-menu-item title="Cash Movements" item-class="nav-cash-movements"
-                                             :route="route('admin.accounting.cash-movements.index')"/>
-                            @endcan
+                        @can(\App\Constants\Permission::ManageCashMovements)
+                            <x-menu-item title="Cash Movements" item-class="nav-cash-movements"
+                                         :route="route('admin.accounting.cash-movements.index')"/>
+                        @endcan
 
-                            @can(\App\Constants\Permission::ManageJournalEntries)
-                                <x-menu-item title="Journal Entries" item-class="nav-journal-entries"
-                                             :route="route('admin.accounting.journal-entries')"/>
-                            @endcan
+                        @can(\App\Constants\Permission::ManageJournalEntries)
+                            <x-menu-item title="Journal Entries" item-class="nav-journal-entries"
+                                         :route="route('admin.accounting.journal-entries')"/>
+                        @endcan
 
-                            @can(\App\Constants\Permission::ViewGeneralLedger)
-                                <x-menu-item title="General Ledger" item-class="nav-chart-accounts"
-                                             :route="route('admin.purchases.index')"/>
-                            @endcan
+                        @can(\App\Constants\Permission::ViewGeneralLedger)
+                            <x-menu-item title="General Ledger" item-class="nav-chart-accounts"
+                                         :route="route('admin.purchases.index')"/>
+                        @endcan
 
-                            @can(\App\Constants\Permission::ViewLedgerBalance)
-                                <x-menu-item title="Ledger Balances" item-class="nav-chart-accounts"
-                                             :route="route('admin.purchases.index')"/>
-                            @endcan
+                        @can(\App\Constants\Permission::ViewLedgerBalance)
+                            <x-menu-item title="Ledger Balances" item-class="nav-chart-accounts"
+                                         :route="route('admin.purchases.index')"/>
+                        @endcan
 
 
-                        </ul>
-                    </div>
-                </li>
-            @endcanany
+                    </ul>
+                </div>
+            </li>
+        @endcanany
 
-            @canany(accountingSettingsPermissions())
-                <li class="menu-item menu-item-submenu nav-accounting-settings" aria-haspopup="true"
-                    data-menu-toggle="hover">
-                    <a href="javascript:" class="menu-link menu-toggle">
+        @canany(accountingSettingsPermissions())
+            <li class="menu-item menu-item-submenu nav-accounting-settings" aria-haspopup="true"
+                data-menu-toggle="hover">
+                <a href="javascript:" class="menu-link menu-toggle">
                        <span class="svg-icon menu-icon">
-                                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-coins"
+                                       <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-coins"
                                             width="24"
                                             height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
                                             fill="none"
@@ -203,43 +202,44 @@
                                <path d="M3 11c0 .888 .772 1.45 2 2"></path>
                             </svg>
                        </span>
-                        <span class="menu-text">
+                    <span class="menu-text">
                         Accounting Settings
                     </span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="menu-submenu">
-                        <i class="menu-arrow"></i>
-                        <ul class="menu-subnav">
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="menu-submenu">
+                    <i class="menu-arrow"></i>
+                    <ul class="menu-subnav">
 
-                            <x-menu-item title="Assign Chart Of Accounts" item-class="nav-assign-chart-accounts"
-                                         :route="route('admin.purchases.index')"/>
-                            <x-menu-item title="Ledger Migration" item-class="nav-ledger-migration"
-                                         :route="route('admin.purchases.index')"/>
-                            <x-menu-item title="Chart Of Accounts" item-class="nav-chart-accounts"
-                                         :route="route('admin.accounting.chart-of-accounts')"/>
-                            <x-menu-item title="Bank Accounts" item-class="nav-bank-accounts"
-                                         :route="route('admin.accounting.bank-accounts.index')"/>
+                        <x-menu-item title="Assign Chart Of Accounts" item-class="nav-assign-chart-accounts"
+                                     :route="route('admin.purchases.index')"/>
+                        <x-menu-item title="Ledger Migration" item-class="nav-ledger-migration"
+                                     :route="route('admin.purchases.index')"/>
+                        <x-menu-item title="Chart Of Accounts" item-class="nav-chart-accounts"
+                                     :route="route('admin.accounting.chart-of-accounts')"/>
+                        <x-menu-item title="Bank Accounts" item-class="nav-bank-accounts"
+                                     :route="route('admin.accounting.bank-accounts.index')"/>
 
-                        </ul>
-                    </div>
-                </li>
-            @endcanany
-
+                    </ul>
+                </div>
+            </li>
         @endcanany
 
-        @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems, \App\Constants\Permission::ManageStocks,
-            \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment, \App\Constants\Permission::ApproveAdjustment,
-            \App\Constants\Permission::ViewAdjustment, \App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
-            <li class="menu-section">
-                <h4 class="menu-text">Stock Management Section</h4>
-                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-            </li>
-            @canany([\App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
-                <li class="menu-item menu-item-submenu nav-purchases" aria-haspopup="true" data-menu-toggle="hover">
-                    <a href="javascript:" class="menu-link menu-toggle">
+    @endcanany
+
+    @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems, \App\Constants\Permission::ManageStocks,
+        \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment, \App\Constants\Permission::ApproveAdjustment,
+        \App\Constants\Permission::ViewAdjustment, \App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
+        <li class="menu-section">
+            <h4 class="menu-text">Stock Management Section</h4>
+            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+        </li>
+        @canany([\App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
+            <li class="menu-item menu-item-submenu nav-purchases" aria-haspopup="true" data-menu-toggle="hover">
+                <a href="javascript:" class="menu-link menu-toggle">
                <span class="svg-icon menu-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tags" width="24" height="24"
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tags" width="24"
+                       height="24"
                        viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round"
                        stroke-linejoin="round">
                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -249,160 +249,164 @@
                    <path d="M6 9h-.01"></path>
                 </svg>
                </span>
-                        <span class="menu-text">
+                    <span class="menu-text">
                         Stock In
                     </span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="menu-submenu">
-                        <i class="menu-arrow"></i>
-                        <ul class="menu-subnav">
-                            @can(\App\Constants\Permission::StockInItems)
-                                <li class="menu-item nav-create-purchase" aria-haspopup="true">
-                                    <a href="{{route('admin.purchases.create')}}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot">
-                                            <span></span>
-                                        </i>
-                                        <span class="menu-text">Create New</span>
-                                    </a>
-                                </li>
-                            @endcan
-                            <li class="menu-item nav-my-purchases" aria-haspopup="true">
-                                <a href="{{route('admin.purchases.index')}}" class="menu-link">
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="menu-submenu">
+                    <i class="menu-arrow"></i>
+                    <ul class="menu-subnav">
+                        @can(\App\Constants\Permission::StockInItems)
+                            <li class="menu-item nav-create-purchase" aria-haspopup="true">
+                                <a href="{{route('admin.purchases.create')}}" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">
+                                    <span class="menu-text">Create New</span>
+                                </a>
+                            </li>
+                        @endcan
+                        <li class="menu-item nav-my-purchases" aria-haspopup="true">
+                            <a href="{{route('admin.purchases.index')}}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">
                                      My Tasks
                                 </span>
-                                </a>
-                            </li>
-                            <li class="menu-item nav-all-purchases" aria-haspopup="true">
-                                <a href="{{route('admin.purchases.index',['type'=>'all'])}}" class="menu-link">
-                                    <i class="menu-bullet menu-bullet-dot">
-                                        <span></span>
-                                    </i>
-                                    <span class="menu-text">
+                            </a>
+                        </li>
+                        <li class="menu-item nav-all-purchases" aria-haspopup="true">
+                            <a href="{{route('admin.purchases.index',['type'=>'all'])}}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">
                                     All
                                 </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-            @endcanany
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        @endcanany
 
-            @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems,
-            \App\Constants\Permission::ManageStocks,
-            \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment,
-            \App\Constants\Permission::ApproveAdjustment,
-            \App\Constants\Permission::ViewAdjustment])
-                <li class="menu-item menu-item-submenu nav-stock-managements" aria-haspopup="true" data-menu-toggle="hover">
-                    <a href="javascript:;" class="menu-link menu-toggle">
-                        <i class="menu-icon flaticon2-cube"></i>
-                        <span class="menu-text">Stock Management</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="menu-submenu">
-                        <i class="menu-arrow"></i>
-                        <ul class="menu-subnav">
-                            <li class="menu-item menu-item-parent" aria-haspopup="true">
+        @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems,
+        \App\Constants\Permission::ManageStocks,
+        \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment,
+        \App\Constants\Permission::ApproveAdjustment,
+        \App\Constants\Permission::ViewAdjustment])
+            <li class="menu-item menu-item-submenu nav-stock-managements" aria-haspopup="true" data-menu-toggle="hover">
+                <a href="javascript:;" class="menu-link menu-toggle">
+                    <i class="menu-icon flaticon2-cube"></i>
+                    <span class="menu-text">Stock Management</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="menu-submenu">
+                    <i class="menu-arrow"></i>
+                    <ul class="menu-subnav">
+                        <li class="menu-item menu-item-parent" aria-haspopup="true">
                 <span class="menu-link">
                     <span class="menu-text">Stock Management</span>
                 </span>
+                        </li>
+                        @can(\App\Constants\Permission::ManageItemCategories)
+                            <li class="menu-item nav-item-categories" aria-haspopup="true">
+                                <a href="{{ route('admin.stock.item-categories.index') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Item Categories</span>
+                                </a>
                             </li>
-                            @can(\App\Constants\Permission::ManageItemCategories)
-                                <li class="menu-item nav-item-categories" aria-haspopup="true">
-                                    <a href="{{ route('admin.stock.item-categories.index') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot">
-                                            <span></span>
-                                        </i>
-                                        <span class="menu-text">Item Categories</span>
-                                    </a>
-                                </li>
-                            @endcan
-                            @can(\App\Constants\Permission::ManageItems)
-                                <li class="menu-item nav-items" aria-haspopup="true">
-                                    <a href="{{route('admin.stock.items.index')}}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot">
-                                            <span></span>
-                                        </i>
-                                        <span class="menu-text">Items</span>
-                                    </a>
-                                </li>
-                            @endcan
-                            @can(\App\Constants\Permission::ManageStocks)
-                                <li class="menu-item nav-stock" aria-haspopup="true">
-                                    <a href="{{ route('admin.stock.stock-items.index') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot">
-                                            <span></span>
-                                        </i>
-                                        <span class="menu-text">Stock</span>
-                                    </a>
-                                </li>
-                            @endcan
-                            @can(\App\Constants\Permission::ManageStockMovements)
-                                <li class="menu-item nav-all-permissions" aria-haspopup="true">
-                                    <a href="{{ route('admin.stock.stock-items.movements') }}" class="menu-link">
-                                        <i class="menu-bullet menu-bullet-dot">
-                                            <span></span>
-                                        </i>
-                                        <span class="menu-text">Stock Movements</span>
-                                    </a>
-                                </li>
-                            @endcan
-                            @canany([\App\Constants\Permission::CreateAdjustment,\App\Constants\Permission::ApproveAdjustment,\App\Constants\Permission::ViewAdjustment])
-                                <li class="menu-item menu-item-submenu nav-stock-adjustments" aria-haspopup="true" data-menu-toggle="hover">
-                                    <a href="javascript:;" class="menu-link menu-toggle">
-                                        <i class="menu-bullet menu-bullet-line">
-                                            <span></span>
-                                        </i>
-                                        <span class="menu-text">Stock Adjustments</span>
-                                        <i class="menu-arrow"></i>
-                                    </a>
-                                    <div class="menu-submenu" kt-hidden-height="120" style="display: none; overflow: hidden;">
-                                        <i class="menu-arrow"></i>
-                                        <ul class="menu-subnav">
-                                            @can(\App\Constants\Permission::ApproveAdjustment)
-                                                <li class="menu-item nav-adjustments-my-tasks" aria-haspopup="true">
-                                                    <a href="{{ route('admin.stock.stock-adjustments.tasks') }}" class="menu-link">
-                                                        <i class="menu-bullet menu-bullet-dot">
-                                                            <span></span>
-                                                        </i>
-                                                        <span class="menu-text">My Tasks</span>
-                                                    </a>
-                                                </li>
-                                            @endcan
-                                            @can(\App\Constants\Permission::CreateAdjustment)
-                                                <li class="menu-item nav-adjustments-create" aria-haspopup="true">
-                                                    <a href="{{ route('admin.stock.adjustments.create') }}" class="menu-link">
-                                                        <i class="menu-bullet menu-bullet-dot">
-                                                            <span></span>
-                                                        </i>
-                                                        <span class="menu-text">Create New</span>
-                                                    </a>
-                                                </li>
-                                            @endcan
-                                            @can(\App\Constants\Permission::ViewAdjustment)
-                                                <li class="menu-item nav-adjustments-all" aria-haspopup="true">
-                                                    <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">
-                                                        <i class="menu-bullet menu-bullet-dot">
-                                                            <span></span>
-                                                        </i>
-                                                        <span class="menu-text">All Adjustments</span>
-                                                    </a>
-                                                </li>
-                                            @endcan
-                                        </ul>
-                                    </div>
-                                </li>
-                            @endcanany
-                        </ul>
-                    </div>
+                        @endcan
+                        @can(\App\Constants\Permission::ManageItems)
+                            <li class="menu-item nav-items" aria-haspopup="true">
+                                <a href="{{route('admin.stock.items.index')}}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Items</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can(\App\Constants\Permission::ManageStocks)
+                            <li class="menu-item nav-stock" aria-haspopup="true">
+                                <a href="{{ route('admin.stock.stock-items.index') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Stock</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @can(\App\Constants\Permission::ManageStockMovements)
+                            <li class="menu-item nav-all-permissions" aria-haspopup="true">
+                                <a href="{{ route('admin.stock.stock-items.movements') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Stock Movements</span>
+                                </a>
+                            </li>
+                        @endcan
+                        @canany([\App\Constants\Permission::CreateAdjustment,\App\Constants\Permission::ApproveAdjustment,\App\Constants\Permission::ViewAdjustment])
+                            <li class="menu-item menu-item-submenu nav-stock-adjustments" aria-haspopup="true"
+                                data-menu-toggle="hover">
+                                <a href="javascript:;" class="menu-link menu-toggle">
+                                    <i class="menu-bullet menu-bullet-line">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Stock Adjustments</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                <div class="menu-submenu" kt-hidden-height="120"
+                                     style="display: none; overflow: hidden;">
+                                    <i class="menu-arrow"></i>
+                                    <ul class="menu-subnav">
+                                        @can(\App\Constants\Permission::ApproveAdjustment)
+                                            <li class="menu-item nav-adjustments-my-tasks" aria-haspopup="true">
+                                                <a href="{{ route('admin.stock.stock-adjustments.tasks') }}"
+                                                   class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">My Tasks</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can(\App\Constants\Permission::CreateAdjustment)
+                                            <li class="menu-item nav-adjustments-create" aria-haspopup="true">
+                                                <a href="{{ route('admin.stock.adjustments.create') }}"
+                                                   class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">Create New</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+                                        @can(\App\Constants\Permission::ViewAdjustment)
+                                            <li class="menu-item nav-adjustments-all" aria-haspopup="true">
+                                                <a href="{{ route('admin.stock.adjustments.index') }}"
+                                                   class="menu-link">
+                                                    <i class="menu-bullet menu-bullet-dot">
+                                                        <span></span>
+                                                    </i>
+                                                    <span class="menu-text">All Adjustments</span>
+                                                </a>
+                                            </li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </li>
+                        @endcanany
+                    </ul>
+                </div>
 
-                </li>
-            @endcanany
-
+            </li>
+        @endcanany
 
     @endcanany
     @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles, \App\Constants\Permission::ManagePermissions])
@@ -628,5 +632,5 @@
         </li>
     @endcanany
 
-    </ul>
+</ul>
 
