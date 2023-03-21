@@ -170,9 +170,10 @@
                                     data-menu-toggle="click" aria-haspopup="true">
                                     <a href="javascript:void(0);" class="">
                                         <span class="menu-text text-muted" style="font-size: 22px;">
-{{--                                            <img src="{{asset("img/log.jpg")}}" class="img-fluid rounded-pill" width="50"--}}
-                                            {{--                                                height="30" alt="">--}}
                                             <span style="margin-left: 5px"> CMS RWSS System</span> </span>
+                                        @if(Helper::isOperator() || Helper::hasOperationArea())
+                                           | <small>{{auth()->user()->operator->name ?? ""}}</small>
+                                        @endif
                                         <i class="menu-arrow"></i>
                                     </a>
                                 </li>
