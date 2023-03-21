@@ -1,0 +1,150 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
+
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+// Then add additional custom code here
+body{
+  font-family: 'Poppins', sans-serif;
+}
+.bg{
+  background-image: url(../images/bg1.png);
+  background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.btn-success{
+    background-color: #86B700 !important;
+    color: #ffffff !important;
+}
+.w-20{
+    width: 20%;
+}
+.w-10{
+    width: 10%;
+}
+.w-15{
+    width: 15%;
+}
+.w-17{
+    width: 17%;
+}
+.w-18{
+    width: 18%;
+}
+.h-10{
+    height: 10%;
+}
+.h-15{
+    height: 15%;
+}
+.h-20{
+    height: 20%;
+}
+.h-23{
+    height: 23%;
+}
+.h-24{
+    height: 24%;
+}
+.fs-13{
+  font-size: 13px;
+}
+.fs-14{
+  font-size: 14px;
+}
+.fs-15{
+  font-size: 15px;
+}
+.fs-16{
+  font-size: 16px;
+}
+.btn-primary{
+  background-color: #014E84 !important;
+  color: #ffffff !important;
+}
+.text-primary{
+  color: #014E84 !important;
+}
+.text-success{
+  color: #86B700 !important;
+}
+.bg-success{
+  background-color: #86B700 !important;
+}
+.shadow-lg{
+  box-shadow: 0.5rem 1rem 2rem rgba(0,0,0,.5) !important;
+}
+.active{
+  background-color: #86B700 !important;
+  color: #ffffff !important;
+}
+.btn-outline-success{
+  border: 3px solid  #86B700 !important;
+  color: white !important;
+  hover: #86B700 !important;
+
+}
+
+* {
+  box-sizing: border-box;
+}
+.border-primary{
+    border: 3px solid #014E84 !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.slider {
+  width: 50%;
+  margin: 100px auto;
+}
+
+.slick-slide {
+  margin: 0px 20px;
+}
+
+.slick-slide img {
+  width: 100%;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: black;
+}
+
+
+
+.slick-slide {
+  transition: all ease-in-out .3s;
+  opacity: .2;
+}
+
+.slick-active {
+  opacity: 1;
+}
+
+.slick-current {
+  opacity: 1;
+}
+
+
+.slick-slide {
+  transition: all ease-in-out .3s;
+  opacity: 1;
+}
+
+.slick-active {
+  opacity: 1;
+}
+
+.slick-current {
+  opacity: 1;
+}

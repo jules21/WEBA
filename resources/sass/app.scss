@@ -1,11 +1,81 @@
-
 @import url('https://fonts.googleapis.com/css?family=Poppins');
-
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+body{
+    min-height: 100vh !important;
+}
 
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+.bg {
+    background-image: url(../images/bg1.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    min-height: 100vh !important;
+}
+
+.shadow-lg {
+    box-shadow: 0.5rem 1rem 2rem rgba(0, 0, 0, .5) !important;
+}
+
+
+.slider {
+    width: 50%;
+    margin: 100px auto;
+}
+
+.slick-slide {
+    margin: 0px 20px;
+}
+
+.slick-slide img {
+    width: 100%;
+}
+
+.slick-prev:before,
+.slick-next:before {
+    color: black;
+}
+
+
+.slick-slide {
+    transition: all ease-in-out .3s;
+    opacity: .2;
+}
+
+.slick-active {
+    opacity: 1;
+}
+
+.slick-current {
+    opacity: 1;
+}
+
+
+.slick-slide {
+    transition: all ease-in-out .3s;
+    opacity: 1;
+}
+
+.slick-active {
+    opacity: 1;
+}
+
+.slick-current {
+    opacity: 1;
+}
+
+.slick-next:before {
+    content: url(../images/next.svg) !important;
+}
+.slick-prev:before {
+    content: url(../images/prev.svg) !important;
+}
 
 
