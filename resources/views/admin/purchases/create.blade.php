@@ -23,7 +23,7 @@
                     </li>
                     <li class="breadcrumb-item">
                         <a href="{{ route('admin.purchases.index') }}" class="text-muted">
-                            Purchases
+                            Stock In
                         </a>
                     </li>
                     <li class="breadcrumb-item">
@@ -389,7 +389,7 @@
                 let itemId = itemElement.val();
                 let item = items.find(item => item.id === parseInt(itemId));
                 let tr = itemElement.closest('tr');
-                tr.find('input[name="prices[]"]').val(item.selling_price);
+                // tr.find('input[name="prices[]"]').val(item.selling_price);
                 let vatElement = tr.find('select[name="vats[]"]');
                 vatElement.empty();
                 vatElement.append(`<option value="${item.vat_rate}">VAT (${item.vat_rate}%)</option>`);

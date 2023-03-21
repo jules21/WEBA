@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidateDocNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -31,6 +32,10 @@ class StoreCustomerRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
+                Rule::unique('customers')->where(function ($query) {
+                    return $query->where('document_type_id', request('document_type_id'));
+                }),
+                new  ValidateDocNumber()
             ],
 //            'input_doc_number' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'email', 'max:255'],

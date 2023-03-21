@@ -385,6 +385,9 @@
         }
 
         $(function () {
+            $('.nav-request-management').addClass('menu-item-active menu-item-open');
+            $('.nav-create-request').addClass('menu-item-active');
+
             $('#province_id').on('change', function (e) {
                 getDistricts($(this).val());
             });
