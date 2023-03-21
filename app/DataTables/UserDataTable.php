@@ -40,9 +40,8 @@ class UserDataTable extends DataTable
                             $roles .= \Str::slug($role->name);
                         else
                             $roles .= ",".\Str::slug($role->name);
-//
                     }
-                    return '<a href="#" class="label label-light-primary label-inline" data-toggle="tooltip" data-trigger="focus" data-html="true" title='. $roles.'>
+                    return '<a href="#" class="label label-info label-inline" data-toggle="tooltip" data-trigger="focus" data-html="true" title='. $roles.'>
                                     '.count($item->roles).'
                                 </a>';
                 }else{
