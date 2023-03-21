@@ -36,7 +36,7 @@
                         Operators
                     </h4>
 
-                    <buttont type="button" class="btn btn-primary btn-sm" id="addButton">
+                    <buttont type="button" class="btn btn-light-primary rounded font-weight-bolder" id="addButton">
                        <span class="svg-icon">
                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
@@ -44,7 +44,7 @@
 </svg>
 
                        </span>
-                        Add New
+                        Add New Operator
                     </buttont>
                 </div>
 
@@ -53,11 +53,11 @@
                     <table class="table table-head-custom border table-head-solid table-hover dataTable">
                         <thead>
                         <tr>
-                            <th>Created At</th>
+                            <th></th>
                             <th>Name</th>
-                            <th>Legal Type</th>
                             <th>Doc Number</th>
                             <th>Address</th>
+                            <th>Created At</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -141,10 +141,6 @@
                                 after choosing identification type and number.
                             </div>
                         </div>
-
-
-                        {{--                        search results--}}
-
                         <div class="card card-body" style="display: none" id="results">
                             <input type="hidden" id="operator_details" name="operator_details" value=""/>
                             <div class="row">
@@ -280,6 +276,55 @@
         </div>
     </div>
 
+    {{--    edit modal--}}
+
+    <div class="modal fade" id="editModal" data-backdrop="static" data-keyboard="false" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Operator</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <i class="ki ki-close"></i>
+                    </button>
+                </div>
+                <form action="" id="editForm" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="form-group">
+                            <div class="symbol symbol-100 symbol-circle position-relative">
+                                <div class="symbol-label" id="logoBg"
+                                     style="background-image:url({{ asset('img/logo.svg') }})">
+                                </div>
+                                <button type="button" id="editLogoBtn"
+                                        class="btn btn-sm btn-icon btn-circle btn-light-linkedin position-absolute top-0 right-0">
+                                    <i class="flaticon2-edit"></i>
+                                </button>
+                                <input type="file" name="logo" id="logo" class="d-none"/>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="edit_address">Address</label>
+                            <input type="text" class="form-control" id="edit_address" name="address" value="">
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="flaticon2-checkmark"></i>
+                            Save changes
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
 @endsection
 
 @section('scripts')
@@ -333,14 +378,24 @@
                 serverSide: true,
                 ajax: "{{ route('admin.operator.index') }}",
                 columns: [
-                    {
-                        data: 'created_at', name: 'created_at',
+                    {data:'logo',name:'logo',
                         render: function (data, type, row, meta) {
-                            return (new Date(data)).toLocaleDateString();
+                            return `<div class="symbol symbol-50 symbol-circle position-relative bg-transparent">
+                                        <div class="symbol-label" style="background-image:url(${row.logo_url})">
+                                        </div>
+                                    </div>`;
+                        },
+                        searchable: false,
+                        orderable: false
+                    },
+                    {data: 'name', name: 'name',
+                        render: function (data, type, row, meta) {
+                            return `<div>
+                                        <div class="font-weight-bold">${row.name}</div>
+                                        <div class="text-muted mt-1">${row.legal_type.name}</div>
+                                    </div>`;
                         }
                     },
-                    {data: 'name', name: 'name'},
-                    {data: 'legal_type.name', name: 'legalType.name'},
                     {
                         data: 'doc_number', name: 'doc_number',
                         render: function (data, type, row, meta) {
@@ -351,9 +406,16 @@
                         }
                     },
                     {data: 'address', name: 'address'},
+
+                    {
+                        data: 'created_at', name: 'created_at',
+                        render: function (data, type, row, meta) {
+                            return (new Date(data)).toLocaleDateString();
+                        }
+                    },
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
-                "order": [[0, "desc"]],
+                "order": [[4, "desc"]],
                 "paging": true,
                 "lengthChange": true,
                 "searching": true,
@@ -530,11 +592,86 @@
                             },
                             success: function (data) {
                                 dataTable.ajax.reload();
+                            },
+                            error: function (data) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Unable to delete! Please try again later.',
+                                });
                             }
                         })
                     }
                 });
 
+            });
+
+            $(document).on('click', '.js-edit', function (e) {
+                e.preventDefault();
+
+                let url = $(this).attr('href');
+                $('#logoBg').css('background-image', 'url(' + $(this).data('logo') + ')');
+
+                $('#edit_address').val($(this).data('address'));
+
+                $('#editForm').attr('action', url);
+                $('#editModal').modal('show');
+
+            });
+
+            $('#editLogoBtn').on('click', function () {
+                // find file sibling input and click it
+                $(this).siblings('input[type="file"]').click();
+            });
+
+            $('#logo').on('change', function () {
+                let file = $(this)[0].files[0];
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#logoBg').css('background-image', 'url(' + e.target.result + ')');
+                };
+                reader.readAsDataURL(file);
+            });
+
+            $('#editForm').on('submit', function (e) {
+                e.preventDefault();
+
+
+                let btn = $(this).find('button[type="submit"]');
+                btn.prop('disabled', true)
+                    .addClass('spinner spinner-white spinner-right disabled');
+
+                let settings = {
+                    "url": $(this).attr('action'),
+                    "method": $(this).attr('method'),
+                    "data": new FormData(this),
+                    "contentType": false,
+                    "processData": false,
+                    success: function (response) {
+                        $('#editModal').modal('hide');
+                        dataTable.ajax.reload();
+                    },
+                    error: function (response) {
+
+                        if (response.status === 422) {
+                            let errors = response.responseJSON.errors;
+                            let messages = [];
+                            $.each(errors, function (index, value) {
+                                messages.push(value[0]);
+                            });
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                html: messages.join('<br>'),
+                            });
+                        }
+                    }, complete: function () {
+                        btn.prop('disabled', false)
+                            .removeClass('spinner spinner-white spinner-right disabled');
+                    }
+                };
+                $.ajax(settings);
             });
 
 

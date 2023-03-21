@@ -10,6 +10,7 @@ use App\Models\Operator;
 use App\Models\Province;
 use Exception;
 use Illuminate\Support\Facades\Http;
+use Storage;
 use Yajra\DataTables\DataTables;
 
 class OperatorController extends Controller
@@ -58,7 +59,10 @@ class OperatorController extends Controller
                                  </button>
                                  <div class="dropdown-menu border">
                                         ' . $opAreaBtn . '
-                                     <a class="dropdown-item" href="#">
+                                     <a class="dropdown-item js-edit"
+                                      data-address="' . $row->address . '"
+                                      data-logo="' . $row->logo_url . '"
+                                      href="' . route('admin.operator.update', encryptId($row->id)) . '">
                                          <i class="fas fa-edit"></i>
                                          <span class="ml-2">Edit</span>
                                      </a>
@@ -140,8 +144,15 @@ class OperatorController extends Controller
     {
         $data = $request->validated();
 
-        $operator->update($data);
+        if ($request->file('logo')) {
 
+            if (!is_null($operator->logo)) {
+                Storage::delete(Operator::LOGO_PATH . $operator->logo);
+            }
+            $path = $request->file('logo')->store(Operator::LOGO_PATH);
+            $data['logo'] = basename($path);
+        }
+        $operator->update($data);
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,

@@ -68,7 +68,6 @@ use Storage;
  * @method static Builder|Operator whereVillageId($value)
  * @property-read Collection<int, \App\Models\Customer> $customers
  * @property-read int|null $customers_count
- * @property-read Collection<int, \App\Models\OperationArea> $operationAreas
  * @property-read Collection<int, \App\Models\Stock> $stocks
  * @property-read int|null $stocks_count
  * @mixin Eloquent
@@ -126,7 +125,7 @@ class Operator extends Model
 
     public function getLogoUrlAttribute(): string
     {
-        return $this->logo ? Storage::url(self::LOGO_PATH . $this->logo) : 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=A6CE39&background=1068BF';
+        return $this->logo ? Storage::url(self::LOGO_PATH . $this->logo) : asset('img/logo.svg');
     }
 
     public function operationAreas(): HasMany
@@ -138,6 +137,7 @@ class Operator extends Model
     {
         return $this->belongsToMany(Customer::class, 'customer_operators', 'operator_id', 'customer_id');
     }
+
     public function stocks(): HasManyThrough
     {
         return $this->hasManyThrough(Stock::class, OperationArea::class);

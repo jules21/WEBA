@@ -40,9 +40,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 
 Route::post('/money', [HomeController::class, 'generateQrCodeFromExcelFile'])->name('file-excel-from-code-qr-generate');
 
@@ -255,11 +253,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         //water networks
 
-        Route::get('/water_networks',[App\Http\Controllers\WaterNetworkController::class,'index'])->name('water.networks');
-        Route::post('/water_network/store',[App\Http\Controllers\WaterNetworkController::class,'store'])->name('water.network.store');
-        Route::post('/water_network/update',[App\Http\Controllers\WaterNetworkController::class,'update'])->name('water.network.edit');
-        Route::get('/water_network/delete/{id}',[App\Http\Controllers\WaterNetworkController::class,'destroy'])->name('water.network.delete');
-        Route::get('/operation_areas/{id}',[App\Http\Controllers\WaterNetworkController::class,'loadAreaOperation']);
+        Route::get('/water_networks', [App\Http\Controllers\WaterNetworkController::class, 'index'])->name('water.networks');
+        Route::post('/water_network/store', [App\Http\Controllers\WaterNetworkController::class, 'store'])->name('water.network.store');
+        Route::post('/water_network/update', [App\Http\Controllers\WaterNetworkController::class, 'update'])->name('water.network.edit');
+        Route::get('/water_network/delete/{id}', [App\Http\Controllers\WaterNetworkController::class, 'destroy'])->name('water.network.delete');
+        Route::get('/operation_areas/{id}', [App\Http\Controllers\WaterNetworkController::class, 'loadAreaOperation']);
 
         //suppliers
         Route::get('/suppliers', [App\Http\Controllers\SupplierController::class, 'index'])->name('suppliers');
@@ -314,7 +312,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 //ajax routes
 Route::get('/operation-area', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
 

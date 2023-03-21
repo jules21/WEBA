@@ -32,7 +32,7 @@
                 <!--begin::Login Header-->
                 <div class="d-flex flex-center mb-10">
                     <a href="#">
-                        <img src="{{ asset('img/logo.png') }}" class="max-h-50px" alt=""/>
+                        <img src="{{ asset('img/logo.svg') }}" class="max-h-50px" alt=""/>
                     </a>
                 </div>
                 <!--end::Login Header-->

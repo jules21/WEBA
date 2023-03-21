@@ -10,7 +10,7 @@
             <div class="d-flex align-items-center flex-wrap mr-2">
                 <!--begin::Page Title-->
                 <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">
-                    Requests
+                    My Tasks
                 </h5>
 
                 <!--end::Page Title-->
@@ -22,7 +22,7 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <span class="text-muted">Request Management</span>
+                        <span class="text-muted">My Tasks</span>
                     </li>
                 </ul>
             </div>
@@ -35,10 +35,10 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>
-                    Manage Requests
+                    My Tasks
                 </h4>
 
-                <a href="{{ route('admin.requests.create') }}" class="btn btn-primary btn-sm" id="addButton">
+                <a href="{{ route('admin.requests.create') }}" class="btn btn-light-primary rounded font-weight-bolder btn-sm" id="addButton">
                        <span class="svg-icon">
                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
