@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Purchases')
+@section('title', 'Stock In')
 
 @section('content')
 
@@ -9,7 +9,7 @@
             <div class="d-flex align-items-center flex-wrap mr-2">
                 <!--begin::Page Title-->
                 <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">
-                    Purchases
+                    Stock In
                 </h5>
 
                 <!--end::Page Title-->
@@ -22,7 +22,7 @@
                     </li>
                     <li class="breadcrumb-item">
                         <span class="text-muted">
-                            Manage Purchases
+                            Manage  Stock In
                         </span>
                     </li>
                 </ul>
@@ -36,7 +36,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>
-                    Manage Purchases
+                    Manage  Stock In
                 </h4>
 
                 @if( auth()->user()->can(\App\Constants\Permission::StockInItems) && auth()->user()->operation_area)

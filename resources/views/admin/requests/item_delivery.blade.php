@@ -69,6 +69,7 @@
 
 
         $(document).ready(function () {
+            $('.nav-request-management').addClass('menu-item-active menu-item-open');
             $('.nav-item-delivery').addClass('menu-item-active');
 
             let dataTable = $('.dataTable').DataTable({

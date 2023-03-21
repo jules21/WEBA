@@ -282,7 +282,7 @@
 
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary float-right">
                             <span class="svg-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor"
@@ -385,6 +385,9 @@
         }
 
         $(function () {
+            $('.nav-request-management').addClass('menu-item-active menu-item-open');
+            $('.nav-create-request').addClass('menu-item-active');
+
             $('#province_id').on('change', function (e) {
                 getDistricts($(this).val());
             });

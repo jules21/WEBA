@@ -42,7 +42,7 @@ class RoleController extends Controller
         if($role->operator_id != null){
             $permissions = $permissions->whereIn('level',['both','operator']);
         }
-        $permissions = $permissions->get();
+        $permissions = $permissions->get()->groupBy('category',"desc");
         return view('admin.user_management.permissions_to_roles',compact('permissions','role'));
     }
     public function addRoleToUser($user_id){

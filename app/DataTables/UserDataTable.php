@@ -36,9 +36,11 @@ class UserDataTable extends DataTable
                 if(count($item->roles)>0){
                     $roles="";
                     foreach($item->roles as $role){
-                        $roles .='<span class="badge badge-info mr-2" style="margin-bottom: 5px">'.$role->name.'</span>';
+                        $roles .=$role->name .' ';
                     }
-                    return $roles ;
+                    return '<a href="#" class="label label-light-primary label-inline" data-toggle="tooltip" data-trigger="focus" data-html="true" title='. $roles.'>
+                                    '.count($item->roles).'
+                                </a>';
                 }else{
                     return "-";
                 }
