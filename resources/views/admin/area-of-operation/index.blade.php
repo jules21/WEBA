@@ -44,7 +44,7 @@
                     {{ $operator->name }} 's Operation Areas
                 </h4>
 
-                <buttont type="button" class="btn btn-primary btn-sm" id="addButton">
+                <buttont type="button" class="btn btn-light-primary rounded font-weight-bolder btn-sm" id="addButton">
                        <span class="svg-icon">
                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
@@ -52,7 +52,7 @@
 </svg>
 
                        </span>
-                    Add New
+                    Add New Area
                 </buttont>
             </div>
 
@@ -111,19 +111,16 @@
                             </select>
                             {{--                            <span id="district_id-error" class="invalid-feedback"></span>--}}
                         </div>
-
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control"/>
-                        </div>
-
-
                         <div class="card card-body border-primary border-2 mb-3 p-2 rounded-0"
                              style="border-style: dotted !important;display: none" id="resultsContent">
                             <div class="font-weight-bold" id="licenseName"></div>
                             <div>
                                 Validity From: <span id="validityFrom"></span> To: <span id="validityTo"></span>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" class="form-control"/>
                         </div>
 
 
@@ -176,12 +173,19 @@
             // $('.nav-operators').addClass('menu-item-active');
 
             let $licences = [];
+            let isSubmitting = false;
 
             $('#addButton').on('click', function () {
+                if (isSubmitting) return;
                 $('#id').val(0);
+                let $districtId = $('#district_id');
+                $districtId.attr('disabled', false);
+                $districtId.parent('.form-group').removeClass('d-none');
+
+                isSubmitting = true;
                 let $btn = $(this);
-                $btn.prop('disabled', true)
-                    .addClass('spinner spinner-white spinner-right');
+                $btn.prop('disabled', true);
+                $btn.addClass('spinner spinner-white spinner-right');
 
                 $.ajax({
                     url: "{{ route('admin.operator.get-area-of-operations',encryptId($operator->clms_id)) }}",
@@ -200,7 +204,6 @@
                                         };
                                     })
                             });
-                        console.info(districts);
 
                         $district_id.empty();
                         $district_id.append('<option value="">Select District</option>');
@@ -219,8 +222,9 @@
                         });
                     },
                     complete: function () {
-                        $btn.prop('disabled', false)
-                            .removeClass('spinner spinner-white spinner-right');
+                        $btn.prop('disabled', false);
+                        $btn.removeClass('spinner spinner-white spinner-right');
+                        isSubmitting = false;
                     }
                 });
             });
@@ -277,7 +281,6 @@
                 }
             });
 
-            let isSubmitting = false;
 
             $('#formSave').on('submit', function (e) {
                 e.preventDefault();
@@ -352,6 +355,13 @@
                         let $districtId = $('#district_id');
                         $districtId.val(data.district_id);
                         $districtId.trigger('change');
+                        $districtId.attr('disabled', true);
+                        let $resultsContent = $('#resultsContent');
+                        $resultsContent.slideUp();
+                        /// find $districtId parent .form-group and add .d-none class
+                        $districtId.parent('.form-group').addClass('d-none');
+
+
                         $('#contact_person_name').val(data.contact_person_name);
                         $('#contact_person_phone').val(data.contact_person_phone);
                         $('#contact_person_email').val(data.contact_person_email);
