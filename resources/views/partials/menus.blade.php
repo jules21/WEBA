@@ -340,70 +340,97 @@
                                     <span class="menu-text">Stock</span>
                                 </a>
                             </li>
-                        @endcan
-                        @can(\App\Constants\Permission::ManageStockMovements)
-                            <li class="menu-item nav-all-permissions" aria-haspopup="true">
-                                <a href="{{ route('admin.stock.stock-items.movements') }}" class="menu-link">
-                                    <i class="menu-bullet menu-bullet-dot">
-                                        <span></span>
-                                    </i>
-                                    <span class="menu-text">Stock Movements</span>
-                                </a>
-                            </li>
-                        @endcan
-                        @canany([\App\Constants\Permission::CreateAdjustment,\App\Constants\Permission::ApproveAdjustment,\App\Constants\Permission::ViewAdjustment])
-                            <li class="menu-item menu-item-submenu nav-stock-adjustments" aria-haspopup="true"
-                                data-menu-toggle="hover">
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    <i class="menu-bullet menu-bullet-line">
-                                        <span></span>
-                                    </i>
-                                    <span class="menu-text">Stock Adjustments</span>
-                                    <i class="menu-arrow"></i>
-                                </a>
-                                <div class="menu-submenu" kt-hidden-height="120"
-                                     style="display: none; overflow: hidden;">
-                                    <i class="menu-arrow"></i>
-                                    <ul class="menu-subnav">
-                                        @can(\App\Constants\Permission::ApproveAdjustment)
-                                            <li class="menu-item nav-adjustments-my-tasks" aria-haspopup="true">
-                                                <a href="{{ route('admin.stock.stock-adjustments.tasks') }}"
-                                                   class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">My Tasks</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        @can(\App\Constants\Permission::CreateAdjustment)
-                                            <li class="menu-item nav-adjustments-create" aria-haspopup="true">
-                                                <a href="{{ route('admin.stock.adjustments.create') }}"
-                                                   class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">Create New</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                        @can(\App\Constants\Permission::ViewAdjustment)
-                                            <li class="menu-item nav-adjustments-all" aria-haspopup="true">
-                                                <a href="{{ route('admin.stock.adjustments.index') }}"
-                                                   class="menu-link">
-                                                    <i class="menu-bullet menu-bullet-dot">
-                                                        <span></span>
-                                                    </i>
-                                                    <span class="menu-text">All Adjustments</span>
-                                                </a>
-                                            </li>
-                                        @endcan
-                                    </ul>
-                                </div>
-                            </li>
-                        @endcanany
-                    </ul>
-                </div>
+                            @can(\App\Constants\Permission::ManageItemCategories)
+                                <li class="menu-item nav-item-categories" aria-haspopup="true">
+                                    <a href="{{ route('admin.stock.item-categories.index') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Item Categories</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can(\App\Constants\Permission::ManageItems)
+                                <li class="menu-item nav-items" aria-haspopup="true">
+                                    <a href="{{route('admin.stock.items.index')}}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Items</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can(\App\Constants\Permission::ManageStocks)
+                                <li class="menu-item nav-stock" aria-haspopup="true">
+                                    <a href="{{ route('admin.stock.stock-items.index') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Stock</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can(\App\Constants\Permission::ManageStockMovements)
+                                <li class="menu-item nav-stock-movements" aria-haspopup="true">
+                                    <a href="{{ route('admin.stock.stock-items.movements') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Stock Movements</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @canany([\App\Constants\Permission::CreateAdjustment,\App\Constants\Permission::ApproveAdjustment,\App\Constants\Permission::ViewAdjustment])
+                                <li class="menu-item menu-item-submenu nav-stock-adjustments" aria-haspopup="true" data-menu-toggle="hover">
+                                    <a href="javascript:;" class="menu-link menu-toggle">
+                                        <i class="menu-bullet menu-bullet-line">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Stock Adjustments</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    <div class="menu-submenu" kt-hidden-height="120" style="display: none; overflow: hidden;">
+                                        <i class="menu-arrow"></i>
+                                        <ul class="menu-subnav">
+                                            @can(\App\Constants\Permission::ApproveAdjustment)
+                                                <li class="menu-item nav-adjustments-my-tasks" aria-haspopup="true">
+                                                    <a href="{{ route('admin.stock.stock-adjustments.tasks') }}" class="menu-link">
+                                                        <i class="menu-bullet menu-bullet-dot">
+                                                            <span></span>
+                                                        </i>
+                                                        <span class="menu-text">My Tasks</span>
+                                                    </a>
+                                                </li>
+                                            @endcan
+                                            @can(\App\Constants\Permission::CreateAdjustment)
+                                                <li class="menu-item nav-adjustments-create" aria-haspopup="true">
+                                                    <a href="{{ route('admin.stock.adjustments.create') }}" class="menu-link">
+                                                        <i class="menu-bullet menu-bullet-dot">
+                                                            <span></span>
+                                                        </i>
+                                                        <span class="menu-text">Create New</span>
+                                                    </a>
+                                                </li>
+                                            @endcan
+                                            @can(\App\Constants\Permission::ViewAdjustment)
+                                                <li class="menu-item nav-adjustments-all" aria-haspopup="true">
+                                                    <a href="{{ route('admin.stock.adjustments.index') }}" class="menu-link">
+                                                        <i class="menu-bullet menu-bullet-dot">
+                                                            <span></span>
+                                                        </i>
+                                                        <span class="menu-text">All Adjustments</span>
+                                                    </a>
+                                                </li>
+                                            @endcan
+                                        </ul>
+                                    </div>
+                                </li>
+                            @endcanany
+                        </ul>
+                    </div>
+
+                </li>
+            @endcanany
 
             </li>
         @endcanany

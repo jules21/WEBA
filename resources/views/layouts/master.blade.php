@@ -448,6 +448,13 @@
     $(document).ready(function () {
         $('.select2').select2();
     });
+    $( document ).ajaxComplete(function() {
+        // Required for Bootstrap tooltips in DataTables
+        $('[data-toggle="tooltip"]').tooltip({
+            "html": true,
+            // "delay": {"show": 1000, "hide": 0},
+        });
+    });
 </script>
 
 <!--end::Page Scripts-->

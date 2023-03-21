@@ -31,7 +31,7 @@
     <!--end::Subheader-->
 @endsection
 @section('content')
-    <div class="container">
+    <div class="">
         <div class="card card-custom">
             <div class="card-header flex-wrap">
                 <h3 class="card-title">Categories</h3>

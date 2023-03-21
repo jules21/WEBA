@@ -163,7 +163,7 @@
                                 @if(Helper::isSuperAdmin())
                                     <div class="col-md-12 form-group">
                                         <label>Operator</label>
-                                        <select name="operator_id" class="form-control select2 operator_id" style="width: 100% !important;">
+                                        <select name="operator_id" id="_operator_id" class="form-control select2 operator_id" style="width: 100% !important;">
                                             <option value="">Select Operator</option>
                                             @foreach($operators as $operator)
                                                 <option value="{{$operator->id}}">{{$operator->name}}</option>
@@ -176,7 +176,7 @@
                                 @if(Helper::isOperator() || Helper::isSuperAdmin())
                                     <div class="col-md-12 form-group">
                                         <label>Operation Area</label>
-                                        <select name="operation_area" class="form-control select2 operation_area_id" style="width: 100% !important;" id="kt_select2_1">
+                                        <select name="operation_area" class="form-control select2 operation_area_id" style="width: 100% !important;" id="_operation_area">
                                             <option value="">Select Operation Area</option>
                                             @foreach($operationAreas ?? [] as $operationArea)
                                                 <option value="{{$operationArea->id}}">{{$operationArea->name}}</option>
@@ -231,12 +231,10 @@
             $("#name").val($(button).data("name"));
             $("#telephone").val($(button).data("phone"));
             $("#status").val($(button).data("status"));
-            $("#operator_id").val($(button).data("operator"));
+            $("#_operator_id").val($(button).data("operator"));
             $("#operation_area").val($(button).data("operation_area"));
-
-            $(".operator_id").select2().trigger('change');
-            $(".operation_area_id").select2().trigger('change');
-
+            $("#_operator_id").select2();
+            getOperationArea(Array.from($("#_operator_id").val()), $(button).data("operation_area"));
             $('#edit-user-form').attr("action", $(this).data('url'));
             var modal = $(this);
             modal.find('form').attr('action', href)
@@ -251,24 +249,30 @@
                 $('.operation_area_id').append('<option value="">Select Operation Area</option>');
             }
         });
-        const getOperationArea = (operatorId) => {
+        const getOperationArea = (operatorId, selected =null) => {
             const url = "{{ route('get-operation-areas') }}";
-            $.ajax({
-                url: url,
-                type: 'GET',
-                data: {operator_id: operatorId},
-                success: function (data) {
+            const operatrionArea = selected ? selected : null;
+            if (operatorId !== null){
+                console.log(operatorId)
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    data: {operator_id: operatorId},
+                    success: function (data) {
+                        $('.operation_area_id').empty();
+                        $('.operation_area_id').append('<option value="">Select Operation Area</option>');
+                        $.each(data[0], function (key, value) {
+                            if (operatrionArea !== null && operatrionArea === value.id) {
+                                $('.operation_area_id').append('<option value="' + value.id + '" selected>' + value.name + '</option>');
+                            }
+                            $('.operation_area_id').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                        $('.operation_area_id').select2();
+                    }
+                });
+            }
 
-                    $('.operation_area_id').empty();
-                    $('.operation_area_id').append('<option value="">Select Operation Area</option>');
-                    $.each(data[0], function (key, value) {
-                        console.log(value)
-                        $('.operation_area_id').append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                }
-            });
         };
-
 
     </script>
 

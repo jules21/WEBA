@@ -31,7 +31,7 @@
     <!--end::Subheader-->
 @endsection
 @section('content')
-    <div class="container">
+    <div class="">
         <div class="card card-custom">
             <div class="card-header flex-wrap">
                 <h3 class="card-title">Stock Adjustments</h3>
@@ -201,24 +201,12 @@
         $(document).ready(function () {
             $('.nav-stock-managements').addClass('menu-item-open');
             $('.nav-stock-adjustments').addClass('menu-item-open');
-            $('.nav-adjustments-all').addClass('menu-item-active');
             const currentRoute = @JSON(Route::currentRouteName());
-            console.log(currentRoute)
-            // currentRoute == 'admin.stock.adjustments.index'
-            //     ? $('.nav-adjustments-all').addClass('menu-item-active')
-            //     : currentRoute == 'admin.stock.adjustments.create'
-            //         ? $('.nav-adjustments-create').addClass('menu-item-active')
-            //         : $('.nav-adjustments-my-tasks').addClass('menu-item-active')
-            if(currentRoute == 'admin.stock.adjustments.index') {
-                $('.nav-adjustments-all').addClass('menu-item-active')
-            } else
-            if (currentRoute == 'admin.stock.adjustments.create') {
-                $('.nav-adjustments-create').addClass('menu-item-active')
-            } else if (currentRoute == 'admin.stock.stock-adjustments.tasks') {
-                $('.nav-adjustments-my-tasks').addClass('menu-item-active')
-            } else {
-                $('.nav-adjustments-all').addClass('menu-item-active')
-            }
+            currentRoute == 'admin.stock.adjustments.index'
+                ? $('.nav-adjustments-all').addClass('menu-item-active')
+                : currentRoute == 'admin.stock.adjustments.create'
+                    ? $('.nav-adjustments-create').addClass('menu-item-active')
+                    : $('.nav-adjustments-my-tasks').addClass('menu-item-active')
 
             $("#kt_datatable1").DataTable({
                 responsive:true,

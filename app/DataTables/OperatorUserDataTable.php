@@ -35,10 +35,15 @@ class OperatorUserDataTable extends DataTable
             ->editColumn('roles', function ($item) {
                 if(count($item->roles)>0){
                     $roles="";
-                    foreach($item->roles as $role){
-                        $roles .='<span class="badge badge-info mr-2" style="margin-bottom: 5px">'.$role->name.'</span>';
+                    foreach($item->roles as $key => $role){
+                        if ($key == 0)
+                            $roles .= \Str::slug($role->name);
+                        else
+                            $roles .= ",".\Str::slug($role->name);
                     }
-                    return $roles ;
+                    return '<a href="#" class="label label-info label-inline" data-toggle="tooltip" data-trigger="focus" data-html="true" title='. $roles.'>
+                                    '.count($item->roles).'
+                                </a>';
                 }else{
                     return "-";
                 }

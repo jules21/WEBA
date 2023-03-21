@@ -31,7 +31,7 @@
     <!--end::Subheader-->
 @endsection
 @section('content')
-    <div class="container">
+    <div class="">
         <div class="card card-custom">
             <div class="card-header flex-wrap">
                 <h3 class="card-title">Items</h3>
@@ -246,8 +246,9 @@
             $('#_status').val($(this).data('is_active'));
             $('#edit-category-form').attr('action', $(this).data('url'));
         });
-        $(document).on('change', '.btn-delete', function (e){
+        $(document).on('click', '.btn-delete', function (e){
             e.preventDefault();
+            console.log('here');
             var url = $(this).data('url');
             swal.fire({
                 title: 'Are you sure?',
