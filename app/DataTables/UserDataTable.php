@@ -35,8 +35,12 @@ class UserDataTable extends DataTable
             ->editColumn('roles', function ($item) {
                 if(count($item->roles)>0){
                     $roles="";
-                    foreach($item->roles as $role){
-                        $roles .=$role->name .' ';
+                    foreach($item->roles as $key => $role){
+                        if ($key == 0)
+                            $roles .= \Str::slug($role->name);
+                        else
+                            $roles .= ",".\Str::slug($role->name);
+//
                     }
                     return '<a href="#" class="label label-light-primary label-inline" data-toggle="tooltip" data-trigger="focus" data-html="true" title='. $roles.'>
                                     '.count($item->roles).'
@@ -75,7 +79,6 @@ class UserDataTable extends DataTable
                                        data-gender="'.$item->gender.'"
                                        data-id="'.$item->id.'"
                                        data-operator="'.$item->operator_id.'"
-                                       data-operation_area="'.$item->operation_area.'"
                                        data-national_id="'.$item->national_id.'"
                                        data-status="'.$item->status.'"
                                        data-url="'.route("admin.users.update",$item->id).'"> Edit</a>';
