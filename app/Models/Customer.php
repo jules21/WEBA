@@ -87,9 +87,9 @@ Customer extends Model
         return $this->belongsTo(DocumentType::class);
     }
 
-    public function operators(): BelongsToMany
+    public function operators(): bool
     {
-        return $this->belongsToMany(Operator::class, 'customer_operators', 'customer_id', 'operator_id');
+        return $this->hasMacro(Operator::class);
     }
 
     public function operator(): BelongsTo
@@ -112,6 +112,8 @@ Customer extends Model
     {
         return $this->belongsTo(OperationArea::class);
     }
+
+
 
 
 }
