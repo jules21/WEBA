@@ -214,7 +214,7 @@
                         <x-menu-item title="Assign Chart Of Accounts" item-class="nav-assign-chart-accounts"
                                      :route="route('admin.purchases.index')"/>
                         <x-menu-item title="Ledger Migration" item-class="nav-ledger-migration"
-                                     :route="route('admin.purchases.index')"/>
+                                     :route="route('admin.accounting.ledger-migration.index')"/>
                         <x-menu-item title="Chart Of Accounts" item-class="nav-chart-accounts"
                                      :route="route('admin.accounting.chart-of-accounts')"/>
                         <x-menu-item title="Bank Accounts" item-class="nav-bank-accounts"

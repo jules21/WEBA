@@ -15,6 +15,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JournalEntryController;
+use App\Http\Controllers\LedgerMigrationController;
 use App\Http\Controllers\MeterRequestController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OperatorUserController;
@@ -157,6 +158,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/journal-entries/store', [JournalEntryController::class, 'store'])->name('journal-entries.store');
         Route::get('/journal-entries/{journalEntry}/show', [JournalEntryController::class, 'show'])->name('journal-entries.show');
         Route::delete('/journal-entries/{journalEntry}/delete', [JournalEntryController::class, 'destroy'])->name('journal-entries.delete');
+
+        Route::get('/ledger-migration', [LedgerMigrationController::class, 'index'])->name('ledger-migration.index');
+        Route::post('/ledger-migration', [LedgerMigrationController::class, 'store'])->name('ledger-migration.store');
+        Route::get('/ledger-migration/{ledgerMigration}/show', [LedgerMigrationController::class, 'show'])->name('ledger-migration.show');
+        Route::get('/ledger-migration/{ledgerMigration}/delete', [LedgerMigrationController::class, 'destroy'])->name('ledger-migration.delete');
 
 
     });
