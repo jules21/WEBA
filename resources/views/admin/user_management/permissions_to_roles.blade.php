@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section("title","Permissions Assignment")
 
-@section('subheader')
+@section('page-header')
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
@@ -54,29 +54,66 @@
         <div class="card-body">
             <!--begin: Datatable -->
             @if($permissions->count() > 0)
-            <form class="form" action="{{route('admin.permissions_to_role.store')}}" method="POST">
-                {{csrf_field()}}
-                <input type="hidden" name="role_id" value="{{$role->id}}">
-                <div class="form-group">
-                    <div class="row">
-                        @foreach($permissions as $permission)
-                            <div class="col-md-3" style="padding: 2px">
-                                <label class="checkbox checkbox-outline checkbox-primary">
-                                    <input type="checkbox" class=""
-                                           @if($role->permissions->contains($permission)) checked
-                                           @endif value="{{$permission->id}}"
-                                           name="permissions[]">
-                                    <span class="mr-1"></span> {{$permission->name}}
-                                </label>
+                <form class="form" action="{{route('admin.permissions_to_role.store')}}" method="POST">
+                    {{csrf_field()}}
+                    <input type="hidden" name="role_id" value="{{$role->id}}">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    @php
+                                        $i=0
+                                    @endphp
+                                    @foreach($permissions as $key=>$groups)
+                                        <li class="nav-item">
+                                            <a class="nav-link {{$i == 0 ? 'active':''}}" id="home-tab{{$i}}" data-toggle="tab" href="#home{{$i++}}">
+																	<span class="nav-icon">
+																		<i class="flaticon2-gear"></i>
+																	</span>
+                                                <span class="nav-text">{{$key}}</span>
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
-                        @endforeach
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary"><span class="la la-check-circle-o"></span>
-                    Update Permissions
-                </button>
+                            <div class="col-md-12">
+                                <div class="tab-content mt-5" id="myTabContent">
+                                    @php
+                                        $j=0
+                                    @endphp
+                                    @foreach($permissions as $key=>$groups)
+                                        <div class="tab-pane {{$j == 0 ? 'fade active show':''}}" id="home{{$j++}}" role="tabpanel" aria-labelledby="home-tab">
+                                            <div class="row p-5">
+                                                @foreach($groups as $permission)
+                                                        <div class="col-md-3" style="padding: 2px">
+                                                            <label class="checkbox checkbox-outline checkbox-primary">
+                                                                <input type="checkbox"
+                                                                       @if($role->permissions->contains($permission)) checked
+                                                                       @endif value="{{$permission->id}}"
+                                                                       name="permissions[]">
+                                                                <span class="mr-2"></span>
+                                                                {{$permission->name}}
+                                                            </label>
+                                                        </div>
 
-            </form>
+
+                                                @endforeach
+                                            </div>
+
+                                        </div>
+                                    @endforeach
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary"><span class="la la-check-circle-o"></span>
+                        Update Permissions
+                    </button>
+
+                </form>
 
             @else
                 <div
