@@ -199,8 +199,8 @@
     {!! JsValidator::formRequest(App\Http\Requests\UpdateAdjustmentRequest::class,'#edit-adjustment-form') !!}
     <script>
         $(document).ready(function () {
-            $('.nav-stock-managements').addClass('menu-item-open');
-            $('.nav-stock-adjustments').addClass('menu-item-open');
+            $('.nav-stock-managements').addClass('menu-item-open menu-item-here');
+            $('.nav-stock-adjustments').addClass('menu-item-open menu-item-here');
             const currentRoute = @JSON(Route::currentRouteName());
             currentRoute == 'admin.stock.adjustments.index'
                 ? $('.nav-adjustments-all').addClass('menu-item-active')
