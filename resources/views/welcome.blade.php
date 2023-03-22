@@ -5,23 +5,25 @@
         <div class="row">
             <div class="col-lg-8 my-2">
                 <div class="mb-4">
-                    <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-5xl tw-leading-loose font-weight-bolder mb-3">
+                    <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-5xl md:tw-leading-loose font-weight-bolder md:mb-3  tw-tracking-wide">
                         CUSTOMER MANAGEMENT
                     </h1>
-                    <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-5xl tw-leading-loose font-weight-bolder mb-2">
+                    <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-5xl md:tw-leading-loose font-weight-bolder md:mb-2  tw-tracking-wide">
                         SYSTEM(CMS)
                     </h1>
                 </div>
-                <h5 class="mb-4 text-accent font-weight-bold">
+                <h2 class="mb-4  tw-text-sm md:tw-text-2xl text-accent font-weight-bolder tw-tracking-widest text-uppercase">
                     For Rural Water Supply Services
-                </h5>
-                <p class="tw-text-gray-300 mb-4">
+                </h2>
+                <p class="tw-text-gray-300 mb-4  tw-tracking-wide">
                     Empowering Private Water Operators for Sustainable Water Management - Reducing
                     Financial Loss and Non-Revenue Water .
                 </p>
                 <a href="" class="btn btn-light tw-rounded-sm py-3 px-4 hover:tw-bg-accent">
                     Request Water connection
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right"
+                         width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
+                         fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                         <path d="M9 6l6 6l-6 6"></path>
                     </svg>
@@ -50,7 +52,7 @@
                                 stroke-width="0" fill="currentColor"></path>
                         </svg>
                     </x-counter-card>
-                    <x-counter-card title="Private Water Operators"  :count="$operators->count()">
+                    <x-counter-card title="Private Water Operators" :count="$operators->count()">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24"
                              height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
                              stroke-linecap="round" stroke-linejoin="round">
