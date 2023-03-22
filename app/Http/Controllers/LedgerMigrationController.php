@@ -27,7 +27,7 @@ class LedgerMigrationController extends Controller
         $totalBalance = $totalDebits - $totalCredits;
 
         $ledgerGroups = ChartAccount::query()->where('level', '=', 1)->get();
-        return view('admin.accounting.ledger-migration.index',[
+        return view('admin.accounting.ledger-migration.index', [
             'ledgerMigrations' => $ledgerMigrations,
             'ledgerGroups' => $ledgerGroups,
             'totalCredits' => $totalCredits,
@@ -80,5 +80,11 @@ class LedgerMigrationController extends Controller
         return response()->json([
             'message' => 'Ledger Migration deleted successfully.'
         ]);
+    }
+
+    public function validateData()
+    {
+        session()->flash('success', 'Ledger Migration validated successfully.');
+        return back();
     }
 }

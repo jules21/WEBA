@@ -163,7 +163,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/ledger-migration', [LedgerMigrationController::class, 'store'])->name('ledger-migration.store');
         Route::get('/ledger-migration/{ledgerMigration}/show', [LedgerMigrationController::class, 'show'])->name('ledger-migration.show');
         Route::delete('/ledger-migration/{ledgerMigration}/delete', [LedgerMigrationController::class, 'destroy'])->name('ledger-migration.delete');
-
+        Route::post('/ledger-migration/validate', [LedgerMigrationController::class, 'validateData'])->name('ledger-migration.validate');
 
     });
     Route::prefix('user-management')->group(function () {
