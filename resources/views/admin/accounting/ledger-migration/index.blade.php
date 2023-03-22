@@ -121,10 +121,13 @@
             </div>
 
             @if($totalBalance == 0)
-                <button class="btn btn-success float-right mt-10 rounded" type="button">
-                    <i class="fa fa-check-circle"></i>
-                    Validate Ledger Migration
-                </button>
+                <form action="{{ route('admin.accounting.ledger-migration.validate') }}" method="post">
+                    @csrf
+                    <button class="btn btn-success float-right mt-10 rounded" type="submit">
+                        <i class="fa fa-check-circle"></i>
+                        Validate Ledger Migration
+                    </button>
+                </form>
             @endif
 
         </div>
