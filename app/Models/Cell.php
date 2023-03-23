@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Cell whereSectorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cell whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
  * @mixin \Eloquent
  */
 class Cell extends Model

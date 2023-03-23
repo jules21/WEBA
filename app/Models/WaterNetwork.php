@@ -31,6 +31,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Operator $operator
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereWaterNetworkTypeId($value)
+ * @property-read \App\Models\OperationArea|null $operationArea
+ * @property-read \App\Models\WaterNetworkType|null $waterNetworkType
  * @mixin \Eloquent
  */
 class WaterNetwork extends Model

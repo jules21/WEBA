@@ -239,7 +239,69 @@
         @endif
     @endif
 
-    @if(Helper::isOperator())
+    @if(auth()->user()->canAny(stockPermissions()) && auth()->user()->operation_area)
+        <li class="menu-section">
+            <h4 class="menu-text">Stock Management Section</h4>
+            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+        </li>
+        @canany([\App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
+            <li class="menu-item menu-item-submenu nav-purchases" aria-haspopup="true" data-menu-toggle="hover">
+                <a href="javascript:" class="menu-link menu-toggle">
+               <span class="svg-icon menu-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tags" width="24"
+                       height="24"
+                       viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round"
+                       stroke-linejoin="round">
+                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                   <path
+                       d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z"></path>
+                   <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path>
+                   <path d="M6 9h-.01"></path>
+                </svg>
+               </span>
+                    <span class="menu-text">
+                        Stock In
+                    </span>
+                    <i class="menu-arrow"></i>
+                </a>
+                <div class="menu-submenu">
+                    <i class="menu-arrow"></i>
+                    <ul class="menu-subnav">
+                        @can(\App\Constants\Permission::StockInItems)
+                            <li class="menu-item nav-create-purchase" aria-haspopup="true">
+                                <a href="{{route('admin.purchases.create')}}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">Create New</span>
+                                </a>
+                            </li>
+                        @endcan
+                        <li class="menu-item nav-my-purchases" aria-haspopup="true">
+                            <a href="{{route('admin.purchases.index')}}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">
+                                     My Tasks
+                                </span>
+                            </a>
+                        </li>
+                        <li class="menu-item nav-all-purchases" aria-haspopup="true">
+                            <a href="{{route('admin.purchases.index',['type'=>'all'])}}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">
+                                    All
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        @endcanany
+
         @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems,
         \App\Constants\Permission::ManageStocks,
         \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment,
@@ -439,7 +501,7 @@
             @endcan
     @endif
 
-    @endcanany
+    @endif
     @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles, \App\Constants\Permission::ManagePermissions])
         <li class="menu-section">
             <h4 class="menu-text">System Users Section</h4>

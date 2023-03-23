@@ -18,6 +18,15 @@ mix.js('resources/js/app.js', 'public/js')
             ],
             whitelistPatterns: [/^v-/],
             whitelistPatternsChildren: [/^v-/],
-            safelist: {standard: [/-active$/, /-enter$/, /-leave-to$/, /show$/]},
+            safelist: {
+                standard: [
+                    /-active$/,
+                    /-enter$/,
+                    /-leave-to$/,
+                    /show$/,
+                    /slick$/,
+                ],
+                deep: [/^slick-/],
+            },
         }
     });

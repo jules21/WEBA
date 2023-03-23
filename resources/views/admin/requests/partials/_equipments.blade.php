@@ -32,7 +32,9 @@
                         RWF
                         <span id="total">{{ number_format($requestItems->sum('total')) }}</span>
                     </td>
-
+                    @if($request->canAddMaterials())
+                        <td></td>
+                @endif
                 </tfoot>
                 <tbody>
 

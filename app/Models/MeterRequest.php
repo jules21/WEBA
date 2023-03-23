@@ -42,6 +42,12 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\Request $request
  * @method static Builder|MeterRequest whereItemCategoryId($value)
  * @method static Builder|MeterRequest whereItemId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $deliveryItems
+ * @property-read int|null $delivery_items_count
+ * @property-read \App\Models\Item|null $item
+ * @property-read \App\Models\ItemCategory|null $itemCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $stockMovementDetails
+ * @property-read int|null $stock_movement_details_count
  * @mixin Eloquent
  */
 class MeterRequest extends Model

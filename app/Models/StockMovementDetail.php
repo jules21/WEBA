@@ -42,6 +42,12 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\Item $item
  * @property-read Model|\Eloquent $model
  * @method static Builder|StockMovementDetail whereVat($value)
+ * @property string|null $adjustment_type increase or decrease
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $deliveryItems
+ * @property-read int|null $delivery_items_count
+ * @property-read mixed $delivered_items
+ * @property-read mixed $remaining_items
+ * @method static Builder|StockMovementDetail whereAdjustmentType($value)
  * @mixin Eloquent
  */
 class StockMovementDetail extends Model

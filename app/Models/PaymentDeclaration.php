@@ -38,6 +38,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PaymentDeclaration whereStatus($value)
  * @method static Builder|PaymentDeclaration whereType($value)
  * @method static Builder|PaymentDeclaration whereUpdatedAt($value)
+ * @property-read \App\Models\PaymentConfiguration $paymentConfig
+ * @property-read \App\Models\Request|null $request
  * @mixin Eloquent
  */
 class PaymentDeclaration extends Model
