@@ -89,7 +89,6 @@ class ItemsDataTable extends DataTable
                     ->addTableClass('table border table-hover table-head-custom table-vertical-center table-head-solid')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('frltip')
                     ->orderBy(1);
     }
 
