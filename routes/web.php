@@ -327,4 +327,5 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 //ajax routes
 Route::get('/operation-area', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
+Route::get('/Operator-operation-areas', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperator'])->name('operator-operation-areas');
 

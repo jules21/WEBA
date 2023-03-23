@@ -63,25 +63,22 @@
 
 @section('content')
     <div class="container">
-        <div class="card">
-            <div class="card-content card-custom">
-                <div class="card-header pb-1 pt-3">
-                    <h3>
-                       @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
-                           {{ $customer->name ?? '' }}
-                       @endif
-                        Customers Billing</h3>
-                </div>
+        <div class="card shadow-none border">
                 <div class="card-body">
+                    <h3 class="mb-3">
+                        @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
+                            {{ $customer->name ?? '' }}
+                        @endif
+                        Customers Billing</h3>
                     @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
                         <form action="#" id="filter-form">
                             <div class="row">
                                 @unless(Helper::isOperator())
                                     <div class="col-md-3 form-group">
                                         <label for="operator">Operator</label>
-                                        <select name="operator_id[]" id="operator" class="form-control select2"
+                                        <select name="operator_id" id="operator" class="form-control select2"
                                                 data-placeholder="Select Operator">
-                                            {{--                                    <option value="">Select Operator</option>--}}
+                                            <option value="">Select Operator</option>
                                             @foreach($operators ?? [] as $operator)
                                                 <option value="{{ $operator->id }}">{{ $operator->name }}</option>
                                             @endforeach
@@ -119,14 +116,15 @@
                                     <input type="text" name="subscription_number" id="subscription_number" class="form-control" placeholder="Subscription Number" value="{{request()->get('subscription_number')}}">
                                 </div>
 
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary btn-sm mr-2">
-                                        <i class="fas fa-search"></i>
-                                        Filter</button>
-                                    <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
+                                <div class="col-md-6">
+                                    <div class="row col-12">
+                                        <button type="submit" class="btn btn-primary btn-sm mr-2">
+                                            <i class="fas fa-search"></i>
+                                            Filter</button>
+                                        <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
+                                    </div>
                                 </div>
+
                             </div>
                         </form>
                         <hr>
@@ -136,7 +134,7 @@
                     </div>
 
                 </div>
-            </div>
+
         </div>
 
         <div id="modal" class="modal">
@@ -168,7 +166,8 @@
             }
         });
         const getOperationArea = (operatorId) => {
-            const url = "{{ route('get-operation-areas') }}";
+            console.log(operatorId)
+            const url = "{{ route('operator-operation-areas') }}";
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -177,24 +176,23 @@
 
                     $('#operation_area').empty();
                     $('#operation_area').append('<option value="">Select Operation Area</option>');
-                    $.each(data[0], function (key, value) {
-                        console.log(value)
+                    $.each(data, function (key, value) {
                         $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
                     });
                 }
             });
         };
         const initData = () => {
-            const operatorId = "{{ request()->get('operator_id') ? implode(',', request()->get('operator_id')) : '' }}";
-            const operationAreaId = "{{ request()->get('operation_area_id') ? implode(',', request()->get('operation_area_id')) : '' }}";
+            const operatorId = "{{ request()->get('operator_id') ? request()->get('operator_id') : '' }}";
+            const operationAreaId = "{{ request()->get('operation_area_id') ? request()->get('operation_area_id') : '' }}";
 
 
             if (operatorId !== '') {
-                $('#operator').val(operatorId.split(',')).trigger('change');
-                getOperationArea(operatorId.split(','));
+                $('#operator').val(operatorId).trigger('change');
+                getOperationArea(operatorId);
             }
             if (operationAreaId !== '') {
-                $('#operation_area').val(operationAreaId.split(',')).trigger('change');
+                $('#operation_area').val(operationAreaId).trigger('change');
             }
         };
 
