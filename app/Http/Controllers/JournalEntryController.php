@@ -28,7 +28,7 @@ class JournalEntryController extends Controller
                           </button>
                           <div class="dropdown-menu">
                             <a class="dropdown-item js-edit" href="' . route('admin.accounting.journal-entries.show', encryptId($row->id)) . '"> <i class="fa fa-edit mr-2"></i> Edit</a>
-                            <a class="dropdown-item js-delete" href="' . route('admin.accounting.journal-entries.delete', encryptId($row->id)) . '"> <i class="fa fa-trash text-danger mr-2"></i> Delete</a>
+                            <a class="dropdown-item js-delete" href="' . route('admin.accounting.journal-entries.delete', encryptId($row->id)) . '"> <i class="fa fa-trash  mr-2"></i> Delete</a>
                           </div>
                         </div>';
                 })
