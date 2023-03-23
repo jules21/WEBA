@@ -34,6 +34,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|RequestDelivery whereId($value)
  * @method static Builder|RequestDelivery whereRequestId($value)
  * @method static Builder|RequestDelivery whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $details
+ * @property-read int|null $details_count
+ * @property-read \App\Models\Request $request
  * @mixin Eloquent
  */
 class RequestDelivery extends Model

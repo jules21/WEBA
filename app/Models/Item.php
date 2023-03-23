@@ -46,6 +46,9 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\Stock|null $stock
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $stockMovements
  * @property-read int|null $stock_movements_count
+ * @property int|null $operator_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $stockMovements
+ * @method static Builder|Item whereOperatorId($value)
  * @mixin Eloquent
  */
 class Item extends Model

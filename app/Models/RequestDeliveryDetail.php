@@ -28,6 +28,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|RequestDeliveryDetail whereRemaining($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RequestDeliveryDetail whereRequestDeliveryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RequestDeliveryDetail whereUpdatedAt($value)
+ * @property int|null $stock_movement_detail_id
+ * @property-read mixed $total
+ * @property-read \App\Models\StockMovementDetail|null $requestItem
+ * @method static \Illuminate\Database\Eloquent\Builder|RequestDeliveryDetail whereStockMovementDetailId($value)
  * @mixin \Eloquent
  */
 class RequestDeliveryDetail extends Model

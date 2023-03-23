@@ -27,7 +27,8 @@
     <div class="row  justify-content-center align-items-center ">
         <div class="col-lg-5 col-md-8 col-sm-10">
             <h3 class="text-center py-1 tw-text-accent">
-                CMS RWSS
+                CMS
+                <small class="tw-text-xs font-weight-bold">RWSS</small>
                 <span class="text-white">Login</span>
             </h3>
             <div class="card lg:tw-p-10 border-0 card-body tw-rounded-lg lg:tw-rounded-xl">

@@ -40,6 +40,12 @@ use Illuminate\Support\Carbon;
  * @method static Builder|LedgerMigration whereOperationAreaId($value)
  * @method static Builder|LedgerMigration whereUpdatedAt($value)
  * @method static Builder|LedgerMigration whereUserId($value)
+ * @property int|null $ledger_id
+ * @property-read string $balance_color
+ * @property-read \App\Models\ChartAccount|null $ledger
+ * @property-read \App\Models\ChartAccount $ledgerCategory
+ * @property-read \App\Models\ChartAccount $ledgerGroup
+ * @method static Builder|LedgerMigration whereLedgerId($value)
  * @mixin Eloquent
  */
 class LedgerMigration extends Model

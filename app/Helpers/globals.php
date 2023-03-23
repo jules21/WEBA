@@ -41,3 +41,10 @@ function requestPermissions(): array
 {
     return [Permission::CreateRequest, Permission::ApproveRequest, Permission::AssignMeterNumber, Permission::ReviewRequest];
 }
+
+function stockPermissions(): array
+{
+    return [Permission::ManageItemCategories, Permission::ManageItems, Permission::ManageStocks,
+        Permission::ManageStockMovements, Permission::CreateAdjustment, Permission::ApproveAdjustment,
+        Permission::ViewAdjustment, Permission::StockInItems, Permission::ApproveStockIn];
+}
