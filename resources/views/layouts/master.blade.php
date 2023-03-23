@@ -172,7 +172,7 @@
                                         <span class="menu-text text-muted" style="font-size: 22px;">
                                             <span> CMS RWSS System</span>
                                             @if(Helper::isOperator() || Helper::hasOperationArea())
-                                                | <small class="ml-3 text-info badge bg-light-info">{{auth()->user()->operator->name ?? ""}}</small>
+                                                | <small class="ml-3 text-primary rounded-pill badge bg-light-primary">{{auth()->user()->operator->name ?? ""}}</small>
                                             @endif
                                         </span>
                                         <i class="menu-arrow"></i>
