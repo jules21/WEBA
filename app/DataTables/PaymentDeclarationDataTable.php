@@ -92,7 +92,6 @@ class PaymentDeclarationDataTable extends DataTable
                     ->setTableId('paymentdeclaration-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('frtip')
                     ->orderBy(1);
     }
 

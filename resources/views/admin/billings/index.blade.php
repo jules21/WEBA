@@ -167,9 +167,11 @@
                 $('#operation_area').append('<option value="">Select Operation Area</option>');
             }
         });
-        const getOperationArea = (operatorId) => {
-            console.log(operatorId)
+        const getOperationArea = (operatorId, selected =null) => {
             const url = "{{ route('operator-operation-areas') }}";
+            const operatrionArea = selected ? operationAreaId.split(',') : null;
+            console.log(operatrionArea)
+            console.log(selected)
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -179,8 +181,14 @@
                     $('#operation_area').empty();
                     $('#operation_area').append('<option value="">Select Operation Area</option>');
                     $.each(data, function (key, value) {
-                        $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
+                        // $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
+                         if (operatrionArea && operatrionArea.includes(value.id)) {
+                            $('#operation_area').append('<option value="' + value.id + '" selected>' + value.name + '</option>');
+                        } else {
+                            $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        }
+                        });
+                    $('#operation_area_id').select2();
                 }
             });
         };
@@ -188,14 +196,16 @@
             const operatorId = "{{ request()->get('operator_id') ? request()->get('operator_id') : '' }}";
             const operationAreaId = "{{ request()->get('operation_area_id') ? implode(',', request()->get('operation_area_id')) : '' }}";
 
-
             if (operatorId !== '') {
                 $('#operator').val(operatorId).trigger('change');
                 getOperationArea(operatorId);
+                // if (operationAreaId !== '') {
+                //     $('#operation_area').val(operationAreaId.split(',')).trigger('change');
+                // }else {
+                //     getOperationArea(operatorId);
+                // }
             }
-            if (operationAreaId !== '') {
-                $('#operation_area').val(operationAreaId.split(',')).trigger('change');
-            }
+
         };
 
         $(document).on('click','.btn-details', function (e){

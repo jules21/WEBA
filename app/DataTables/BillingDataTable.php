@@ -80,7 +80,6 @@ class BillingDataTable extends DataTable
                     ->setTableId('billing-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('frtip')
                     ->orderBy(9, 'desc');
 
     }
