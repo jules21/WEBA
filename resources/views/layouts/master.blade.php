@@ -328,7 +328,7 @@
         <!--begin::Nav-->
         <div class="navi navi-spacer-x-0 p-0">
             <!--begin::Item-->
-            <a href="{{route("admin.users.profile",encrypt(Auth::user()->id))}}"
+            <a href="{{route("admin.users.profile",encryptId(Auth::user()->id))}}"
                class="navi-item mb-5">
                 <div class="navi-link">
                     <div class="symbol symbol-40 bg-light mr-3">

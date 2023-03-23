@@ -60,5 +60,7 @@ class Permission
     const ManageRequestDurationConfigurations = 'Manage Request Duration Configurations';
     const ManagePaymentConfigurations = 'Manage Payment Configurations';
 
+    const ManagePayment = 'Manage Payment';
+
 
 }

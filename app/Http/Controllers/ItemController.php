@@ -22,6 +22,8 @@ class ItemController extends Controller
      */
     public function index()
     {
+        if(!\Helper::isOperator())
+            abort(403);
         $items = Item::query()->select('items.*')->with('category', 'packagingUnit');
         $dataTable = new ItemsDataTable($items);
         return $dataTable->render('admin.stock.items', [

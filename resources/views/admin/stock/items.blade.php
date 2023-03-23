@@ -66,6 +66,7 @@
                         {{csrf_field()}}
                         <div class="modal-body">
                             <div class="row">
+                                <input type="hidden" name="operator_id" value="{{optional(auth()->user()->operator)->id}}">
                                 <div class="col-6 form-group">
                                     <label>Item</label>
                                     <input type="text" name="name" class="form-control" aria-describedby="emailHelp"
@@ -143,6 +144,7 @@
                         {{csrf_field()}}
                         <div class="modal-body">
                             <div class="row">
+                                <input type="hidden" name="operator_id" value="{{optional(auth()->user()->operator)->id}}">
                                 <div class="col-6 form-group">
                                     <label>Item</label>
                                     <input type="text" name="name" class="form-control" aria-describedby="emailHelp"

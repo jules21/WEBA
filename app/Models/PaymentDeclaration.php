@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -64,5 +65,10 @@ class PaymentDeclaration extends Model
     public function paymentConfig(): BelongsTo
     {
         return $this->belongsTo(PaymentConfiguration::class, 'payment_configuration_id');
+    }
+
+    public function paymentHistories(): HasMany
+    {
+        return $this->hasMany(PaymentHistory::class, 'payment_declaration_id');
     }
 }

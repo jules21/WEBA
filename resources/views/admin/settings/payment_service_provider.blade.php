@@ -52,7 +52,7 @@
 
             <!--begin: Datatable-->
             <div class="table-responsive">
-                <table class="table table-striped" id="table">
+                <table class="table table-head-custom border table-head-solid table-hover" id="table">
                     <thead>
                     <tr>
                         <th>#</th>

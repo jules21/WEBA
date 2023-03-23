@@ -168,6 +168,7 @@ class AreaOfOperationController extends Controller
      */
     public function getOperationAreasByOperators()
     {
+
         $operatorIds = request()->input('operator_id');
         $operators = Operator::query()->whereIn('id', $operatorIds)
             ->with('operationAreas')
@@ -175,6 +176,16 @@ class AreaOfOperationController extends Controller
         return $operators->map(function ($operator) {
             return $operator->operationAreas;
         });
+    }
+    public function getOperationAreasByOperator()
+    {
+
+        $operatorId = request()->input('operator_id');
+        $operator = Operator::query()->where('id', $operatorId)
+            ->with('operationAreas')
+            ->first();
+
+        return $operator->operationAreas ?? [];
     }
 
     /**

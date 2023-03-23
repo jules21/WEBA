@@ -58,10 +58,23 @@
             <a href="{{route('admin.billings.index')}}"
                class="menu-link">
                     <span class="menu-icon">
-                        <i class="la la-file-invoice-dollar"></i>
+                        <i class="la la-file-invoice-dollar" style="font-size: 22px"></i>
                     </span>
                 <span class="menu-text">
                         Billing
+                    </span>
+            </a>
+        </li>
+    @endif
+    @if(auth()->user()->can(\App\Constants\Permission::ManagePayment))
+        <li class="menu-item nav-payments">
+            <a href="{{route('admin.payments.index')}}"
+               class="menu-link">
+                    <span class="menu-icon">
+                        <i class="la la-money-check-alt" style="font-size: 22px"></i>
+                    </span>
+                <span class="menu-text">
+                        Payments
                     </span>
             </a>
         </li>
@@ -293,49 +306,89 @@
         \App\Constants\Permission::ManageStocks,
         \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment,
         \App\Constants\Permission::ApproveAdjustment,
-        \App\Constants\Permission::ViewAdjustment])
-            <li class="menu-item menu-item-submenu nav-stock-managements" aria-haspopup="true" data-menu-toggle="hover">
-                <a href="javascript:;" class="menu-link menu-toggle">
-                    <i class="menu-icon flaticon2-cube"></i>
-                    <span class="menu-text">Stock Management</span>
-                    <i class="menu-arrow"></i>
-                </a>
-                <div class="menu-submenu">
-                    <i class="menu-arrow"></i>
-                    <ul class="menu-subnav">
-                        <li class="menu-item menu-item-parent" aria-haspopup="true">
-                <span class="menu-link">
-                    <span class="menu-text">Stock Management</span>
-                </span>
-                        </li>
-                        @can(\App\Constants\Permission::ManageItemCategories)
-                            <li class="menu-item nav-item-categories" aria-haspopup="true">
-                                <a href="{{ route('admin.stock.item-categories.index') }}" class="menu-link">
+        \App\Constants\Permission::ViewAdjustment,
+        \App\Constants\Permission::ManageSuppliers,
+        \App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
+            <li class="menu-section">
+                <h4 class="menu-text">Stock Management Section</h4>
+                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+            </li>
+            @canany([\App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
+                <li class="menu-item menu-item-submenu nav-purchases" aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:" class="menu-link menu-toggle">
+                    <span class="svg-icon menu-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tags" width="24" height="24"
+                             viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path
+                                d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z">
+                            </path>
+                            <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path>
+                            <path d="M6 9h-.01"></path>
+                        </svg>
+                    </span>
+                        <span class="menu-text">
+                        Stock In
+                    </span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            @can(\App\Constants\Permission::StockInItems)
+                                <li class="menu-item nav-create-purchase" aria-haspopup="true">
+                                    <a href="{{route('admin.purchases.create')}}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">Create New</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            <li class="menu-item nav-my-purchases" aria-haspopup="true">
+                                <a href="{{route('admin.purchases.index')}}" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">Item Categories</span>
+                                    <span class="menu-text">
+                        My Tasks
+                    </span>
                                 </a>
                             </li>
-                        @endcan
-                        @can(\App\Constants\Permission::ManageItems)
-                            <li class="menu-item nav-items" aria-haspopup="true">
-                                <a href="{{route('admin.stock.items.index')}}" class="menu-link">
+                            <li class="menu-item nav-all-purchases" aria-haspopup="true">
+                                <a href="{{route('admin.purchases.index',['type'=>'all'])}}" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">Items</span>
+                                    <span class="menu-text">
+                        All
+                    </span>
                                 </a>
                             </li>
-                        @endcan
-                        @can(\App\Constants\Permission::ManageStocks)
-                            <li class="menu-item nav-stock" aria-haspopup="true">
-                                <a href="{{ route('admin.stock.stock-items.index') }}" class="menu-link">
-                                    <i class="menu-bullet menu-bullet-dot">
-                                        <span></span>
-                                    </i>
-                                    <span class="menu-text">Stock</span>
-                                </a>
+                        </ul>
+                    </div>
+                </li>
+            @endcanany
+
+            @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems,
+            \App\Constants\Permission::ManageStocks,
+            \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment,
+            \App\Constants\Permission::ApproveAdjustment,
+            \App\Constants\Permission::ViewAdjustment])
+                <li class="menu-item menu-item-submenu nav-stock-managements" aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <i class="menu-icon flaticon2-cube"></i>
+                        <span class="menu-text">Stock Management</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            <li class="menu-item menu-item-parent" aria-haspopup="true">
+                            <span class="menu-link">
+                                <span class="menu-text">Stock Management</span>
+                            </span>
                             </li>
                             @can(\App\Constants\Permission::ManageItemCategories)
                                 <li class="menu-item nav-item-categories" aria-haspopup="true">
@@ -428,14 +481,25 @@
                                     </div>
                                 </li>
                             @endcanany
-                    </ul>
-                </div>
-
-            </li>
+                        </ul>
+                    </div>
+                </li>
             @endcanany
 
-            </li>
-        @endcanany
+            @can('Manage Suppliers')
+                <li class="menu-item nav-suppliers">
+                    <a href="{{route('admin.suppliers')}}"
+                       class="menu-link">
+                    <span class="menu-icon">
+                        <i class="la la-people-carry" style="font-size: 22px"></i>
+                    </span>
+                        <span class="menu-text">
+                        Suppliers
+                    </span>
+                    </a>
+                </li>
+            @endcan
+    @endif
 
     @endif
     @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles, \App\Constants\Permission::ManagePermissions])
@@ -494,7 +558,7 @@
     @canany([\App\Constants\Permission::ManageBanks, \App\Constants\Permission::ManageBillCharges, \App\Constants\Permission::ManageRequestType,
     \App\Constants\Permission::ManagePaymentType, \App\Constants\Permission::ManageDocumentTypes, \App\Constants\Permission::ManagePackagingUnits,
     \App\Constants\Permission::ManageRoadCrossTypes, \App\Constants\Permission::ManageWaterUsages, \App\Constants\Permission::ManageWaterNetworks,
-     \App\Constants\Permission::ManageSuppliers, \App\Constants\Permission::ManageWaterNetworkTypes, \App\Constants\Permission::ManageWaterNetwork,
+     \App\Constants\Permission::ManageWaterNetworkTypes, \App\Constants\Permission::ManageWaterNetwork,
      \App\Constants\Permission::ManageRequestDurationConfigurations, \App\Constants\Permission::ManagePaymentConfigurations])
         <li class="menu-section">
             <h4 class="menu-text">System Settings</h4>
@@ -606,16 +670,6 @@
                             </li>
                         @endcan
                     @endif
-                    @can('Manage Suppliers')
-                        <li class="menu-item nav-suppliers" aria-haspopup="true">
-                            <a href="{{ route('admin.suppliers') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Suppliers</span>
-                            </a>
-                        </li>
-                    @endcan
                     @can('Manage Water Network Types')
                         <li class="menu-item nav-water-network-types" aria-haspopup="true">
                             <a href="{{ route('admin.water.network.types') }}" class="menu-link">
