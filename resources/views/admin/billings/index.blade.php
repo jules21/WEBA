@@ -98,17 +98,19 @@
                                     </select>
                                 </div>
                                 @endunless
-                                <div class="col-md-3 form-group">
-                                    <label for="items">Customer Field Officer</label>
-                                    <select name="customer_field_officer_id[]" id="customer_field_officer" class="form-control select2"
-                                            data-placeholder="Select Customer Field Officer" multiple="multiple">
-                                        @foreach($customerFieldOfficers ?? [] as $customerFieldOfficer)
-                                            <option value="{{ $customerFieldOfficer->id }}"
-                                            {{request()->get('customer_field_officer_id') == $customerFieldOfficer->id ? 'selected' : ''}}
-                                            >{{ $customerFieldOfficer->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                    @if(Helper::isOperator())
+                                        <div class="col-md-3 form-group">
+                                            <label for="items">Customer Field Officer</label>
+                                            <select name="customer_field_officer_id[]" id="customer_field_officer" class="form-control select2"
+                                                    data-placeholder="Select Customer Field Officer" multiple="multiple">
+                                                @foreach($customerFieldOfficers ?? [] as $customerFieldOfficer)
+                                                    <option value="{{ $customerFieldOfficer->id }}"
+                                                        {{request()->get('customer_field_officer_id') == $customerFieldOfficer->id ? 'selected' : ''}}
+                                                    >{{ $customerFieldOfficer->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
                                 <div class="col-md-3 form-group">
                                     <label for="items">Meter Number</label>
                                     <input type="text" name="meter_number" id="meter_number" class="form-control" placeholder="Meter Number" value="{{request()->get('meter_number')}}">
@@ -118,12 +120,13 @@
                                     <input type="text" name="subscription_number" id="subscription_number" class="form-control" placeholder="Subscription Number" value="{{request()->get('subscription_number')}}">
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-6 form-group align-self-end">
                                     <div class="row col-12">
-                                        <button type="submit" class="btn btn-primary btn-sm mr-2">
+                                        <button type="submit" class="btn btn-primary mr-2" id="submit-btn">
                                             <i class="fas fa-search"></i>
-                                            Filter</button>
-                                        <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
+                                            Filter
+                                        </button>
+                                        <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark"> clear search</a>
                                     </div>
                                 </div>
 
