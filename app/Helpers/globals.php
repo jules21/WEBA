@@ -36,3 +36,8 @@ function accountingAllPermissions(): array
 {
     return array_merge(accountingPermissions(), accountingSettingsPermissions());
 }
+
+function requestPermissions(): array
+{
+    return [Permission::CreateRequest, Permission::ApproveRequest, Permission::AssignMeterNumber, Permission::ReviewRequest];
+}

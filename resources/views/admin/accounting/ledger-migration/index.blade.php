@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="alert alert-danger alert-custom alert-notice rounded-sm py-1 px-3">
+    <div class="alert alert-light-warning alert-custom alert-notice rounded-0 py-1 px-3">
         <div class="alert-icon">
             <i class="flaticon2-exclamation"></i>
         </div>

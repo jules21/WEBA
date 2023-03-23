@@ -34,7 +34,7 @@ class RequestsController extends Controller
     public function index()
     {
         $data = AppRequest::query()
-            ->with(['customer', 'requestType'])
+            ->with(['customer', 'requestType','operator'])
             ->where([['operation_area_id', '=', auth()->user()->operation_area]])
             ->select('requests.*');
         if (request()->ajax()) {
