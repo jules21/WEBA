@@ -14,7 +14,7 @@
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="/" class="text-muted">Home</a>
+                            <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
                             <a class="text-muted">Item Categories</a>
@@ -31,7 +31,7 @@
     <!--end::Subheader-->
 @endsection
 @section('content')
-    <div class="container">
+    <div class="">
         <div class="card card-custom">
             <div class="card-header flex-wrap">
                 <h3 class="card-title">Categories</h3>

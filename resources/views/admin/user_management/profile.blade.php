@@ -1,4 +1,4 @@
-{{--@extends('layouts.master')--}}
+@extends('layouts.master')
 @section('title')
      Profile
 @stop
@@ -52,7 +52,7 @@
                             </div>
                             <div>
                                 <a href="#" class="font-weight-bolder font-size-h5 text-dark-75 text-hover-primary">{{Auth::user()->name}}</a>
-                                <div class="text-muted">{{optional(Auth::user()->jobTitle)->name}}</div>
+{{--                                <div class="text-muted">{{optional(Auth::user()->jobTitle)->name}}</div>--}}
                             </div>
                         </div>
                         <!--end::User-->
@@ -64,12 +64,12 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <span class="font-weight-bold mr-2">Phone:</span>
-                                <span class="text-muted">{{Auth::user()->telephone}}</span>
+                                <span class="text-muted">{{Auth::user()->phone}}</span>
                             </div>
                             @can('view-partner-action')
                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                     <span class="font-weight-bold mr-2">Organization:</span>
-                                    <span class="text-muted">{{optional(Auth::user()->partner)->name ?? ''}}</span>
+                                    <span class="text-muted">{{optional(Auth::user()->operator)->name ?? ''}}</span>
                                 </div>
                             @endcan
                         </div>
@@ -162,7 +162,7 @@
                                                 <i class="la la-phone"></i>
                                             </span>
                                         </div>
-                                        <input required type="text" class="form-control form-control-lg form-control-solid" value="{{Auth::user()->telephone}}" placeholder="Phone" id="telephone" name="telephone" disabled>
+                                        <input required type="text" class="form-control form-control-lg form-control-solid" value="{{Auth::user()->phone}}" placeholder="Phone" id="phone" name="phone" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -202,7 +202,7 @@
             $('#first-name').prop('disabled', false);
             $('#last-name').prop('disabled', false);
             $('#email').prop('disabled', false);
-            $('#telephone').prop('disabled', false);
+            $('#phone').prop('disabled', false);
             $(this).css('display','none');
             $('.btn-update').css('display','block');
         })

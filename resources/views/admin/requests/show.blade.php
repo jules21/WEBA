@@ -114,8 +114,7 @@
                                 </svg>
                             </div>
                             <div class="alert-text">
-                                Please make sure to pay all pending payments before adding meters numbers to this
-                                request
+                                Please make sure all pending payments are paid before assigning meter numbers to this request.
                             </div>
                         </div>
                     @endif

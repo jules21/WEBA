@@ -39,6 +39,11 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|Expense wherePaymentLedger($value)
  * @method static Builder|Expense whereUpdatedAt($value)
  * @method static Builder|Expense whereUserId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\ChartAccount $expenseCategory
+ * @property-read \App\Models\ChartAccount $expenseLedger
+ * @property-read \App\Models\ChartAccount $paymentLedger
  * @mixin Eloquent
  */
 class Expense extends Model implements Auditable

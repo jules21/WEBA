@@ -70,6 +70,11 @@ use Storage;
  * @property-read int|null $customers_count
  * @property-read Collection<int, \App\Models\Stock> $stocks
  * @property-read int|null $stocks_count
+ * @property-read Collection<int, \App\Models\Customer> $customers
+ * @property-read Collection<int, \App\Models\OperationArea> $operationAreas
+ * @property-read Collection<int, \App\Models\Stock> $stocks
+ * @property-read Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
  * @mixin Eloquent
  */
 class Operator extends Model

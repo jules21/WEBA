@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Stock')
+@section('title', 'Billing')
 @section("css")
     <style>
         .select2-container--default .select2-selection--multiple:before {
@@ -44,7 +44,7 @@
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="/" class="text-muted">Home</a>
+                            <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
                             <a class="text-muted">Billing</a>
@@ -63,25 +63,24 @@
 
 @section('content')
     <div class="container">
-        <div class="card">
-            <div class="card-content card-custom">
-                <div class="card-header pb-1 pt-3">
-                    <h3>
-                       @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
-                           {{ $customer->name ?? '' }}
-                       @endif
-                        Customers Billing</h3>
-                </div>
+        <div class="card shadow-none border">
                 <div class="card-body">
+                    <h3 class="mb-3">
+                        @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
+                            {{ $customer->name ?? '' }}
+                            @else
+                            Customers
+                        @endif
+                         Billing</h3>
                     @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
                         <form action="#" id="filter-form">
                             <div class="row">
                                 @unless(Helper::isOperator())
                                     <div class="col-md-3 form-group">
                                         <label for="operator">Operator</label>
-                                        <select name="operator_id[]" id="operator" class="form-control select2"
-                                                data-placeholder="Select Operator" multiple="multiple">
-                                            {{--                                    <option value="">Select Operator</option>--}}
+                                        <select name="operator_id" id="operator" class="form-control select2"
+                                                data-placeholder="Select Operator">
+                                            <option value="">Select Operator</option>
                                             @foreach($operators ?? [] as $operator)
                                                 <option value="{{ $operator->id }}">{{ $operator->name }}</option>
                                             @endforeach
@@ -99,17 +98,19 @@
                                     </select>
                                 </div>
                                 @endunless
-                                <div class="col-md-3 form-group">
-                                    <label for="items">Customer Field Officer</label>
-                                    <select name="customer_field_officer_id[]" id="customer_field_officer" class="form-control select2"
-                                            data-placeholder="Select Customer Field Officer" multiple="multiple">
-                                        @foreach($customerFieldOfficers ?? [] as $customerFieldOfficer)
-                                            <option value="{{ $customerFieldOfficer->id }}"
-                                            {{request()->get('customer_field_officer_id') == $customerFieldOfficer->id ? 'selected' : ''}}
-                                            >{{ $customerFieldOfficer->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                    @if(Helper::isOperator())
+                                        <div class="col-md-3 form-group">
+                                            <label for="items">Customer Field Officer</label>
+                                            <select name="customer_field_officer_id[]" id="customer_field_officer" class="form-control select2"
+                                                    data-placeholder="Select Customer Field Officer" multiple="multiple">
+                                                @foreach($customerFieldOfficers ?? [] as $customerFieldOfficer)
+                                                    <option value="{{ $customerFieldOfficer->id }}"
+                                                        {{request()->get('customer_field_officer_id') == $customerFieldOfficer->id ? 'selected' : ''}}
+                                                    >{{ $customerFieldOfficer->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
                                 <div class="col-md-3 form-group">
                                     <label for="items">Meter Number</label>
                                     <input type="text" name="meter_number" id="meter_number" class="form-control" placeholder="Meter Number" value="{{request()->get('meter_number')}}">
@@ -119,24 +120,26 @@
                                     <input type="text" name="subscription_number" id="subscription_number" class="form-control" placeholder="Subscription Number" value="{{request()->get('subscription_number')}}">
                                 </div>
 
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <button type="submit" class="btn btn-primary btn-sm mr-2">
-                                        <i class="fas fa-search"></i>
-                                        Filter</button>
-                                    <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
+                                <div class="col-md-6 form-group align-self-end">
+                                    <div class="row col-12">
+                                        <button type="submit" class="btn btn-primary mr-2" id="submit-btn">
+                                            <i class="fas fa-search"></i>
+                                            Filter
+                                        </button>
+                                        <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark"> clear search</a>
+                                    </div>
                                 </div>
+
                             </div>
                         </form>
                         <hr>
                     @endif
                     <div class="table-responsive">
-                        {{$dataTable->table(['class' => 'table table-head-solid border'])}}
+                        {{$dataTable->table(['class' => 'table table-head-custom border table-head-solid table-hover'])}}
                     </div>
 
                 </div>
-            </div>
+
         </div>
 
         <div id="modal" class="modal">
@@ -167,8 +170,11 @@
                 $('#operation_area').append('<option value="">Select Operation Area</option>');
             }
         });
-        const getOperationArea = (operatorId) => {
-            const url = "{{ route('get-operation-areas') }}";
+        const getOperationArea = (operatorId, selected =null) => {
+            const url = "{{ route('operator-operation-areas') }}";
+            const operatrionArea = selected ? operationAreaId.split(',') : null;
+            console.log(operatrionArea)
+            console.log(selected)
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -177,25 +183,32 @@
 
                     $('#operation_area').empty();
                     $('#operation_area').append('<option value="">Select Operation Area</option>');
-                    $.each(data[0], function (key, value) {
-                        console.log(value)
-                        $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
+                    $.each(data, function (key, value) {
+                        // $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
+                         if (operatrionArea && operatrionArea.includes(value.id)) {
+                            $('#operation_area').append('<option value="' + value.id + '" selected>' + value.name + '</option>');
+                        } else {
+                            $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        }
+                        });
+                    $('#operation_area_id').select2();
                 }
             });
         };
         const initData = () => {
-            const operatorId = "{{ request()->get('operator_id') ? implode(',', request()->get('operator_id')) : '' }}";
+            const operatorId = "{{ request()->get('operator_id') ? request()->get('operator_id') : '' }}";
             const operationAreaId = "{{ request()->get('operation_area_id') ? implode(',', request()->get('operation_area_id')) : '' }}";
 
-
             if (operatorId !== '') {
-                $('#operator').val(operatorId.split(',')).trigger('change');
-                getOperationArea(operatorId.split(','));
+                $('#operator').val(operatorId).trigger('change');
+                getOperationArea(operatorId);
+                // if (operationAreaId !== '') {
+                //     $('#operation_area').val(operationAreaId.split(',')).trigger('change');
+                // }else {
+                //     getOperationArea(operatorId);
+                // }
             }
-            if (operationAreaId !== '') {
-                $('#operation_area').val(operationAreaId.split(',')).trigger('change');
-            }
+
         };
 
         $(document).on('click','.btn-details', function (e){

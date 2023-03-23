@@ -69,12 +69,12 @@
                             </div>
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <span class="font-weight-bold mr-2">Phone:</span>
-                                <span class="text-muted">{{Auth::user()->telephone}}</span>
+                                <span class="text-muted">{{Auth::user()->phone}}</span>
                             </div>
                             @can('view-partner-action')
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <span class="font-weight-bold mr-2">Organization:</span>
-                                <span class="text-muted">{{optional(Auth::user()->partner)->name ?? ''}}</span>
+                                <span class="text-muted">{{optional(Auth::user()->operator)->name ?? ''}}</span>
                             </div>
                             @endcan
                         </div>

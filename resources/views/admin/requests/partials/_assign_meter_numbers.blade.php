@@ -4,61 +4,65 @@
         <h6 class="mb-0">Meter Numbers</h6>
         @if($request->canAssignMeterNumber())
             <button type="button" class="btn btn-sm btn-primary" id="addMeterBtn">
-                <i class="flaticon2-plus-1"></i>
+                <i class="flaticon2-plus"></i>
                 Add New
             </button>
         @endif
     </div>
 
     <div class="table-responsive">
-        <table class="table table-head-custom table-head-solid table-hover">
-            <thead>
-            <tr>
-                <th>Subscription Number</th>
-                <th>Meter Number></th>
-                <th>Category</th>
-                <th>Item</th>
-                @if($request->canAssignMeterNumber())
-                <th>Actions</th>
-                @endif
-            </tr>
-            </thead>
-            <tbody>
-            @forelse($request->meterNumbers as $item)
+        @if($request->meterNumbers->isEmpty())
+            <div class="alert alert-light-info alert-custom mb-0">
+                No meter numbers assigned yet.
+            </div>
+        @else
+            <table class="table table-head-custom table-head-solid table-hover">
+                <thead>
                 <tr>
-                    <td>{{ $item->subscription_number }}</td>
-                    <td>{{ $item->meter_number }}</td>
-                    <td>{{ $item->itemCategory->name }}</td>
-                    <td>{{ $item->item->name }}</td>
+                    <th>Subscription Number</th>
+                    <th>Meter Number</th>
+                    <th>Category</th>
+                    <th>Item</th>
                     @if($request->canAssignMeterNumber())
-                        <td>
-                            <button type="button"
-                                    data-id="{{ $item->id }}"
-                                    data-item_category_id="{{ $item->item_category_id }}"
-                                    data-item_id="{{ $item->item_id }}"
-                                    data-subscription_number="{{ $item->subscription_number }}"
-                                    data-meter_number="{{ $item->meter_number }}"
-                                    data-last_index="{{ $item->last_index }}"
-                                    class="btn btn-sm btn-light-primary rounded-circle btn-icon mr-2 js-edit-meter"
-                                    title="Edit details">
-                                <i class="flaticon2-edit"></i>
-                            </button>
-                            <button type="button"
-                                    data-href="{{ route('admin.requests.meter-number.destroy',encryptId($item->id)) }}"
-                                    class="btn btn-sm  rounded-circle btn-icon btn-light-danger js-delete"
-                                    title="Delete">
-                                <i class="flaticon2-trash"></i>
-                            </button>
-                        </td>
+                        <th>Actions</th>
                     @endif
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="3" class="text-center">No meter numbers yet</td>
-                </tr>
-            @endforelse
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                @forelse($request->meterNumbers as $item)
+                    <tr>
+                        <td>{{ $item->subscription_number }}</td>
+                        <td>{{ $item->meter_number }}</td>
+                        <td>{{ $item->itemCategory->name }}</td>
+                        <td>{{ $item->item->name }}</td>
+                        @if($request->canAssignMeterNumber())
+                            <td>
+                                <button type="button"
+                                        data-id="{{ $item->id }}"
+                                        data-item_category_id="{{ $item->item_category_id }}"
+                                        data-item_id="{{ $item->item_id }}"
+                                        data-subscription_number="{{ $item->subscription_number }}"
+                                        data-meter_number="{{ $item->meter_number }}"
+                                        data-last_index="{{ $item->last_index }}"
+                                        class="btn btn-sm btn-light-primary rounded-circle btn-icon mr-2 js-edit-meter"
+                                        title="Edit details">
+                                    <i class="flaticon2-edit"></i>
+                                </button>
+                                <button type="button"
+                                        data-href="{{ route('admin.requests.meter-number.destroy',encryptId($item->id)) }}"
+                                        class="btn btn-sm  rounded-circle btn-icon btn-light-danger js-delete"
+                                        title="Delete">
+                                    <i class="flaticon2-trash"></i>
+                                </button>
+                            </td>
+                        @endif
+                    </tr>
+                @empty
+
+                @endforelse
+                </tbody>
+            </table>
+        @endif
 
 
     </div>

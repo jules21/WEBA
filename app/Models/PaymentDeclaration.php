@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -37,6 +38,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PaymentDeclaration whereStatus($value)
  * @method static Builder|PaymentDeclaration whereType($value)
  * @method static Builder|PaymentDeclaration whereUpdatedAt($value)
+ * @property-read \App\Models\PaymentConfiguration $paymentConfig
+ * @property-read \App\Models\Request|null $request
  * @mixin Eloquent
  */
 class PaymentDeclaration extends Model
@@ -62,5 +65,10 @@ class PaymentDeclaration extends Model
     public function paymentConfig(): BelongsTo
     {
         return $this->belongsTo(PaymentConfiguration::class, 'payment_configuration_id');
+    }
+
+    public function paymentHistories(): HasMany
+    {
+        return $this->hasMany(PaymentHistory::class, 'payment_declaration_id');
     }
 }

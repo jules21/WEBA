@@ -14,7 +14,7 @@
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="/" class="text-muted">Home</a>
+                            <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
                             <a class="text-muted">Stock</a>
@@ -32,7 +32,7 @@
 @endsection
 
 @section('content')
-    <div class="container">
+    <div class="">
         <div class="card">
             <div class="card-content card-custom">
                 <div class="card-header pb-1 pt-3">
@@ -94,7 +94,7 @@
                         </div>
                     </form>
                     <hr>
-                    <table class="table table-head-solid border" id="kt_datatable1">
+                    <table class="table table-head-custom border table-head-solid table-hover" id="kt_datatable1">
                         <thead>
                         <tr>
 

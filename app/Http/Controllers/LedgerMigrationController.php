@@ -2,84 +2,89 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\BalanceType;
+use App\Http\Requests\ValidateLedgerMigration;
+use App\Models\ChartAccount;
 use App\Models\LedgerMigration;
-use Illuminate\Http\Request;
+use Exception;
 
 class LedgerMigrationController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @throws Exception
      */
     public function index()
     {
-        //
+        $ledgerMigrations = LedgerMigration::query()
+            ->with('ledgerGroup', 'ledgerCategory', 'ledger')
+            ->where('operation_area_id', '=', auth()->user()->operation_area)
+            ->latest()
+            ->get();
+
+        $totalCredits = $ledgerMigrations->where('balance_type', BalanceType::CREDIT)->sum('amount');
+        $totalDebits = $ledgerMigrations->where('balance_type', BalanceType::DEBIT)->sum('amount');
+        $totalBalance = $totalDebits - $totalCredits;
+
+        $ledgerGroups = ChartAccount::query()->where('level', '=', 1)->get();
+        return view('admin.accounting.ledger-migration.index', [
+            'ledgerMigrations' => $ledgerMigrations,
+            'ledgerGroups' => $ledgerGroups,
+            'totalCredits' => $totalCredits,
+            'totalDebits' => $totalDebits,
+            'totalBalance' => $totalBalance,
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(ValidateLedgerMigration $request)
     {
-        //
-    }
+        $data = $request->validated();
+        $id = $request->input('id');
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $data['user_id'] = auth()->id();
+        $data['operation_area_id'] = auth()->user()->operation_area;
+
+        if ($id > 0) {
+            $model = LedgerMigration::query()->find($id);
+            $model->update($model);
+        } else {
+            $model = LedgerMigration::query()->create($data);
+        }
+
+        if ($request->ajax()) {
+            session()->flash('success', 'Ledger Migration saved successfully.');
+            return response()->json([
+                'message' => 'Ledger Migration saved successfully.',
+                'data' => $model
+            ]);
+        }
+        return back()
+            ->with('success', 'Ledger Migration saved successfully.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LedgerMigration  $ledgerMigration
-     * @return \Illuminate\Http\Response
+     * @param LedgerMigration $ledgerMigration
+     * @return LedgerMigration
      */
     public function show(LedgerMigration $ledgerMigration)
     {
-        //
+        return $ledgerMigration;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\LedgerMigration  $ledgerMigration
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(LedgerMigration $ledgerMigration)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\LedgerMigration  $ledgerMigration
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, LedgerMigration $ledgerMigration)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\LedgerMigration  $ledgerMigration
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(LedgerMigration $ledgerMigration)
     {
-        //
+        $ledgerMigration->delete();
+        return response()->json([
+            'message' => 'Ledger Migration deleted successfully.'
+        ]);
+    }
+
+    public function validateData()
+    {
+        session()->flash('success', 'Ledger Migration validated successfully.');
+        return back();
     }
 }

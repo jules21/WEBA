@@ -26,6 +26,7 @@ class StoreItemCategoryRequest extends FormRequest
         return [
             'name'=>'required|string|max:255',
             'is_meter'=>'required|boolean',
+            'operator_id'=>'required',
         ];
     }
     public function messages()
@@ -34,6 +35,9 @@ class StoreItemCategoryRequest extends FormRequest
             'name.required'=>'Please enter a name for the category',
             'name.string'=>'Please enter a valid name for the category',
             'name.max'=>'Please enter a name with less than 255 characters',
+            'is_meter.required'=>'Please select if the category is metered',
+            'is_meter.boolean'=>'Please select if the category is metered',
+            'operator_id.required'=>'Please select an operator',
         ];
     }
 }

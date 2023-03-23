@@ -54,6 +54,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Purchase whereTaxAmount($value)
  * @method static Builder|Purchase whereTaxNetAmount($value)
  * @method static Builder|Purchase whereTotal($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $movementDetails
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
  * @mixin Eloquent
  */
 class Purchase extends Model

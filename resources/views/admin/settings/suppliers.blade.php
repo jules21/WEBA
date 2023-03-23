@@ -15,7 +15,7 @@
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="/" class="text-muted">Home</a>
+                            <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
                             <a class="text-muted">Suppliers</a>
@@ -53,7 +53,7 @@
 
             <!--begin: Datatable-->
             <div class="table-responsive">
-                <table class="table table-striped" id="table">
+                <table class="table table-head-custom border table-head-solid table-hover" id="table">
                     {{--                    <table class="table table-striped" id="kt_datatable">--}}
                     <thead>
                     <tr>

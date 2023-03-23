@@ -15,6 +15,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JournalEntryController;
+use App\Http\Controllers\LedgerMigrationController;
 use App\Http\Controllers\MeterRequestController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OperatorUserController;
@@ -40,9 +41,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 
 Route::post('/money', [HomeController::class, 'generateQrCodeFromExcelFile'])->name('file-excel-from-code-qr-generate');
 
@@ -160,6 +159,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/journal-entries/{journalEntry}/show', [JournalEntryController::class, 'show'])->name('journal-entries.show');
         Route::delete('/journal-entries/{journalEntry}/delete', [JournalEntryController::class, 'destroy'])->name('journal-entries.delete');
 
+        Route::get('/ledger-migration', [LedgerMigrationController::class, 'index'])->name('ledger-migration.index');
+        Route::post('/ledger-migration', [LedgerMigrationController::class, 'store'])->name('ledger-migration.store');
+        Route::get('/ledger-migration/{ledgerMigration}/show', [LedgerMigrationController::class, 'show'])->name('ledger-migration.show');
+        Route::delete('/ledger-migration/{ledgerMigration}/delete', [LedgerMigrationController::class, 'destroy'])->name('ledger-migration.delete');
+        Route::post('/ledger-migration/validate', [LedgerMigrationController::class, 'validateData'])->name('ledger-migration.validate');
 
     });
     Route::prefix('user-management')->group(function () {
@@ -254,11 +258,20 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/water_network_type/delete/{id}', [App\Http\Controllers\WaterNetworkTypeController::class, 'destroy'])->name('water.network.type.delete');
 
         //water networks
+
         Route::get('/water_networks',[App\Http\Controllers\WaterNetworkController::class,'index'])->name('water.networks');
         Route::post('/water_network/store',[App\Http\Controllers\WaterNetworkController::class,'store'])->name('water.network.store');
         Route::post('/water_network/update',[App\Http\Controllers\WaterNetworkController::class,'update'])->name('water.network.edit');
         Route::get('/water_network/delete/{id}',[App\Http\Controllers\WaterNetworkController::class,'destroy'])->name('water.network.delete');
         Route::get('/operation_areas/{id}',[App\Http\Controllers\WaterNetworkController::class,'loadAreaOperation']);
+
+
+        Route::get('/water_networks', [App\Http\Controllers\WaterNetworkController::class, 'index'])->name('water.networks');
+        Route::post('/water_network/store', [App\Http\Controllers\WaterNetworkController::class, 'store'])->name('water.network.store');
+        Route::post('/water_network/update', [App\Http\Controllers\WaterNetworkController::class, 'update'])->name('water.network.edit');
+        Route::get('/water_network/delete/{id}', [App\Http\Controllers\WaterNetworkController::class, 'destroy'])->name('water.network.delete');
+        Route::get('/operation_areas/{id}', [App\Http\Controllers\WaterNetworkController::class, 'loadAreaOperation']);
+
 
         //water network statuses
         Route::get('/water_network_statuses',[App\Http\Controllers\WaterNetworkStatusController::class,'index'])->name('water.network.statuses');
@@ -305,7 +318,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/adjustments/{adjustment}/review', [App\Http\Controllers\AdjustmentController::class, 'review'])->name('stock-adjustments.review');
 
     });
-
     Route::group(['prefix' => 'billings', 'as' => 'billings.'], function () {
         Route::get('/', [App\Http\Controllers\BillingController::class, 'index'])->name('index');
         //show details
@@ -313,13 +325,21 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         //customer billings
         Route::get('/customer/{customer}', [App\Http\Controllers\BillingController::class, 'customerBillings'])->name('customer');
     });
+    Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
+        Route::get('/', [App\Http\Controllers\PaymentDeclarationController::class, 'index'])->name('index');
+//        Route::get('/{payment}', [App\Http\Controllers\PaymentController::class, 'show'])->name('show');
+//        Route::get('/customer/{customer}', [App\Http\Controllers\PaymentController::class, 'customerPayments'])->name('customer');
+        //payment history
+        Route::get('/{payment_declaration}/history', [App\Http\Controllers\PaymentDeclarationController::class, 'history'])->name('history');
+    });
 
 });
 
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 //ajax routes
 Route::get('/operation-area', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
+Route::get('/Operator-operation-areas', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperator'])->name('operator-operation-areas');
 

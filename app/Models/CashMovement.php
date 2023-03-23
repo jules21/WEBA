@@ -45,6 +45,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CashMovement whereTransactionType($value)
  * @method static Builder|CashMovement whereUpdatedAt($value)
  * @method static Builder|CashMovement whereUserId($value)
+ * @property-read \App\Models\PaymentServiceProvider|null $paymentServiceProvider
+ * @property-read \App\Models\PaymentServiceProviderAccount|null $paymentServiceProviderAccount
  * @mixin Eloquent
  */
 class CashMovement extends Model

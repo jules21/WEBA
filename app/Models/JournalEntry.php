@@ -42,6 +42,12 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|JournalEntry whereOperationAreaId($value)
  * @method static Builder|JournalEntry whereUpdatedAt($value)
  * @method static Builder|JournalEntry whereUserId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\ChartAccount $creditLedger
+ * @property-read \App\Models\ChartAccount $creditLegderGroup
+ * @property-read \App\Models\ChartAccount $debitLedger
+ * @property-read \App\Models\ChartAccount $debitLegderGroup
  * @mixin Eloquent
  */
 class JournalEntry extends Model implements Auditable
