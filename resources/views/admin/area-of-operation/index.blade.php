@@ -188,7 +188,7 @@
                 $btn.addClass('spinner spinner-white spinner-right');
 
                 $.ajax({
-                    url: "{{ route('admin.operator.get-area-of-operations',encryptId($operator->clms_id)) }}",
+                    url: "{{ route('admin.operator.get-area-of-operations',encryptId($operator->clms_id)) }}?op_id={{encryptId($operator->id)}}",
                     type: 'GET',
                     success: function (response) {
                         $licences = response;
@@ -214,11 +214,13 @@
 
                         $('#addModal').modal();
                     },
-                    error: function (data) {
+                    error: function (response) {
+                        let message = response.responseJSON.message ?? 'Unable to fetch area of operations, please try again later';
+                        let status = response.status;
                         Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Unable to fetch area of operations, please try again later',
+                            icon: Number(status) === 422 ? "warning" : "error",
+                            title: Number(status) === 422 ? "Oops" : "Error",
+                            text: message,
                         });
                     },
                     complete: function () {
@@ -383,8 +385,6 @@
                 e.preventDefault();
 
                 let url = $(this).attr('href');
-                // show Swal confirm message  before delete
-
                 Swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -403,6 +403,13 @@
                             },
                             success: function (data) {
                                 dataTable.ajax.reload();
+                            },
+                            error: function (response) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Oops...',
+                                    text: 'Something went wrong! Unable to delete this record',
+                                });
                             }
                         })
                     }
