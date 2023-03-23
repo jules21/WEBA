@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Stock')
+@section('title', 'Billing')
 @section("css")
     <style>
         .select2-container--default .select2-selection--multiple:before {
@@ -80,7 +80,7 @@
                                     <div class="col-md-3 form-group">
                                         <label for="operator">Operator</label>
                                         <select name="operator_id[]" id="operator" class="form-control select2"
-                                                data-placeholder="Select Operator" multiple="multiple">
+                                                data-placeholder="Select Operator">
                                             {{--                                    <option value="">Select Operator</option>--}}
                                             @foreach($operators ?? [] as $operator)
                                                 <option value="{{ $operator->id }}">{{ $operator->name }}</option>
@@ -132,7 +132,7 @@
                         <hr>
                     @endif
                     <div class="table-responsive">
-                        {{$dataTable->table(['class' => 'table table-head-solid border'])}}
+                        {{$dataTable->table(['class' => 'table table-head-custom border table-head-solid table-hover'])}}
                     </div>
 
                 </div>

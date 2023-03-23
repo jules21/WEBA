@@ -95,7 +95,7 @@ class BillingController extends Controller
                 'operators' => Operator::query()->get(),
                 'operationAreas' => $user->operator_id ?
                     OperationArea::query()->where('operator_id', $user->operator_id)->get()
-                    : OperationArea::query()->get(),
+                    : [],
                 'customerFieldOfficers' => $customerFieldOfficers->get()
             ]);
     }

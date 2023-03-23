@@ -304,13 +304,19 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/adjustments/{adjustment}/review', [App\Http\Controllers\AdjustmentController::class, 'review'])->name('stock-adjustments.review');
 
     });
-
     Route::group(['prefix' => 'billings', 'as' => 'billings.'], function () {
         Route::get('/', [App\Http\Controllers\BillingController::class, 'index'])->name('index');
         //show details
         Route::get('/{billing}', [App\Http\Controllers\BillingController::class, 'show'])->name('show');
         //customer billings
         Route::get('/customer/{customer}', [App\Http\Controllers\BillingController::class, 'customerBillings'])->name('customer');
+    });
+    Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
+        Route::get('/', [App\Http\Controllers\PaymentDeclarationController::class, 'index'])->name('index');
+//        Route::get('/{payment}', [App\Http\Controllers\PaymentController::class, 'show'])->name('show');
+//        Route::get('/customer/{customer}', [App\Http\Controllers\PaymentController::class, 'customerPayments'])->name('customer');
+        //payment history
+        Route::get('/{payment_declaration}/history', [App\Http\Controllers\PaymentDeclarationController::class, 'history'])->name('history');
     });
 
 });

@@ -31,6 +31,7 @@ class StoreItemRequest extends FormRequest
             "selling_price" => 'required',
             "vatable" => 'required',
             "vat_rate" => 'required_if:vatable,1',
+            "operator_id" => 'required',
         ];
     }
 
@@ -45,6 +46,7 @@ class StoreItemRequest extends FormRequest
             "vatable.required" => "Please select if the item is vatable",
             "vat_rate.required" => "Please enter a VAT rate",
             "vat_rate.required_if" => "Please enter a VAT rate",
+            "operator_id.required" => "Please select an operator",
         ];
     }
 }

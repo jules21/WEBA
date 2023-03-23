@@ -27,6 +27,7 @@ class UpdateItemCategoryRequest extends FormRequest
             'name'=>'required|string|max:255',
             'is_meter'=>'nullable|boolean',
             'is_active'=>'nullable|boolean',
+            'operator_id'=>'required',
         ];
     }
 }

@@ -94,7 +94,7 @@
                         </div>
                     </form>
                     <hr>
-                    <table class="table table-head-solid border" id="kt_datatable1">
+                    <table class="table table-head-custom border table-head-solid table-hover" id="kt_datatable1">
                         <thead>
                         <tr>
 
