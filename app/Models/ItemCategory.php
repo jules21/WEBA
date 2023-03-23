@@ -31,6 +31,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|ItemCategory whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Item> $items
  * @property-read int|null $items_count
+ * @property int|null $operator_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Item> $items
+ * @method static Builder|ItemCategory whereOperatorId($value)
  * @mixin Eloquent
  */
 class ItemCategory extends Model

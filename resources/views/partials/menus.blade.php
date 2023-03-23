@@ -226,9 +226,7 @@
         @endif
     @endif
 
-    @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems, \App\Constants\Permission::ManageStocks,
-        \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment, \App\Constants\Permission::ApproveAdjustment,
-        \App\Constants\Permission::ViewAdjustment, \App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
+    @if(auth()->user()->canAny(stockPermissions()) && auth()->user()->operation_area)
         <li class="menu-section">
             <h4 class="menu-text">Stock Management Section</h4>
             <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -439,7 +437,7 @@
             </li>
         @endcanany
 
-    @endcanany
+    @endif
     @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles, \App\Constants\Permission::ManagePermissions])
         <li class="menu-section">
             <h4 class="menu-text">System Users Section</h4>
