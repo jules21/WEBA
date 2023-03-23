@@ -44,7 +44,7 @@
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="/" class="text-muted">Home</a>
+                            <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
                             <a class="text-muted">Billing</a>
@@ -68,8 +68,10 @@
                     <h3 class="mb-3">
                         @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
                             {{ $customer->name ?? '' }}
+                            @else
+                            Customers
                         @endif
-                        Customers Billing</h3>
+                         Billing</h3>
                     @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
                         <form action="#" id="filter-form">
                             <div class="row">
@@ -184,7 +186,7 @@
         };
         const initData = () => {
             const operatorId = "{{ request()->get('operator_id') ? request()->get('operator_id') : '' }}";
-            const operationAreaId = "{{ request()->get('operation_area_id') ? request()->get('operation_area_id') : '' }}";
+            const operationAreaId = "{{ request()->get('operation_area_id') ? implode(',', request()->get('operation_area_id')) : '' }}";
 
 
             if (operatorId !== '') {
@@ -192,7 +194,7 @@
                 getOperationArea(operatorId);
             }
             if (operationAreaId !== '') {
-                $('#operation_area').val(operationAreaId).trigger('change');
+                $('#operation_area').val(operationAreaId.split(',')).trigger('change');
             }
         };
 

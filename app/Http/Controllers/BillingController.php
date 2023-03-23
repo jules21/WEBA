@@ -60,11 +60,12 @@ class BillingController extends Controller
 
         //filter data based on request
 
+//        dd(request()->operator_id);
         //operator_id
         $query->when(request()->has('operator_id'), function ($query) {
             $query->whereHas('meterRequest', function ($query) {
                 $query->whereHas('request', function ($query) {
-                    $query->whereIn('operator_id', request()->operator_id);
+                    $query->where('operator_id', request()->operator_id);
                 });
             });
         });
