@@ -13,6 +13,7 @@ use App\Models\Request;
 use DB;
 use Exception;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -151,34 +152,7 @@ class AreaOfOperationController extends Controller
             ->post(config('app.CLMS_URL') . '/api/v1/cms-rwss/get-operator/operation-area', $body);
 
         if ($response->status() == 200) {
-            $json = $response->json();
-            $operationAreas = OperationArea::query()
-                ->where('operator_id', '=', $operatorId)
-                ->get();
-//            extract area_of_operations from the response json
-            $areas = collect($json)->pluck('area_of_operations')->map(function ($item) {
-                return $item[0];
-            });
-
-            $areaIds = $areas->pluck('district_id');
-            // if all $operationAreas are in $areaIds, then return error message
-            $existingOperationAreasIds = $operationAreas->pluck('district_id');
-
-            if ($areaIds->diff($existingOperationAreasIds)->isEmpty()) {
-                return \response()->json([
-                    'message' => "No new area of operations found for this operator"
-                ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
-            }
-
-            // return $json excluding all registered $existingOperationAreasIds
-            return collect($json)
-                ->map(function ($item) use ($existingOperationAreasIds) {
-                    $item['area_of_operations'] = collect($item['area_of_operations'])
-                        ->filter(function ($area) use ($existingOperationAreasIds) {
-                            return !$existingOperationAreasIds->contains($area['district_id']);
-                        })->toArray();
-                    return $item;
-                })->toArray();
+            return $this->getOperationAreasResponse($response, $operatorId);
         }
 
         return response()
@@ -226,6 +200,42 @@ class AreaOfOperationController extends Controller
                 );
 
             });
+    }
+
+    /**
+     * @param $response
+     * @param int $operatorId
+     * @return array|JsonResponse
+     */
+    public function getOperationAreasResponse($response, int $operatorId)
+    {
+        $json = $response->json();
+        $operationAreas = OperationArea::query()
+            ->where('operator_id', '=', $operatorId)
+            ->get();
+
+        $areas = collect($json)->pluck('area_of_operations')->map(function ($item) {
+            return $item[0];
+        });
+
+        $areaIds = $areas->pluck('district_id');
+        // if all $operationAreas are in $areaIds, then return error message
+        $existingOperationAreasIds = $operationAreas->pluck('district_id');
+        if ($areaIds->diff($existingOperationAreasIds)->isEmpty()) {
+            return \response()->json([
+                'message' => "No new area of operations found for this operator"
+            ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        // return $json excluding all registered $existingOperationAreasIds
+        return collect($json)
+            ->map(function ($item) use ($existingOperationAreasIds) {
+                $item['area_of_operations'] = collect($item['area_of_operations'])
+                    ->filter(function ($area) use ($existingOperationAreasIds) {
+                        return !$existingOperationAreasIds->contains($area['district_id']);
+                    })->toArray();
+                return $item;
+            })->toArray();
     }
 
 
