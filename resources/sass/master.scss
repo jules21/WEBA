@@ -1,0 +1,15 @@
+$accent: #A6CE39;
+@import "../../public/assets/plugins/global/plugins.bundle.css";
+//@import "../../public/assets/css/style.bundle.css";
+@import "style";
+/*@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
+@import "~datatables.net-buttons-bs4/css/buttons.bootstrap4.css";*/
+.breadcrumb-item{
+    display: flex !important;
+}
+
+.form-control:focus {
+    border-color: $accent !important;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgb(166 206 57 / 25%) !important;
+}
