@@ -8,7 +8,8 @@ mix.postCss("resources/css/app.css", "public/css/tailwind.css", [
 
 mix.js('resources/js/app.js', 'public/js')
     .vue()
-    .sass('resources/sass/app.scss', 'public/css')
+    // .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/master.scss', 'public/css/master.css')
     .purgeCss({
         enabled: mix.inProduction(),
         extend: {
@@ -26,7 +27,26 @@ mix.js('resources/js/app.js', 'public/js')
                     /show$/,
                     /slick$/,
                 ],
-                deep: [/^slick-/],
+                deep: [
+                    /^slick-/,
+                    /^sorting_/,
+                    /^sorting_/,
+                    /^dataTable/,
+                    /^dt-/,
+                    /^modal-/,
+                    /^offcanvas-/,
+                    /^actvie/,
+                    /^show/,
+                    /^fade/,
+                    /^collapse/,
+                    /^collapsed/,
+
+                ],
             },
         }
     });
+
+if (mix.inProduction()) {
+    mix.version();
+}
+
