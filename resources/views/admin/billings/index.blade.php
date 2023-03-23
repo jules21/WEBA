@@ -118,12 +118,13 @@
                                     <input type="text" name="subscription_number" id="subscription_number" class="form-control" placeholder="Subscription Number" value="{{request()->get('subscription_number')}}">
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-6 form-group align-self-end">
                                     <div class="row col-12">
-                                        <button type="submit" class="btn btn-primary btn-sm mr-2">
+                                        <button type="submit" class="btn btn-primary mr-2" id="submit-btn">
                                             <i class="fas fa-search"></i>
-                                            Filter</button>
-                                        <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
+                                            Filter
+                                        </button>
+                                        <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark"> clear search</a>
                                     </div>
                                 </div>
 
