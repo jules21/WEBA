@@ -96638,8 +96638,27 @@ body {
   display: flex !important;
 }
 
-.form-control:focus {
+.form-control:focus, .custom-file-input:focus {
   border-color: #A6CE39 !important;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(166, 206, 57, 0.25) !important;
 }
+
+/*.checkbox.checkbox-accent > input:checked ~ span {
+    background-color: $accent !important;
+}
+
+.radio > input:checked ~ span {
+    background-color: $accent !important;
+}*/
+.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading .menu-icon, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link .menu-icon {
+  color: #014E84 !important;
+}
+
+.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link {
+  background-color: #031e31 !important;
+}
+
+/*.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-link {
+    background-color: #031e31;
+}*/

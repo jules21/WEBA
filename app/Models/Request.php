@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Constants\Permission;
 use App\Traits\GetClassName;
 use App\Traits\HasAddress;
+use App\Traits\HasEncryptId;
 use App\Traits\HasStatusColor;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -126,6 +127,7 @@ class Request extends Model
     use HasAddress;
     use HasStatusColor;
     use GetClassName;
+    use HasEncryptId;
 
 
     const PENDING = 'Pending';
@@ -138,7 +140,6 @@ class Request extends Model
     const DELIVERED = "Delivered";
     const CANCELLED = "Cancelled";
 
-
     const UPI_ATTACHMENT_PATH = 'requests/upi/';
 
     public function getUpiAttachmentUrlAttribute(): ?string
@@ -149,11 +150,6 @@ class Request extends Model
         return null;
     }
 
-    public function resolveRouteBinding($value, $field = null)
-    {
-        $id = decryptId($value);
-        return $this->where('id', '=', $id)->firstOrFail();
-    }
 
     public function requestType(): BelongsTo
     {
@@ -336,6 +332,11 @@ class Request extends Model
     public function getTotalDeliveredAttribute()
     {
         return $this->deliveryDetails()->sum('quantity');
+    }
+
+    public function pipeCrosses(): HasMany
+    {
+        return $this->hasMany(RequestPipeCross::class, 'request_id','id');
     }
 
 

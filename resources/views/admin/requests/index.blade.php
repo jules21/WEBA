@@ -233,38 +233,6 @@
             });
 
 
-            $(document).on('click', '.js-edit', function (e) {
-                e.preventDefault();
-
-                let url = $(this).attr('href');
-
-                $.ajax({
-                    url: url,
-                    method: "GET",
-                    success: function (data) {
-                        $('#id').val(data.id);
-                        $('#name').val(data.name);
-                        $('#legal_type_id').val(data.legal_type_id);
-                        $('#document_type_id').val(data.document_type_id);
-                        $('#doc_number').val(data.doc_number);
-                        $('#phone').val(data.phone);
-                        $('#email').val(data.email);
-                        $('#province_id').val(data.province_id);
-                        getDistricts(data.province_id, data.district_id);
-                        getSectors(data.district_id, data.sector_id);
-                        getCells(data.sector_id, data.cell_id);
-                        $('#addModal').modal();
-                    },
-                    error: function (response) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Oops...',
-                            text: 'Something went wrong!',
-                        });
-                    }
-                });
-
-            });
 
 
             $(document).on('click', '.js-delete', function (e) {
