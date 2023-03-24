@@ -8,6 +8,7 @@ use App\Http\Resources\MeterRequestResource;
 use App\Models\BillCharge;
 use App\Models\Billing;
 use App\Models\MeterRequest;
+use App\Notifications\PaymentNotification;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
 use function GuzzleHttp\Promise\iter_for;
@@ -112,6 +113,9 @@ class BillingController extends Controller
                 'last_index' => $request->indexNumber,
                 'balance' => $meterRequest->balance - $bill->amount,
             ]);
+            $message = "Dear " . $meterRequest->request->customer->name . ", Your bill for the month of " . date('F') . " is " . $bill->amount . " RWF. Please pay before " . date('d-m-Y', strtotime('+30 days')) . " to avoid disconnection. Thank you.";
+            $meterRequest->request->customer->notify(new PaymentNotification($message));
+
             return response()->json([
                 'action' => 1,
                 'message' => 'Bill created successfully',
