@@ -40,14 +40,13 @@ class RequestDeliveryController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function (RequestDelivery $row) {
                     $count = $row->details_count;
-                    $btn = '<a href="'.route('admin.requests.print-delivery',encryptId($row->id)).'"  data-toggle="tooltip" target="_blank"  data-id="' . $row->id . '"
-                    data-original-title="Edit" class="edit btn btn-light-danger btn-sm editProduct"><i class="flaticon2-print"></i> Print</a>';
-                    $btn = $btn . ' <a href="' . route('admin.requests.delivery.items', encryptId($row->id)) . '" data-toggle="tooltip"  data-id="' . $row->id . '"
-                data-original-title="Delete" class="btn btn-light-primary btn-sm deleteProduct">
+                    $btn = '<a href="' . route('admin.requests.print-delivery', encryptId($row->id)) . '"  data-toggle="tooltip" target="_blank"  data-id="' . $row->id . '"
+                    data-original-title="Print" class="edit btn btn-light-danger btn-sm editProduct"><i class="flaticon2-print"></i> Print</a>';
+                    return $btn . ' <a href="' . route('admin.requests.delivery.items', encryptId($row->id)) . '" data-toggle="tooltip"  data-id="' . $row->id . '"
+                data-original-title="Items" class="btn btn-light-primary btn-sm deleteProduct">
                    ' . $count . '
                     Items
                     </a>';
-                    return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -184,12 +183,24 @@ class RequestDeliveryController extends Controller
             'request' => $request
         ]);
     }
+
     public function deliveryNote($deliveryId)
     {
         $delivery = RequestDelivery::findOrFail(decryptId($deliveryId));
         $delivery->load(['details.requestItem.item', 'request']);
         $request = $delivery->request;
         return view('admin.requests.delivery.item_delivery_note', [
+            'delivery' => $delivery,
+            'request' => $request
+        ]);
+    }
+
+    public function printDelivery(AppRequest $request)
+    {
+        $delivery = $request->deliveries()->latest()->first();
+        $delivery->load(['details.requestItem.item', 'request']);
+        $request = $delivery->request;
+        return view('admin.requests.delivery.print_delivery', [
             'delivery' => $delivery,
             'request' => $request
         ]);

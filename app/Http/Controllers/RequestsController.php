@@ -49,7 +49,9 @@ class RequestsController extends Controller
     {
         $data = AppRequest::query()
             ->with(['customer', 'requestType', 'operator'])
-            ->where([['operation_area_id', '=', auth()->user()->operation_area]])
+            ->when(!is_null(auth()->user()->operator_id) && !is_null(auth()->user()->operation_area), function (Builder $query) {
+                return $query->where('operation_area_id', '=', auth()->user()->operation_area);
+            })
             ->select('requests.*');
         if (request()->ajax()) {
 
@@ -423,7 +425,7 @@ class RequestsController extends Controller
                     ['operation_area_id', '=', auth()->user()->operation_area],
                 ])
                 ->whereDoesntHave('paymentDeclarations', function (Builder $builder) {
-                    $builder->whereIn('status', [PaymentDeclaration::ACTIVE]);
+                    $builder->whereIn(DB::raw("lower(status)"), [PaymentDeclaration::ACTIVE]);
                 })
                 ->whereIn('status', [AppRequest::METER_ASSIGNED, AppRequest::PARTIALLY_DELIVERED, AppRequest::DELIVERED])
                 ->select('requests.*');
@@ -432,12 +434,16 @@ class RequestsController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (AppRequest $row) {
+                    $print = '';
+                    if ($row->status == AppRequest::DELIVERED) {
+                        $print = '<a class="dropdown-item" target="_blank" href="' . route('admin.requests.print-receipt', encryptId($row->id)) . '">Print</a>';
+                    }
                     return '<div class="dropdown">
                                 <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Actions
                                 </button>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="' . route('admin.requests.show', encryptId($row->id)) . '">Print</a>
+                                    ' . $print . '
                                     <a class="dropdown-item" href="' . route('admin.requests.delivery-request.index', encryptId($row->id)) . '">Deliveries</a>
                                 </div>
                             </div>';

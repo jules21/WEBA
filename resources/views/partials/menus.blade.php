@@ -204,12 +204,12 @@
 
                         @can(\App\Constants\Permission::ViewGeneralLedger)
                             <x-menu-item title="General Ledger" item-class="nav-chart-accounts"
-                                         :route="route('admin.purchases.index')"/>
+                                         route=""/>
                         @endcan
 
                         @can(\App\Constants\Permission::ViewLedgerBalance)
                             <x-menu-item title="Ledger Balances" item-class="nav-chart-accounts"
-                                         :route="route('admin.purchases.index')"/>
+                                         route=""/>
                         @endcan
 
 

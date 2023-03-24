@@ -122,7 +122,7 @@
                     @empty
 
                         <div class="col-12">
-                           <strong class="text-info"> No data found</strong>
+                            <strong class="text-info"> No data found</strong>
                         </div>
 
                     @endforelse
@@ -145,7 +145,7 @@
                     <h4>
                         Water Network & Connection Fee
                     </h4>
-                    @if($request->status == \App\Models\Request::ASSIGNED && auth()->user()->can(\App\Constants\Permission::ReviewRequest))
+                    @if($request->canAddConnectionFee())
                         <form action="{{ route('admin.requests.add-water-network', encryptId($request->id)) }}"
                               method="post" id="saveWaterNetworkForm">
                             @csrf
@@ -221,9 +221,7 @@
                                 </svg>
                             </div>
                             <div class="alert-text">
-                                <span class="font-weight-bold">Water Network</span> and <span
-                                    class="font-weight-bold">Connection Fee</span> will be added after the request is
-                                assigned to a technician.
+                                No Water Network & Connection Fee Added Yet !
                             </div>
                         </div>
                     @endif
