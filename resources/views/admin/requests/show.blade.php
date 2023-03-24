@@ -236,7 +236,7 @@
                             <td>
                                 <span
                                     class="label label-lg font-weight-bold label-light-{{ $payment->status_color }} label-inline rounded-pill">
-                                    {{ ucfirst($payment->status) }}
+                                    {{ ucfirst($payment->status=='active'?'Not paid':$payment->status) }}
                                 </span>
                             </td>
                         </tr>
