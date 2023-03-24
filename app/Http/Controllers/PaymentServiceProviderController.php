@@ -39,6 +39,7 @@ class PaymentServiceProviderController extends Controller
                 $array['client_id'] = $bank->client_id;
                 $array['client_secret'] = $bank->client_secret;
                 $array['supports_payment'] = true;
+                $array['is_active'] = true;
                 PaymentServiceProvider::query()->updateOrCreate(['clms_id' => $bank->id], $array);
             }
             return redirect()->back()->with('success', 'Banks synced successfully');
