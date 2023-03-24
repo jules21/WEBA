@@ -14,7 +14,7 @@
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="/" class="text-muted">Home</a>
+                            <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
                             <a class="text-muted">Items</a>
@@ -66,6 +66,7 @@
                         {{csrf_field()}}
                         <div class="modal-body">
                             <div class="row">
+                                <input type="hidden" name="operator_id" value="{{optional(auth()->user()->operator)->id}}">
                                 <div class="col-6 form-group">
                                     <label>Item</label>
                                     <input type="text" name="name" class="form-control" aria-describedby="emailHelp"
@@ -143,6 +144,7 @@
                         {{csrf_field()}}
                         <div class="modal-body">
                             <div class="row">
+                                <input type="hidden" name="operator_id" value="{{optional(auth()->user()->operator)->id}}">
                                 <div class="col-6 form-group">
                                     <label>Item</label>
                                     <input type="text" name="name" class="form-control" aria-describedby="emailHelp"

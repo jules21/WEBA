@@ -17,6 +17,8 @@ class ItemCategoryController extends Controller
      */
     public function index()
     {
+        if(!\Helper::isOperator())
+            abort(403);
         return view('admin.stock.item_categories',[
             'categories'=>ItemCategory::query()->get()
         ]);

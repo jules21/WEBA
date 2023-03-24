@@ -6,6 +6,7 @@ use App\Constants\Permission;
 use App\Http\Requests\ValidatePurchaseRequest;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Models\Item;
+use App\Models\ItemCategory;
 use App\Models\Purchase;
 use App\Models\Stock;
 use App\Models\StockMovement;
@@ -383,6 +384,15 @@ class PurchaseController extends Controller
     public function getItems()
     {
         return Item::query()
+            ->where('operator_id', '=', auth()->user()->operator_id)
+            ->orderBy('name')
+            ->get();
+    }
+
+    public function getItemCategories()
+    {
+        return ItemCategory::query()
+            ->where('operator_id', '=', auth()->user()->operator_id)
             ->orderBy('name')
             ->get();
     }

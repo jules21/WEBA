@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|BillCharge whereUnitPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BillCharge whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BillCharge whereWaterNetworkTypeId($value)
+ * @property-read \App\Models\OperationArea $operationArea
+ * @property-read \App\Models\WaterNetworkType $waterNetworkType
  * @mixin \Eloquent
  */
 class BillCharge extends Model

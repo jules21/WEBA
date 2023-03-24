@@ -12,14 +12,8 @@
     {{--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">--}}
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
-    <!--end::Fonts-->
-    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="{{asset('css/master.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css"/>
-    <!--end::Page Vendors Styles-->
-    <!--begin::Global Theme Styles(used by all pages)-->
-    <link href="{{asset('assets/plugins/global/plugins.bundle.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="{{asset('assets/plugins/custom/prismjs/prismjs.bundle.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="{{asset('assets/css/style.bundle.css')}}" rel="stylesheet" type="text/css"/>
     <!--end::Global Theme Styles-->
 
     <!--begin::Layout Themes(used by all pages)-->
@@ -172,7 +166,7 @@
                                         <span class="menu-text text-muted" style="font-size: 22px;">
                                             <span> CMS RWSS System</span>
                                             @if(Helper::isOperator() || Helper::hasOperationArea())
-                                                | <small class="ml-3 text-info badge bg-light-info">{{auth()->user()->operator->name ?? ""}}</small>
+                                                | <small class="ml-3 text-primary rounded-pill badge bg-light-primary">{{auth()->user()->operator->name ?? ""}}</small>
                                             @endif
                                         </span>
                                         <i class="menu-arrow"></i>
@@ -328,7 +322,7 @@
         <!--begin::Nav-->
         <div class="navi navi-spacer-x-0 p-0">
             <!--begin::Item-->
-            <a href="{{route("admin.users.profile",encrypt(Auth::user()->id))}}"
+            <a href="{{route("admin.users.profile",encryptId(Auth::user()->id))}}"
                class="navi-item mb-5">
                 <div class="navi-link">
                     <div class="symbol symbol-40 bg-light mr-3">

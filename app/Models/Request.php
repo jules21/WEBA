@@ -109,6 +109,15 @@ use Storage;
  * @method static Builder|Request whereOperationAreaId($value)
  * @method static Builder|Request whereUpiAttachment($value)
  * @method static Builder|Request whereWaterNetworkId($value)
+ * @property-read Collection<int, \App\Models\RequestDelivery> $deliveries
+ * @property-read int|null $deliveries_count
+ * @property-read Collection<int, \App\Models\RequestDeliveryDetail> $deliveryDetails
+ * @property-read int|null $delivery_details_count
+ * @property-read mixed $total_delivered
+ * @property-read mixed $total_qty
+ *
+ *
+ * s
  * @mixin Eloquent
  */
 class Request extends Model
@@ -264,7 +273,7 @@ class Request extends Model
             return true;
         } elseif ($user->can(Permission::ApproveRequest) && $this->status == self::PROPOSE_TO_APPROVE) {
             return true;
-        } elseif ($user->can(Permission::AssignMeterNumber) && $this->status == self::APPROVED) {
+        } elseif ($user->can(Permission::AssignMeterNumber) && $this->status == self::APPROVED && $this->meterNumbers->count() > 0) {
             return true;
         }
         return false;
@@ -291,7 +300,7 @@ class Request extends Model
     public function pendingPayments($withoutPaymentTypeId = null): bool
     {
         return $this->paymentDeclarations()
-            ->where('status', PaymentDeclaration::ACTIVE)
+            ->where(\DB::raw("lower(status)"), PaymentDeclaration::ACTIVE)
             ->when($withoutPaymentTypeId, function ($query) use ($withoutPaymentTypeId) {
                 $query->whereHas('paymentConfig', function ($query) use ($withoutPaymentTypeId) {
                     $query->where('payment_type_id', '!=', $withoutPaymentTypeId);

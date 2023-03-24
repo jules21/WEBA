@@ -64,6 +64,14 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $requests_count
  * @property-read \App\Models\Sector|null $sector
  * @property-read \App\Models\Village|null $village
+ * @property int|null $operator_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MeterRequest> $connections
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \App\Models\OperationArea $operationArea
+ * @property-read \App\Models\Operator|null $operator
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Request> $requests
+ * @method static Builder|Customer whereOperatorId($value)
  * @mixin Eloquent
  */
 class

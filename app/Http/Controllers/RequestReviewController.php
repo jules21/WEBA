@@ -171,7 +171,8 @@ class RequestReviewController extends Controller
             ]);
         $ref = $dec->generateReferenceNumber();
         $formatted = number_format($sum);
-        $message = "You have to pay the meters fee of $formatted. Please use the reference number $ref to make the payment.";
+        $psp = $this->getPsp($metersConfig);
+        $message = "You have to pay the meters fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp";
         $request->customer->notify(new PaymentNotification($message));
     }
 
@@ -196,7 +197,8 @@ class RequestReviewController extends Controller
             ]);
         $ref = $dec->generateReferenceNumber();
         $formatted = number_format($sum);
-        $message = "You have to pay the materials fee of $formatted. Please use the reference number $ref to make the payment.";
+        $psp = $this->getPsp($materialsConfig);
+        $message = "You have to pay the materials fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp";
         $request->customer->notify(new PaymentNotification($message));
     }
 
@@ -218,7 +220,8 @@ class RequestReviewController extends Controller
             ]);
         $ref = $dec->generateReferenceNumber();
         $formatted = number_format($request->connection_fee);
-        $message = "You have to pay the connection fee of $formatted. Please use the reference number $ref to make the payment.";
+        $psp = $this->getPsp($connectionConfig);
+        $message = "You have to pay the connection fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp.";
         $request->customer->notify(new PaymentNotification($message));
     }
 

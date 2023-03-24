@@ -34,4 +34,11 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentHistory extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function paymentDeclaration(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(PaymentDeclaration::class);
+    }
 }
