@@ -19,7 +19,7 @@ class WaterNetworkController extends Controller
     public function index()
     {
         $operators = Operator::all();
-        $waterNetworks = WaterNetwork::with('operator','waterNetworkType','operationArea')->orderBy('id','DESC')->get();
+        $waterNetworks = WaterNetwork::with('operator','waterNetworkType','operationArea','waterNetworkStatus')->orderBy('id','DESC')->get();
         return view('admin.settings.water_networks',compact('waterNetworks','operators'));
     }
 
@@ -47,6 +47,7 @@ class WaterNetworkController extends Controller
         $waterNetwork->population_covered=$request->population_covered;
         $waterNetwork->water_network_type_id=$request->water_network_type_id;
         $waterNetwork->operation_area_id=$request->operation_area_id;
+        $waterNetwork->water_network_status_id=$request->water_network_status_id;
         if (auth()->user()->is_super_admin == "true")
             $waterNetwork->operator_id=$request->operator_id;
         else
@@ -93,6 +94,7 @@ class WaterNetworkController extends Controller
         $waterNetwork->population_covered=$request->population_covered;
         $waterNetwork->water_network_type_id=$request->water_network_type_id;
         $waterNetwork->operation_area_id=$request->operation_area_id;
+        $waterNetwork->water_network_status_id=$request->water_network_status_id;
         if (auth()->user()->is_super_admin == "true")
             $waterNetwork->operator_id=$request->operator_id;
         else

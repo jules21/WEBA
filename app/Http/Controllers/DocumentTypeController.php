@@ -18,7 +18,7 @@ class DocumentTypeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -40,7 +40,7 @@ class DocumentTypeController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\StoreDocumentTypeRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreDocumentTypeRequest $request)
     {
@@ -77,7 +77,7 @@ class DocumentTypeController extends Controller
      *
      * @param \App\Http\Requests\UpdateDocumentTypeRequest $request
      * @param \App\Models\DocumentType $documentType
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateDocumentTypeRequest $request, DocumentType $documentType)
     {
@@ -91,7 +91,7 @@ class DocumentTypeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Models\DocumentType $documentType
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(DocumentType $documentType,$id)
     {

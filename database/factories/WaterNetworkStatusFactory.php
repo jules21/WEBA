@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class DocumentTypeFactory extends Factory
+class WaterNetworkStatusFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -14,7 +14,7 @@ class DocumentTypeFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->name,
+            //
         ];
     }
 }
