@@ -101,14 +101,45 @@
 
         </div>
 
-        <div class="form-group">
-            <label class="font-weight-bold">Description</label>
-            <div class="form-control-plaintext py-0">
-                {{ $request->description }}
+        <div class="row">
+            <div class="col-lg-6">
+                <label class="font-weight-bold d-block">Pipe will cross:</label>
+                <div class="row">
+                    @forelse($request->pipeCrosses as $item)
+                        <div class="col-lg-6 my-2">
+                           <span class="svg-icon text-success">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="icon icon-tabler icon-tabler-circle-check" width="24" height="24"
+                                     viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                   <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                   <path d="M9 12l2 2l4 -4"></path>
+                                </svg>
+                           </span>
+                            {{ $item->pipeCross->name }}
+                        </div>
+                    @empty
+
+                        <div class="col-12">
+                           <strong class="text-info"> No data found</strong>
+                        </div>
+
+                    @endforelse
+                </div>
             </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="font-weight-bold">Description</label>
+                    <div class="form-control-plaintext py-0">
+                        {{ $request->description }}
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-lg-12">
                 <div class="">
                     <h4>
@@ -178,7 +209,7 @@
                             </div>
                         </div>
                     @else
-                        <div class="alert alert-info mb-0 mt-3 alert-custom">
+                        <div class="alert alert-info mb-0 mt-3 alert-custom ">
                             <div class="alert-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info"
                                      width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"

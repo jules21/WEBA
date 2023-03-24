@@ -200,7 +200,7 @@ class RequestsController extends Controller
 
     public function show(AppRequest $request)
     {
-        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user', 'paymentDeclarations.paymentConfig.paymentType', 'meterNumbers.item', 'meterNumbers.itemCategory');
+        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user', 'paymentDeclarations.paymentConfig.paymentType', 'meterNumbers.item', 'meterNumbers.itemCategory', 'pipeCrosses.pipeCross');
 
         $reviews = $request->flowHistories->where('is_comment', '=', true);
         $flowHistories = $request->flowHistories->where('is_comment', '=', false);
@@ -287,6 +287,10 @@ class RequestsController extends Controller
 
     public function edit(AppRequest $request)
     {
+        if ($request->status != AppRequest::PENDING) {
+            return redirect()->back()->with('error', 'Request cannot be edited');
+        }
+
         $operationArea = $this->getOperationArea();
         $sectors = $this->getSectors($operationArea);
         $requestTypes = $this->getRequestsTypes();
