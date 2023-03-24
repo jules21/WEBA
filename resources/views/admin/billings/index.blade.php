@@ -202,7 +202,7 @@
             if (operatorId !== '') {
                 getOperationArea(operatorId);
             }
-            if (operationAreaId !== '') {
+            if (operationAreaId !== '' && operationAreaId !== null) {
                 getCustomerFieldOfficer(operationAreaId);
             }
 
