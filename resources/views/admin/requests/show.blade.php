@@ -114,7 +114,8 @@
                                 </svg>
                             </div>
                             <div class="alert-text">
-                                Please make sure all pending payments are paid before assigning meter numbers to this request.
+                                Please make sure all pending payments are paid before assigning meter numbers to this
+                                request.
                             </div>
                         </div>
                     @endif
@@ -235,7 +236,7 @@
                             <td>
                                 <span
                                     class="label label-lg font-weight-bold label-light-{{ $payment->status_color }} label-inline rounded-pill">
-                                    {{ ucfirst($payment->status) }}
+                                    {{ ucfirst($payment->status=='active'?'Not paid':$payment->status) }}
                                 </span>
                             </td>
                         </tr>
@@ -410,9 +411,10 @@
 
                 let $form = $(this);
 
-                if (!$form.valid())
+                if (!$form.valid() || isSubmitting)
                     return false;
 
+                isSubmitting = true;
                 let btn = $form.find('button[type="submit"]');
 
                 btn.addClass('spinner spinner-white spinner-right')
@@ -426,6 +428,7 @@
                         location.reload();
                     },
                     error: function (error) {
+                        isSubmitting = false;
                         Swal.fire({
                             title: 'Error!',
                             text: "Unable to save water network, please try again later",
@@ -448,9 +451,10 @@
 
                 let $form = $(this);
 
-                if (!$form.valid())
+                if (!$form.valid() || isSubmitting)
                     return false;
 
+                isSubmitting = true;
                 let btn = $form.find('button[type="submit"]');
 
                 btn.addClass('spinner spinner-white spinner-right')
@@ -466,9 +470,9 @@
 
                 let $form = $(this);
 
-                if (!$form.valid())
+                if (!$form.valid() || isSubmitting)
                     return false;
-
+                isSubmitting = true;
                 let btn = $form.find('button[type="submit"]');
 
                 btn.addClass('spinner spinner-white spinner-right')
@@ -482,6 +486,7 @@
                         location.reload();
                     },
                     error: function (xhr, status, error) {
+                        isSubmitting = false;
                         Swal.fire({
                             title: 'Error!',
                             text: 'Something went wrong',
@@ -555,6 +560,7 @@
             $('#addMeterBtn').on('click', function () {
                 $('#addMeterModal').modal('show');
             });
+
             $saveMeterForm.on('submit', function (e) {
                 e.preventDefault();
                 let $form = $(this);

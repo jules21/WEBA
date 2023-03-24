@@ -63,4 +63,9 @@ class OperationArea extends Model
         return $this->hasMany(ChartAccount::class);
     }
 
+    public function billCharges(): HasMany
+    {
+        return $this->hasMany(BillCharge::class);
+    }
+
 }

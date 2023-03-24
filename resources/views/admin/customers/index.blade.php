@@ -124,7 +124,7 @@
                                                    required/>
                                             <span class="invalid-feedback small"></span>
                                         </div>
-                                        <button type="button" id="btnCheckIdDetails"
+                                        <button type="button" id="btnCheckIdDetails" style="display: none"
                                                 class="btn btn-primary ml-2 align-self-start">
                                             Check
                                         </button>
@@ -299,7 +299,6 @@
                 url: "/villages/" + cellId,
                 method: "GET",
                 success: function (data) {
-                    console.log(data);
                     $.each(data, function (index, value) {
                         villageId.append('<option value="' + value.id + '">' + value.name + '</option>');
                     });
@@ -316,7 +315,6 @@
                 url: "/documents-types/" + legalTypeId,
                 method: "GET",
                 success: function (data) {
-                    console.log(data);
                     $.each(data, function (index, value) {
                         docTypeId.append('<option value="' + value.id + '">' + value.name + '</option>');
                     });

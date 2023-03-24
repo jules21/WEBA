@@ -26,7 +26,7 @@
             </a>
         </li>
     @endcan
-    @if( auth()->user()->can(\App\Constants\Permission::ManageCustomers) && auth()->user()->operator_id)
+    @if( auth()->user()->can(\App\Constants\Permission::ManageCustomers) && auth()->user()->operator_id )
         <li class="menu-item nav-customers">
             <a href="{{route('admin.customers.index')}}" class="menu-link">
                <span class="svg-icon menu-icon">
@@ -40,12 +40,22 @@
             </a>
         </li>
     @endif
-    @if(auth()->user()->can(\App\Constants\Permission::ManageOperationAreas) && auth()->user()->operator_id)
+    @if(auth()->user()->can(\App\Constants\Permission::ManageOperationAreas) && auth()->user()->operator_id && is_null(auth()->user()->operation_area))
         <li class="menu-item nav-operation-areas">
             <a href="{{route('admin.operator.area-of-operation.index',encryptId(auth()->user()->operator_id))}}"
                class="menu-link">
-                    <span class="menu-icon">
-                        <i class="fas fa-map"></i>
+                    <span class="menu-icon svg-icon">
+                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-2" width="24"
+                            height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+   <path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5"></path>
+   <path d="M9 4v13"></path>
+   <path d="M15 7v5.5"></path>
+   <path
+       d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z"></path>
+   <path d="M19 18v.01"></path>
+</svg>
                     </span>
                 <span class="menu-text">
                         Operation Areas
@@ -57,8 +67,14 @@
         <li class="menu-item nav-billings">
             <a href="{{route('admin.billings.index')}}"
                class="menu-link">
-                    <span class="menu-icon">
-                        <i class="la la-file-invoice-dollar" style="font-size: 22px"></i>
+                    <span class="menu-icon svg-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt-2" width="24"
+                           height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                           stroke-linecap="round" stroke-linejoin="round">
+   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+   <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2"></path>
+   <path d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5"></path>
+</svg>
                     </span>
                 <span class="menu-text">
                         Billing
@@ -70,8 +86,15 @@
         <li class="menu-item nav-payments">
             <a href="{{route('admin.payments.index')}}"
                class="menu-link">
-                    <span class="menu-icon">
-                        <i class="la la-money-check-alt" style="font-size: 22px"></i>
+                    <span class="menu-icon svg-icon">
+                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash" width="24"
+                            height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+   <path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path>
+   <path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+   <path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2"></path>
+</svg>
                     </span>
                 <span class="menu-text">
                         Payments
@@ -255,8 +278,10 @@
                 <li class="menu-item menu-item-submenu nav-purchases" aria-haspopup="true" data-menu-toggle="hover">
                     <a href="javascript:" class="menu-link menu-toggle">
                     <span class="svg-icon menu-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tags" width="24" height="24"
-                             viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tags" width="24"
+                             height="24"
+                             viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                             stroke-linecap="round"
                              stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path
@@ -314,7 +339,8 @@
             \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment,
             \App\Constants\Permission::ApproveAdjustment,
             \App\Constants\Permission::ViewAdjustment])
-                <li class="menu-item menu-item-submenu nav-stock-managements" aria-haspopup="true" data-menu-toggle="hover">
+                <li class="menu-item menu-item-submenu nav-stock-managements" aria-haspopup="true"
+                    data-menu-toggle="hover">
                     <a href="javascript:;" class="menu-link menu-toggle">
                         <i class="menu-icon flaticon2-cube"></i>
                         <span class="menu-text">Stock Management</span>
@@ -429,11 +455,17 @@
                     <a href="{{route('admin.suppliers')}}"
                        class="menu-link">
 
-                        <span class="svg-icon menu-icon"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo6\dist/../src/media/svg/icons\Communication\Group.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <span class="svg-icon menu-icon"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo6\dist/../src/media/svg/icons\Communication\Group.svg--><svg
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                 <polygon points="0 0 24 0 24 24 0 24"/>
-                                <path d="M18,14 C16.3431458,14 15,12.6568542 15,11 C15,9.34314575 16.3431458,8 18,8 C19.6568542,8 21,9.34314575 21,11 C21,12.6568542 19.6568542,14 18,14 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-                                <path d="M17.6011961,15.0006174 C21.0077043,15.0378534 23.7891749,16.7601418 23.9984937,20.4 C24.0069246,20.5466056 23.9984937,21 23.4559499,21 L19.6,21 C19.6,18.7490654 18.8562935,16.6718327 17.6011961,15.0006174 Z M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
+                                <path
+                                    d="M18,14 C16.3431458,14 15,12.6568542 15,11 C15,9.34314575 16.3431458,8 18,8 C19.6568542,8 21,9.34314575 21,11 C21,12.6568542 19.6568542,14 18,14 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z"
+                                    fill="#000000" fill-rule="nonzero" opacity="0.3"/>
+                                <path
+                                    d="M17.6011961,15.0006174 C21.0077043,15.0378534 23.7891749,16.7601418 23.9984937,20.4 C24.0069246,20.5466056 23.9984937,21 23.4559499,21 L19.6,21 C19.6,18.7490654 18.8562935,16.6718327 17.6011961,15.0006174 Z M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z"
+                                    fill="#000000" fill-rule="nonzero"/>
                             </g>
                         </svg><!--end::Svg Icon-->
                         </span>

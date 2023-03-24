@@ -158,7 +158,6 @@
     <script>
         $(document).ready(function () {
             $('.nav-billings').addClass('menu-item-active');
-            initData();
             $("#kt_datatable1").DataTable({responsive:true});
             $(document).on('click','.btn-details', function (e){
                 e.preventDefault();
@@ -172,94 +171,7 @@
                     }
                 });
             })
-            $(document).on('change', '#operator', function (e) {
-                e.preventDefault();
-                let operatorId = $(this).val();
-                if (operatorId !== '') {
-                    getOperationArea(operatorId);
-                }
-                else {
-                    $('#operation_area').empty();
-                    $('#operation_area').append('<option value="">Select Operation Area</option>');
-                }
-            });
-            $(document).on('change','#operation_area',function (e) {
-                e.preventDefault();
-                let operationAreaId = $(this).val();
-                if (operationAreaId !== '') {
-                    getCustomerFieldOfficer(operationAreaId);
-                }
-                else {
-                    $('#customer_field_officer').empty();
-                    $('#customer_field_officer').append('<option value="">Select Customer Field Officer</option>');
-                }
-            });
-            //
         });
-        const initData = () => {
-            const operatorId = "{{ request()->get('operator_id') ? request()->get('operator_id') : '' }}";
-            const operationAreaId = @json($operation_area_id);
-            if (operatorId !== '') {
-                getOperationArea(operatorId);
-            }
-            if (operationAreaId !== '') {
-                getCustomerFieldOfficer(operationAreaId);
-            }
-
-            if (operatorId !== '') {
-                $('#operator').val(operatorId).trigger('change');
-            }
-
-        };
-        const getOperationArea = (operatorId) => {
-            const url = "{{ route('operator-operation-areas') }}";
-            const operationArea = @json($operation_area_id);
-            $.ajax({
-                url: url,
-                type: 'GET',
-                data: {operator_id: operatorId},
-                success: function (data) {
-
-                    $('#operation_area').empty();
-                    $('#operation_area').append('<option value="">Select Operation Area</option>');
-                    $.each(data, function (key, value) {
-                        if (operationArea && operationArea.includes(value.id.toString())) {
-                            $('#operation_area').append('<option value="' + value.id + '" selected>' + value.name + '</option>');
-                        } else {
-                            $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
-                        }
-                    });
-                    $('#operation_area').select2();
-                }
-            });
-        };
-
-        const getCustomerFieldOfficer = (operatorAreaId) => {
-            const url = "{{ route('get-operation-area-officers') }}";
-            const customerFieldOfficer = @json($customer_field_officer_id);
-            $.ajax({
-                url: url,
-                type: 'GET',
-                data: {operation_area_id: operatorAreaId},
-                success: function (data) {
-
-                    $('#customer_field_officer').empty();
-                    $('#customer_field_officer').append('<option value="">Select Customer Field Officer</option>');
-                    $.each(data, function (key, value) {
-                        if (customerFieldOfficer && customerFieldOfficer.includes(value.id.toString())) {
-                            console.log(value.id)
-                            $('#customer_field_officer').append('<option value="' + value.id + '" selected>' + value.name + '</option>');
-                        } else {
-                            $('#customer_field_officer').append('<option value="' + value.id + '">' + value.name + '</option>');
-                        }
-                    });
-                    $('#customer_field_officer').select2();
-                }
-            });
-        };
-
-
-
 
 
 

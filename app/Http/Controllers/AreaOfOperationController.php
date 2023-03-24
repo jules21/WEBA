@@ -10,6 +10,7 @@ use App\Models\OperationArea;
 use App\Models\District;
 use App\Models\Operator;
 use App\Models\Request;
+use App\Models\User;
 use DB;
 use Exception;
 use Illuminate\Database\Query\Builder;
@@ -247,6 +248,24 @@ class AreaOfOperationController extends Controller
                     })->toArray();
                 return $item;
             })->toArray();
+    }
+
+    public function getOfficersByOperationArea()
+    {
+        if (\request()->operation_area_id == null)
+            return [];
+
+        $customerFieldOfficers = User::with('bills', 'bills.meterRequest', 'bills.meterRequest.request')
+            ->whereHas('bills', function ($query) {
+                $query->whereHas('meterRequest', function ($query) {
+                    $query->whereHas('request', function ($query) {
+                        $query->whereIn('operation_area_id', request()->operation_area_id);
+                    });
+                });
+            });
+
+//        dump(User::has('bills')->first()->bills()->first()->meterRequest()->first()->request()->first()->operation_area_id);
+            return $customerFieldOfficers->get();
     }
 
 

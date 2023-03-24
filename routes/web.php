@@ -89,7 +89,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/create', [RequestsController::class, 'create'])->name('create')->can(Permission::CreateRequest);
         Route::get('/{request}/show', [RequestsController::class, 'show'])->name('show');
         Route::get('/{request}/edit', [RequestsController::class, 'edit'])->name('edit');
-        Route::put('/{request}/update', [RequestsController::class, 'update'])->name('update');
+        Route::put('/{appRequest}/update', [RequestsController::class, 'update'])->name('update');
         Route::delete('/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
 
         Route::group(['middleware' => 'can:' . Permission::AssignRequest], function () {
@@ -291,8 +291,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/bill_charge/update', [App\Http\Controllers\BillChargeController::class, 'update'])->name('bill.charge.edit');
         Route::get('/bill_charge/delete/{id}', [App\Http\Controllers\BillChargeController::class, 'destroy'])->name('bill.charge.delete');
 
+        Route::get('/operation-areas/by-water-network-type', [App\Http\Controllers\BillChargeController::class, 'loadAreaOperationAreas'])->name('bill-charge.load-area-operation-areas');
+
         Route::get('/banks', [App\Http\Controllers\PaymentServiceProviderController::class, 'index'])->name('banks');
         Route::get('/banks/sync', [App\Http\Controllers\PaymentServiceProviderController::class, 'syncBanks'])->name('banks.sync');
+        Route::post('/banks/add', [App\Http\Controllers\PaymentServiceProviderController::class, 'addBank'])->name('banks.add');
+        Route::get('/banks/delete/{bankId}', [App\Http\Controllers\PaymentServiceProviderController::class, 'deleteBank'])->name('banks.destroy');
+        Route::post('/banks/update/{bankId}', [App\Http\Controllers\PaymentServiceProviderController::class, 'updateBank'])->name('banks.update');
 
     });
     Route::prefix('stock-management')->name('stock.')->group(function () {
@@ -336,10 +341,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 });
 
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 //ajax routes
 Route::get('/operation-area', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
 Route::get('/Operator-operation-areas', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperator'])->name('operator-operation-areas');
+//officers by operation area
+Route::get('/operation-area-officers', [App\Http\Controllers\AreaOfOperationController::class, 'getOfficersByOperationArea'])->name('get-operation-area-officers');
 

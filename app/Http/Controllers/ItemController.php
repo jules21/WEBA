@@ -24,7 +24,9 @@ class ItemController extends Controller
     {
         if(!\Helper::isOperator())
             abort(403);
-        $items = Item::query()->select('items.*')->with('category', 'packagingUnit');
+        $items = Item::query()
+            ->where('operator_id', auth()->user()->operator_id)
+            ->select('items.*')->with('category', 'packagingUnit');
         $dataTable = new ItemsDataTable($items);
         return $dataTable->render('admin.stock.items', [
             'categories' => ItemCategory::query()->get(),

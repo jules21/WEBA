@@ -1,15 +1,37 @@
 $accent: #A6CE39;
+$activeSubLinkColor: #031e31;
 @import "../../public/assets/plugins/global/plugins.bundle.css";
 //@import "../../public/assets/css/style.bundle.css";
 @import "style";
 /*@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
 @import "~datatables.net-buttons-bs4/css/buttons.bootstrap4.css";*/
-.breadcrumb-item{
+.breadcrumb-item {
     display: flex !important;
 }
 
-.form-control:focus {
+.form-control:focus, .custom-file-input:focus {
     border-color: $accent !important;
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgb(166 206 57 / 25%) !important;
 }
+
+/*.checkbox.checkbox-accent > input:checked ~ span {
+    background-color: $accent !important;
+}
+
+.radio > input:checked ~ span {
+    background-color: $accent !important;
+}*/
+
+.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading .menu-icon, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link .menu-icon {
+    color: $primary !important;
+}
+
+.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link {
+    background-color: $activeSubLinkColor !important;
+}
+
+/*.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-link {
+    background-color: #031e31;
+}*/
+
