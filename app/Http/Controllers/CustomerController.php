@@ -29,7 +29,7 @@ class CustomerController extends Controller
 
         if (!is_null($customer)) {
             return \response()->json([
-                'content' => "Operator with the provided Doc Number already exists.",
+                'content' => "Customer with provided ID Number already exists",
                 'status' => 400
             ]);
         }
