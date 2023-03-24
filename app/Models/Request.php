@@ -326,7 +326,7 @@ class Request extends Model
 
     public function getTotalQtyAttribute()
     {
-        return $this->items()->sum('quantity') + $this->meterNumbers()->count();
+        return $this->items()->sum('quantity');
     }
 
     public function getTotalDeliveredAttribute()
