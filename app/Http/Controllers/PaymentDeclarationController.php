@@ -16,7 +16,7 @@ class PaymentDeclarationController extends Controller
     public function index()
     {
         $user = auth()->user();
-        $query = PaymentDeclaration::with(['request', 'request.operator', 'request.operator.operationAreas', 'request.customer', 'paymentConfig', 'paymentConfig.paymentType']);
+        $query = PaymentDeclaration::with(['request.requestType', 'request.operator', 'request.operator.operationAreas', 'request.customer', 'paymentConfig', 'paymentConfig.paymentType']);
         $query->when($user->operationArea && $user->operationArea->id, function ($query) use ($user) {
             $query->whereHas('request', function ($query) use ($user) {
                 $query->whereHas('operator', function ($query) use ($user) {
