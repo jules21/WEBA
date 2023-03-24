@@ -19,10 +19,15 @@ class BillingController extends Controller
      */
     public function index()
     {
+        $operator_id = request()->operator_id;
+        $operation_area_id = request()->operation_area_id;
+        $customer_field_officer_id = request()->customer_field_officer_id;
+        $customer_field_officer = User::query()->find($customer_field_officer_id);
+
         //filter data based on user role
         $user = auth()->user();
         $query = Billing::query()->with(['meterRequest', 'meterRequest.request', 'meterRequest.request.operator',
-            'meterRequest.request.operationArea', 'user', 'meterRequest.request.customer']);
+             'user', 'meterRequest.request.customer']);
         $query->when($user->operation_area, function ($query) use ($user) {
             $query->whereHas('meterRequest', function ($query) use ($user) {
                 $query->whereHas('request', function ($query) use ($user) {
@@ -39,28 +44,39 @@ class BillingController extends Controller
         });
 
         $customerFieldOfficers = User::has('bills');
-        $customerFieldOfficers->when($user->operation_area, function ($query) use ($user) {
-            $query->whereHas('bills', function ($query) use ($user) {
-                $query->whereHas('meterRequest', function ($query) use ($user) {
-                    $query->whereHas('request', function ($query) use ($user) {
-                        $query->where('operation_area_id', $user->operation_area);
+
+        $customerFieldOfficers->when($customer_field_officer_id, function ($query) {
+            $query->whereHas('bills', function ($query) {
+                $query->whereHas('meterRequest', function ($query) {
+                    $query->whereHas('request', function ($query) {
+                        $query->whereIn('operation_area_id', request()->customer_field_officer_id);
                     });
                 });
             });
         });
-        $customerFieldOfficers->when($user->operator_id, function ($query) use ($user) {
-            $query->whereHas('bills', function ($query) use ($user) {
-                $query->whereHas('meterRequest', function ($query) use ($user) {
-                    $query->whereHas('request', function ($query) use ($user) {
-                        $query->where('operator_id', $user->operator_id);
-                    });
-                });
-            });
-        });
+
+//        here officer area are not filtered based on selected operation area
+//        $customerFieldOfficers->when($user->operation_area, function ($query) use ($user) {
+//            $query->whereHas('bills', function ($query) use ($user) {
+//                $query->whereHas('meterRequest', function ($query) use ($user) {
+//                    $query->whereHas('request', function ($query) use ($user) {
+//                        $query->where('operation_area_id', $user->operation_area);
+//                    });
+//                });
+//            });
+//        });
+//        $customerFieldOfficers->when($user->operator_id, function ($query) use ($user) {
+//            $query->whereHas('bills', function ($query) use ($user) {
+//                $query->whereHas('meterRequest', function ($query) use ($user) {
+//                    $query->whereHas('request', function ($query) use ($user) {
+//                        $query->where('operator_id', $user->operator_id);
+//                    });
+//                });
+//            });
+//        });
 
         //filter data based on request
 
-//        dd(request()->operator_id);
         //operator_id
         $query->when(request()->has('operator_id'), function ($query) {
             $query->whereHas('meterRequest', function ($query) {
@@ -97,7 +113,12 @@ class BillingController extends Controller
                 'operationAreas' => $user->operator_id ?
                     OperationArea::query()->where('operator_id', $user->operator_id)->get()
                     : [],
-                'customerFieldOfficers' => $customerFieldOfficers->get()
+                'customerFieldOfficers' => \request()->operation_area_id ?
+                    $customerFieldOfficers->get() : [],
+                'operator_id' => $operator_id,
+                'operation_area_id' => $operation_area_id,
+                'customer_field_officer_id' => $customer_field_officer_id,
+
             ]);
     }
 

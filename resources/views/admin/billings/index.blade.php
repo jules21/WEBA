@@ -82,7 +82,7 @@
                                                 data-placeholder="Select Operator">
                                             <option value="">Select Operator</option>
                                             @foreach($operators ?? [] as $operator)
-                                                <option value="{{ $operator->id }}">{{ $operator->name }}</option>
+                                                <option value="{{ $operator->id }}" {{request()->get('operator_id') == $operator->id ? 'selected' : ''}}>{{ $operator->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -160,21 +160,60 @@
             $('.nav-billings').addClass('menu-item-active');
             initData();
             $("#kt_datatable1").DataTable({responsive:true});
+            $(document).on('click','.btn-details', function (e){
+                e.preventDefault();
+                const url = $(this).attr('href');
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function (data) {
+                        $('#modal-body').html(data);
+                        $('#modal').modal('show');
+                    }
+                });
+            })
+            $(document).on('change', '#operator', function (e) {
+                e.preventDefault();
+                let operatorId = $(this).val();
+                if (operatorId !== '') {
+                    getOperationArea(operatorId);
+                }
+                else {
+                    $('#operation_area').empty();
+                    $('#operation_area').append('<option value="">Select Operation Area</option>');
+                }
+            });
+            $(document).on('change','#operation_area',function (e) {
+                e.preventDefault();
+                let operationAreaId = $(this).val();
+                if (operationAreaId !== '') {
+                    getCustomerFieldOfficer(operationAreaId);
+                }
+                else {
+                    $('#customer_field_officer').empty();
+                    $('#customer_field_officer').append('<option value="">Select Customer Field Officer</option>');
+                }
+            });
+            //
         });
-        $(document).on('change', '#operator', function () {
-            let operatorId = $(this).val();
+        const initData = () => {
+            const operatorId = "{{ request()->get('operator_id') ? request()->get('operator_id') : '' }}";
+            const operationAreaId = @json($operation_area_id);
             if (operatorId !== '') {
                 getOperationArea(operatorId);
-            } else {
-                $('#operation_area').empty();
-                $('#operation_area').append('<option value="">Select Operation Area</option>');
             }
-        });
-        const getOperationArea = (operatorId, selected =null) => {
+            if (operationAreaId !== '') {
+                getCustomerFieldOfficer(operationAreaId);
+            }
+
+            if (operatorId !== '') {
+                $('#operator').val(operatorId).trigger('change');
+            }
+
+        };
+        const getOperationArea = (operatorId) => {
             const url = "{{ route('operator-operation-areas') }}";
-            const operatrionArea = selected ? operationAreaId.split(',') : null;
-            console.log(operatrionArea)
-            console.log(selected)
+            const operationArea = @json($operation_area_id);
             $.ajax({
                 url: url,
                 type: 'GET',
@@ -184,44 +223,45 @@
                     $('#operation_area').empty();
                     $('#operation_area').append('<option value="">Select Operation Area</option>');
                     $.each(data, function (key, value) {
-                        // $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
-                         if (operatrionArea && operatrionArea.includes(value.id)) {
+                        if (operationArea && operationArea.includes(value.id.toString())) {
                             $('#operation_area').append('<option value="' + value.id + '" selected>' + value.name + '</option>');
                         } else {
                             $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
                         }
-                        });
-                    $('#operation_area_id').select2();
+                    });
+                    $('#operation_area').select2();
                 }
             });
         };
-        const initData = () => {
-            const operatorId = "{{ request()->get('operator_id') ? request()->get('operator_id') : '' }}";
-            const operationAreaId = "{{ request()->get('operation_area_id') ? implode(',', request()->get('operation_area_id')) : '' }}";
 
-            if (operatorId !== '') {
-                $('#operator').val(operatorId).trigger('change');
-                getOperationArea(operatorId);
-                // if (operationAreaId !== '') {
-                //     $('#operation_area').val(operationAreaId.split(',')).trigger('change');
-                // }else {
-                //     getOperationArea(operatorId);
-                // }
-            }
-
-        };
-
-        $(document).on('click','.btn-details', function (e){
-            e.preventDefault();
-            const url = $(this).attr('href');
+        const getCustomerFieldOfficer = (operatorAreaId) => {
+            const url = "{{ route('get-operation-area-officers') }}";
+            const customerFieldOfficer = @json($customer_field_officer_id);
             $.ajax({
                 url: url,
                 type: 'GET',
+                data: {operation_area_id: operatorAreaId},
                 success: function (data) {
-                    $('#modal-body').html(data);
-                    $('#modal').modal('show');
+
+                    $('#customer_field_officer').empty();
+                    $('#customer_field_officer').append('<option value="">Select Customer Field Officer</option>');
+                    $.each(data, function (key, value) {
+                        if (customerFieldOfficer && customerFieldOfficer.includes(value.id.toString())) {
+                            console.log(value.id)
+                            $('#customer_field_officer').append('<option value="' + value.id + '" selected>' + value.name + '</option>');
+                        } else {
+                            $('#customer_field_officer').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        }
+                    });
+                    $('#customer_field_officer').select2();
                 }
             });
-        })
+        };
+
+
+
+
+
+
     </script>
 @endsection

@@ -328,4 +328,6 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name(
 //ajax routes
 Route::get('/operation-area', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
 Route::get('/Operator-operation-areas', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperator'])->name('operator-operation-areas');
+//officers by operation area
+Route::get('/operation-area-officers', [App\Http\Controllers\AreaOfOperationController::class, 'getOfficersByOperationArea'])->name('get-operation-area-officers');
 
