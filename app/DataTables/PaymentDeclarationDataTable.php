@@ -43,8 +43,8 @@ class PaymentDeclarationDataTable extends DataTable
                 return $query->amount ?? '-';
             })
             ->editColumn('status', function ($query) {
-                if (!strtolower($query->status) == 'active') {
-                    return '<span class="label  label-success">Paid</span>';
+                if (!(strtolower($query->status) == 'active')) {
+                    return '<span class="label  label-success label-inline">Paid</span>';
                 } else {
                     return '<span class="label label-light-primary label-inline">Pending</span>';
                 }
