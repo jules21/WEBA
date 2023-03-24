@@ -20,7 +20,7 @@ class ItemCategoryController extends Controller
         if(!\Helper::isOperator())
             abort(403);
         return view('admin.stock.item_categories',[
-            'categories'=>ItemCategory::query()->get()
+            'categories'=>ItemCategory::query()->where('operator_id', auth()->user()->operator_id)->get()
         ]);
     }
 

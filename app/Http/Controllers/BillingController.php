@@ -135,7 +135,7 @@ class BillingController extends Controller
             });
         });
         $datatable = new BillingDataTable($billings);
-        return $datatable->render('admin.billings.index', compact('customer'));
+        return $datatable->render('admin.billings.customer_bills', compact('customer'));
     }
 
 }
