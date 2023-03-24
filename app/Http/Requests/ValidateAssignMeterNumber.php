@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ValidateAssignMeterNumber extends FormRequest
 {
@@ -26,7 +27,13 @@ class ValidateAssignMeterNumber extends FormRequest
         return [
             'item_category_id' => ['required', 'exists:item_categories,id'],
             'item_id' => ['required', 'exists:items,id'],
-            'meter_number' => ['required'],
+            'meter_number' => [
+                'required',
+                Rule::unique("meter_requests")
+                    ->where(function ($query) {
+                        $query->where('request_id', '=', request('request_id'));
+                    }),
+            ],
             'last_index' => ['required', 'numeric']
         ];
     }
@@ -40,7 +47,8 @@ class ValidateAssignMeterNumber extends FormRequest
             'item_id.exists' => 'Please select a valid item',
             'meter_number.required' => 'Please enter a meter number',
             'last_index.required' => 'Please enter a last index',
-            'last_index.numeric' => 'Last index must be a number'
+            'last_index.numeric' => 'Last index must be a number',
+            'meter_number.unique' => "Meter number already exists"
         ];
     }
 }

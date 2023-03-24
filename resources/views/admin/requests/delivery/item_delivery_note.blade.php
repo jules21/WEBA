@@ -63,7 +63,7 @@
 
         </div>
         <div class="mb-3">
-            <div class="font-weight-bolder">
+            <div class="font-weight-bolder mb-3">
                 Delivery Items:
             </div>
             <div>
@@ -72,26 +72,20 @@
                     <tr>
                         <th>Item Name</th>
                         <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Total</th>
+                        <th>Qty Delivered</th>
+                        <th>Qty Remaining</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($delivery->details->where('quantity','>',0) as $item)
                         <tr>
                             <td>{{ $item->requestItem->item->name }}</td>
+                            <td>{{ $item->requestItem->quantity }}</td>
                             <td>{{ $item->quantity }}</td>
-                            <td>{{ number_format($item->requestItem->unit_price) }}</td>
-                            <td>{{  number_format($item->total ) }}</td>
+                            <td>{{ $item->remaining }}</td>
                         </tr>
                     @endforeach
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <td colspan="3" class="text-end font-weight-bolder">Total:</td>
-                        <td class="font-weight-bold">{{ number_format($delivery->details->sum('total')) }}</td>
-                    </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>

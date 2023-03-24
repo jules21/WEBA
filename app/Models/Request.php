@@ -7,6 +7,7 @@ use App\Traits\GetClassName;
 use App\Traits\HasAddress;
 use App\Traits\HasEncryptId;
 use App\Traits\HasStatusColor;
+use DB;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -110,9 +111,9 @@ use Storage;
  * @method static Builder|Request whereOperationAreaId($value)
  * @method static Builder|Request whereUpiAttachment($value)
  * @method static Builder|Request whereWaterNetworkId($value)
- * @property-read Collection<int, \App\Models\RequestDelivery> $deliveries
+ * @property-read Collection<int, RequestDelivery> $deliveries
  * @property-read int|null $deliveries_count
- * @property-read Collection<int, \App\Models\RequestDeliveryDetail> $deliveryDetails
+ * @property-read Collection<int, RequestDeliveryDetail> $deliveryDetails
  * @property-read int|null $delivery_details_count
  * @property-read mixed $total_delivered
  * @property-read mixed $total_qty
@@ -257,7 +258,7 @@ class Request extends Model
 
     public function canBeReviewed(): bool
     {
-        return $this->status != self::PENDING && !is_null($this->water_network_id);
+        return $this->status != self::PENDING && !is_null($this->water_network_id) && auth()->user()->operation_area;
     }
 
 
@@ -296,7 +297,7 @@ class Request extends Model
     public function pendingPayments($withoutPaymentTypeId = null): bool
     {
         return $this->paymentDeclarations()
-            ->where(\DB::raw("lower(status)"), PaymentDeclaration::ACTIVE)
+            ->where(DB::raw("lower(status)"), PaymentDeclaration::ACTIVE)
             ->when($withoutPaymentTypeId, function ($query) use ($withoutPaymentTypeId) {
                 $query->whereHas('paymentConfig', function ($query) use ($withoutPaymentTypeId) {
                     $query->where('payment_type_id', '!=', $withoutPaymentTypeId);
@@ -336,7 +337,14 @@ class Request extends Model
 
     public function pipeCrosses(): HasMany
     {
-        return $this->hasMany(RequestPipeCross::class, 'request_id','id');
+        return $this->hasMany(RequestPipeCross::class, 'request_id', 'id');
+    }
+
+    public function canAddConnectionFee(): bool
+    {
+        return $this->status == Request::ASSIGNED
+            && auth()->user()->can(Permission::ReviewRequest)
+            && auth()->user()->operation_area;
     }
 
 

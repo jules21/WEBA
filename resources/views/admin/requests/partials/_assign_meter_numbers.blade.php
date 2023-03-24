@@ -86,8 +86,8 @@
                   id="saveMeterForm">
                 @csrf
                 <div class="modal-body">
+                    <input type="hidden" value="{{ $request->id }}" name="request_id" id="request_id"/>
                     <input type="hidden" value="0" name="id" id="meter_id"/>
-
                     <div class="form-group">
                         <label for="category_id">
                             Meter Category
