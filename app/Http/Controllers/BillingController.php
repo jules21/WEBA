@@ -8,10 +8,12 @@ use App\Models\Customer;
 use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\User;
+use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
 
 class BillingController extends Controller
 {
+    use UploadFileTrait;
     /**
      * Display a listing of the resource.
      *
@@ -137,6 +139,13 @@ class BillingController extends Controller
         });
         $datatable = new BillingDataTable($billings);
         return $datatable->render('admin.billings.customer_bills', compact('customer'));
+    }
+
+    public function download(Billing $billing)
+    {
+        if ($billing->attachment)
+            return $this->downloadFile($billing->attachment);
+        return redirect()->back()->with('error', 'No file found');
     }
 
 }
