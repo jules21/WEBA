@@ -279,6 +279,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/banks', [App\Http\Controllers\PaymentServiceProviderController::class, 'index'])->name('banks');
         Route::get('/banks/sync', [App\Http\Controllers\PaymentServiceProviderController::class, 'syncBanks'])->name('banks.sync');
+        Route::post('/banks/add', [App\Http\Controllers\PaymentServiceProviderController::class, 'addBank'])->name('banks.add');
+        Route::get('/banks/delete/{bankId}', [App\Http\Controllers\PaymentServiceProviderController::class, 'deleteBank'])->name('banks.destroy');
+        Route::post('/banks/update/{bankId}', [App\Http\Controllers\PaymentServiceProviderController::class, 'updateBank'])->name('banks.update');
 
     });
     Route::prefix('stock-management')->name('stock.')->group(function () {
