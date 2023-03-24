@@ -11,8 +11,8 @@ use Spatie\Permission\Models\Permission;
 class PermissionController extends Controller
 {
     public function index(){
-        if(auth()->user()->branch_id){
-            $permissions = Permission::whereIn('type', ['operator', 'both'])->get();
+        if(auth()->user()->operator_id){
+            $permissions = Permission::whereIn('level', ['operator', 'both'])->get();
         }else{
             $permissions = Permission::all();
         }
@@ -29,8 +29,8 @@ class PermissionController extends Controller
     public function addPermissionToUser($user_id)
     {
         $user = User::find(decryptId($user_id));
-        if (auth()->user()->branch_id) {
-            $permissions = Permission::whereIn('type', ['both','branch'])->get();
+        if (auth()->user()->operator_id) {
+            $permissions = Permission::whereIn('type', ['both','operator'])->get();
         }else{
             $permissions = Permission::all();
         }
