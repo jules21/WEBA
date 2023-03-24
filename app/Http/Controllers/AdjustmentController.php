@@ -14,6 +14,7 @@ use App\Models\StockMovementDetail;
 use App\Traits\GetClassName;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use ReflectionClass;
 
 class AdjustmentController extends Controller
 {
@@ -106,7 +107,7 @@ class AdjustmentController extends Controller
                 ['item_id' => $data['item_id']],
                 [
                     'quantity' => $data['quantity'],
-                    'type' => $this->getClassName(),
+                    'type' => (new ReflectionClass(Adjustment::class))->getShortName(),
                     'unit_price' => $data['unit_price'],
                     'adjustment_type' => $data['adjustment_type'],
                     'status' => Adjustment::PENDING
@@ -213,7 +214,7 @@ class AdjustmentController extends Controller
                 'status' => $status,
                 'user_id' => auth()->id(),
                 'comment' => $message,
-                'type' => $this->getClassName(),
+                'type' => (new ReflectionClass(Adjustment::class))->getShortName(),
                 'is_comment' => $isComment
             ]);
     }
@@ -248,7 +249,7 @@ class AdjustmentController extends Controller
             'qty_out' => $movement->adjustment_type == 'decrease' ? $movement->quantity : 0,
             'qty_in' => $movement->adjustment_type == 'increase' ? $movement->quantity : 0,
             'operation_area_id' => auth()->user()->operation_area,
-            'type' => $this->getClassName(),
+            'type' => (new ReflectionClass(Adjustment::class))->getShortName(),
             'unit_price' => $movement->unit_price ?? 0,
             'vat' => $movement->vat ?? 0,
             'description' => "Adjustment of {$item->name} done  due to {$adjustment->description}  ",
