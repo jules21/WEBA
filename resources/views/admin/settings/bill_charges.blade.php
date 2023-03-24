@@ -37,16 +37,18 @@
             <div class="card-title">
                 <h3 class="card-label">Bill Charges List</h3>
             </div>
-            <div class="card-toolbar">
-                <!-- Button trigger modal-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#exampleModalLong">
-                    <span class="flaticon-add"></span>
-                    Add New Record
-                </button>
 
-                <!-- Modal-->
-            </div>
+            @if(auth()->user()->operator_id)
+                <div class="card-toolbar">
+                    <!-- Button trigger modal-->
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModalLong">
+                        <span class="flaticon-add"></span>
+                        Add New Record
+                    </button>
+                    <!-- Modal-->
+                </div>
+            @endif
         </div>
         <div class="card-body">
             <!--begin: Datatable-->
@@ -132,6 +134,7 @@
                                  @foreach(App\Models\OperationArea::query()->get() as $area)
                                      <option value="{{$area->id}}">{{$area->name}}</option>
                                  @endforeach
+
                             </select>
                         </div>
 

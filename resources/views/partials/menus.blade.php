@@ -478,6 +478,7 @@
         @endif
 
     @endcanany
+
     @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles, \App\Constants\Permission::ManagePermissions])
         <li class="menu-section">
             <h4 class="menu-text">System Users Section</h4>
@@ -662,7 +663,17 @@
                                 <i class="menu-bullet menu-bullet-dot">
                                     <span></span>
                                 </i>
-                                <span class="menu-text">Water Network</span>
+                                <span class="menu-text">Water Networks</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('Manage Water Network Statuses')
+                        <li class="menu-item nav-water-network-statuses" aria-haspopup="true">
+                            <a href="{{ route('admin.water.network.statuses') }}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Water Network Statuses</span>
                             </a>
                         </li>
                     @endcan
