@@ -110,7 +110,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <div class="card card-body">
+                <div class="">
                     <h4>
                         Water Network & Connection Fee
                     </h4>
@@ -177,6 +177,24 @@
                                 </div>
                             </div>
                         </div>
+                    @else
+                        <div class="alert alert-info mb-0 mt-3 alert-custom">
+                            <div class="alert-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                    <circle cx="12" cy="12" r="9"/>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                    <polyline points="11 12 12 12 12 16 13 16"/>
+                                </svg>
+                            </div>
+                            <div class="alert-text">
+                                <span class="font-weight-bold">Water Network</span> and <span
+                                    class="font-weight-bold">Connection Fee</span> will be added after the request is
+                                assigned to a technician.
+                            </div>
+                        </div>
                     @endif
                 </div>
             </div>
@@ -184,7 +202,7 @@
 
 
         @if(is_null($request->water_network_id))
-            <div class="alert alert-light-warning alert-custom alert-notice p-2 rounded-0">
+            <div class="alert alert-light-warning alert-custom alert-notice my-3 p-2 rounded-0">
                 <div class="alert-icon text-warning">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shield-exclamation"
                          width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
