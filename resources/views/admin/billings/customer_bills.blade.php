@@ -135,7 +135,7 @@
                         <hr>
                     @endif
                     <div class="table-responsive">
-                        {{$dataTable->table(['class' => 'table table-head-custom border table-head-solid table-hover'])}}
+                        {{$dataTable->table(['class' => 'table table-head-custom border table-head-solid table-hover'], true)}}
                     </div>
 
                 </div>

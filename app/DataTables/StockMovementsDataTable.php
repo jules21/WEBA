@@ -2,6 +2,7 @@
 
 namespace App\DataTables;
 
+use App\Models\Adjustment;
 use App\Models\StockMovement;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -28,12 +29,15 @@ class StockMovementsDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->editColumn('type', function ($item) {
-                if($item->type == 'Adjustment'){
+                if($item->type == 'Adjustment' || $item->type == 'AdjustmentController') {
                     return '
-                    <span class="badge badge-success">'.$item->type.'</span>';
+                    <span class="label label-light-success label-inline"> Adjustment </span>';
                 }else if($item->type == 'Purchase') {
                     return '
-                    <span class="label label-light-primary label-inline">'.$item->type.'</span>';
+                    <span class="label label-light-primary label-inline"> Stock In </span>';
+                }else if($item->type == 'Sale') {
+                    return '
+                    <span class="label label-light-danger label-inline"> Stock Out </span>';
                 }else{
                     return '
                  <span class="label label-primary label-inline font-weight-lighter">'.$item->type.'</span>';
