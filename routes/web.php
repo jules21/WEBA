@@ -89,7 +89,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/create', [RequestsController::class, 'create'])->name('create')->can(Permission::CreateRequest);
         Route::get('/{request}/show', [RequestsController::class, 'show'])->name('show');
         Route::get('/{request}/edit', [RequestsController::class, 'edit'])->name('edit');
-        Route::put('/{request}/update', [RequestsController::class, 'update'])->name('update');
+        Route::put('/{appRequest}/update', [RequestsController::class, 'update'])->name('update');
         Route::delete('/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
 
         Route::group(['middleware' => 'can:' . Permission::AssignRequest], function () {
@@ -279,6 +279,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/banks', [App\Http\Controllers\PaymentServiceProviderController::class, 'index'])->name('banks');
         Route::get('/banks/sync', [App\Http\Controllers\PaymentServiceProviderController::class, 'syncBanks'])->name('banks.sync');
+        Route::post('/banks/add', [App\Http\Controllers\PaymentServiceProviderController::class, 'addBank'])->name('banks.add');
+        Route::get('/banks/delete/{bankId}', [App\Http\Controllers\PaymentServiceProviderController::class, 'deleteBank'])->name('banks.destroy');
+        Route::post('/banks/update/{bankId}', [App\Http\Controllers\PaymentServiceProviderController::class, 'updateBank'])->name('banks.update');
 
     });
     Route::prefix('stock-management')->name('stock.')->group(function () {
@@ -322,7 +325,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 });
 
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 //ajax routes

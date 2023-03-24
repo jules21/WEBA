@@ -39,6 +39,8 @@ class BillingResource extends JsonResource
             'comment' => $this->comment,
             'user' => $this->user,
             'total_amount' => $totalAmount,
+            'operator_name' => $this->meterRequest->request->operator->name ?? null,
+            'operator_address' => $this->meterRequest->request->operator->name ?? null,
         ];
     }
 }

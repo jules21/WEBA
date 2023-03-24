@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title',"New Request")
+@section('title',(isset($request)?'Edit':'New'). " Request")
 
 @section('content')
 
@@ -35,254 +35,248 @@
         </div>
     </div>
 
-    <div class="container">
-
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+    <div class="card shadow-none border">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>
+                    {{ isset($request)?'Edit':'New' }} Request
+                </h4>
             </div>
-        @endif
 
-        <div class="card shadow-none border">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h4>
-                        New Request
-                    </h4>
+            <form
+                action="{{ isset($request)?route('admin.requests.update',encryptId($request->id)): route("admin.requests.store") }}"
+                class="mt-4" method="post" id="formSave"
+                enctype="multipart/form-data">
+                @csrf
+                @method(isset($request)?'PUT':'POST')
+                <input type="hidden" value="{{ $request->id??0 }}" name="id">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="customer_id">Customer</label>
+                            <select name="customer_id" id="customer_id" class="form-control select2"
+                                    style="width:100% !important;">
+                                <option value="">Select Customer</option>
+                                @foreach($customers as $customer)
+                                    <option
+                                        {{ isset($request) && $request->customer_id == $customer->id ? 'selected' : '' }}
+                                        value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="request_type_id">
+                                Request Type
+                            </label>
+                            <select name="request_type_id" id="request_type_id" class="form-control select2"
+                                    style="width:100% !important;">
+                                <option value="">Select Request Type</option>
+                                @foreach($requestTypes as $requestType)
+                                    <option
+                                        {{ isset($request) && $request->request_type_id == $requestType->id ? 'selected' : '' }}
+                                        value="{{ $requestType->id }}">{{ $requestType->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="water_usage_id">
+                                Water Usage
+                            </label>
+                            <select name="water_usage_id" id="water_usage_id" class="form-control select2"
+                                    style="width:100% !important;">
+                                <option value="">Select Request Type</option>
+                                @foreach($waterUsage as $requestType)
+                                    <option
+                                        {{ isset($request) && $request->water_usage_id == $requestType->id ? 'selected' : '' }}
+                                        value="{{ $requestType->id }}">{{ $requestType->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="meter_qty">
+                                How many meters do you need?
+                            </label>
+                            <input type="number"
+                                   value="{{ isset($request)?$request->meter_qty:"" }}"
+                                   name="meter_qty" id="meter_qty" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="upi">UPI</label>
+                            <input type="text"
+                                   value="{{ isset($request)?$request->upi:"" }}"
+                                   name="upi" id="upi" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="upi_attachment">UPI Attachment </label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="upi_attachment"
+                                       name="upi_attachment">
+                                <label class="custom-file-label" for="upi_attachment">Choose file</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <form action="{{ route("admin.requests.store") }}" class="mt-4" method="post" id="formSave"
-                      enctype="multipart/form-data">
-                    @csrf
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="customer_id">Customer</label>
-                                <select name="customer_id" id="customer_id" class="form-control select2"
-                                        style="width:100% !important;">
-                                    <option value="">Select Customer</option>
-                                    @foreach($customers as $customer)
-                                        <option value="{{ $customer->id }}">{{ $customer->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="sector_id">Sector </label>
+                            <select name="sector_id" id="sector_id" class="form-control select2"
+                                    style="width:100% !important;">
+                                <option value="">Select Sector</option>
+                                @foreach($sectors as $item)
+                                    <option
+                                        {{ isset($request) && $request->sector_id == $item->id ? 'selected' : '' }}
+                                        value="{{ $item->id }}">{{ $item->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="request_type_id">
-                                    Request Type
-                                </label>
-                                <select name="request_type_id" id="request_type_id" class="form-control select2"
-                                        style="width:100% !important;">
-                                    <option value="">Select Request Type</option>
-                                    @foreach($requestTypes as $requestType)
-                                        <option value="{{ $requestType->id }}">{{ $requestType->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="cell_id">Cell </label>
+                            <select name="cell_id" id="cell_id" class="form-control select2"
+                                    style="width:100% !important;">
+                                <option value="">Select Cell</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="water_usage_id">
-                                    Water Usage
-                                </label>
-                                <select name="water_usage_id" id="water_usage_id" class="form-control select2"
-                                        style="width:100% !important;">
-                                    <option value="">Select Request Type</option>
-                                    @foreach($waterUsage as $requestType)
-                                        <option value="{{ $requestType->id }}">{{ $requestType->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="meter_qty">
-                                    How many meters do you need?
-                                </label>
-                                <input type="number" name="meter_qty" id="meter_qty" class="form-control">
-                            </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="village_id">Village </label>
+                            <select name="village_id" id="village_id" class="form-control select2"
+                                    style="width:100% !important;">
+                                <option value="">Select Village</option>
+                            </select>
                         </div>
                     </div>
-
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="upi">UPI</label>
-                                <input type="text" name="upi" id="upi" class="form-control"/>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="upi_attachment">UPI Attachment </label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="upi_attachment"
-                                           name="upi_attachment">
-                                    <label class="custom-file-label" for="upi_attachment">Choose file</label>
-                                </div>
-                            </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea name="description" id="description" rows="3"
+                                      class="form-control">{{ isset($request)?$request->description:'' }}</textarea>
                         </div>
                     </div>
-
-                    <div class="row">
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="province_id">Province </label>
-                                <select name="province_id" id="province_id" class="form-control select2"
-                                        style="width:100% !important;">
-                                    <option value="">Select Province</option>
-                                    @foreach($provinces as $requestType)
-                                        <option value="{{ $requestType->id }}">{{ $requestType->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="district_id">District </label>
-                                <select name="district_id" id="district_id" class="form-control select2"
-                                        style="width:100% !important;">
-                                    <option value="">Select District</option>
-
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="sector_id">Sector </label>
-                                <select name="sector_id" id="sector_id" class="form-control select2"
-                                        style="width:100% !important;">
-                                    <option value="">Select Sector</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="cell_id">Cell </label>
-                                <select name="cell_id" id="cell_id" class="form-control select2"
-                                        style="width:100% !important;">
-                                    <option value="">Select Cell</option>
-                                </select>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="village_id">Village </label>
-                                <select name="village_id" id="village_id" class="form-control select2"
-                                        style="width:100% !important;">
-                                    <option value="">Select Village</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label for="description">Description</label>
-                                <textarea name="description" id="description" rows="3" class="form-control"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <label for="cross_road">New connection will cross the road</label>
-                            <div class="form-group">
-                                <label class="radio checkbox-primary">
-                                    <input type="radio" value="1" name="new_connection_crosses_road">
-                                    <span class="mr-1 "></span>
-                                    Yes
-                                </label>
-                                <label class="radio checkbox-primary">
-                                    <input type="radio" value="0" name="new_connection_crosses_road">
-                                    <span class="mr-1 "></span>
-                                    No
-                                </label>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group" id="roadTypeContainer" style="display: none">
-                                <label for="road_type">Road Type</label>
-                                <select name="road_type" id="road_type" class="form-control ">
-                                    <option value="">Select Road Type</option>
-                                    @foreach($roadTypes as $roadType)
-                                        <option value="{{ $roadType }}">{{ $roadType }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="road_cross_types">Road Pipe Crosses</label>
-                                <div class="row">
-                                    @foreach($roadCrossTypes as $item)
-                                        <div class="col-md-4">
-                                            <label class="checkbox my-3 checkbox-primary">
-                                                <input type="checkbox" value="{{ $item->id }}"
-                                                       name="road_cross_types[]">
-                                                <span class="mr-1 rounded-0"></span>
-                                                {{ $item->name }}
-                                            </label>
-                                        </div>
-
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <label>Will you dig a water pipe by yourself?</label>
-                            <div class="form-group">
-                                <label class="radio checkbox-primary">
-                                    <input type="radio" value="1" name="digging_pipeline">
-                                    <span class="mr-1 "></span>
-                                    Yes
-                                </label>
-                                <label class="radio checkbox-primary">
-                                    <input type="radio" value="0" name="digging_pipeline">
-                                    <span class="mr-1 "></span>
-                                    No
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <label>
-                                Do You want to pay for the materials yourself by submitting an EBM invoice ?
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label for="cross_road">New connection will cross the road</label>
+                        <div class="form-group">
+                            <label class="radio checkbox-accent">
+                                <input type="radio" value="1"
+                                       {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'checked' : '' }}
+                                       name="new_connection_crosses_road">
+                                <span class="mr-1 "></span>
+                                Yes
                             </label>
-                            <div class="form-group">
-                                <label class="radio  checkbox-primary">
-                                    <input type="radio" value="1" name="equipment_payment">
-                                    <span class="mr-1 "></span>
-                                    Yes
-                                </label>
-                                <label class="radio checkbox-primary">
-                                    <input type="radio" value="0" name="equipment_payment">
-                                    <span class="mr-1 "></span>
-                                    No
-                                </label>
+                            <label class="radio checkbox-accent">
+                                <input type="radio"
+                                       {{ isset($request) && $request->new_connection_crosses_road == 0 ? 'checked' : '' }}
+                                       value="0" name="new_connection_crosses_road">
+                                <span class="mr-1 "></span>
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group" id="roadTypeContainer" style="display: none">
+                            <label for="road_type">Road Type</label>
+                            <select name="road_type" id="road_type" class="form-control ">
+                                <option value="">Select Road Type</option>
+                                @foreach($roadTypes as $roadType)
+                                    <option
+                                        {{ isset($request) && $request->road_type == $roadType ? 'selected' : '' }}
+                                        value="{{ $roadType }}">{{ $roadType }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="road_cross_types">
+                                Where will the water pipe cross ?
+                            </label>
+                            <div class="row">
+                                @foreach($roadCrossTypes as $item)
+                                    <div class="col-md-4">
+                                        <label class="checkbox my-3 checkbox-primary">
+                                            <input type="checkbox" value="{{ $item->id }}"
+                                                   {{ isset($request) && in_array($item->id, $selected_road_cross_types??[]) ? 'checked' : '' }}
+                                                   name="road_cross_types[]">
+                                            <span class="mr-1 rounded-0"></span>
+                                            {{ $item->name }}
+                                        </label>
+                                    </div>
+
+                                @endforeach
                             </div>
                         </div>
                     </div>
-
-
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary float-right">
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Will you dig a water pipe by yourself?</label>
+                        <div class="form-group">
+                            <label class="radio checkbox-primary">
+                                <input type="radio"
+                                       {{ isset($request) && $request->digging_pipeline == 1 ? 'checked' : '' }}
+                                       value="1" name="digging_pipeline">
+                                <span class="mr-1 "></span>
+                                Yes
+                            </label>
+                            <label class="radio checkbox-primary">
+                                <input type="radio"
+                                       {{ isset($request) && $request->digging_pipeline == 0 ? 'checked' : '' }}
+                                       value="0" name="digging_pipeline">
+                                <span class="mr-1 "></span>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>
+                            Do You want to pay for the materials yourself by submitting an EBM invoice ?
+                        </label>
+                        <div class="form-group">
+                            <label class="radio  checkbox-primary">
+                                <input type="radio"
+                                       {{ isset($request) && $request->equipment_payment == 1 ? 'checked' : '' }}
+                                       value="1" name="equipment_payment">
+                                <span class="mr-1 "></span>
+                                Yes
+                            </label>
+                            <label class="radio checkbox-primary">
+                                <input type="radio"
+                                       {{ isset($request) && $request->equipment_payment == 0 ? 'checked' : '' }}
+                                       value="0" name="equipment_payment">
+                                <span class="mr-1 "></span>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary float-right">
                             <span class="svg-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor"
@@ -292,12 +286,11 @@
                             </svg>
 
                             </span>
-                            Submit Request
-                        </button>
-                    </div>
-
-                </form>
-            </div>
+                        {{ isset($request)?'Update':'Submit' }}
+                        Request
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -334,7 +327,6 @@
             let sectorId = $('#sector_id');
             sectorId.empty();
             sectorId.append('<option value="">Select Sector</option>');
-
 
             $.ajax({
                 url: "/sectors/" + districtId,
@@ -401,6 +393,10 @@
             $('#sector_id').on('change', function (e) {
                 getCells($(this).val());
             });
+
+            @if(isset($request))
+            getCells({{ $request->sector_id }}, {{ $request->cell_id }});
+            @endif
 
             // radio with name new_connection_crosses_road
             $('input[name="new_connection_crosses_road"]').on('change', function (e) {

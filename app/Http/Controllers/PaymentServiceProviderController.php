@@ -15,8 +15,8 @@ class PaymentServiceProviderController extends Controller
     public function index()
     {
         //
-        if(auth()->user()->can("Manage banks")) {
-            $banks = PaymentServiceProvider::query()->get();
+        if (auth()->user()->can("Manage banks")) {
+            $banks = PaymentServiceProvider::query()->orderBy('created_at','desc')->get();
             return view('admin.settings.payment_service_provider', compact('banks'));
         }
         abort(403, 'Unauthorized action.');
@@ -34,7 +34,12 @@ class PaymentServiceProviderController extends Controller
             }
             $banks = json_decode($response->body());
             foreach ($banks as $bank) {
-                PaymentServiceProvider::query()->updateOrCreate(['id' => $bank->id], (array)$bank);
+                $array = array();
+                $array['name'] = $bank->name;
+                $array['client_id'] = $bank->client_id;
+                $array['client_secret'] = $bank->client_secret;
+                $array['supports_payment'] = true;
+                PaymentServiceProvider::query()->updateOrCreate(['clms_id' => $bank->id], $array);
             }
             return redirect()->back()->with('success', 'Banks synced successfully');
         } catch (\Exception $exception) {
@@ -42,4 +47,31 @@ class PaymentServiceProviderController extends Controller
             return redirect()->back()->with('error', 'Something went wrong');
         }
     }
+
+
+    public function addBank(Request $request)
+    {
+        $bank = new PaymentServiceProvider();
+        $bank->name = $request->name;
+        $bank->is_active = true;
+        $bank->save();
+        return redirect()->back()->with('success', 'Bank added successfully');
+    }
+
+    public function deleteBank(Request $request)
+    {
+        $bank = PaymentServiceProvider::find($request->id);
+        $bank->delete();
+        return redirect()->back()->with('success', 'Bank deleted successfully');
+    }
+
+    public function updateBank(Request $request,$bankId)
+    {
+        $bank = PaymentServiceProvider::find($bankId);
+        $bank->name = $request->name;
+        $bank->is_active = $request->is_active;
+        $bank->save();
+        return redirect()->back()->with('success', 'Bank updated successfully');
+    }
+
 }

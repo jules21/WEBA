@@ -2,21 +2,307 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Billing;
 use App\Models\Customer;
 use App\Models\MeterRequest;
 use App\Models\OperationArea;
 use App\Models\Operator;
+use App\Models\Payment;
+use App\Models\Request;
 use App\Models\Stock;
-use Illuminate\Http\Request;
+use App\Models\WaterNetwork;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
-    public function index(){
-        $totalOperators = Operator::count();
-        $totalOperationAreas = OperationArea::count();
-        $totalStocks = Stock::count();
-        $totalMeters = MeterRequest::count();
-        $totalCustomers = Customer::count();
-        return view('admin.dashboard', compact('totalOperators', 'totalOperationAreas', 'totalStocks', 'totalMeters', 'totalCustomers'));
+    public function index()
+    {
+        if (auth()->user()->operator_id == null && auth()->user()->operation_area == null) {
+            return $this->level1Dashboard();
+        } else if (auth()->user()->operator_id != null && auth()->user()->operation_area == null) {
+            return $this->level2Dashboard();
+        } else if (auth()->user()->operation_area != null) {
+            return $this->level3Dashboard();
+        }
     }
+
+    /**
+     * level1Dashboard is for user with no operator and no operation area
+     */
+    public function level1Dashboard()
+    {
+        $totalOperators = Operator::count();
+        $totalOperationAreas = OperationArea::count("district_id");
+        $totalMeters = MeterRequest::count();
+        $totalCustomers = Customer::query()->wherehas("connections")->count("doc_number");
+        $consumptionPerMonth = $this->getConsumedWater();
+        $topOperators = $this->getTopOperators();
+        $consumerPerOperators = $this->getOperatorConsumers();
+        $recentPayment = $this->getRecentFiveMothPayment();
+        return view('admin.dashboard.level1', compact('totalOperators', 'totalOperationAreas',
+            'totalMeters', 'totalCustomers', 'consumptionPerMonth',
+            'topOperators', 'consumerPerOperators', 'recentPayment'));
+    }
+
+    /**
+     * level2Dashboard is for user with operator and no operation area
+     */
+    public function level2Dashboard()
+    {
+        $totalOperationAreas = OperationArea::
+        where('operator_id', auth()->user()->operator_id)->count("district_id");
+        $totalMeters = MeterRequest::query()
+            ->whereHas('request', function ($query) {
+                $query->where('operator_id', auth()->user()->operator_id);
+            })->count();
+        $totalCustomers = Customer::where('operator_id', auth()->user()->operator_id)
+            ->wherehas("connections")->count("doc_number");
+        $waterNetworks = WaterNetwork::query()
+            ->where('operator_id', auth()->user()->operator_id)->count();
+        $requests = Request::query()
+            ->where('operator_id', auth()->user()->operator_id)->get(['id', 'status']);
+        $allRequests = $requests->count();
+        $rejectRequests = $requests->whereIn('status', [Request::REJECTED,
+            Request::CANCELLED])->count();
+        $approveRequests = $requests->whereIn('status', [
+            Request::APPROVED,
+            Request::DELIVERED,
+            Request::PARTIALLY_DELIVERED,
+            Request::METER_ASSIGNED,])->count();
+        $pendingRequests = $requests->whereIn('status', [Request::PENDING])->count();
+
+        $consumptionPerMonth = $this->getConsumedWater();
+        $topOperators = $this->getTopWaterNetWorks();
+        $consumerPerOperators = $this->getOperatorConsumers();
+        $recentPayment = $this->getBillsPayment();
+        $billingsPerMonth = $this->getBillingPerMonth();
+
+        return view('admin.dashboard.level2',
+            compact('waterNetworks', 'totalOperationAreas',
+                'totalMeters', 'totalCustomers', 'consumptionPerMonth',
+                'topOperators', 'consumerPerOperators', 'recentPayment',
+                'rejectRequests', 'approveRequests', 'pendingRequests', 'allRequests',
+                'billingsPerMonth'));
+    }
+
+    /**
+     * level3Dashboard is for user with operator and operation area
+     */
+    public function level3Dashboard()
+    {
+        $inStockMeters = Stock::query()
+            ->where('operation_area_id', auth()->user()->operation_area)
+            ->whereHas('item', function ($query) {
+                $query->whereHas('category', function ($query) {
+                    $query->where('is_meter', true);
+                });
+            })->sum('quantity');
+        $totalMeters = MeterRequest::query()
+            ->whereHas('request', function ($query) {
+                $query->where('operator_id', auth()->user()->operator_id);
+            })->count();
+        $totalCustomers = Customer::wherehas("requests", function ($query) {
+            $query->where('operation_area_id', auth()->user()->operation_area)
+                ->whereHas("meterNumbers");
+        })->count("doc_number");
+
+        $waterNetworks = WaterNetwork::query()
+            ->where('operation_area_id', auth()->user()->operation_area)->count();
+        $requests = Request::query()
+            ->where('operation_area_id', auth()->user()->operation_area)->get(['id', 'status']);
+
+        $allRequests = $requests->count();
+        $rejectRequests = $requests->whereIn('status', [Request::REJECTED,
+            Request::CANCELLED])->count();
+        $approveRequests = $requests->whereIn('status', [
+            Request::APPROVED,
+            Request::DELIVERED,
+            Request::PARTIALLY_DELIVERED,
+            Request::METER_ASSIGNED,])->count();
+        $pendingRequests = $requests->whereIn('status', [Request::PENDING])->count();
+
+        $consumptionPerMonth = $this->getConsumedWater();
+        $topOperators = $this->getTopWaterNetWorks();
+        $consumerPerOperators = $this->getOperatorConsumers();
+        $recentPayment = $this->getBillsPayment();
+        $billingsPerMonth = $this->getBillingPerMonth();
+
+        return view('admin.dashboard.level3',
+            compact('waterNetworks', 'inStockMeters',
+                'totalMeters', 'totalCustomers', 'consumptionPerMonth',
+                'topOperators', 'consumerPerOperators', 'recentPayment',
+                'rejectRequests', 'approveRequests', 'pendingRequests', 'allRequests',
+                'billingsPerMonth'));
+    }
+
+
+    private function getConsumedWater()
+    {
+        $operatorId = auth()->user()->operator_id;
+        $operationAreaId = auth()->user()->operation_area_id;
+        $billings = Billing::query()
+            ->when($operatorId, function ($query) use ($operatorId) {
+                return $query->whereHas('meterRequest.request', function ($query) use ($operatorId) {
+                    return $query->where('operator_id', $operatorId);
+                });
+            })->when($operationAreaId, function ($query) use ($operationAreaId) {
+                return $query->whereHas('meterRequest.request', function ($query) use ($operationAreaId) {
+                    return $query->where('operation_area_id', $operationAreaId);
+                });
+            })->select(\DB::raw('sum(last_index-starting_index) as consumed_water, extract("MONTH" FROM created_at) as month'))
+            ->groupByRaw('extract("MONTH" FROM created_at)')
+            ->get();
+        $data = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $water = $billings->where('month', $i)->first();
+            $monthShortName = date('M', mktime(0, 0, 0, $i, 10));
+            $data[$monthShortName] = doubleval($water->consumed_water ?? 0) ?? 0;
+        }
+        return $data;
+    }
+
+    private function getTopOperators()
+    {
+        $billings = Billing::query()
+            ->join('meter_requests', 'meter_requests.meter_number', '=', 'billings.meter_number')
+            ->join('requests', 'requests.id', '=', 'meter_requests.request_id')
+            ->join('operators', 'operators.id', '=', 'requests.operator_id')
+            ->select(\DB::raw("SUM(billings.last_index-starting_index), operators.id, operators.name,operators.logo,operators.address"))
+            ->groupByRaw('operators.id,operators.name')
+            ->limit(5)
+            ->get();
+        $data = collect();
+        $path = 'operators/logos/';
+        foreach ($billings as $billing) {
+            $data->push([
+                'name' => $billing->name,
+                'consumed_water' => doubleval($billing->sum ?? 0),
+                'url_logo' => $billing->logo ? Storage::url($path . $billing->logo) : asset('img/logo.svg'),
+                'address' => $billing->address ?? '',
+            ]);
+        }
+        return $data;
+    }
+
+    private function getOperatorConsumers()
+    {
+        $customers = Customer::query()
+            ->whereHas('connections')
+            ->join('operators', 'operators.id', '=', 'customers.operator_id')
+            ->select(\DB::raw('count(operators.id) as total,operators.name,customers.operator_id'))
+            ->groupBy('customers.operator_id', 'operators.name')
+            ->get();
+        $data = [];
+
+        $operators = Operator::all();
+        foreach ($operators as $operator) {
+            $total = $customers->where('operator_id', $operator->id)->sum('total');
+            $data[$operator->name] = $total;
+        }
+        return $data;
+    }
+
+    public function getRecentFiveMothPayment()
+    {
+        $billings = Payment::query()
+            ->whereDate("created_at", ">=", date("Y-m-d", strtotime("-5 months")))
+            ->select(\DB::raw('sum(amount) as amount, extract("MONTH" FROM created_at) as month, extract("YEAR" FROM created_at) as year'))
+            ->groupByRaw('extract("MONTH" FROM created_at),extract("YEAR" FROM created_at)')
+            ->get();
+        $data = [];
+        //get recent five months
+        for ($i = 5; $i >= 0; $i--) {
+            $month = date("m", strtotime("-$i months"));
+            $monthShortName = date('M-Y', mktime(0, 0, 0, $month, 10));
+            $year = date("Y", strtotime("-$i months"));
+            $amount = $billings->where('month', $month)->where('year', $year)->first();
+            $data[$monthShortName] = doubleval($amount->amount ?? 0) ?? 0;
+        }
+        return $data;
+    }
+
+    private function getTopWaterNetWorks()
+    {
+        $operatorId = auth()->user()->operator_id;
+        $operationAreaId = auth()->user()->operation_area;
+        $billings = Billing::query()
+            ->join('meter_requests', 'meter_requests.meter_number', '=', 'billings.meter_number')
+            ->join('requests', 'requests.id', '=', 'meter_requests.request_id')
+            ->join('operators', 'operators.id', '=', 'requests.operator_id')
+            ->join('water_networks', 'water_networks.id', '=', 'requests.water_network_id')
+            ->join('operation_areas', 'operation_areas.operator_id', '=', 'operators.id')
+            ->when($operationAreaId, function ($query) use ($operationAreaId) {
+                return $query->where('operation_areas.id', $operationAreaId);
+            })->when($operatorId, function ($query) use ($operatorId) {
+                return $query->where('operators.id', $operatorId);
+            })->select(\DB::raw("SUM(billings.last_index-starting_index), water_networks.id,water_networks.name,operation_areas.name as operation_area_name"))
+            ->groupByRaw('water_networks.id,water_networks.name,operation_area_name')
+            ->limit(5)
+            ->get();
+        $data = collect();
+        foreach ($billings as $billing) {
+            $data->push([
+                'name' => $billing->name,
+                'consumed_water' => doubleval($billing->sum ?? 0),
+                'url_logo' => asset('img/logo.svg'),
+                'address' => $billing->operation_area_name ?? '',
+            ]);
+        }
+        return $data;
+
+    }
+
+    public function getBillsPayment()
+    {
+        $payments = Payment::query()
+            ->whereHas('billing', function (Builder $builder) {
+                $builder->whereHas('meterRequest', function (Builder $builder) {
+                    $builder->whereHas('request', function (Builder $builder) {
+                        $builder->when(auth()->user()->operation_area, function ($query) {
+                            return $query->where('operation_area_id', auth()->user()->operation_area);
+                        })->when(auth()->user()->operator_id, function ($query) {
+                            return $query->where('operator_id', auth()->user()->operator_id);
+                        });
+                    });
+                });
+            })->select(\DB::raw('sum(payments.amount) as amount, extract("MONTH" FROM payments.created_at) as month,payments.id'))
+            ->groupByRaw('extract("MONTH" FROM payments.created_at),payments.id')
+            ->get();
+        $data = [];
+        for ($i = 1; $i <= 12; $i++) {
+            $monthShortName = date('M', mktime(0, 0, 0, $i, 10));
+            $amount = $payments->where('month', $i)->first();
+            $data[$monthShortName] = doubleval($amount->amount ?? 0) ?? 0;
+        }
+        return $data;
+    }
+
+    public function getBillingPerMonth()
+    {
+        $operatorId = auth()->user()->operator_id;
+        $operationAreaId = auth()->user()->operation_area;
+        $billings = Billing::query()
+            ->join('meter_requests', 'meter_requests.meter_number', '=', 'billings.meter_number')
+            ->join('requests', 'requests.id', '=', 'meter_requests.request_id')
+            ->when($operationAreaId, function ($query) use ($operationAreaId) {
+                return $query->where('requests.operation_area_id', $operationAreaId);
+            })->when($operatorId, function ($query) use ($operatorId) {
+                return $query->where('requests.operator_id', $operatorId);
+            })
+            ->whereYear('billings.created_at', date('Y'))
+            ->select(\DB::raw('SUM(billings.amount) as amount, extract("MONTH" FROM billings.created_at) as month'))
+            ->groupByRaw('extract("MONTH" FROM billings.created_at)')
+            ->get();
+        $data = [];
+        //get recent five months
+        for ($i = 1; $i <= 12; $i++) {
+            $monthShortName = date('M', mktime(0, 0, 0, $i, 10));
+            $amount = $billings->where('month', $i)->first();
+            $data[$monthShortName] = doubleval($amount->amount ?? 0) ?? 0;
+        }
+        return $data;
+    }
+
+
 }

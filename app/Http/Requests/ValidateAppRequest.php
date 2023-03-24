@@ -27,8 +27,8 @@ class ValidateAppRequest extends FormRequest
             'customer_id' => ['required', 'integer'],
             'request_type_id' => ['required', 'integer'],
             'water_usage_id' => ['required', 'integer'],
-            'province_id' => ['required', 'integer'],
-            'district_id' => ['required', 'integer'],
+//            'province_id' => ['required', 'integer'],
+//            'district_id' => ['required', 'integer'],
             'sector_id' => ['required', 'integer'],
             'cell_id' => ['required', 'integer'],
             'village_id' => ['nullable'],
@@ -39,7 +39,8 @@ class ValidateAppRequest extends FormRequest
             'road_type' => ['required_if:new_connection_crosses_road,1'],
             'equipment_payment' => ['required', 'string'],
             'digging_pipeline' => ['required', 'string'],
-            'upi_attachment' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:1024']
+            'upi_attachment' => ['required_if:id,0', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
+            'road_cross_types' => ['nullable', 'array'],
         ];
     }
 
@@ -62,6 +63,7 @@ class ValidateAppRequest extends FormRequest
             'road_type.required_if' => 'Road type is required',
             'equipment_payment.required' => 'This field is required',
             'digging_pipeline.required' => 'This field is required',
+            'upi_attachment.required_if' => 'UPI attachment is required',
 
         ];
     }
