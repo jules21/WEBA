@@ -34,4 +34,13 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     use HasFactory;
+
+    public function paymentMapping()
+    {
+        return $this->belongsTo(PaymentMapping::class);
+    }
+    public function billing()
+    {
+        return $this->belongsTo(Billing::class,'subscription_number','subscription_number');
+    }
 }

@@ -134,7 +134,7 @@ class Request extends Model
 
     public function getUpiAttachmentUrlAttribute(): ?string
     {
-        $upi_attachment = $this->attributes['upi_attachment'];
+        $upi_attachment = optional($this->attributes)['upi_attachment'];
         if ($upi_attachment)
             return Storage::url(self::UPI_ATTACHMENT_PATH . $upi_attachment);
         return null;

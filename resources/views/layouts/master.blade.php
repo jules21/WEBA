@@ -31,7 +31,7 @@
     {{--    <link rel="stylesheet" href="{{ asset('css/master.css') }}">--}}
     <!--end::Layout Themes-->
     @yield("css")
-    <link rel="icon" type="image/png" href="{{asset('img/CMS RWSS.png')}}"/>
+    <link rel="icon" type="image/png" href="{{asset('images/logo.png')}}"/>
     <title>@yield('title', 'Home') - CMS RWSS</title>
     <style>
         label.error {
