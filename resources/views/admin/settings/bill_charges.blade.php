@@ -37,16 +37,18 @@
             <div class="card-title">
                 <h3 class="card-label">Bill Charges List</h3>
             </div>
-            <div class="card-toolbar">
-                <!-- Button trigger modal-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#exampleModalLong">
-                    <span class="flaticon-add"></span>
-                    Add New Record
-                </button>
 
-                <!-- Modal-->
-            </div>
+            @if(auth()->user()->operator_id)
+                <div class="card-toolbar">
+                    <!-- Button trigger modal-->
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModalLong">
+                        <span class="flaticon-add"></span>
+                        Add New Record
+                    </button>
+                    <!-- Modal-->
+                </div>
+            @endif
         </div>
         <div class="card-body">
             <!--begin: Datatable-->
@@ -101,7 +103,8 @@
     <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.bill.charge.store')}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.bill.charge.store')}}" method="post" id="submissionForm" class="submissionForm"
+                  enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
@@ -115,21 +118,23 @@
 
                         <div class="form-group">
                             <label for="name">Water Network Type</label>
-                            <select name="water_network_type_id" id="water_network_type_id" class="form-control" required>
+                            <select name="water_network_type_id" id="water_network_type_id" class="form-control"
+                                    required>
                                 <option value="">Please Select Water Network Type</option>
-                                @foreach(App\Models\WaterNetworkType::query()->whereNotIn('id',$bills->pluck(['water_network_type_id']))->get() as $type)
+                                @foreach(App\Models\WaterNetworkType::query()->get() as $type)
                                     <option value="{{$type->id}}">{{$type->name}}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="water_network_type_id">Operation Area</label>
+                            <label for="operation_area_id">Operation Area</label>
                             <select name="operation_area_id" id="operation_area_id" class="form-control" required>
                                 <option value="">Please Select Operation Area</option>
-                                @foreach(App\Models\OperationArea::query()->whereNotIn('id',$bills->pluck(['operation_area_id']))->get() as $area)
-                                    <option value="{{$area->id}}">{{$area->name}}</option>
-                                @endforeach
+                                 @foreach(App\Models\OperationArea::query()->get() as $area)
+                                     <option value="{{$area->id}}">{{$area->name}}</option>
+                                 @endforeach
+
                             </select>
                         </div>
 
@@ -143,7 +148,7 @@
                     <div class="modal-footer">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save </button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </div>
                     </div>
                 </div>
@@ -158,9 +163,10 @@
     <div class="modal fade" id="modalUpdate" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.bill.charge.edit')}}" method="post" id="submissionFormEdit" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.bill.charge.edit')}}" method="post" id="submissionFormEdit"
+                  class="submissionForm" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" value="0"  id="BillId" name="BillId">
+                <input type="hidden" value="0" id="BillId" name="BillId">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Edit Bill Charge</h4>
@@ -173,7 +179,8 @@
 
                         <div class="form-group">
                             <label for="name">Water Network Type</label>
-                            <select name="water_network_type_id" id="edit_water_network_type_id" class="form-control" required>
+                            <select name="water_network_type_id" id="edit_water_network_type_id" class="form-control"
+                                    required>
                                 <option value="">Please Select Water Network Type</option>
                                 @foreach(App\Models\WaterNetworkType::all() as $type)
                                     <option value="{{$type->id}}">{{$type->name}}</option>
@@ -220,9 +227,50 @@
 
     <script>
 
-        $(document).ready(function() {
+        let loadOperationAreas = function (networkTypeId, selectedId) {
+
+            let $operationArea = $('#operation_area_id');
+            $operationArea.empty();
+            $operationArea.append('<option value="">Select Operation Area</option>');
+
+            $.ajax({
+                url: '{{ route('admin.bill-charge.load-area-operation-areas') }}?water_network_type_id=' + networkTypeId,
+                method: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.length === 0) {
+                        Swal.fire({
+                            title: "Info",
+                            icon: "info",
+                            text: "All operation areas have been used"
+                        });
+                    }
+
+                    $.each(response, function (index, value) {
+                        $operationArea.append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                    $operationArea.val(selectedId);
+                },
+                error: function () {
+                    Swal.fire({
+                        title: "Error",
+                        icon: "error",
+                        text: "Unable to load operation areas"
+                    });
+                }
+            })
+
+        }
+
+        $(document).ready(function () {
             $('#table').DataTable();
-        } );
+
+      /*      $('#water_network_type_id').on('change', function () {
+                if (!$(this).val())
+                    return;
+                loadOperationAreas($(this).val(), 0);
+            });*/
+        });
 
         $('.nav-settings').addClass('menu-item-active  menu-item-open');
         $('.nav-bill-charges').addClass('menu-item-active');

@@ -25,7 +25,8 @@ class BillingResource extends JsonResource
             $status = 'Overdue';
         }
         $totalAmount = Billing::query()
-        ->where('meter_request_id', $this->meter_request_id)->sum('balance');
+        ->where('subscription_number', $this->subscription_number)->sum('balance');
+        $this->load('user.permissions');
         return [
             'id' => $this->id,
             'subscription_number' => $this->subscription_number,
@@ -40,7 +41,7 @@ class BillingResource extends JsonResource
             'user' => $this->user,
             'total_amount' => $totalAmount,
             'operator_name' => $this->meterRequest->request->operator->name ?? null,
-            'operator_address' => $this->meterRequest->request->operator->name ?? null,
+            'operator_address' => $this->meterRequest->request->operator->address ?? null,
         ];
     }
 }
