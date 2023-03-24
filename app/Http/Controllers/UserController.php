@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Imports\ClientImport;
 use App\Jobs\SendSms;
 use App\Mail\MailResetPassword;
-use App\Models\Branch;
 use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\User;

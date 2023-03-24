@@ -299,26 +299,28 @@
                     <div class="menu-submenu">
                         <i class="menu-arrow"></i>
                         <ul class="menu-subnav">
-                            @can(\App\Constants\Permission::StockInItems)
-                                <li class="menu-item nav-create-purchase" aria-haspopup="true">
-                                    <a href="{{route('admin.purchases.create')}}" class="menu-link">
+                            @if(Helper::hasOperationArea())
+                                @can(\App\Constants\Permission::StockInItems)
+                                    <li class="menu-item nav-create-purchase" aria-haspopup="true">
+                                        <a href="{{route('admin.purchases.create')}}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="menu-text">Create New</span>
+                                        </a>
+                                    </li>
+                                @endcan
+                                <li class="menu-item nav-my-purchases" aria-haspopup="true">
+                                    <a href="{{route('admin.purchases.index')}}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
                                         </i>
-                                        <span class="menu-text">Create New</span>
-                                    </a>
-                                </li>
-                            @endcan
-                            <li class="menu-item nav-my-purchases" aria-haspopup="true">
-                                <a href="{{route('admin.purchases.index')}}" class="menu-link">
-                                    <i class="menu-bullet menu-bullet-dot">
-                                        <span></span>
-                                    </i>
-                                    <span class="menu-text">
+                                        <span class="menu-text">
                         My Tasks
                     </span>
-                                </a>
-                            </li>
+                                    </a>
+                                </li>
+                            @endif
                             <li class="menu-item nav-all-purchases" aria-haspopup="true">
                                 <a href="{{route('admin.purchases.index',['type'=>'all'])}}" class="menu-link">
                                     <i class="menu-bullet menu-bullet-dot">
@@ -408,28 +410,30 @@
                                          style="display: none; overflow: hidden;">
                                         <i class="menu-arrow"></i>
                                         <ul class="menu-subnav">
-                                            @can(\App\Constants\Permission::ApproveAdjustment)
-                                                <li class="menu-item nav-adjustments-my-tasks" aria-haspopup="true">
-                                                    <a href="{{ route('admin.stock.stock-adjustments.tasks') }}"
-                                                       class="menu-link">
-                                                        <i class="menu-bullet menu-bullet-dot">
-                                                            <span></span>
-                                                        </i>
-                                                        <span class="menu-text">My Tasks</span>
-                                                    </a>
-                                                </li>
-                                            @endcan
-                                            @can(\App\Constants\Permission::CreateAdjustment)
-                                                <li class="menu-item nav-adjustments-create" aria-haspopup="true">
-                                                    <a href="{{ route('admin.stock.adjustments.create') }}"
-                                                       class="menu-link">
-                                                        <i class="menu-bullet menu-bullet-dot">
-                                                            <span></span>
-                                                        </i>
-                                                        <span class="menu-text">Create New</span>
-                                                    </a>
-                                                </li>
-                                            @endcan
+                                            @if(Helper::hasOperationArea())
+                                                @can(\App\Constants\Permission::ApproveAdjustment)
+                                                    <li class="menu-item nav-adjustments-my-tasks" aria-haspopup="true">
+                                                        <a href="{{ route('admin.stock.stock-adjustments.tasks') }}"
+                                                           class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">My Tasks</span>
+                                                        </a>
+                                                    </li>
+                                                @endcan
+                                                @can(\App\Constants\Permission::CreateAdjustment)
+                                                    <li class="menu-item nav-adjustments-create" aria-haspopup="true">
+                                                        <a href="{{ route('admin.stock.adjustments.create') }}"
+                                                           class="menu-link">
+                                                            <i class="menu-bullet menu-bullet-dot">
+                                                                <span></span>
+                                                            </i>
+                                                            <span class="menu-text">Create New</span>
+                                                        </a>
+                                                    </li>
+                                                @endcan
+                                            @endif
                                             @can(\App\Constants\Permission::ViewAdjustment)
                                                 <li class="menu-item nav-adjustments-all" aria-haspopup="true">
                                                     <a href="{{ route('admin.stock.adjustments.index') }}"
@@ -437,7 +441,7 @@
                                                         <i class="menu-bullet menu-bullet-dot">
                                                             <span></span>
                                                         </i>
-                                                        <span class="menu-text">All Adjustments</span>
+                                                        <span class="menu-text">All </span>
                                                     </a>
                                                 </li>
                                             @endcan

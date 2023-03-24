@@ -56,15 +56,16 @@ class BillingController extends Controller
         });
 
 //        here officer area are not filtered based on selected operation area
-//        $customerFieldOfficers->when($user->operation_area, function ($query) use ($user) {
-//            $query->whereHas('bills', function ($query) use ($user) {
-//                $query->whereHas('meterRequest', function ($query) use ($user) {
-//                    $query->whereHas('request', function ($query) use ($user) {
-//                        $query->where('operation_area_id', $user->operation_area);
-//                    });
-//                });
-//            });
-//        });
+        $operatorOfficer = User::query();
+        $operatorOfficer->when($user->operation_area, function ($query) use ($user) {
+            $query->whereHas('bills', function ($query) use ($user) {
+                $query->whereHas('meterRequest', function ($query) use ($user) {
+                    $query->whereHas('request', function ($query) use ($user) {
+                        $query->where('operation_area_id', $user->operation_area);
+                    });
+                });
+            });
+        });
 //        $customerFieldOfficers->when($user->operator_id, function ($query) use ($user) {
 //            $query->whereHas('bills', function ($query) use ($user) {
 //                $query->whereHas('meterRequest', function ($query) use ($user) {
@@ -113,8 +114,8 @@ class BillingController extends Controller
                 'operationAreas' => $user->operator_id ?
                     OperationArea::query()->where('operator_id', $user->operator_id)->get()
                     : [],
-                'customerFieldOfficers' => \request()->operation_area_id ?
-                    $customerFieldOfficers->get() : [],
+                'customerFieldOfficers' =>
+                    (\request()->operation_area_id ? $customerFieldOfficers->get() : $user->operation_area) ? $operatorOfficer->get() : [],
                 'operator_id' => $operator_id,
                 'operation_area_id' => $operation_area_id,
                 'customer_field_officer_id' => $customer_field_officer_id,
