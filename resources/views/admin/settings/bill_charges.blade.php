@@ -37,16 +37,18 @@
             <div class="card-title">
                 <h3 class="card-label">Bill Charges List</h3>
             </div>
-            <div class="card-toolbar">
-                <!-- Button trigger modal-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#exampleModalLong">
-                    <span class="flaticon-add"></span>
-                    Add New Record
-                </button>
 
-                <!-- Modal-->
-            </div>
+            @if(auth()->user()->operator_id)
+                <div class="card-toolbar">
+                    <!-- Button trigger modal-->
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModalLong">
+                        <span class="flaticon-add"></span>
+                        Add New Record
+                    </button>
+                    <!-- Modal-->
+                </div>
+            @endif
         </div>
         <div class="card-body">
             <!--begin: Datatable-->
@@ -127,7 +129,7 @@
                             <label for="water_network_type_id">Operation Area</label>
                             <select name="operation_area_id" id="operation_area_id" class="form-control" required>
                                 <option value="">Please Select Operation Area</option>
-                                @foreach(App\Models\OperationArea::query()->whereNotIn('id',$bills->pluck(['operation_area_id']))->get() as $area)
+                                @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
                                     <option value="{{$area->id}}">{{$area->name}}</option>
                                 @endforeach
                             </select>

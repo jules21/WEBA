@@ -445,13 +445,8 @@
             @endcan
         @endif
 
-<<<<<<< HEAD
-        </li>
-
-
-=======
     @endcanany
->>>>>>> 0f545c27d58ee0b854f470ed4827209fae139471
+
     @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles, \App\Constants\Permission::ManagePermissions])
         <li class="menu-section">
             <h4 class="menu-text">System Users Section</h4>
