@@ -162,7 +162,7 @@ class RequestDeliveryController extends Controller
                 'qty_in' => 0,
                 'qty_out' => $quantity,
                 'description' => 'Request approved, stock decreased by ' . $requestItem->quantity,
-                'type' => StockMovement::Sale,
+                'type' => StockMovement::StockIn,
                 'request_id' => $request->id,
             ]);
     }
