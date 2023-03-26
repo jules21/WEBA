@@ -413,7 +413,7 @@ class PurchaseController extends Controller
                 'item_id' => $item,
                 'quantity' => $qty,
                 'unit_price' => $price,
-                'type' => StockMovement::Purchase,
+                'type' => StockMovement::StockOut,
                 'vat' => $vat,
                 'status' => Purchase::PENDING,
             ]);
@@ -457,7 +457,7 @@ class PurchaseController extends Controller
             'qty_in' => $movement->quantity,
             'qty_out' => 0,
             'operation_area_id' => auth()->user()->operation_area,
-            'type' => $purchase->getClassName(),
+            'type' => StockMovement::StockIn,
             'unit_price' => $movement->unit_price,
             'vat' => $movement->vat,
             'description' => "Purchase of {$item->name} from {$purchase->supplier->name}  ",

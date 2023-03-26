@@ -41,7 +41,7 @@
 
 
             <div class="table-responsive my-3">
-                <table class="table table-head-custom border table-head-solid  dataTable">
+                <table class="table table-head-custom border rounded-lg dataTable">
                     <thead>
                     <tr>
                         <th>
