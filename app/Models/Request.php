@@ -339,5 +339,10 @@ class Request extends Model
         return $this->hasMany(RequestPipeCross::class, 'request_id','id');
     }
 
+    public function operatingArea(): BelongsTo
+    {
+        return $this->belongsTo(OperationArea::class,"operation_area_id");
+    }
+
 
 }

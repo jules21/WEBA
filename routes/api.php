@@ -18,6 +18,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/v1/check-payment', [App\Http\Controllers\Api\PaymentController::class, 'checkPayment']);
+
 Route::group(['prefix' => 'v1/mobile'], function () {
     Route::post('/login', [App\Http\Controllers\Api\Mobile\LoginController::class, 'login']);
 

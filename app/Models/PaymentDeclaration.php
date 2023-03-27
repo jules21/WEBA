@@ -47,6 +47,8 @@ class PaymentDeclaration extends Model
     use HasStatusColor;
 
     const ACTIVE = 'active';
+    const PAID = 'paid';
+    const PARTIALLY_PAID = 'partially paid';
 
     public function generateReferenceNumber($prefix = 'REF', $length = 6): string
     {
