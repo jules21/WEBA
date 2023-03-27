@@ -99,6 +99,17 @@
                     @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
                         <form action="#" id="filter-form">
                             <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+
+                                        <label for="from_date">From Date</label>
+                                        <input type="date" name="from_date" id="from_date" class="form-control " placeholder="From Date" value="{{request()->get('from_date')}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-3 form-group">
+                                    <label for="to_date">To Date</label>
+                                    <input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" value="{{request()->get('to_date')}}">
+                                </div>
                                 @unless(Helper::isOperator())
                                     <div class="col-md-3 form-group">
                                         <label for="operator">Operator</label>
@@ -143,7 +154,6 @@
                                     <label for="items">Subscription Number</label>
                                     <input type="text" name="subscription_number" id="subscription_number" class="form-control" placeholder="Subscription Number" value="{{request()->get('subscription_number')}}">
                                 </div>
-
                                 <div class="col-md-6 form-group align-self-end">
                                     <div class="row col-12">
                                         <button type="submit" class="btn btn-primary mr-2" id="submit-btn">
@@ -185,11 +195,6 @@
     {{$dataTable->scripts()}}
     <script>
 
-        $(document).on("click","#excel", function(e) {
-            var url = "{!! $newUrl !!}";
-            $(this).attr("href",url);
-        });
-
         $(document).ready(function () {
             $('.nav-billings').addClass('menu-item-active');
             initData();
@@ -227,6 +232,29 @@
                     $('#customer_field_officer').empty();
                     $('#customer_field_officer').append('<option value="">Select Customer Field Officer</option>');
                 }
+            });
+            $(document).on("click","#excel", function(e) {
+                var url = "{!! $newUrl !!}";
+                $(this).attr("href",url);
+            });
+
+            let objToday = new Date(),
+                curDay = String(objToday.getDate()).padStart(2, '0'),
+                curMonth = String(objToday.getMonth() + 1).padStart(2, '0'),
+                curYear = objToday.getFullYear(),
+
+                curHour = objToday.getHours() > 12 ? objToday.getHours() - 12 : (objToday.getHours() < 10 ? "0" + objToday.getHours() : objToday.getHours()),
+                curMinute = objToday.getMinutes() < 10 ? "0" + objToday.getMinutes() : objToday.getMinutes();
+
+            const today = curYear +"/"+ curMonth+"/"+curDay+" "+ curHour +":" + curMinute;
+
+            $('.datepicker').datepicker({
+                todayHighlight: true,
+                autoclose: true,
+                // pickerPosition: 'bottom-left',
+                todayBtn: true,
+                // format: 'yyyy/mm/dd hh:ii',
+                endDate:today
             });
             //
         });
