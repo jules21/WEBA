@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section("title","Document Types")
+@section("title","Payment Mappings")
 @section('css')
 @endsection
 @section('page-header')
@@ -10,7 +10,7 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-2 mr-5">Document Types</h5>
+                    <h5 class="text-dark font-weight-bold my-2 mr-5">Payment Mappings</h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -18,7 +18,7 @@
                             <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a class="text-muted">Document Types</a>
+                            <a class="text-muted">Payment Mappings</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -35,38 +35,45 @@
     <div class="card card-custom">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label">Document Types List</h3>
+                <h3 class="card-label">Payment Mappings List</h3>
             </div>
-{{--            <div class="card-toolbar">--}}
-{{--                <!-- Button trigger modal-->--}}
-{{--                <button type="button" class="btn btn-primary" data-toggle="modal"--}}
-{{--                        data-target="#exampleModalLong">--}}
-{{--                    <span class="flaticon-add"></span>--}}
-{{--                    Add New Document--}}
-{{--                </button>--}}
+            <div class="card-toolbar">
+                <!-- Button trigger modal-->
+                <button type="button" class="btn btn-primary" data-toggle="modal"
+                        data-target="#exampleModalLong">
+                    <span class="flaticon-add"></span>
+                    Add New Record
+                </button>
 
-{{--                <!-- Modal-->--}}
-{{--            </div>--}}
+                <!-- Modal-->
+            </div>
         </div>
         <div class="card-body">
+
+
             <!--begin: Datatable-->
             <div class="table-responsive">
                 <table class="table table-head-custom border table-head-solid table-hover" id="table">
+                    {{--                    <table class="table table-striped" id="kt_datatable">--}}
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
+                        <th>PSP Account Name</th>
+                        <th>PSP Account Number</th>
+                        <th>Bank</th>
                         <th>Created At</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    @foreach($documents as $key=>$document)
+                    @foreach($paymentMappings as $key=>$mapping)
                         <tr>
                             <td>{{++$key}}</td>
-                            <td>{{$document->name}}</td>
-                            <td>{{$document->created_at}}</td>
+                            <td>{{$mapping->account->account_name?? ''}}</td>
+                            <td>{{$mapping->account->account_number?? ''}}</td>
+                            <td>{{$mapping->account->paymentServiceProvider->name?? ''}}</td>
+                            <td>{{$mapping->created_at}}</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
@@ -75,10 +82,11 @@
                                         Action
                                     </button>
                                     <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-                                        <a href="#" data-id="{{$document->id}}"
-                                           data-name="{{$document->name}}"
+
+                                        <a href="#" data-id="{{$mapping->id}}"
+                                           data-account="{{$mapping->psp_account_id}}"
                                            class="dropdown-item js-edit">Edit</a>
-                                        <a href="{{route('admin.document.type.delete',$document->id)}}"
+                                        <a href="{{route('admin.payment.mapping.delete',$mapping->id)}}"
                                            class="dropdown-item js-delete">Delete</a>
                                     </div>
                                 </div>
@@ -97,11 +105,11 @@
     <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.document.type.store')}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.payment.mapping.store',[$payment_configuration])}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">New Document Type</h4>
+                        <h4 class="modal-title">New Payment Mapping</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -110,8 +118,13 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control" required/>
+                            <label for="name">Payment Service Provider Account</label>
+                            <select name="psp_account_id" id="psp_account_id" class="form-control">
+                                <option value="">Please Select Payment Service Provider Account</option>
+                                @foreach(App\Models\PaymentServiceProviderAccount::all() as $account)
+                                    <option value="{{$account->id}}">{{$account->account_name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                     </div>
@@ -134,12 +147,12 @@
     <div class="modal fade" id="modalUpdate" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.document.type.edit')}}" method="post" id="submissionFormEdit" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.payment.mapping.edit')}}" method="post" id="submissionFormEdit" class="submissionFormEdit" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" value="0"  id="DocumentId" name="DocumentId">
+                <input type="hidden" value="0"  id="MappingId" name="MappingId">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Document Type</h4>
+                        <h4 class="modal-title">Edit Payment Mapping</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -148,8 +161,13 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="edit_name" class="form-control" required/>
+                            <label for="name">Payment Service Provider Account</label>
+                            <select name="psp_account_id" id="edit_psp_account_id" class="form-control">
+                                <option value="">Please Select Payment Service Provider Account</option>
+                                @foreach(App\Models\PaymentServiceProviderAccount::all() as $account)
+                                    <option value="{{$account->id}}">{{$account->account_name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                     </div>
@@ -171,8 +189,8 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest(\App\Http\Requests\StoreDocumentTypeRequest::class,'.submissionForm') !!}
-    {!! JsValidator::formRequest(\App\Http\Requests\UpdateDocumentTypeRequest::class,'.submissionFormEdit') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\StorePaymentMappingRequest::class,'.submissionForm') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\UpdatePaymentMappingRequest::class,'.submissionFormEdit') !!}
 
     <script>
 
@@ -181,15 +199,15 @@
         } );
 
         $('.nav-settings').addClass('menu-item-active  menu-item-open');
-        $('.nav-document-types').addClass('menu-item-active');
+        $('.nav-payment-configurations').addClass('menu-item-active');
 
         $(document).on('click', '.js-edit', function (e) {
             e.preventDefault();
             $("#modalUpdate").modal('show');
             console.log($(this).data('name'));
             var url = $(this).data('url');
-            $("#DocumentId").val($(this).data('id'));
-            $("#edit_name").val($(this).data('name'));
+            $("#MappingId").val($(this).data('id'));
+            $("#edit_psp_account_id").val($(this).data('account'));
             $('#submissionFormEdit').attr('action', url);
         });
 
@@ -198,7 +216,7 @@
             var href = this.href;
             Swal.fire({
                 title: "Are you sure?",
-                text: "Delete this Document ?",
+                text: "Delete this Account ?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Yes, delete it!",
@@ -214,7 +232,7 @@
         });
 
         $('#exampleModal').on('hidden.bs.modal', function (e) {
-            $('#DocumentId').val(0);
+            $('#MappingId').val(0);
         });
 
     </script>
