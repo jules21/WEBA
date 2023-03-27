@@ -111,6 +111,17 @@ class BillingController extends Controller
             $query->where('subscription_number', 'like', '%' . request()->subscription_number . '%');
         });
 
+        //from date
+        $query->when((request()->has('from_date') && request()->filled('from_date')), function ($query) {
+            $query->whereDate('created_at', '>=', request()->from_date);
+        });
+        //to date
+        $query->when((request()->has('to_date') && request()->filled('to_date')), function ($query) {
+            $query->whereDate('created_at', '<=', request()->to_date);
+        });
+
+
+
 
         if (request()->is_download == true && !\request()->ajax()) {
             return $this->exportBilling($query->get());
