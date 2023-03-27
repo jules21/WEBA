@@ -53,7 +53,7 @@ class StoreBillChargeRequest extends FormRequest
             'water_network_type_id.required' => 'Water Network Type is required',
             'water_network_type_id.unique' => 'Water Network Type already exists',
             'operation_area_id.required' => 'Operation Area is required',
-            'operation_area_id.unique' => 'Operation Area already exists',
+            'operation_area_id.unique' => 'Operation Area already exists on this network type',
             'unit_price.required' => 'Unit Price is required',
         ];
     }

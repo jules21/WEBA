@@ -60,7 +60,9 @@
                         <th>Water Network Type</th>
                         <th>Operation Area</th>
                         <th>Unit Price</th>
-                        <th>Action</th>
+                        @if(auth()->user()->operator_id)
+                            <th>Action</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -71,24 +73,26 @@
                             <td>{{$bill->waterNetworkType->name ?? ''}}</td>
                             <td>{{$bill->operationArea->name ?? ''}}</td>
                             <td>{{$bill->unit_price}}</td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                        Action
-                                    </button>
-                                    <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-                                        <a href="#" data-id="{{$bill->id}}"
-                                           data-network="{{$bill->water_network_type_id}}"
-                                           data-area="{{$bill->operation_area_id}}"
-                                           data-price="{{$bill->unit_price}}"
-                                           class="dropdown-item js-edit">Edit</a>
-                                        <a href="{{route('admin.bill.charge.delete',$bill->id)}}"
-                                           class="dropdown-item js-delete">Delete</a>
+                            @if(auth()->user()->operator_id)
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            Action
+                                        </button>
+                                        <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                                            <a href="#" data-id="{{$bill->id}}"
+                                               data-network="{{$bill->water_network_type_id}}"
+                                               data-area="{{$bill->operation_area_id}}"
+                                               data-price="{{$bill->unit_price}}"
+                                               class="dropdown-item js-edit">Edit</a>
+                                            <a href="{{route('admin.bill.charge.delete',$bill->id)}}"
+                                               class="dropdown-item js-delete">Delete</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
 

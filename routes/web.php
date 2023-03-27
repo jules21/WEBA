@@ -235,9 +235,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/payment_configuration/update', [App\Http\Controllers\PaymentConfigurationController::class, 'update'])->name('payment.configuration.edit');
         Route::get('/payment_configuration/delete/{id}', [App\Http\Controllers\PaymentConfigurationController::class, 'destroy'])->name('payment.configuration.delete');
 
+        //payment mappings
+        Route::get('/payment_mappings/{id}',[App\Http\Controllers\PaymentMappingController::class,'index'])->name('payment.mappings');
+        Route::post('/payment_mapping/store/{payment_configuration_id}', [App\Http\Controllers\PaymentMappingController::class, 'store'])->name('payment.mapping.store');
+        Route::post('/payment_mapping/update', [App\Http\Controllers\PaymentMappingController::class, 'update'])->name('payment.mapping.edit');
+        Route::get('/payment_mapping/delete/{id}', [App\Http\Controllers\PaymentMappingController::class, 'destroy'])->name('payment.mapping.delete');
+
         //packaging units
         Route::get('/packaging_units', [App\Http\Controllers\PackagingUnitController::class, 'index'])->name('packaging.units');
-        Route::post('/packaging_unit/store', [App\Http\Controllers\PackagingUnitController::class, 'store'])->name('packaging.unit.store');
+        Route::post('/packaging_unit/store/', [App\Http\Controllers\PackagingUnitController::class, 'store'])->name('packaging.unit.store');
         Route::post('/packaging_unit/update', [App\Http\Controllers\PackagingUnitController::class, 'update'])->name('packaging.unit.edit');
         Route::get('/packaging_unit/delete/{id}', [App\Http\Controllers\PackagingUnitController::class, 'destroy'])->name('packaging.unit.delete');
 
