@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ForOperator;
 use App\Traits\HasEncryptId;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -53,7 +54,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class JournalEntry extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    use HasEncryptId;
+    use HasEncryptId, ForOperator;
 
     public function debitLegderGroup(): BelongsTo
     {

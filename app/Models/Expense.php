@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ForOperator;
 use App\Traits\HasEncryptId;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,7 +50,8 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Expense extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    use HasEncryptId;
+    use HasEncryptId,ForOperator;
+    protected $with=['operationArea'];
 
     public function expenseCategory(): BelongsTo
     {
@@ -64,6 +66,11 @@ class Expense extends Model implements Auditable
     public function paymentLedger(): BelongsTo
     {
         return $this->belongsTo(ChartAccount::class, 'payment_ledger');
+    }
+
+    public function operationArea(): BelongsTo
+    {
+        return $this->belongsTo(OperationArea::class,'operation_area_id');
     }
 
 

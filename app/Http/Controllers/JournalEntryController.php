@@ -18,7 +18,6 @@ class JournalEntryController extends Controller
         if (request()->ajax()) {
             $data = JournalEntry::query()
                 ->with(['debitLedger', 'creditLedger'])
-                ->where('operation_area_id', auth()->user()->operation_area)
                 ->select('journal_entries.*');
             return datatables()->of($data)
                 ->addColumn('action', function ($row) {

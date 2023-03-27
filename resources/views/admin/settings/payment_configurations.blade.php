@@ -88,6 +88,7 @@
                                         Action
                                     </button>
                                     <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="{{route('admin.payment.mappings',[$payment->id])}}">Payment Mapping</a>
                                         <a href="#" data-id="{{$payment->id}}"
                                            data-payment="{{$payment->payment_type_id}}"
                                            data-request="{{$payment->request_type_id}}"
