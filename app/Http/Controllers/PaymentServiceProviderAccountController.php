@@ -22,7 +22,6 @@ class PaymentServiceProviderAccountController extends Controller
         if (\request()->ajax()) {
             $data = PaymentServiceProviderAccount::query()
                 ->with(['paymentServiceProvider'])
-                ->where('operation_area_id', auth()->user()->operation_area)
                 ->select('payment_service_provider_accounts.*');
             return datatables()->of($data)
                 ->addColumn('action', function ($row) {
