@@ -26,7 +26,8 @@ class PaymentServiceProviderAccountController extends Controller
                 ->select('payment_service_provider_accounts.*');
             return datatables()->of($data)
                 ->addColumn('action', function ($row) {
-                    return '<div class="dropdown">
+                    if (auth()->user()->operation_area) {
+                        return '<div class="dropdown">
                           <button class="btn btn-light-primary dropdown-toggle btn-sm" type="button" data-toggle="dropdown">
                             Options
                           </button>
@@ -35,6 +36,8 @@ class PaymentServiceProviderAccountController extends Controller
                             <a class="dropdown-item js-delete" href="' . route('admin.accounting.bank-accounts.delete', encryptId($row->id)) . '"> <i class="fa fa-trash text-danger mr-2"></i> Delete</a>
                           </div>
                         </div>';
+                    }
+                    return "";
                 })
                 ->rawColumns(['action'])
                 ->make(true);

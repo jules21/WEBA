@@ -155,8 +155,8 @@
 
 
 
-    @if(auth()->user()->canAny(accountingAllPermissions()) && auth()->user()->operation_area)
-        {{--    @can('Manage Stock')--}}
+    @if(auth()->user()->canAny(accountingAllPermissions()) && auth()->user()->operator_id)
+
         <li class="menu-section">
             <h4 class="menu-text">
                 Accounting & Finance
@@ -164,7 +164,7 @@
             <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
         </li>
 
-        @if(auth()->user()->canAny(accountingPermissions()) && auth()->user()->operation_area)
+        @if(auth()->user()->canAny(accountingPermissions()) )
             <li class="menu-item menu-item-submenu nav-accounting" aria-haspopup="true"
                 data-menu-toggle="hover">
                 <a href="javascript:" class="menu-link menu-toggle">
@@ -218,7 +218,7 @@
             </li>
         @endif
 
-        @if(auth()->user()->canAny(accountingSettingsPermissions()) && auth()->user()->operation_area)
+        @if(auth()->user()->canAny(accountingSettingsPermissions()))
             <li class="menu-item menu-item-submenu nav-accounting-settings" aria-haspopup="true"
                 data-menu-toggle="hover">
                 <a href="javascript:" class="menu-link menu-toggle">
