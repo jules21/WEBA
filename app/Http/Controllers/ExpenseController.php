@@ -19,7 +19,6 @@ class ExpenseController extends Controller
         if (request()->ajax()) {
             $data = Expense::query()
                 ->with(['expenseLedger', 'paymentLedger'])
-                ->where('operation_area_id', auth()->user()->operation_area)
                 ->select('expenses.*');
             return datatables()->of($data)
                 ->addColumn('action', function ($row) {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ForOperator;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -45,6 +46,7 @@ use Illuminate\Support\Carbon;
  */
 class PaymentServiceProviderAccount extends Model
 {
+    use ForOperator;
     public function resolveRouteBinding($value, $field = null)
     {
         $id = decryptId($value);
