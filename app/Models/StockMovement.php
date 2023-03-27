@@ -55,8 +55,8 @@ use Illuminate\Support\Carbon;
  */
 class StockMovement extends Model
 {
-    const Purchase = 'Purchase';
-    const Sale = 'Sale';
+    const StockOut = 'Stock Out';
+    const StockIn = 'Stock In';
     const Adjustment = 'Adjustment';
 
     public function item(): BelongsTo

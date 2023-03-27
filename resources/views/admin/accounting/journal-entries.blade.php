@@ -49,10 +49,13 @@
                     Journal Entries
                 </h4>
             </div>
-            <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
-                <i class="flaticon2-plus"></i>
-                New Entry
-            </button>
+            @if(auth()->user()->operation_area)
+                <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
+                    <i class="flaticon2-plus"></i>
+                    New Entry
+                </button>
+            @endif
+
         </div>
         <div class="table-responsive my-3">
             <table class="table table-head-custom border table-head-solid table-hover dataTable">
@@ -215,7 +218,8 @@
         }
 
         $(document).ready(function () {
-            $('.nav-expenses').addClass('menu-item-active');
+            $('.nav-accounting').addClass('menu-item-active menu-item-open');
+            $('.nav-journal-entries').addClass('menu-item-active');
 
             let submitForm = $('#submitForm');
             submitForm.validate();
@@ -350,10 +354,10 @@
                         $('#entryId').val(response.id);
 
                         $('#debit_ledger_croup').val(response.debit_ledger_croup);
-                        getLedgers(response.debit_ledger_croup,$('#debit_ledger'), response.debit_ledger);
+                        getLedgers(response.debit_ledger_croup, $('#debit_ledger'), response.debit_ledger);
 
                         $('#credit_ledger_croup').val(response.credit_ledger_croup);
-                        getLedgers(response.credit_ledger_croup,$('#credit_ledger'), response.credit_ledger);
+                        getLedgers(response.credit_ledger_croup, $('#credit_ledger'), response.credit_ledger);
 
 
                         $('#amount').val(response.amount);

@@ -41,13 +41,13 @@
 
 
             <div class="table-responsive my-3">
-                <table class="table table-head-custom border table-head-solid table-hover dataTable">
+                <table class="table table-head-custom border rounded-lg table-hover dataTable">
                     <thead>
                     <tr>
                         <th>Created At</th>
                         <th>Customer</th>
                         <th>Request Type</th>
-                        <th>Qty</th>
+                        <th>MeterQty</th>
                         <th>UPI</th>
                         <th>Status</th>
                         <th></th>

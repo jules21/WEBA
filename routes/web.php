@@ -118,6 +118,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/{request}/item-delivery', [RequestDeliveryController::class, 'store'])->name('delivery-request.store');
         Route::get('/delivery/{id}/items', [RequestDeliveryController::class, 'items'])->name('delivery.items');
         Route::get('/delivery/{id}/print-delivery', [RequestDeliveryController::class, 'deliveryNote'])->name('print-delivery');
+        Route::get('/delivery/{request}/print-receipt', [RequestDeliveryController::class, 'printDelivery'])->name('print-receipt');
+
     });
     Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
         Route::get('/', [PurchaseController::class, 'index'])->name('index');
@@ -329,6 +331,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/{billing}', [App\Http\Controllers\BillingController::class, 'show'])->name('show');
         //customer billings
         Route::get('/customer/{customer}', [App\Http\Controllers\BillingController::class, 'customerBillings'])->name('customer');
+        //download bill
+        Route::get('/{billing}/download', [App\Http\Controllers\BillingController::class, 'download'])->name('download');
+
+        //bill history
+        Route::get('/{billing}/history', [App\Http\Controllers\BillingController::class, 'history'])->name('history');
+        //meter billings
+        Route::get('/meter/{meter}/subscription/{subscription}', [App\Http\Controllers\BillingController::class, 'meterBillings'])->name('meter');
     });
     Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
         Route::get('/', [App\Http\Controllers\PaymentDeclarationController::class, 'index'])->name('index');

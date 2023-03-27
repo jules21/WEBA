@@ -49,10 +49,13 @@
                     Cash Movements
                 </h4>
             </div>
-            <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
-                <i class="flaticon2-plus"></i>
-                New Entry
-            </button>
+            @if(auth()->user()->operation_area)
+                <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
+                    <i class="flaticon2-plus"></i>
+                    New Entry
+                </button>
+            @endif
+
         </div>
 
 
@@ -214,6 +217,7 @@
         }
 
         $(document).ready(function () {
+            $('.nav-accounting').addClass('menu-item-active menu-item-open');
             $('.nav-cash-movements').addClass('menu-item-active');
 
             let submitForm = $('#submitForm');
@@ -234,7 +238,10 @@
                     },
 
                     {data: "payment_service_provider.name", name: "paymentServiceProvider.name"},
-                    {data: "payment_service_provider_account.account_number", name: "paymentServiceProviderAccount.account_number"},
+                    {
+                        data: "payment_service_provider_account.account_number",
+                        name: "paymentServiceProviderAccount.account_number"
+                    },
                     {data: "action", name: "action", orderable: false, searchable: false}
                 ],
                 order: [[0, 'desc']]
@@ -268,7 +275,7 @@
                         dataTable.ajax.reload();
                         Swal.fire({
                             title: 'Success!',
-                            text: "Expense saved successfully",
+                            text: "Record saved successfully",
                             icon: 'success',
                             confirmButtonText: 'Ok'
                         });
@@ -276,7 +283,7 @@
                     error: function (error) {
                         Swal.fire({
                             title: 'Error!',
-                            text: "Unable to save expense, please try again later",
+                            text: "Unable to save, please try again later",
                             icon: 'error',
                             confirmButtonText: 'Ok'
                         });
@@ -313,7 +320,7 @@
                                 dataTable.ajax.reload();
                                 Swal.fire({
                                     title: 'Success!',
-                                    text: "Expense deleted successfully",
+                                    text: "Record deleted successfully",
                                     icon: 'success',
                                     confirmButtonText: 'Ok'
                                 });
@@ -321,7 +328,7 @@
                             error: function (error) {
                                 Swal.fire({
                                     title: 'Error!',
-                                    text: "Unable to delete Expense, please try again later",
+                                    text: "Unable to delete , please try again later",
                                     icon: 'error',
                                     confirmButtonText: 'Ok'
                                 });

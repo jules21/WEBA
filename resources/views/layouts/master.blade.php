@@ -17,10 +17,7 @@
     <!--end::Global Theme Styles-->
 
     <!--begin::Layout Themes(used by all pages)-->
-    <link href="{{asset('assets/css/themes/layout/header/base/light.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="{{asset('assets/css/themes/layout/header/menu/light.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="{{asset('assets/css/themes/layout/brand/dark.css')}}" rel="stylesheet" type="text/css"/>
-    <link href="{{asset('assets/css/themes/layout/aside/dark.css')}}" rel="stylesheet" type="text/css"/>
+
     <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css"/>
     {{--    <link rel="stylesheet" href="{{ asset('css/master.css') }}">--}}
     <!--end::Layout Themes-->
@@ -51,6 +48,11 @@
 <!--begin::Body-->
 <body id="kt_body"
       class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed  page-loading">
+<div class="my_loader">
+    <div class="inner">
+    </div>
+</div>
+
 <input type="hidden" value="{{ csrf_token() }}" id="token">
 <!--begin::Main-->
 <!--begin::Header Mobile-->
@@ -74,7 +76,7 @@
         </button>
         <!--end::Header Menu Mobile Toggle-->
         <!--begin::Topbar Mobile Toggle-->
-        <button class="btn btn-hover-text-primary p-0 ml-2" id="kt_header_mobile_topbar_toggle">
+        <button class="btn btn-primary btn-icon rounded-circle p-0 ml-2" id="kt_header_mobile_topbar_toggle">
 					<span class="svg-icon svg-icon-xl">
 						<!--begin::Svg Icon | path:assets/media/svg/icons/General/User.svg-->
 						<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
@@ -107,17 +109,21 @@
                 <!--begin::Logo-->
                 <a href="{{ route('admin.dashboard') }}" class="brand-logo d-flex align-items-center">
                     <img alt="Logo" class="img-fluid h-50px" src="{{asset("img/logo.svg")}}"/>
-{{--                    <h2 class="logo-text">CMS</h2>--}}
+                    {{--                    <h2 class="logo-text">CMS</h2>--}}
                 </a>
                 <!--end::Logo-->
                 <!--begin::Toggle-->
-                <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
+                <button class="brand-toggle btn btn-sm px-0 text-accent" id="kt_aside_toggle">
 							<span class="svg-icon svg-icon svg-icon-xl">
 								<!--begin::Svg Icon | path:assets/media/svg/icons/Navigation/Angle-double-left.svg-->
-								<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-square-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+								<svg xmlns="http://www.w3.org/2000/svg"
+                                     class="icon icon-tabler icon-tabler-square-chevron-left" width="24" height="24"
+                                     viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                                     stroke-linecap="round" stroke-linejoin="round">
                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                    <path d="M13 15l-3 -3l3 -3"></path>
-                                   <path d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
+                                   <path
+                                       d="M3 3m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"></path>
                                 </svg>
                                 <!--end::Svg Icon-->
 							</span>
@@ -128,7 +134,7 @@
             <!--begin::Aside Menu-->
             <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
                 <!--begin::Menu Container-->
-                <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1"
+                <div id="kt_aside_menu" class="aside-menu py-4" data-menu-vertical="1" data-menu-scroll="1"
                      data-menu-dropdown-timeout="500">
                     <!--begin::Menu Nav-->
                     @include("partials.menus")
@@ -432,12 +438,17 @@
 
 <script>
     $(document).ready(function () {
+
+
+        $('.my_loader').fadeOut(500);
+
         $('.select2').select2();
         // replace chosen input file fake path with real path
         $('.custom-file-input').on('change', function () {
             let fileName = $(this).val().split('\\').pop();
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
         });
+
     });
 
     $(document).ajaxComplete(function () {

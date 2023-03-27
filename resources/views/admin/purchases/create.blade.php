@@ -95,13 +95,13 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <div class="table-responsive rounded">
-                            <table class="table rounded table-head-solid table-head-custom border" id="itemsTable">
+                        <div class="table-responsive ">
+                            <table class="table rounded table-head-solid table-head-custom border " id="itemsTable">
                                 <thead>
                                 <tr>
                                     <th style="width: 40%;">Item</th>
                                     <th>Qty</th>
-                                    <th>Price</th>
+                                    <th>Unit Price</th>
                                     <th>Total</th>
                                     <th>VAT</th>
                                     <th>
@@ -183,7 +183,7 @@
 
                 <div class="row">
                     <div class="col-lg-7">
-                        <button type="button" class="btn btn-sm btn-primary font-weight-bold" id="btnAddNew">
+                        <button type="button" class="btn btn-sm btn-light-primary font-weight-bold" id="btnAddNew">
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24"
                                  height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
                                  stroke-linecap="round" stroke-linejoin="round">

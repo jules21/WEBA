@@ -41,7 +41,7 @@
 
 
             <div class="table-responsive my-3">
-                <table class="table table-head-custom border table-head-solid table-hover dataTable">
+                <table class="table table-head-custom border rounded-lg table-hover dataTable">
                     <thead>
                     <tr>
                         <th>
@@ -52,7 +52,7 @@
                         </th>
                         <th>Customer</th>
                         <th>Request Type</th>
-                        <th>Qty</th>
+                        <th>Meter Qty</th>
                         <th>UPI</th>
                         <th>Assigned To</th>
                         <th>Created At</th>

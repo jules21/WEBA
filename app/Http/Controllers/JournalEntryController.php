@@ -22,7 +22,8 @@ class JournalEntryController extends Controller
                 ->select('journal_entries.*');
             return datatables()->of($data)
                 ->addColumn('action', function ($row) {
-                    return '<div class="dropdown">
+                    if (auth()->user()->operation_area) {
+                        return '<div class="dropdown">
                           <button class="btn btn-light-primary dropdown-toggle btn-sm" type="button" data-toggle="dropdown">
                             Options
                           </button>
@@ -31,6 +32,8 @@ class JournalEntryController extends Controller
                             <a class="dropdown-item js-delete" href="' . route('admin.accounting.journal-entries.delete', encryptId($row->id)) . '"> <i class="fa fa-trash  mr-2"></i> Delete</a>
                           </div>
                         </div>';
+                    }
+                    return "";
                 })
                 ->rawColumns(['action'])
                 ->make(true);

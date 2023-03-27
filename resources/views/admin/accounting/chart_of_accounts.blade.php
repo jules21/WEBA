@@ -124,3 +124,10 @@
         </div>
     </div>
 @endsection
+
+@section('scripts')
+    <script>
+        $('.nav-accounting-settings').addClass('menu-item-active menu-item-open');
+        $('.nav-chart-accounts').addClass('menu-item-active menu-item-open');
+    </script>
+@endsection

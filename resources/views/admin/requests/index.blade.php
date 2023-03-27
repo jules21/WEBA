@@ -10,7 +10,7 @@
             <div class="d-flex align-items-center flex-wrap mr-2">
                 <!--begin::Page Title-->
                 <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">
-                    All  Requests
+                    All Requests
                 </h5>
 
                 <!--end::Page Title-->
@@ -35,34 +35,33 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>
-                    All  Requests
+                    All Requests
                 </h4>
 
-                @can(\App\Constants\Permission::CreateRequest)
-
-                    <a href="{{ route('admin.requests.create') }}" class="btn btn-primary btn-sm" id="addButton">
+              {{--  @if(auth()->user()->can(\App\Constants\Permission::CreateRequest) && !is_null(auth()->user()->operation_area))
+                    <a href="{{ route('admin.requests.create') }}"
+                       class="btn btn-light-primary rounded-sm font-weight-normal btn-sm" id="addButton">
                        <span class="svg-icon">
                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
                               <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
                             </svg>
                        </span>
-                        Add New
+                        New Request
                     </a>
-
-                @endcan
+                @endif--}}
             </div>
 
 
             <div class="table-responsive my-3">
-                <table class="table table-head-custom border table-head-solid table-hover dataTable">
+                <table class="table table-head-custom border rounded-lg table-hover dataTable">
                     <thead>
                     <tr>
                         <th>Created At</th>
                         <th>Operator</th>
                         <th>Customer</th>
                         <th>Request Type</th>
-                        <th>Qty</th>
+                        <th>Meter Qty</th>
                         <th>UPI</th>
                         <th>Status</th>
                         <th></th>
@@ -231,8 +230,6 @@
             $('#legal_type_id').on('change', function () {
                 getDocumentTypes($(this).val());
             });
-
-
 
 
             $(document).on('click', '.js-delete', function (e) {

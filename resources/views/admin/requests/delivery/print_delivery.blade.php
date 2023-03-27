@@ -2,11 +2,12 @@
 @section('title',"Delivery Note")
 
 @section('content')
-    <div class="container my-5">
+    <div class="container my-5 position-relative">
+
         <div class="d-flex justify-content-between">
             <div>
                 <img src="{{ asset('img/logo.svg') }}" style="height: 70px;" alt="" class="border py-2 mb-2"/>
-                <div class="fw-bold">
+                <div class="font-weight-bolder">
                     Customer
                 </div>
                 <div class="mb-3">
@@ -26,9 +27,6 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <div class="font-weight-bolder">
-                        Customer Email:
-                    </div>
                     <div>
                         {{ $request->customer->email }}
                     </div>
@@ -113,6 +111,7 @@
                 Signature: <span style="width: 200px; display: inline-block;border-bottom:2px dashed ">&nbsp;</span>
             </p>
         </div>
+
     </div>
 
 @endsection

@@ -49,10 +49,13 @@
                     Bank Accounts
                 </h4>
             </div>
-            <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
-                <i class="flaticon2-plus"></i>
-                New Account
-            </button>
+            @if(auth()->user()->operation_area)
+                <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
+                    <i class="flaticon2-plus"></i>
+                    New Account
+                </button>
+            @endif
+
         </div>
         <div class="table-responsive my-3">
             <table class="table table-head-custom border table-head-solid table-hover dataTable">
@@ -160,6 +163,7 @@
 
 
         $(document).ready(function () {
+            $('.nav-accounting-settings').addClass('menu-item-active menu-item-open');
             $('.nav-bank-accounts').addClass('menu-item-active');
 
             let submitForm = $('#submitForm');

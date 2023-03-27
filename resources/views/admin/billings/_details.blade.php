@@ -71,7 +71,12 @@
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
                 <label class="font-weight-bolder" for="attachment">Attachment</label>
-                <div class="form-control-plaintext"> {{ $billing->attachment ?? '-' }}</div>
+                <div class="form-control-plaintext">
+                    @if($billing->attachment)
+                        <a class="btn btn-outline-primary btn-sm" href="{{ route('admin.billings.download', encryptId($billing->id)) }}" target="_blank">View Attachment</a>
+                    @else
+                        -
+                    @endif
             </div>
         </div>
     </div>

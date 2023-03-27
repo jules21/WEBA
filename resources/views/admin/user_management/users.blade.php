@@ -234,7 +234,9 @@
             $("#_operator_id").val($(button).data("operator"));
             $("#operation_area").val($(button).data("operation_area"));
             $("#_operator_id").select2();
-            getOperationArea(Array.from($("#_operator_id").val()), $(button).data("operation_area"));
+            @if(auth()->user()->operator_id == null)
+                getOperationArea(Array.from($("#_operator_id").val()), $(button).data("operation_area"));
+            @endif
             $('#edit-user-form').attr("action", $(this).data('url'));
             var modal = $(this);
             modal.find('form').attr('action', href)
