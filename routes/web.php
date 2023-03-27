@@ -339,6 +339,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/customer/{customer}', [App\Http\Controllers\BillingController::class, 'customerBillings'])->name('customer');
         //download bill
         Route::get('/{billing}/download', [App\Http\Controllers\BillingController::class, 'download'])->name('download');
+
+        //bill history
+        Route::get('/{billing}/history', [App\Http\Controllers\BillingController::class, 'history'])->name('history');
+        //meter billings
+        Route::get('/meter/{meter}/subscription/{subscription}', [App\Http\Controllers\BillingController::class, 'meterBillings'])->name('meter');
     });
     Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
         Route::get('/', [App\Http\Controllers\PaymentDeclarationController::class, 'index'])->name('index');

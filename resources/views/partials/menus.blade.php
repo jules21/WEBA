@@ -48,14 +48,14 @@
                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-map-2" width="24"
                             height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
                             stroke-linecap="round" stroke-linejoin="round">
-   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-   <path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5"></path>
-   <path d="M9 4v13"></path>
-   <path d="M15 7v5.5"></path>
-   <path
-       d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z"></path>
-   <path d="M19 18v.01"></path>
-</svg>
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                               <path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5"></path>
+                               <path d="M9 4v13"></path>
+                               <path d="M15 7v5.5"></path>
+                               <path
+                                   d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879z"></path>
+                               <path d="M19 18v.01"></path>
+                            </svg>
                     </span>
                 <span class="menu-text">
                         Operation Areas
@@ -165,7 +165,7 @@
         </li>
 
         @if(auth()->user()->canAny(accountingPermissions()) && auth()->user()->operation_area)
-            <li class="menu-item menu-item-submenu nav-accounting-settings" aria-haspopup="true"
+            <li class="menu-item menu-item-submenu nav-accounting" aria-haspopup="true"
                 data-menu-toggle="hover">
                 <a href="javascript:" class="menu-link menu-toggle">
                        <span class="svg-icon menu-icon">
@@ -248,7 +248,7 @@
                     <ul class="menu-subnav">
 
                         <x-menu-item title="Assign Chart Of Accounts" item-class="nav-assign-chart-accounts"
-                                     :route="route('admin.purchases.index')"/>
+                                     route=""/>
                         <x-menu-item title="Ledger Migration" item-class="nav-ledger-migration"
                                      :route="route('admin.accounting.ledger-migration.index')"/>
                         <x-menu-item title="Chart Of Accounts" item-class="nav-chart-accounts"
@@ -459,19 +459,16 @@
                     <a href="{{route('admin.suppliers')}}"
                        class="menu-link">
 
-                        <span class="svg-icon menu-icon"><!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo6\dist/../src/media/svg/icons\Communication\Group.svg--><svg
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <polygon points="0 0 24 0 24 24 0 24"/>
-                                <path
-                                    d="M18,14 C16.3431458,14 15,12.6568542 15,11 C15,9.34314575 16.3431458,8 18,8 C19.6568542,8 21,9.34314575 21,11 C21,12.6568542 19.6568542,14 18,14 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z"
-                                    fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-                                <path
-                                    d="M17.6011961,15.0006174 C21.0077043,15.0378534 23.7891749,16.7601418 23.9984937,20.4 C24.0069246,20.5466056 23.9984937,21 23.4559499,21 L19.6,21 C19.6,18.7490654 18.8562935,16.6718327 17.6011961,15.0006174 Z M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z"
-                                    fill="#000000" fill-rule="nonzero"/>
-                            </g>
-                        </svg><!--end::Svg Icon-->
+                        <span class="svg-icon menu-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-truck-delivery"
+                               width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
+                               fill="none" stroke-linecap="round" stroke-linejoin="round">
+                               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                               <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                               <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                               <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5"></path>
+                               <path d="M3 9l4 0"></path>
+                            </svg>
                         </span>
                         <span class="menu-text">
                         Suppliers
@@ -489,8 +486,18 @@
             <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
         </li>
         <li class="menu-item menu-item-submenu nav-user-managements" aria-haspopup="true" data-menu-toggle="hover">
-            <a href="javascript:;" class="menu-link menu-toggle">
-                <i class="menu-icon flaticon-users"></i>
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <span class="menu-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24"
+                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                         stroke-linecap="round" stroke-linejoin="round">
+                       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                       <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                       <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                       <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                       <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                    </svg>
+                </span>
                 <span class="menu-text">User Management</span>
                 <i class="menu-arrow"></i>
             </a>
@@ -546,8 +553,17 @@
             <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
         </li>
         <li class="menu-item menu-item-submenu nav-settings" aria-haspopup="true" data-menu-toggle="hover">
-            <a href="javascript:;" class="menu-link menu-toggle">
-                <i class="menu-icon flaticon-settings"></i>
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <span class="menu-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings-2" width="24"
+                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                         stroke-linecap="round" stroke-linejoin="round">
+                       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                       <path
+                           d="M19.875 6.27a2.225 2.225 0 0 1 1.125 1.948v7.284c0 .809 -.443 1.555 -1.158 1.948l-6.75 4.27a2.269 2.269 0 0 1 -2.184 0l-6.75 -4.27a2.225 2.225 0 0 1 -1.158 -1.948v-7.285c0 -.809 .443 -1.554 1.158 -1.947l6.75 -3.98a2.33 2.33 0 0 1 2.25 0l6.75 3.98h-.033z"></path>
+                       <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                    </svg>
+                </span>
                 <span class="menu-text">Settings</span>
                 <i class="menu-arrow"></i>
             </a>

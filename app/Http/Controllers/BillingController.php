@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\BillingDataTable;
+use App\Exports\BillingExport;
 use App\Models\Billing;
 use App\Models\Customer;
 use App\Models\OperationArea;
@@ -10,6 +11,7 @@ use App\Models\Operator;
 use App\Models\User;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BillingController extends Controller
 {
@@ -109,6 +111,22 @@ class BillingController extends Controller
             $query->where('subscription_number', 'like', '%' . request()->subscription_number . '%');
         });
 
+        //from date
+        $query->when((request()->has('from_date') && request()->filled('from_date')), function ($query) {
+            $query->whereDate('created_at', '>=', request()->from_date);
+        });
+        //to date
+        $query->when((request()->has('to_date') && request()->filled('to_date')), function ($query) {
+            $query->whereDate('created_at', '<=', request()->to_date);
+        });
+
+
+
+
+        if (request()->is_download == true && !\request()->ajax()) {
+            return $this->exportBilling($query->get());
+        }
+
         $datatable = new BillingDataTable($query);
         return $datatable->render('admin.billings.index',
             [
@@ -141,11 +159,30 @@ class BillingController extends Controller
         return $datatable->render('admin.billings.customer_bills', compact('customer'));
     }
 
+    // meter billings
+    public function meterBillings($meter, $subscription)
+    {
+        $billings = Billing::query()->where('meter_number', $meter)->where('subscription_number', $subscription);
+        $datatable = new BillingDataTable($billings);
+        return $datatable->render('admin.billings.customer_bills', compact('meter'));
+    }
+
     public function download(Billing $billing)
     {
         if ($billing->attachment)
             return $this->downloadFile($billing->attachment);
         return redirect()->back()->with('error', 'No file found');
+    }
+
+    public function exportBilling($query)
+    {
+        return Excel::download(new BillingExport($query), 'Billing List.xlsx');
+    }
+
+    public function history(Billing $billing)
+    {
+        $history = $billing->history()->get();
+        return view('admin.billings.history', compact('history'));
     }
 
 }

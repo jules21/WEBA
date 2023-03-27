@@ -257,6 +257,7 @@
         }
 
         $(document).ready(function () {
+            $('.nav-accounting-settings').addClass('menu-item-active menu-item-open');
             $('.nav-ledger-migration').addClass('menu-item-active');
 
             let submitForm = $('#submitForm');
