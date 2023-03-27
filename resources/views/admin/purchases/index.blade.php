@@ -39,19 +39,19 @@
                     Manage  Stock In
                 </h4>
 
-                @if( auth()->user()->can(\App\Constants\Permission::StockInItems) && auth()->user()->operation_area)
+            {{--    @if( auth()->user()->can(\App\Constants\Permission::StockInItems) && auth()->user()->operation_area)
 
                     <a href="{{ route('admin.purchases.create') }}" class="btn btn-primary btn-sm rounded">
                         <i class="flaticon2-plus-1"></i>
                         Add New
                     </a>
 
-                @endif
+                @endif--}}
             </div>
 
 
             <div class="table-responsive my-3">
-                <table class="table table-head-custom border table-head-solid table-hover dataTable">
+                <table class="table table-head-custom border rounded-lg table-hover dataTable">
                     <thead>
                     <tr>
                         <th>Created At</th>
