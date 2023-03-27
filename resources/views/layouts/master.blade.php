@@ -48,6 +48,11 @@
 <!--begin::Body-->
 <body id="kt_body"
       class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed  page-loading">
+<div class="my_loader">
+    <div class="inner">
+    </div>
+</div>
+
 <input type="hidden" value="{{ csrf_token() }}" id="token">
 <!--begin::Main-->
 <!--begin::Header Mobile-->
@@ -129,7 +134,7 @@
             <!--begin::Aside Menu-->
             <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
                 <!--begin::Menu Container-->
-                <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1"
+                <div id="kt_aside_menu" class="aside-menu py-4" data-menu-vertical="1" data-menu-scroll="1"
                      data-menu-dropdown-timeout="500">
                     <!--begin::Menu Nav-->
                     @include("partials.menus")
@@ -433,12 +438,17 @@
 
 <script>
     $(document).ready(function () {
+
+
+        $('.my_loader').fadeOut(500);
+
         $('.select2').select2();
         // replace chosen input file fake path with real path
         $('.custom-file-input').on('change', function () {
             let fileName = $(this).val().split('\\').pop();
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
         });
+
     });
 
     $(document).ajaxComplete(function () {

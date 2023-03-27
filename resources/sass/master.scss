@@ -1,13 +1,40 @@
 $accent: #A6CE39;
 $activeSubLinkColor: #031e31;
+$menuColor: #f3f6f9;
 @import "../../public/assets/plugins/global/plugins.bundle.css";
 @import "../../public/assets/css/themes/layout/header/base/light.css";
 @import "../../public/assets/css/themes/layout/header/menu/light.css";
 @import "../../public/assets/css/themes/layout/brand/dark.css";
 @import "../../public/assets/css/themes/layout/aside/dark.css";
 @import "style";
+
+
+.my_loader {
+    width: 100%;
+    height: 100vh !important;
+    background-color: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.my_loader .inner {
+    width: 100% !important;
+    height: 100vh !important;
+    background: url(../images/loader.svg) center center no-repeat !important;
+}
+
 .breadcrumb-item {
     display: flex !important;
+}
+
+.aside {
+    background-color: $primary !important;
+    background-image: url(../images/aside_bg.png) !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
 }
 
 .form-control:focus, .custom-file-input:focus {
@@ -16,13 +43,9 @@ $activeSubLinkColor: #031e31;
     box-shadow: 0 0 0 0.25rem rgb(166 206 57 / 25%) !important;
 }
 
-/*.checkbox.checkbox-accent > input:checked ~ span {
-    background-color: $accent !important;
+.brand {
+    padding: 0 10px !important;
 }
-
-.radio > input:checked ~ span {
-    background-color: $accent !important;
-}*/
 
 .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading .menu-icon, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link .menu-icon {
     color: $primary !important;
@@ -33,41 +56,36 @@ $activeSubLinkColor: #031e31;
 }
 
 
-.aside {
-    background-color: #05559e !important;
+.aside-menu {
+    background-color: transparent !important;
 }
 
 @media (min-width: 992px) {
     .brand {
-        background-color: #05559e !important;
+        background-color: transparent !important;
     }
 }
 
-.aside-menu {
-    background-color: #05559e !important;
-}
 
 .aside-menu .menu-nav > .menu-item > .menu-heading .menu-icon, .aside-menu .menu-nav > .menu-item > .menu-link .menu-icon {
-    color: #f3f6f9 !important;
+    color: $menuColor !important;
 }
 
 .aside-menu .menu-nav > .menu-item > .menu-heading .menu-text, .aside-menu .menu-nav > .menu-item > .menu-link .menu-text {
-    color: #f3f6f9 !important;
+    color: $menuColor !important;
 }
-
-/*
-.menu-item {
-    padding-right: 0.75rem !important;
-    padding-left: 0.75rem !important;
-}
-*/
 
 
 .aside-menu .menu-nav > .menu-section .menu-text {
-    color: #e1f3f7 !important;
+    color: $menuColor !important;
 }
 
-.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link {
+.aside-menu .menu-nav > .menu-section .menu-icon {
+    color: $menuColor !important;
+}
+
+.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link, .aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-heading, .aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link,
+.aside-menu .menu-nav > .menu-item.menu-item-open > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link {
     background-color: $accent !important;
     border-top-right-radius: 20px !important;
     border-bottom-right-radius: 20px !important;
@@ -78,37 +96,30 @@ $activeSubLinkColor: #031e31;
     color: $primary !important;
 }
 
-.aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-heading, .aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link {
-    background-color: $accent !important;
-}
-
 .aside-menu .menu-nav > .menu-item > .menu-heading .menu-arrow, .aside-menu .menu-nav > .menu-item > .menu-link .menu-arrow {
-    color: #e1f3f7 !important;
+    color: $menuColor !important;
 }
 
-.aside-menu .menu-nav > .menu-item.menu-item-open > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link {
-    background-color: $accent !important;
-}
 
 .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-heading .menu-text, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-link .menu-text {
-    color: #f3f6f9 !important;
+    color: $menuColor !important;
 }
 
 .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-heading .menu-bullet.menu-bullet-dot > span, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-link .menu-bullet.menu-bullet-dot > span {
-    background-color: #f3f6f9 !important;
+    background-color: $menuColor !important;
 }
 
 .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link {
-    background-color: #065093 !important;
+    background-color: $primary !important;
 }
 
 .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-link {
-    background-color: #065093 !important;
+    background-color: $primary !important;
 }
 
 @media (max-width: 991.98px) {
     .header-mobile {
-        background-color: #05559e !important;
+        background-color: transparent !important;
     }
 }
 
@@ -131,6 +142,6 @@ $activeSubLinkColor: #031e31;
     border-color: $accent !important;
 }
 
-.text-accent{
+.text-accent {
     color: $accent !important;
 }
