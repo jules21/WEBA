@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\BillingDataTable;
+use App\Exports\BillingExport;
 use App\Models\Billing;
 use App\Models\Customer;
 use App\Models\OperationArea;
@@ -10,6 +11,7 @@ use App\Models\Operator;
 use App\Models\User;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BillingController extends Controller
 {
@@ -109,6 +111,11 @@ class BillingController extends Controller
             $query->where('subscription_number', 'like', '%' . request()->subscription_number . '%');
         });
 
+
+        if (request()->is_download == true && !\request()->ajax()) {
+            return $this->exportBilling($query->get());
+        }
+
         $datatable = new BillingDataTable($query);
         return $datatable->render('admin.billings.index',
             [
@@ -146,6 +153,11 @@ class BillingController extends Controller
         if ($billing->attachment)
             return $this->downloadFile($billing->attachment);
         return redirect()->back()->with('error', 'No file found');
+    }
+
+    public function exportBilling($query)
+    {
+        return Excel::download(new BillingExport($query), 'Billing List.xlsx');
     }
 
 }

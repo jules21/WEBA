@@ -65,13 +65,37 @@
     <div class="container">
         <div class="card shadow-none border">
                 <div class="card-body">
-                    <h3 class="mb-3">
-                        @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
-                            {{ $customer->name ?? '' }}
+                    <div class="d-flex justify-content-between mb-5">
+                        <h3 class="mb-3">
+                            @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
+                                {{ $customer->name ?? '' }}
                             @else
-                            Customers
-                        @endif
-                         Billing</h3>
+                                Customers
+                            @endif
+                            Billing</h3>
+                        <div class="card-toolbar">
+                            <!--begin::Dropdown-->
+                            <div class="dropdown dropdown-inline mr-2">
+                                {{--                            @if ($requests->count() > 0)--}}
+                                <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="la la-download"></i>Export</button>
+                                {{--                            @endif--}}
+                                <!--begin::Dropdown Menu-->
+                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                    <ul class="nav flex-column nav-hover">
+                                        <li class="nav-item export-doc">
+                                            <a href="#" class="nav-link" target="_blank" id="excel">
+                                                <i class="nav-icon la la-file-excel-o"></i>
+                                                <span class="nav-text">Excel</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!--end::Dropdown Menu-->
+                            </div>
+                            <!--end::Dropdown-->
+                        </div>
+                    </div>
                     @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
                         <form action="#" id="filter-form">
                             <div class="row">
@@ -150,12 +174,22 @@
                 </div>
             </div>
 
-
+            @php
+                //Declare new queries you want to append to string:
+                $newQueries = ['is_download' => 1];
+                $newUrl = request()->fullUrlWithQuery($newQueries);
+            @endphp
     </div>
 @endsection
 @section('scripts')
     {{$dataTable->scripts()}}
     <script>
+
+        $(document).on("click","#excel", function(e) {
+            var url = "{!! $newUrl !!}";
+            $(this).attr("href",url);
+        });
+
         $(document).ready(function () {
             $('.nav-billings').addClass('menu-item-active');
             initData();
