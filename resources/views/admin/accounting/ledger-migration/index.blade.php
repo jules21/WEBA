@@ -40,11 +40,11 @@
         </div>
     </div>
 
-    <div class="alert alert-light-warning alert-custom alert-notice rounded-0 py-1 px-3">
+    <div class="alert alert-light-warning alert-custom  text-dark rounded-sm py-1 px-3">
         <div class="alert-icon">
             <i class="flaticon2-exclamation"></i>
         </div>
-        <div class="alert-text d-flex">
+        <div class="alert-text  text-dark d-flex">
             <strong>
                 Warning!
             </strong>
@@ -63,10 +63,13 @@
                     Ledger Migration
                 </h4>
             </div>
-            <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
-                <i class="flaticon2-plus"></i>
-                New Entry
-            </button>
+            @if(auth()->user()->operation_area)
+                <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
+                    <i class="flaticon2-plus"></i>
+                    New Entry
+                </button>
+            @endif
+
         </div>
         <div class="table-responsive my-3">
             <table class="table table-head-custom border table-head-solid  dataTable rounded">
@@ -98,10 +101,13 @@
                             {{--      <button type="button" class="btn btn-light-primary btn-sm btn-icon rounded-circle js-edit">
                                       <i class="flaticon2-edit"></i>
                                   </button>--}}
-                            <a href="{{ route('admin.accounting.ledger-migration.delete',encryptId($item->id)) }}"
-                               class="btn btn-light-danger btn-sm btn-icon rounded-circle js-delete">
-                                <i class="flaticon2-trash"></i>
-                            </a>
+                            @if(auth()->user()->operation_area)
+                                <a href="{{ route('admin.accounting.ledger-migration.delete',encryptId($item->id)) }}"
+                                   class="btn btn-light-danger btn-sm btn-icon rounded-circle js-delete">
+                                    <i class="flaticon2-trash"></i>
+                                </a>
+                            @endif
+
                         </td>
                     </tr>
                 @endforeach

@@ -49,10 +49,13 @@
                     Expenses
                 </h4>
             </div>
-            <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
-                <i class="flaticon2-plus"></i>
-                New Expense
-            </button>
+            @if(auth()->user()->operation_area)
+                <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
+                    <i class="flaticon2-plus"></i>
+                    New Expense
+                </button>
+            @endif
+
         </div>
         <div class="table-responsive my-3">
             <table class="table table-head-custom border table-head-solid table-hover dataTable">

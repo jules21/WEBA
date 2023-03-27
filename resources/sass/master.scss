@@ -87,8 +87,8 @@ $menuColor: #f3f6f9;
 .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link, .aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-heading, .aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link,
 .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link {
     background-color: $accent !important;
-    border-top-right-radius: 20px !important;
-    border-bottom-right-radius: 20px !important;
+    border-top-right-radius: 50px !important;
+    border-bottom-right-radius: 50px !important;
     margin-right: 10px !important;
 }
 
@@ -119,12 +119,11 @@ $menuColor: #f3f6f9;
 
 @media (max-width: 991.98px) {
     .header-mobile {
-        background-color: transparent !important;
+        background-color: $primary !important;
     }
 }
 
 @media (max-width: 991.98px) {
-
     .header-mobile .burger-icon span {
         background-color: $accent !important;
     }

@@ -31,6 +31,48 @@
     </div>
 @stop
 @section('content')
+
+    <form action="">
+        <div class="card card-body mb-3">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="start_date">Start Date</label>
+                        <input value="{{ request('start_date') }}" type="date" name="start_date" id="start_date"
+                               class="form-control"/>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="end_date">End Date</label>
+                        <input value="{{ request('end_date') }}" type="date" name="end_date" id="end_date"
+                               class="form-control"/>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="water_network_type_id">
+                        Water Network Type
+                    </label>
+                    <select name="water_network_type_id" id="water_network_type_id" class="form-control">
+                        <option value="">Please Select Water Network Type</option>
+                        @foreach(App\Models\WaterNetworkType::all() as $type)
+                            <option
+                                value="{{$type->id}}" {{request('water_network_type_id') == $type->id ? 'selected' : ''}}>{{$type->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="" style="visibility: hidden">Submit</label> <br>
+                        <button type="submit" class="btn btn-primary rounded">
+                            Filter <i class="fa fa-filter"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
     <!--begin::Entry-->
     <div class="card card-custom">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
@@ -131,9 +173,9 @@
                             <label for="operation_area_id">Operation Area</label>
                             <select name="operation_area_id" id="operation_area_id" class="form-control" required>
                                 <option value="">Please Select Operation Area</option>
-                                 @foreach(App\Models\OperationArea::query()->get() as $area)
-                                     <option value="{{$area->id}}">{{$area->name}}</option>
-                                 @endforeach
+                                @foreach(App\Models\OperationArea::query()->get() as $area)
+                                    <option value="{{$area->id}}">{{$area->name}}</option>
+                                @endforeach
 
                             </select>
                         </div>
@@ -265,11 +307,11 @@
         $(document).ready(function () {
             $('#table').DataTable();
 
-      /*      $('#water_network_type_id').on('change', function () {
-                if (!$(this).val())
-                    return;
-                loadOperationAreas($(this).val(), 0);
-            });*/
+            /*      $('#water_network_type_id').on('change', function () {
+                      if (!$(this).val())
+                          return;
+                      loadOperationAreas($(this).val(), 0);
+                  });*/
         });
 
         $('.nav-settings').addClass('menu-item-active  menu-item-open');

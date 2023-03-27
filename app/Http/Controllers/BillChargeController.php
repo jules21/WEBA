@@ -6,17 +6,40 @@ use App\Http\Requests\StoreBillChargeRequest;
 use App\Http\Requests\UpdateBillChargeRequest;
 use App\Models\BillCharge;
 use App\Models\OperationArea;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\Builder;
 
 class BillChargeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
-        $bills = BillCharge::with('waterNetworkType', 'operationArea')->orderBy('id', 'DESC')->get();
+        $startDate = request('start_date');
+        $endDate = request('end_date');
+        $operation_area_id = request('operation_area_id');
+        $water_network_type_id = request('water_network_type_id');
+
+
+        $bills = BillCharge::with('waterNetworkType', 'operationArea')
+            ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
+                $builder->whereDate('created_at', '>=', $startDate);
+            })
+            ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
+                $builder->whereDate('created_at', '<=', $endDate);
+            })
+            ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
+                $builder->where('operation_area_id', $operation_area_id);
+            })
+            ->when(!empty($water_network_type_id), function (Builder $builder) use ($water_network_type_id) {
+                $builder->where('water_network_type_id', $water_network_type_id);
+            })
+            ->orderBy('id', 'DESC')
+            ->get();
         return view('admin.settings.bill_charges', compact('bills'));
     }
 
