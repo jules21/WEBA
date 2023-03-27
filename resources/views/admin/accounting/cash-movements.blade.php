@@ -49,10 +49,13 @@
                     Cash Movements
                 </h4>
             </div>
-            <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
-                <i class="flaticon2-plus"></i>
-                New Entry
-            </button>
+            @if(auth()->user()->operation_area)
+                <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addNewBtn">
+                    <i class="flaticon2-plus"></i>
+                    New Entry
+                </button>
+            @endif
+
         </div>
 
 
