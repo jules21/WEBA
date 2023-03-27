@@ -31,13 +31,7 @@ class PaymentController extends Controller
                 ->where("balance", '>', 0)
                 ->first();
             if ($declaration) {
-                $paymentMapping = PaymentMapping::query()
-                    ->where("payment_configuration_id", $declaration->payment_configuration_id)
-                    ->whereHas("account", function ($query) use ($bankId) {
-                        $query->whereHas("paymentServiceProvider", function ($query) use ($bankId) {
-                            $query->where("clms_id", $bankId);
-                        });
-                    })->first();
+                $paymentMapping = $this->getMapping($declaration, $bankId);
                 if (!$paymentMapping) {
                     return $this->errorResponse("Payment is not allowed for this bank");
                 }
@@ -69,19 +63,7 @@ class PaymentController extends Controller
 
             if ($billing) {
                 $meterRequest = $billing->meterRequest;
-                $operatingArea = $meterRequest->request->operatingArea;
-                $paymentConfiguration = PaymentConfiguration::query()
-                    ->where("operation_area_id", $operatingArea->id)
-                    ->where("payment_type_id", 4)
-                    ->first();
-                $paymentMapping = PaymentMapping::query()
-                    ->where("payment_configuration_id", $paymentConfiguration->id ?? 0)
-                    ->whereHas("account", function ($query) use ($bankId) {
-                        $query->whereHas("paymentServiceProvider", function ($query) use ($bankId) {
-                            $query->where("clms_id", $bankId);
-                        });
-                    })->first();
-
+                list($paymentConfiguration, $paymentMapping) = $this->getBillPaymentMapping($meterRequest, $bankId);
                 if (!$paymentMapping) {
                     return $this->errorResponse("Payment is not allowed for this bank");
                 } else {
@@ -130,9 +112,9 @@ class PaymentController extends Controller
         $bank_txn_ref = $request->bank_txn_ref;
         $amount = $request->amount;
         $narration = $request->narration;
-        $bank_id = $request->bank_name;
+        $bankId = $request->bank_name;
 
-        if ($referenceNumber == null || $bank_txn_ref == null || $amount == null || $narration == null || $bank_id == null) {
+        if ($referenceNumber == null || $bank_txn_ref == null || $amount == null || $narration == null || $bankId == null) {
             return $this->errorResponse("Payment reference number or bank id is missing");
         }
         if (strpos($referenceNumber, 'CMS') !== false) {
@@ -142,12 +124,14 @@ class PaymentController extends Controller
                 ->whereIn("status", [PaymentDeclaration::ACTIVE, PaymentDeclaration::PARTIALLY_PAID])
                 ->first();
             if ($declaration) {
+                $paymentMapping = $this->getMapping($declaration, $bankId);
                 $history = new PaymentHistory();
                 $history->payment_declaration_id = $declaration->id;
                 $history->amount = $amount;
                 $history->psp_reference_number = $bank_txn_ref;
                 $history->narration = $narration;
                 $history->payment_date;
+                $history->payment_mapping_id = $paymentMapping->id;
                 $history->save();
                 if ($declaration->balance == $amount) {
                     $declaration->status = PaymentDeclaration::PAID;
@@ -169,14 +153,28 @@ class PaymentController extends Controller
             $billing = Billing::where('subscription_number', $referenceNumber)
                 ->where("balance", '>', 0)->first();
             if ($billing) {
-                $history=new Payment();
-                $history->billing_id=$billing->id;
-                $history->amount=$amount;
-                $history->subscription_number=$referenceNumber;
-                $history->bank_reference_number=$bank_txn_ref;
-                $history->narration=$narration;
-                $history->payment_mapping_id=$billing->paymentMapping->id;
+                $meterRequest = $billing->meterRequest;
+                list($paymentConfiguration, $paymentMapping) = $this->getBillPaymentMapping($meterRequest, $bankId);
+                $history = new Payment();
+                $history->billing_id = $billing->id;
+                $history->amount = $amount;
+                $history->subscription_number = $referenceNumber;
+                $history->bank_reference_number = $bank_txn_ref;
+                $history->narration = $narration;
+                $history->payment_mapping_id = $paymentMapping->id;
                 $history->save();
+                $billing = Billing::where('subscription_number', $referenceNumber)
+                    ->where("balance", '>', 0)->get();
+                $meterRequest->update(['balance' => $meterRequest->balance + $amount]);
+                foreach ($billing as $bill) {
+                    $balance = $bill->balance;
+                    $bill->balance = $bill->balance > $amount ? $bill->balance - $amount : 0;
+                    $bill->update();
+                    $amount = $amount - $balance;
+                    if ($amount <= 0) {
+                        break;
+                    }
+                }
                 return response()->json([
                     'response' => 'Payment reference found',
                     'responsecode' => 201,
@@ -186,6 +184,46 @@ class PaymentController extends Controller
                 return $this->errorResponse("Payment reference not found");
             }
         }
+    }
+
+    /**
+     * @param $meterRequest
+     * @param $bankId
+     * @return array
+     */
+    public function getBillPaymentMapping($meterRequest, $bankId): array
+    {
+        $operatingArea = $meterRequest->request->operatingArea;
+        $paymentConfiguration = PaymentConfiguration::query()
+            ->where("operation_area_id", $operatingArea->id)
+            ->where("payment_type_id", 4)
+            ->where("is_active", 1)
+            ->first();
+        $paymentMapping = PaymentMapping::query()
+            ->where("payment_configuration_id", $paymentConfiguration->id ?? 0)
+            ->whereHas("account", function ($query) use ($bankId) {
+                $query->whereHas("paymentServiceProvider", function ($query) use ($bankId) {
+                    $query->where("clms_id", $bankId);
+                });
+            })->where("is_active", 1)->first();
+        return array($paymentConfiguration, $paymentMapping);
+    }
+
+    /**
+     * @param $declaration
+     * @param $bankId
+     * @return PaymentMapping|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|object|null
+     */
+    public function getMapping($declaration, $bankId)
+    {
+        $paymentMapping = PaymentMapping::query()
+            ->where("payment_configuration_id", $declaration->payment_configuration_id)
+            ->whereHas("account", function ($query) use ($bankId) {
+                $query->whereHas("paymentServiceProvider", function ($query) use ($bankId) {
+                    $query->where("clms_id", $bankId);
+                });
+            })->first();
+        return $paymentMapping;
     }
 
 }
