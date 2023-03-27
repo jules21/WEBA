@@ -10,12 +10,12 @@ mix.js('resources/js/app.js', 'public/js')
     .vue()
     // .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/master.scss', 'public/css/master.css')
-    .purgeCss({
+ /*   .purgeCss({
         enabled: mix.inProduction(),
         extend: {
             content: [
-                path.join(__dirname, 'resources/views/**/*.blade.php'),
-                path.join(__dirname, 'resources/js/**/*.vue'),
+                path.join(__dirname, 'resources/views/!**!/!*.blade.php'),
+                path.join(__dirname, 'resources/js/!**!/!*.vue'),
             ],
             whitelistPatterns: [/^v-/],
             whitelistPatternsChildren: [/^v-/],
@@ -40,11 +40,10 @@ mix.js('resources/js/app.js', 'public/js')
                     /^fade/,
                     /^collapse/,
                     /^collapsed/,
-
                 ],
             },
         }
-    });
+    })*/;
 
 if (mix.inProduction()) {
     mix.version();
