@@ -62,5 +62,7 @@ class Permission
 
     const ManagePayment = 'Manage Payment';
 
+    const ManageBankAccounts = 'Manage Bank Accounts';
+
 
 }

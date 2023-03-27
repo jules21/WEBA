@@ -247,14 +247,19 @@
                     <i class="menu-arrow"></i>
                     <ul class="menu-subnav">
 
-                        <x-menu-item title="Assign Chart Of Accounts" item-class="nav-assign-chart-accounts"
-                                     route=""/>
-                        <x-menu-item title="Ledger Migration" item-class="nav-ledger-migration"
-                                     :route="route('admin.accounting.ledger-migration.index')"/>
-                        <x-menu-item title="Chart Of Accounts" item-class="nav-chart-accounts"
-                                     :route="route('admin.accounting.chart-of-accounts')"/>
-                        <x-menu-item title="Bank Accounts" item-class="nav-bank-accounts"
-                                     :route="route('admin.accounting.bank-accounts.index')"/>
+                        @can(\App\Constants\Permission::ManageLedgerMigration)
+                            <x-menu-item title="Ledger Migration" item-class="nav-ledger-migration"
+                                         :route="route('admin.accounting.ledger-migration.index')"/>
+                        @endcan
+                        @can(\App\Constants\Permission::ManageChartOfAccounts)
+                            <x-menu-item title="Chart Of Accounts" item-class="nav-chart-accounts"
+                                         :route="route('admin.accounting.chart-of-accounts')"/>
+                        @endcan
+
+                        @can(\App\Constants\Permission::ManageBankAccounts)
+                            <x-menu-item title="Bank Accounts" item-class="nav-bank-accounts"
+                                         :route="route('admin.accounting.bank-accounts.index')"/>
+                        @endcan
 
                     </ul>
                 </div>
