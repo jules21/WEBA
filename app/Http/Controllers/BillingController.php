@@ -123,7 +123,6 @@ class BillingController extends Controller
 
 
 
-
         if (request()->is_download == true && !\request()->ajax()) {
             return $this->exportBilling($query->get());
         }

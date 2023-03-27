@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\PaymentDeclarationDataTable;
+use App\Exports\BillingExport;
+use App\Exports\PaymentExport;
 use App\Models\PaymentDeclaration;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PaymentDeclarationController extends Controller
 {
@@ -31,6 +34,11 @@ class PaymentDeclarationController extends Controller
                 $query->where('operator_id', $user->operator->id);
             });
         });
+
+        if (request()->is_download == true && !\request()->ajax()) {
+            return $this->exportPayment($query->get());
+        }
+
         $datatable = new PaymentDeclarationDataTable($query);
 
         return $datatable->render('admin.payments.declarations');
@@ -41,60 +49,8 @@ class PaymentDeclarationController extends Controller
         $histories = $paymentDeclaration->paymentHistories;
         return view('admin.payments.histories', compact('paymentDeclaration', 'histories'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function exportPayment($query)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\PaymentDeclaration  $paymentDeclaration
-     * @return \Illuminate\Http\Response
-     */
-    public function show(PaymentDeclaration $paymentDeclaration)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\PaymentDeclaration  $paymentDeclaration
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(PaymentDeclaration $paymentDeclaration)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\PaymentDeclaration  $paymentDeclaration
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, PaymentDeclaration $paymentDeclaration)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\PaymentDeclaration  $paymentDeclaration
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(PaymentDeclaration $paymentDeclaration)
-    {
-        //
+        return Excel::download(new PaymentExport($query), 'Payment List.xlsx');
     }
 }

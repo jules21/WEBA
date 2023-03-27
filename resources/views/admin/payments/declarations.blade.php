@@ -33,9 +33,29 @@
 @section('content')
     <div class="card">
         <div class="card-content card-custom">
-            <div class="card-header pb-1 pt-3">
+            <div class="card-header pb-1 pt-3 d-flex justify-content-between">
                 <h3>
                     Customers Payments</h3>
+                <div class="card-toolbar">
+                    <!--begin::Dropdown-->
+                    <div class="dropdown dropdown-inline mr-2">
+                        <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="la la-download"></i>Export</button>
+                        <!--begin::Dropdown Menu-->
+                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                            <ul class="nav flex-column nav-hover">
+                                <li class="nav-item export-doc">
+                                    <a href="#" class="nav-link" target="_blank" id="excel">
+                                        <i class="nav-icon la la-file-excel-o"></i>
+                                        <span class="nav-text">Excel</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--end::Dropdown Menu-->
+                    </div>
+                    <!--end::Dropdown-->
+                </div>
             </div>
             <div class="card-body">
                 @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
@@ -102,8 +122,19 @@
 
             </div>
         </div>
+        @php
+            //Declare new queries you want to append to string:
+            $newQueries = ['is_download' => 1];
+            $newUrl = request()->fullUrlWithQuery($newQueries);
+        @endphp
     </div>
 @endsection
 @section('scripts')
     {{$dataTable->scripts()}}
+    <script>
+        $(document).on("click","#excel", function(e) {
+            var url = "{!! $newUrl !!}";
+            $(this).attr("href",url);
+        });
+    </script>
 @endsection
