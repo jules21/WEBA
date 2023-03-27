@@ -47,7 +47,7 @@
                         <th>Created At</th>
                         <th>Customer</th>
                         <th>Request Type</th>
-                        <th>Qty</th>
+                        <th>MeterQty</th>
                         <th>UPI</th>
                         <th>Status</th>
                         <th></th>
