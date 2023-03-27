@@ -30,7 +30,7 @@
 
     <div class="container">
         <div class="card card-body mb-3">
-            <h3 class="mb-6">{{$customer->name}} connections</h3>
+            <h3 class="mb-6">{{$customer->name}} Connections</h3>
             <div class="table-responsive">
                 <table class="table table-head-custom table-head-solid table-hover">
                     <thead>

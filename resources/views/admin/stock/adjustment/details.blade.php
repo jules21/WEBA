@@ -99,7 +99,7 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Qty</th>
-                                    <th>Price</th>
+                                    <th>Unit Price</th>
                                     <th>Total</th>
                                     <th></th>
                                 </tr>
