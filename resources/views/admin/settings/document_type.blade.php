@@ -37,16 +37,16 @@
             <div class="card-title">
                 <h3 class="card-label">Document Types List</h3>
             </div>
-            <div class="card-toolbar">
-                <!-- Button trigger modal-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#exampleModalLong">
-                    <span class="flaticon-add"></span>
-                    Add New Document
-                </button>
+{{--            <div class="card-toolbar">--}}
+{{--                <!-- Button trigger modal-->--}}
+{{--                <button type="button" class="btn btn-primary" data-toggle="modal"--}}
+{{--                        data-target="#exampleModalLong">--}}
+{{--                    <span class="flaticon-add"></span>--}}
+{{--                    Add New Document--}}
+{{--                </button>--}}
 
-                <!-- Modal-->
-            </div>
+{{--                <!-- Modal-->--}}
+{{--            </div>--}}
         </div>
         <div class="card-body">
             <!--begin: Datatable-->
