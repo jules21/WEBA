@@ -62,9 +62,6 @@
                                     <td>{{$history->narration}}</td>
                                 </tr>
                                 @empty
-                                <tr>
-                                    <td colspan="5">No Payment History Found</td>
-                                </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -77,7 +74,11 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
-            $('.table').DataTable();
+            $('.table').DataTable({
+                "language": {
+                    "emptyTable": "No Payment History Found"
+                }
+            });
         });
     </script>
 @endsection

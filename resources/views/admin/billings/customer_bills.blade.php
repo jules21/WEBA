@@ -68,7 +68,9 @@
                     <h3 class="mb-3">
                         @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
                             {{ $customer->name ?? '' }}
-                            @else
+                        @elseif(Str::contains(Route::currentRouteName(), 'admin.billings.meter'))
+                        {{ request()->meter ?? '' }}
+                        @else
                             Customers
                         @endif
                          Billing</h3>

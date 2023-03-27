@@ -148,6 +148,14 @@ class BillingController extends Controller
         return $datatable->render('admin.billings.customer_bills', compact('customer'));
     }
 
+    // meter billings
+    public function meterBillings($meter, $subscription)
+    {
+        $billings = Billing::query()->where('meter_number', $meter)->where('subscription_number', $subscription);
+        $datatable = new BillingDataTable($billings);
+        return $datatable->render('admin.billings.customer_bills', compact('meter'));
+    }
+
     public function download(Billing $billing)
     {
         if ($billing->attachment)
@@ -158,6 +166,12 @@ class BillingController extends Controller
     public function exportBilling($query)
     {
         return Excel::download(new BillingExport($query), 'Billing List.xlsx');
+    }
+
+    public function history(Billing $billing)
+    {
+        $history = $billing->history()->get();
+        return view('admin.billings.history', compact('history'));
     }
 
 }

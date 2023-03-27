@@ -136,6 +136,9 @@ class CustomerController extends Controller
 
     public function connections(Customer $customer)
     {
+        $customer->load(['connections','connections.request',
+            'connections.request.province', 'connections.request.district',
+            'connections.request.sector','connections.request.cell']);
         return view('admin.customers.connections', [
             'customer' => $customer
         ]);
