@@ -168,4 +168,10 @@ class BillingController extends Controller
         return Excel::download(new BillingExport($query), 'Billing List.xlsx');
     }
 
+    public function history(Billing $billing)
+    {
+        $history = $billing->history()->get();
+        return view('admin.billings.history', compact('history'));
+    }
+
 }

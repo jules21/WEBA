@@ -62,4 +62,9 @@ class Billing extends Model
     {
         return $this->belongsTo(MeterRequest::class, 'subscription_number', 'subscription_number');
     }
+
+    public function history()
+    {
+        return $this->hasMany(Payment::class, 'billing_id', 'id');
+    }
 }

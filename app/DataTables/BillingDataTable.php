@@ -50,9 +50,24 @@ class BillingDataTable extends DataTable
                 return '<span class="label label-sm label-light-primary label-inline">' . $model->starting_index . '</span>' . ' ' . 'to' . ' ' . '<span class="label label-sm label-light-primary label-inline py-0">' . $model->last_index . '</span>';
             })
             ->addColumn('action', function ($model) {
-                return '<a href="' . route('admin.billings.show', encryptId($model->id)) . '" class="btn btn-sm btn-clean btn-icon btn-details" title="View details">
-                            <i class="la la-eye"></i>
-                        </a>';
+//                return '<a href="' . route('admin.billings.show', encryptId($model->id)) . '" class="btn btn-sm btn-clean btn-icon btn-details" title="View details">
+//                            <i class="la la-eye"></i>
+//                        </a>';
+                return '<div class="dropdown">
+                             <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                Options
+                            </button>
+                            <div class="dropdown-menu border">
+                                <a class="dropdown-item btn-details"" href="' . route('admin.billings.show', encryptId($model->id)) . '">
+                                    <i class="fas fa-info"></i>
+                                    <span class="ml-2">Details</span>
+                                </a>
+                                <a class="dropdown-item" href="' . route('admin.billings.history', encryptId($model->id)) . '">
+                                    <i class="fas fa-history"></i>
+                                    <span class="ml-2">History</span>
+                                </a>
+                            </div>
+                        </div>';
             })
             ->rawColumns(['starting_index', 'action'])
             ;
