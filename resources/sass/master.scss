@@ -1,10 +1,11 @@
 $accent: #A6CE39;
 $activeSubLinkColor: #031e31;
 @import "../../public/assets/plugins/global/plugins.bundle.css";
-//@import "../../public/assets/css/style.bundle.css";
+@import "../../public/assets/css/themes/layout/header/base/light.css";
+@import "../../public/assets/css/themes/layout/header/menu/light.css";
+@import "../../public/assets/css/themes/layout/brand/dark.css";
+@import "../../public/assets/css/themes/layout/aside/dark.css";
 @import "style";
-/*@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
-@import "~datatables.net-buttons-bs4/css/buttons.bootstrap4.css";*/
 .breadcrumb-item {
     display: flex !important;
 }
@@ -31,7 +32,105 @@ $activeSubLinkColor: #031e31;
     background-color: $activeSubLinkColor !important;
 }
 
-/*.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-link {
-    background-color: #031e31;
-}*/
 
+.aside {
+    background-color: #05559e !important;
+}
+
+@media (min-width: 992px) {
+    .brand {
+        background-color: #05559e !important;
+    }
+}
+
+.aside-menu {
+    background-color: #05559e !important;
+}
+
+.aside-menu .menu-nav > .menu-item > .menu-heading .menu-icon, .aside-menu .menu-nav > .menu-item > .menu-link .menu-icon {
+    color: #f3f6f9 !important;
+}
+
+.aside-menu .menu-nav > .menu-item > .menu-heading .menu-text, .aside-menu .menu-nav > .menu-item > .menu-link .menu-text {
+    color: #f3f6f9 !important;
+}
+
+/*
+.menu-item {
+    padding-right: 0.75rem !important;
+    padding-left: 0.75rem !important;
+}
+*/
+
+
+.aside-menu .menu-nav > .menu-section .menu-text {
+    color: #e1f3f7 !important;
+}
+
+.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link {
+    background-color: $accent !important;
+    border-top-right-radius: 20px !important;
+    border-bottom-right-radius: 20px !important;
+    margin-right: 10px !important;
+}
+
+.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading .menu-text, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link .menu-text {
+    color: $primary !important;
+}
+
+.aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-heading, .aside-menu .menu-nav > .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link {
+    background-color: $accent !important;
+}
+
+.aside-menu .menu-nav > .menu-item > .menu-heading .menu-arrow, .aside-menu .menu-nav > .menu-item > .menu-link .menu-arrow {
+    color: #e1f3f7 !important;
+}
+
+.aside-menu .menu-nav > .menu-item.menu-item-open > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-open > .menu-link {
+    background-color: $accent !important;
+}
+
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-heading .menu-text, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-link .menu-text {
+    color: #f3f6f9 !important;
+}
+
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-heading .menu-bullet.menu-bullet-dot > span, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-link .menu-bullet.menu-bullet-dot > span {
+    background-color: #f3f6f9 !important;
+}
+
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item:not(.menu-item-parent):not(.menu-item-open):not(.menu-item-here):not(.menu-item-active):hover > .menu-link {
+    background-color: #065093 !important;
+}
+
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-active > .menu-link {
+    background-color: #065093 !important;
+}
+
+@media (max-width: 991.98px) {
+    .header-mobile {
+        background-color: #05559e !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+
+    .header-mobile .burger-icon span {
+        background-color: $accent !important;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .header-mobile .burger-icon span::before, .header-mobile .burger-icon span::after {
+        background-color: $accent !important;
+    }
+}
+
+.btn.btn-accent {
+    color: #FFFFFF !important;
+    background-color: $accent !important;
+    border-color: $accent !important;
+}
+
+.text-accent{
+    color: $accent !important;
+}
