@@ -165,7 +165,7 @@
         </li>
 
         @if(auth()->user()->canAny(accountingPermissions()) && auth()->user()->operation_area)
-            <li class="menu-item menu-item-submenu nav-accounting-settings" aria-haspopup="true"
+            <li class="menu-item menu-item-submenu nav-accounting" aria-haspopup="true"
                 data-menu-toggle="hover">
                 <a href="javascript:" class="menu-link menu-toggle">
                        <span class="svg-icon menu-icon">
@@ -248,7 +248,7 @@
                     <ul class="menu-subnav">
 
                         <x-menu-item title="Assign Chart Of Accounts" item-class="nav-assign-chart-accounts"
-                                     :route="route('admin.purchases.index')"/>
+                                     route=""/>
                         <x-menu-item title="Ledger Migration" item-class="nav-ledger-migration"
                                      :route="route('admin.accounting.ledger-migration.index')"/>
                         <x-menu-item title="Chart Of Accounts" item-class="nav-chart-accounts"

@@ -52,7 +52,7 @@
                         </th>
                         <th>Customer</th>
                         <th>Request Type</th>
-                        <th>Qty</th>
+                        <th>Meter Qty</th>
                         <th>UPI</th>
                         <th>Assigned To</th>
                         <th>Created At</th>
