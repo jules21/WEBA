@@ -171,8 +171,8 @@
 
 {{--                submit--}}
                 @if($adjustment->canBeSubmitted())
-                    <div class="row justify-content-end mr-2">
-                        <a class="btn btn-outline-primary btn-lg submitBtn" href="{{ route("admin.stock.stock-adjustments.submit",encryptId($adjustment->id)) }}">
+                    <div class="row justify-content-end mr-1">
+                        <a class="btn btn-primary btn-lg submitBtn" href="{{ route("admin.stock.stock-adjustments.submit",encryptId($adjustment->id)) }}">
                             <i class="fas fa-check-circle"></i>
                             Submit</a>
                     </div>
