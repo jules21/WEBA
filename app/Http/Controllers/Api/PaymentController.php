@@ -216,14 +216,14 @@ class PaymentController extends Controller
      */
     public function getMapping($declaration, $bankId)
     {
-        $paymentMapping = PaymentMapping::query()
+       return  PaymentMapping::query()
             ->where("payment_configuration_id", $declaration->payment_configuration_id)
             ->whereHas("account", function ($query) use ($bankId) {
                 $query->whereHas("paymentServiceProvider", function ($query) use ($bankId) {
                     $query->where("clms_id", $bankId);
                 });
             })->first();
-        return $paymentMapping;
+
     }
 
 }
