@@ -189,6 +189,7 @@
         }
 
         $(document).ready(function () {
+            $('.nav-accounting').addClass('menu-item-active menu-item-open');
             $('.nav-expenses').addClass('menu-item-active');
 
             let submitForm = $('#submitForm');

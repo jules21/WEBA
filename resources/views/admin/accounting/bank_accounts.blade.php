@@ -160,6 +160,7 @@
 
 
         $(document).ready(function () {
+            $('.nav-accounting-settings').addClass('menu-item-active menu-item-open');
             $('.nav-bank-accounts').addClass('menu-item-active');
 
             let submitForm = $('#submitForm');

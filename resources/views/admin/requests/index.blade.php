@@ -38,7 +38,7 @@
                     All Requests
                 </h4>
 
-                @if(auth()->user()->can(\App\Constants\Permission::CreateRequest) && !is_null(auth()->user()->operation_area))
+              {{--  @if(auth()->user()->can(\App\Constants\Permission::CreateRequest) && !is_null(auth()->user()->operation_area))
                     <a href="{{ route('admin.requests.create') }}"
                        class="btn btn-light-primary rounded-sm font-weight-normal btn-sm" id="addButton">
                        <span class="svg-icon">
@@ -49,7 +49,7 @@
                        </span>
                         New Request
                     </a>
-                @endif
+                @endif--}}
             </div>
 
 
@@ -61,7 +61,7 @@
                         <th>Operator</th>
                         <th>Customer</th>
                         <th>Request Type</th>
-                        <th>Qty</th>
+                        <th>Meter Qty</th>
                         <th>UPI</th>
                         <th>Status</th>
                         <th></th>
