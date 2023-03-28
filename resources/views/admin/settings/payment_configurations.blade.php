@@ -64,7 +64,7 @@
                             <th>Operator</th>
                         @endif
                         <th>Operation Area</th>
-                        <th>Amount</th>
+                        <th>amount</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -124,60 +124,72 @@
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
                     </div>
-
                     <div class="modal-body">
 
                         <div class="form-group">
                             <label for="name">Payment Type</label>
-                            <select name="payment_type_id" id="payment_type_id" class="form-control">
-                                <option value="">Please Select Type</option>
-                                @foreach(App\Models\PaymentType::all() as $type)
-                                    <option value="{{$type->id}}">{{$type->name}}</option>
+                            <select type="text"  name="payment_type_id" id="payment_type_id" class="form-control" required>
+                                <option value="">Please Select Payment Type</option>
+                                @foreach(App\Models\PaymentType::all() as $payment)
+                                    <option value="{{$payment->id}}">{{$payment->name}}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="name">Request Type</label>
-                            <select name="request_type_id" id="request_type_id" class="form-control">
-                                <option value="">Please Select Type</option>
+                            <select type="text"  name="request_type_id" id="request_type_id" class="form-control" required>
+                                <option value="">Please Select Request Type</option>
                                 @foreach(App\Models\RequestType::all() as $type)
                                     <option value="{{$type->id}}">{{$type->name}}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        @if(auth()->user()->operator_id == null)
-                            <div class="form-group">
-                                <label>Operator</label>
-                                <select name="operator_id" class="form-control select2" style="width: 100% !important;" id="kt_select2_1">
-                                    <option value="">Select Operator</option>
-                                    @foreach($operators as $operator)
-                                        <option value="{{$operator->id}}">{{$operator->name}}</option>
-                                    @endforeach
-                                </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                @if(auth()->user()->operator_id == null)
+                                    <div class="form-group">
+                                        <label>Operator</label>
+                                        <select name="operator_id" class="form-control select2" style="width: 100% !important;">
+                                            <option value="">Select Operator</option>
+                                            @foreach($operators as $operator)
+                                                <option value="{{$operator->id}}">{{$operator->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @else
+                                    <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
+                                @endif
                             </div>
-                        @else
-                            <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
-                        @endif
-
-                        <div class="form-group">
-                            <label for="name">Operation Area</label>
-                            <select name="operation_area_id" id="operation_area_id" class="form-control">
-                                <option value="">Please Select Area</option>
-                                @foreach(App\Models\OperationArea::all() as $area)
-                                    <option value="{{$area->id}}">{{$area->name}}</option>
-                                @endforeach
-                            </select>
+                            <div class="col-md-6">
+                                @if(auth()->user()->operator_id == null)
+                                    <div class="form-group">
+                                        <label for="name">Operation Area</label>
+                                        <select type="text" name="operation_area_id" id="operation_area_id" class="form-control">
+                                            <option value="">Please Select Operation Area</option>
+                                        </select>
+                                    </div>
+                                @else
+                                    <div class="form-group">
+                                        <label for="name">Operation Area</label>
+                                        <select type="text" name="operation_area_id" id="operation_area_id" class="form-control">
+                                            <option value="">Please Select Operation Area</option>
+                                            @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                                <option value="{{$area->id}}">{{$area->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label for="name">Amount</label>
-                            <input type="number"  name="amount" class="form-control" required/>
+                            <input type="number"  name="amount" id="amount" class="form-control" required/>
                         </div>
 
                     </div>
-
                     <div class="modal-footer">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -201,7 +213,7 @@
                 <input type="hidden" value="0"  id="PaymentId" name="PaymentId">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Payment Configuration</h4>
+                        <h4 class="modal-title">Edit Water Network</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -210,51 +222,65 @@
 
                         <div class="form-group">
                             <label for="name">Payment Type</label>
-                            <select name="payment_type_id" id="edit_payment_type_id" class="form-control">
-                                <option value="">Please Select Type</option>
-                                @foreach(App\Models\PaymentType::all() as $type)
-                                    <option value="{{$type->id}}">{{$type->name}}</option>
+                            <select type="text"  name="payment_type_id" id="edit_payment_type_id" class="form-control" required>
+                                <option value="">Please Select Payment Type</option>
+                                @foreach(App\Models\PaymentType::all() as $payment)
+                                    <option value="{{$payment->id}}">{{$payment->name}}</option>
                                 @endforeach
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="name">Request Type</label>
-                            <select name="request_type_id" id="edit_request_type_id" class="form-control">
-                                <option value="">Please Select Type</option>
+                            <select type="text"  name="request_type_id" id="edit_request_type_id" class="form-control" required>
+                                <option value="">Please Select Request Type</option>
                                 @foreach(App\Models\RequestType::all() as $type)
                                     <option value="{{$type->id}}">{{$type->name}}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        @if(auth()->user()->operator_id == null)
-                            <div class="form-group">
-                                <label>Operator</label>
-                                <select name="operator_id" class="form-control select2 kt_select2_2" style="width: 100% !important;" id="edit_operator_id">
-                                    <option value="">Select Operator</option>
-                                    @foreach($operators as $operator)
-                                        <option value="{{$operator->id}}">{{$operator->name}}</option>
-                                    @endforeach
-                                </select>
+                        <div class="row">
+                            <div class="col-md-6">
+                                @if(auth()->user()->operator_id == null)
+                                    <div class="form-group">
+                                        <label>Operator</label>
+                                        <select name="operator_id" class="form-control select2" style="width: 100% !important;">
+                                            <option value="">Select Operator</option>
+                                            @foreach($operators as $operator)
+                                                <option value="{{$operator->id}}">{{$operator->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @else
+                                    <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
+                                @endif
                             </div>
-                        @else
-                            <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
-                        @endif
-
-                        <div class="form-group">
-                            <label for="name">Operation Area</label>
-                            <select name="operation_area_id" id="edit_operation_area_id" class="form-control">
-                                <option value="">Please Select Area</option>
-                                @foreach(App\Models\OperationArea::all() as $area)
-                                    <option value="{{$area->id}}">{{$area->name}}</option>
-                                @endforeach
-                            </select>
+                            <div class="col-md-6">
+                                @if(auth()->user()->operator_id == null)
+                                    <div class="form-group">
+                                        <label for="name">Operation Area</label>
+                                        <select type="text" name="operation_area_id" id="edit_operation_area_id" class="form-control">
+                                            <option value="">Please Select Operation Area</option>
+                                        </select>
+                                    </div>
+                                @else
+                                    <div class="form-group">
+                                        <label for="name">Operation Area</label>
+                                        <select type="text" name="operation_area_id" id="edit_operation_area_id" class="form-control">
+                                            <option value="">Please Select Operation Area</option>
+                                            @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                                <option value="{{$area->id}}">{{$area->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label for="name">Amount</label>
-                            <input type="text"  name="amount" id="edit_amount" class="form-control" required/>
+                            <input type="number"  name="amount" id="edit_amount" class="form-control" required/>
                         </div>
 
                     </div>
@@ -275,16 +301,17 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest(\App\Http\Requests\ValidatePaymentConfiguration::class,'.submissionForm') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\StoreWaterNetworkRequest::class,'.submissionForm') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\UpdateWaterNetworkRequest::class,'.submissionForm') !!}
 
-  <script>
+    <script>
 
         $(document).ready(function() {
             $('#table').DataTable();
         } );
 
         $('.nav-settings').addClass('menu-item-active  menu-item-open');
-        $('.nav-payment-configurations').addClass('menu-item-active');
+        $('.nav-water-networks').addClass('menu-item-active');
 
         $(document).on('click', '.js-edit', function (e) {
             e.preventDefault();
@@ -297,7 +324,6 @@
             $("#edit_operator_id").val($(this).data('operator'));
             $("#edit_operation_area_id").val($(this).data('area'));
             $("#edit_amount").val($(this).data('amount'));
-            $("#edit_is_active").val($(this).data('active'));
             $('#submissionFormEdit').attr('action', url);
         });
 
@@ -322,12 +348,34 @@
         });
 
         // basic
-        $('#kt_select2_1, .kt_select2_2').select2({
+        $('.select2').select2({
             placeholder: 'Select an operator'
         });
 
         $('#exampleModal').on('hidden.bs.modal', function (e) {
-            $('#PaymentId').val(0);
+            $('#WaterNetworkId').val(0);
+        });
+
+        $(document).ready(function (){
+            $('select[name="operator_id"]').on('change',function (){
+                var OperatorId = $(this).val();
+                // alert(OperatorId);
+                if (OperatorId){
+                    $.ajax({
+
+                        url:'/admin/settings/operation_areas/'+OperatorId,
+                        type:"GET",
+                        dataType:"json",
+                        success:function(data){
+                            // alert(data);
+                            $('select[name="operation_area_id"]').empty();
+                            $.each(data,function (key,value){
+                                $('select[name="operation_area_id"]').append('<option value="'+value.id+'">'+value.name+'</option>');
+                            })
+                        }
+                    })
+                }
+            });
         });
 
     </script>

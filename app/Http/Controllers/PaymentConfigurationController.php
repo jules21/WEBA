@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ValidatePaymentConfiguration;
+use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\PaymentConfiguration;
 use Illuminate\Http\Request;
@@ -25,7 +26,7 @@ class PaymentConfigurationController extends Controller
         return view('admin.settings.payment_configurations',compact('payments','operators'));
     }
 
-    public function store(Request $request){
+    public function store(ValidatePaymentConfiguration $request){
 
 //        $request->validated();
         $payment = new PaymentConfiguration();
@@ -45,7 +46,7 @@ class PaymentConfigurationController extends Controller
         $payment->payment_type_id=$request->payment_type_id;
         $payment->request_type_id=$request->request_type_id;
         $payment->operator_id=$request->operator_id;
-        $payment->operation_area=$request->operation_area;
+        $payment->operation_area_id=$request->operation_area_id;
         $payment->amount=$request->amount;
         $payment->save();
         return redirect()->back()->with('success','Payment Configuration updated successfully');
@@ -61,5 +62,10 @@ class PaymentConfigurationController extends Controller
             info($exception);
             return redirect()->back()->with('success','Payment Configuration can not be deleted');
         }
+    }
+
+    public function loadAreaOperation($id){
+        $areas = OperationArea::where('operator_id',$id)->get();
+        return response()->json($areas);
     }
 }

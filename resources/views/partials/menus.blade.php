@@ -660,18 +660,18 @@
                             </a>
                         </li>
                     @endcan
-                    @if(auth()->user()->operator_id)
-                        @can('Manage Water Networks')
-                            <li class="menu-item nav-water-networks" aria-haspopup="true">
-                                <a href="{{ route('admin.water.networks') }}" class="menu-link">
-                                    <i class="menu-bullet menu-bullet-dot">
-                                        <span></span>
-                                    </i>
-                                    <span class="menu-text">Water Networks</span>
-                                </a>
-                            </li>
-                        @endcan
-                    @endif
+{{--                    @if(auth()->user()->operator_id)--}}
+{{--                        @can('Manage Water Networks')--}}
+{{--                            <li class="menu-item nav-water-networks" aria-haspopup="true">--}}
+{{--                                <a href="{{ route('admin.water.networks') }}" class="menu-link">--}}
+{{--                                    <i class="menu-bullet menu-bullet-dot">--}}
+{{--                                        <span></span>--}}
+{{--                                    </i>--}}
+{{--                                    <span class="menu-text">Water Networks</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                        @endcan--}}
+{{--                    @endif--}}
                     @can('Manage Water Network Types')
                         <li class="menu-item nav-water-network-types" aria-haspopup="true">
                             <a href="{{ route('admin.water.network.types') }}" class="menu-link">

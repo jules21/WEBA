@@ -32,46 +32,52 @@
 @stop
 @section('content')
 
-    <form action="">
-        <div class="card card-body mb-3">
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="start_date">Start Date</label>
-                        <input value="{{ request('start_date') }}" type="date" name="start_date" id="start_date"
-                               class="form-control"/>
+    @if(auth()->user()->is_super_admin)
+        <form action="">
+            <div class="card card-body mb-3">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="start_date">Start Date</label>
+                            <input value="{{ request('start_date') }}" type="date" name="start_date" id="start_date"
+                                   class="form-control"/>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="end_date">End Date</label>
-                        <input value="{{ request('end_date') }}" type="date" name="end_date" id="end_date"
-                               class="form-control"/>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="end_date">End Date</label>
+                            <input value="{{ request('end_date') }}" type="date" name="end_date" id="end_date"
+                                   class="form-control"/>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <label for="water_network_type_id">
-                        Water Network Type
-                    </label>
-                    <select name="water_network_type_id" id="water_network_type_id" class="form-control">
-                        <option value="">Please Select Water Network Type</option>
-                        @foreach(App\Models\WaterNetworkType::all() as $type)
-                            <option
-                                value="{{$type->id}}" {{request('water_network_type_id') == $type->id ? 'selected' : ''}}>{{$type->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="" style="visibility: hidden">Submit</label> <br>
-                        <button type="submit" class="btn btn-primary rounded">
-                            Filter <i class="fa fa-filter"></i>
-                        </button>
+                    <div class="col-md-3">
+                        <label for="water_network_type_id">
+                            Water Network Type
+                        </label>
+                        <select name="water_network_type_id" id="water_network_type_id" class="form-control">
+                            <option value="">Please Select Water Network Type</option>
+                            @foreach(App\Models\WaterNetworkType::all() as $type)
+                                <option
+                                    value="{{$type->id}}" {{request('water_network_type_id') == $type->id ? 'selected' : ''}}>{{$type->name}}</option>
+                            @endforeach
+                        </select>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="" style="visibility: hidden">Submit</label> <br>
+                            <button type="submit" class="btn btn-primary rounded">
+                                Filter <i class="fa fa-filter"></i>
+                            </button>
+                            <a href="{{route('admin.bill.charges')}}" class="btn btn-outline-dark"> Clear search</a>
+{{--                            <button id="reset" class="btn btn-outline-dark">clear search</button>--}}
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    @endif
 
     <!--begin::Entry-->
     <div class="card card-custom">
@@ -203,9 +209,6 @@
         </div>
     </div>
 
-
-
-
     <div class="modal fade" id="modalUpdate" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
@@ -316,6 +319,16 @@
                           return;
                       loadOperationAreas($(this).val(), 0);
                   });*/
+        });
+
+        $(document).on("click", "#reset", function(e) {
+            e.preventDefault();
+            $("#water_network_type_id").html(`<option value="">Please Select Water Network Type</option>`);
+            $("#select_res").html(`<option value="">Choose...</option>`);
+            $('#record_table').DataTable().destroy();
+            fetch();
+            fetch_std();
+            fetch_res();
         });
 
         $('.nav-settings').addClass('menu-item-active  menu-item-open');
