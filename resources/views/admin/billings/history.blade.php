@@ -35,7 +35,7 @@
     <div class="card-content">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered">
+                <table class="table table-head-custom border table-head-solid table-hover">
                     <thead>
                         <tr>
                             <th>Subscription Number</th>
@@ -68,7 +68,9 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
-        $('.table').DataTable();
+        $('.table').DataTable({
+            "order": [[ 5, "desc" ]]
+        });
     });
     </script>
 @endsection

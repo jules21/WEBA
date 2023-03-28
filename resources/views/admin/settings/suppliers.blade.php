@@ -305,7 +305,7 @@
             $('#table').DataTable();
         } );
 
-        $('.nav-settings').addClass('menu-item-active  menu-item-open');
+        // $('.nav-settings').addClass('menu-item-active  menu-item-open');
         $('.nav-suppliers').addClass('menu-item-active');
 
         $(document).on('click', '.js-edit', function (e) {
