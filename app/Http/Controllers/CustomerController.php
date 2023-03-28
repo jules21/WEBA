@@ -63,20 +63,24 @@ class CustomerController extends Controller
                                 Options
                             </button>
                             <div class="dropdown-menu border">
+                                <a class="dropdown-item" href="' . route('admin.requests.index', ['cus_id' => encryptId($row->id)]) . '">
+                                    <i class="fas fa-dot-circle mr-1"></i>
+                                    <span class="ml-2">Requests</span>
+                                </a>
                                 <a class="dropdown-item" href="' . route('admin.customers.connections', encryptId($row->id)) . '">
-                                    <i class="fas fa-link"></i>
+                                    <i class="fas fa-dot-circle mr-1"></i>
                                     <span class="ml-2">Connections</span>
                                 </a>
                                 <a class="dropdown-item" href="' . route('admin.billings.customer', encryptId($row->id)) . '">
-                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <i class="fas fa-dot-circle  mr-1"></i>
                                     <span class="ml-2">Bills</span>
                                 </a>
                                 <a class="dropdown-item js-edit" href="' . route('admin.customers.show', encryptId($row->id)) . '">
-                                    <i class="fas fa-edit"></i>
+                                    <i class="fas fa-dot-circle mr-1"></i>
                                     <span class="ml-2">Edit</span>
                                 </a>
                                 <a class="dropdown-item js-delete" href="' . route('admin.customers.delete', encryptId($row->id)) . '">
-                                    <i class="fas fa-trash"></i>
+                                    <i class="fas fa-dot-circle mr-1"></i>
                                     <span class="ml-2">Delete</span>
                                 </a>
                             </div>
