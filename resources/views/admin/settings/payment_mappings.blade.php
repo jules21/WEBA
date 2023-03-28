@@ -118,12 +118,20 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="name">Payment Service Provider Account</label>
+                            <label for="name">Payment Service Provider</label>
                             <select name="psp_account_id" id="psp_account_id" class="form-control">
-                                <option value="">Please Select Payment Service Provider Account</option>
-                                @foreach(App\Models\PaymentServiceProviderAccount::all() as $account)
-                                    <option value="{{$account->id}}">{{$account->account_name}}</option>
+                                <option value="">Please Select Payment Service Provider</option>
+                                @foreach(App\Models\PaymentServiceProvider::all() as $account)
+                                    <option value="{{$account->id}}">{{$account->name}}</option>
                                 @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">PSP Account Name - PSP Account Number</label>
+                            <select name="account_number" id="account_number" class="form-control">
+                                <option value="">Please Select Service Provider Account Number</option>
+
                             </select>
                         </div>
 
@@ -161,12 +169,20 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="name">Payment Service Provider Account</label>
+                            <label for="name">Payment Service Provider</label>
                             <select name="psp_account_id" id="edit_psp_account_id" class="form-control">
-                                <option value="">Please Select Payment Service Provider Account</option>
-                                @foreach(App\Models\PaymentServiceProviderAccount::all() as $account)
-                                    <option value="{{$account->id}}">{{$account->account_name}}</option>
+                                <option value="">Please Select Payment Service Provider</option>
+                                @foreach(App\Models\PaymentServiceProvider::all() as $account)
+                                    <option value="{{$account->id}}">{{$account->name}}</option>
                                 @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">PSP Account Name - PSP Account Number</label>
+                            <select name="account_number" id="account_number" class="form-control" data-selected="">
+                                <option value="">Please Select Service Provider Account Number</option>
+
                             </select>
                         </div>
 
@@ -208,6 +224,8 @@
             var url = $(this).data('url');
             $("#MappingId").val($(this).data('id'));
             $("#edit_psp_account_id").val($(this).data('account'));
+            $('#account_number').data('selected',$(this).data('account'))
+            $('select[name="psp_account_id"]').trigger('change')
             $('#submissionFormEdit').attr('action', url);
         });
 
@@ -233,6 +251,37 @@
 
         $('#exampleModal').on('hidden.bs.modal', function (e) {
             $('#MappingId').val(0);
+        });
+
+        $(document).ready(function (){
+            const payConfig = @json($payment_configuration);
+            $('select[name="psp_account_id"]').on('change',function (){
+                var PspAccountId = $(this).val();
+                const selected = $('#account_number').data('selected');
+                // alert(PspAccountId);
+                if (PspAccountId){
+                    $.ajax({
+                        url:'/admin/settings/psp_account_number/'+PspAccountId,
+                        type:"GET",
+                        data:{
+                            'paymentConfigId':payConfig.id
+                        },
+                        dataType:"json",
+                        success:function(data){
+                            $('select[name="account_number"]').empty();
+
+                            $('select[name="account_number"]').append('<option value="">--Select--</option>');
+
+                            $.each(data,function (key,value){
+                                if((selected != '' && selected != null) && (selected == value.id)){
+                                    $('select[name="account_number"]').append('<option value="'+value.id+'" selected>'+value.account_name+' - '+value.account_number+'</option>');
+                                }
+                                $('select[name="account_number"]').append('<option value="'+value.id+'">'+value.account_name+' - '+value.account_number+'</option>');
+                            })
+                        }
+                    })
+                }
+            });
         });
 
     </script>

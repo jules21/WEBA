@@ -27,7 +27,7 @@ class ValidatePaymentConfiguration extends FormRequest
             'payment_type_id'=>'required',
             'request_type_id'=>'required',
             'operator_id'=>'required',
-            'operation_area'=>'required',
+            'operation_area_id'=>'required',
             'amount'=>'required',
         ];
     }

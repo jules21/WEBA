@@ -68,8 +68,12 @@
                             <button type="submit" class="btn btn-primary rounded">
                                 Filter <i class="fa fa-filter"></i>
                             </button>
+                            <a id="reset" class="btn btn-outline-dark"> Clear search</a>
+{{--                            <button id="reset" class="btn btn-outline-dark">clear search</button>--}}
                         </div>
                     </div>
+
+
                 </div>
             </div>
         </form>
@@ -205,9 +209,6 @@
         </div>
     </div>
 
-
-
-
     <div class="modal fade" id="modalUpdate" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
@@ -318,6 +319,16 @@
                           return;
                       loadOperationAreas($(this).val(), 0);
                   });*/
+        });
+
+        $(document).on("click", "#reset", function(e) {
+            e.preventDefault();
+            $("#water_network_type_id").html(`<option value="">Please Select Water Network Type</option>`);
+            $("#select_res").html(`<option value="">Choose...</option>`);
+            $('#record_table').DataTable().destroy();
+            fetch();
+            fetch_std();
+            fetch_res();
         });
 
         $('.nav-settings').addClass('menu-item-active  menu-item-open');
