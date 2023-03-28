@@ -144,3 +144,10 @@ $menuColor: #f3f6f9;
 .text-accent {
     color: $accent !important;
 }
+.timeline.timeline-6 .timeline-item .timeline-label {
+    width: 55px !important;
+}
+
+.timeline.timeline-6:before {
+    left: 55px !important;
+}

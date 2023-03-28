@@ -47,8 +47,13 @@ class RequestsController extends Controller
      */
     public function index()
     {
+        $customerId = \request('cus_id');
+
         $data = AppRequest::query()
             ->with(['customer', 'requestType', 'operator'])
+            ->when(!is_null($customerId), function (Builder $query) use ($customerId) {
+                return $query->where('customer_id', '=', decryptId($customerId));
+            })
             ->when(!is_null(auth()->user()->operator_id) && !is_null(auth()->user()->operation_area), function (Builder $query) {
                 return $query->where('operation_area_id', '=', auth()->user()->operation_area);
             })
@@ -89,7 +94,10 @@ class RequestsController extends Controller
                 ->rawColumns(['action', 'name'])
                 ->make(true);
         }
-        return view('admin.requests.index');
+        $customer = !empty($customerId) ? Customer::find(decryptId($customerId)) : null;
+        return view('admin.requests.index', [
+            'customer' => $customer
+        ]);
     }
 
     /**
@@ -202,7 +210,7 @@ class RequestsController extends Controller
 
     public function show(AppRequest $request)
     {
-        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user', 'paymentDeclarations.paymentConfig.paymentType', 'meterNumbers.item', 'meterNumbers.itemCategory', 'pipeCrosses.pipeCross');
+        $request->load('customer', 'requestType', 'province', 'roadCrossType', 'waterUsage', 'requestAssignments', 'flowHistories.user', 'paymentDeclarations.paymentConfig.paymentType', 'paymentDeclarations.paymentHistories.mapping.account.paymentServiceProvider', 'meterNumbers.item', 'meterNumbers.itemCategory', 'pipeCrosses.pipeCross');
 
         $reviews = $request->flowHistories->where('is_comment', '=', true);
         $flowHistories = $request->flowHistories->where('is_comment', '=', false);
