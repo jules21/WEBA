@@ -68,7 +68,7 @@
                             <button type="submit" class="btn btn-primary rounded">
                                 Filter <i class="fa fa-filter"></i>
                             </button>
-                            <a id="reset" class="btn btn-outline-dark"> Clear search</a>
+                            <a href="{{route('admin.bill.charges')}}" class="btn btn-outline-dark"> Clear search</a>
 {{--                            <button id="reset" class="btn btn-outline-dark">clear search</button>--}}
                         </div>
                     </div>
