@@ -347,5 +347,10 @@ class Request extends Model
             && auth()->user()->operation_area;
     }
 
+    public function operatingArea(): BelongsTo
+    {
+        return $this->belongsTo(OperationArea::class,"operation_area_id");
+    }
+
 
 }
