@@ -10,7 +10,7 @@
             <div class="d-flex align-items-center flex-wrap mr-2">
                 <!--begin::Page Title-->
                 <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">
-                    All Requests
+                    {{ isset($customer)?$customer->name."'s":'All' }} Requests
                 </h5>
 
                 <!--end::Page Title-->
@@ -35,21 +35,21 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>
-                    All Requests
+                    {{ isset($customer)?$customer->name."'s":'All' }} Requests
                 </h4>
 
-              {{--  @if(auth()->user()->can(\App\Constants\Permission::CreateRequest) && !is_null(auth()->user()->operation_area))
-                    <a href="{{ route('admin.requests.create') }}"
-                       class="btn btn-light-primary rounded-sm font-weight-normal btn-sm" id="addButton">
-                       <span class="svg-icon">
-                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-6 h-6">
-                              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
-                            </svg>
-                       </span>
-                        New Request
-                    </a>
-                @endif--}}
+                {{--  @if(auth()->user()->can(\App\Constants\Permission::CreateRequest) && !is_null(auth()->user()->operation_area))
+                      <a href="{{ route('admin.requests.create') }}"
+                         class="btn btn-light-primary rounded-sm font-weight-normal btn-sm" id="addButton">
+                         <span class="svg-icon">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                  stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
+                              </svg>
+                         </span>
+                          New Request
+                      </a>
+                  @endif--}}
             </div>
 
 
@@ -185,7 +185,7 @@
             let dataTable = $('.dataTable').DataTable({
                 serverSide: true,
                 processing: true,
-                ajax: "{{ route('admin.requests.index') }}",
+                ajax: "{!! request()->fullUrl() !!}",
                 columns: [
                     {
                         data: "created_at", name: "created_at",
