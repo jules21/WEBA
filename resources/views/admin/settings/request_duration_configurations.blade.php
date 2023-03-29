@@ -93,7 +93,7 @@
                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                     <ul class="nav flex-column nav-hover">
                         <li class="nav-item export-doc">
-                            <a href="{{route('admin.export.request.duration.configuration')}}" class="nav-link" target="_blank">
+                            <a href="{{route('admin.export.request.duration.configuration',['start_date'=>request('start_date'),'end_date'=>request('end_date'),'operation_area_id'=>request('operation_area_id'),'request_type_id'=>request('request_type_id')])}}" class="nav-link" target="_blank">
                                 <i class="nav-icon la la-file-excel-o"></i>
                                 <span class="nav-text">Excel</span>
                             </a>

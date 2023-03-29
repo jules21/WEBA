@@ -276,6 +276,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/water_network/update',[App\Http\Controllers\WaterNetworkController::class,'update'])->name('water.network.edit');
         Route::get('/water_network/delete/{id}',[App\Http\Controllers\WaterNetworkController::class,'destroy'])->name('water.network.delete');
         Route::get('/operation_areas/{id}',[App\Http\Controllers\WaterNetworkController::class,'loadAreaOperation']);
+        Route::get('/export_water_networks',[App\Http\Controllers\WaterNetworkController::class,'export'])->name('export.water.networks');
 
         //institutions
         Route::get('/institutions', [App\Http\Controllers\InstitutionController::class, 'index'])->name('institutions');
