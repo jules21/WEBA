@@ -38,6 +38,7 @@ class PaymentController extends Controller
                 $data["rura_ref_no"] = $referenceNumber;
                 $payment = $declaration->paymentConfig->paymentType->name;
                 $data["payment_type"] = $payment;
+                $data["license"] = $payment;
                 $data["total_amount"] = $declaration->amount;
                 $data["balance"] = $declaration->balance;
                 $data["applicant"] = $declaration->request->customer->name;
@@ -72,6 +73,7 @@ class PaymentController extends Controller
                     $data["rura_ref_no"] = $referenceNumber;
                     $payment = $paymentConfiguration->paymentType->name;
                     $data["payment_type"] = $payment;
+                    $data["license"] = $payment;
                     $data["total_amount"] = $totalAmount;
                     $data["balance"] = $totalAmount;
                     $data["applicant"] = $meterRequest->request->customer->name;
