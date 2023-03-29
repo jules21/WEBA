@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none " id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-2">
@@ -22,7 +22,7 @@
                     </li>
                     <li class="breadcrumb-item">
                         <span class="text-muted">
-                            Manage  Stock In
+                              Stock In
                         </span>
                     </li>
                 </ul>
@@ -32,21 +32,21 @@
     </div>
 
 
-    <div class="card shadow-none border">
+    <div class="card tw-shadow-sm border tw-border-gray-300">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>
-                    Manage  Stock In
+                    {{ request('type')=='all'?"Stock In":"My Tasks" }}
                 </h4>
 
-            {{--    @if( auth()->user()->can(\App\Constants\Permission::StockInItems) && auth()->user()->operation_area)
+                {{--    @if( auth()->user()->can(\App\Constants\Permission::StockInItems) && auth()->user()->operation_area)
 
-                    <a href="{{ route('admin.purchases.create') }}" class="btn btn-primary btn-sm rounded">
-                        <i class="flaticon2-plus-1"></i>
-                        Add New
-                    </a>
+                        <a href="{{ route('admin.purchases.create') }}" class="btn btn-primary btn-sm rounded">
+                            <i class="flaticon2-plus-1"></i>
+                            Add New
+                        </a>
 
-                @endif--}}
+                    @endif--}}
             </div>
 
 

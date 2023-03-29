@@ -51,9 +51,9 @@ $menuColor: #f3f6f9;
     color: $primary !important;
 }
 
-.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link {
+/*.aside-menu .menu-nav > .menu-item.menu-item-active > .menu-heading, .aside-menu .menu-nav > .menu-item.menu-item-active > .menu-link {
     background-color: $activeSubLinkColor !important;
-}
+}*/
 
 
 .aside-menu {
@@ -177,4 +177,12 @@ label.error {
 
 .datepicker table tfoot tr th {
     vertical-align: middle !important;
+}
+
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-open > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-open > .menu-link {
+    background-color: #05559e !important;
+}
+
+.aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-here > .menu-heading, .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item.menu-item-here > .menu-link {
+    background-color: #05559e !important;
 }
