@@ -228,18 +228,22 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/request_duration_configuration/store', [App\Http\Controllers\RequestDurationConfigurationController::class, 'store'])->name('request.duration.configuration.store');
         Route::post('/request_duration_configuration/update', [App\Http\Controllers\RequestDurationConfigurationController::class, 'update'])->name('request.duration.configuration.edit');
         Route::get('/request_duration_configuration/delete/{id}', [App\Http\Controllers\RequestDurationConfigurationController::class, 'destroy'])->name('request.duration.configuration.delete');
+        Route::get('/export_request_duration_configuration/', [App\Http\Controllers\RequestDurationConfigurationController::class, 'export'])->name('export.request.duration.configuration');
 
         //payment configurations
         Route::get('/payment_configurations', [App\Http\Controllers\PaymentConfigurationController::class, 'index'])->name('payment.configurations');
         Route::post('/payment_configuration/store', [App\Http\Controllers\PaymentConfigurationController::class, 'store'])->name('payment.configuration.store');
         Route::post('/payment_configuration/update', [App\Http\Controllers\PaymentConfigurationController::class, 'update'])->name('payment.configuration.edit');
         Route::get('/payment_configuration/delete/{id}', [App\Http\Controllers\PaymentConfigurationController::class, 'destroy'])->name('payment.configuration.delete');
+        Route::get('/operation_areas/{id}',[App\Http\Controllers\PaymentConfigurationController::class,'loadAreaOperation']);
+        Route::get('/export_payment_configuration',[App\Http\Controllers\PaymentConfigurationController::class,'export'])->name('export.payment.configuration');
 
         //payment mappings
         Route::get('/payment_mappings/{id}',[App\Http\Controllers\PaymentMappingController::class,'index'])->name('payment.mappings');
         Route::post('/payment_mapping/store/{payment_configuration_id}', [App\Http\Controllers\PaymentMappingController::class, 'store'])->name('payment.mapping.store');
         Route::post('/payment_mapping/update', [App\Http\Controllers\PaymentMappingController::class, 'update'])->name('payment.mapping.edit');
         Route::get('/payment_mapping/delete/{id}', [App\Http\Controllers\PaymentMappingController::class, 'destroy'])->name('payment.mapping.delete');
+        Route::get('/psp_account_number/{id}',[App\Http\Controllers\PaymentMappingController::class,'loadPspAccount']);
 
         //packaging units
         Route::get('/packaging_units', [App\Http\Controllers\PackagingUnitController::class, 'index'])->name('packaging.units');
@@ -272,14 +276,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/water_network/update',[App\Http\Controllers\WaterNetworkController::class,'update'])->name('water.network.edit');
         Route::get('/water_network/delete/{id}',[App\Http\Controllers\WaterNetworkController::class,'destroy'])->name('water.network.delete');
         Route::get('/operation_areas/{id}',[App\Http\Controllers\WaterNetworkController::class,'loadAreaOperation']);
+        Route::get('/export_water_networks',[App\Http\Controllers\WaterNetworkController::class,'export'])->name('export.water.networks');
 
-
-        Route::get('/water_networks', [App\Http\Controllers\WaterNetworkController::class, 'index'])->name('water.networks');
-        Route::post('/water_network/store', [App\Http\Controllers\WaterNetworkController::class, 'store'])->name('water.network.store');
-        Route::post('/water_network/update', [App\Http\Controllers\WaterNetworkController::class, 'update'])->name('water.network.edit');
-        Route::get('/water_network/delete/{id}', [App\Http\Controllers\WaterNetworkController::class, 'destroy'])->name('water.network.delete');
-        Route::get('/operation_areas/{id}', [App\Http\Controllers\WaterNetworkController::class, 'loadAreaOperation']);
-
+        //institutions
+        Route::get('/institutions', [App\Http\Controllers\InstitutionController::class, 'index'])->name('institutions');
+        Route::post('/institution/store', [App\Http\Controllers\InstitutionController::class, 'store'])->name('institution.store');
+        Route::post('/institution/update', [App\Http\Controllers\InstitutionController::class, 'update'])->name('institution.edit');
+        Route::get('/institution/delete/{id}', [App\Http\Controllers\InstitutionController::class, 'destroy'])->name('institution.delete');
 
         //water network statuses
         Route::get('/water_network_statuses',[App\Http\Controllers\WaterNetworkStatusController::class,'index'])->name('water.network.statuses');
@@ -298,6 +301,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/bill_charge/store', [App\Http\Controllers\BillChargeController::class, 'store'])->name('bill.charge.store');
         Route::post('/bill_charge/update', [App\Http\Controllers\BillChargeController::class, 'update'])->name('bill.charge.edit');
         Route::get('/bill_charge/delete/{id}', [App\Http\Controllers\BillChargeController::class, 'destroy'])->name('bill.charge.delete');
+        Route::get('/export_bill_charges/', [App\Http\Controllers\BillChargeController::class, 'export'])->name('export.bill.charges');
 
         Route::get('/operation-areas/by-water-network-type', [App\Http\Controllers\BillChargeController::class, 'loadAreaOperationAreas'])->name('bill-charge.load-area-operation-areas');
 
@@ -351,6 +355,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 //        Route::get('/customer/{customer}', [App\Http\Controllers\PaymentController::class, 'customerPayments'])->name('customer');
         //payment history
         Route::get('/{payment_declaration}/history', [App\Http\Controllers\PaymentDeclarationController::class, 'history'])->name('history');
+    });
+
+    //    audits routes
+    Route::group(['prefix' => 'audits'], function () {
+        Route::get('/audits', [\App\Http\Controllers\AuditingController::class, 'index'])->name('audits.index');
+        Route::get('/audits-from/{start}/to/{end}', [\App\Http\Controllers\AuditingController::class,'customAudits'])->name('audits.custom');
     });
 
 });

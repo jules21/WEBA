@@ -6,6 +6,8 @@ use App\Http\Requests\StorePaymentMappingRequest;
 use App\Http\Requests\UpdatePaymentMappingRequest;
 use App\Models\PaymentConfiguration;
 use App\Models\PaymentMapping;
+use App\Models\PaymentServiceProvider;
+use App\Models\PaymentServiceProviderAccount;
 use Illuminate\Http\Request;
 
 class PaymentMappingController extends Controller
@@ -106,5 +108,15 @@ class PaymentMappingController extends Controller
             info($exception);
             return redirect()->back()->with('success','Payment Mapping can not be deleted');
         }
+    }
+
+    public function loadPspAccount($id){
+        $pay_config_id = \request()->paymentConfigId;
+        $pay_config = PaymentConfiguration::find($pay_config_id);
+        $payment = PaymentServiceProviderAccount::query()
+            ->where('payment_service_provider_id',$id)
+            ->where('operation_area_id', $pay_config->operation_area_id)
+            ->get();
+        return response()->json($payment);
     }
 }

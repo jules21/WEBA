@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PaymentConfigurationExport;
 use App\Http\Requests\ValidatePaymentConfiguration;
+use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\PaymentConfiguration;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class PaymentConfigurationController extends Controller
@@ -12,8 +15,27 @@ class PaymentConfigurationController extends Controller
     public function index(){
         $user = auth()->user();
              if ($user->is_super_admin){
+                 $startDate = request('start_date');
+                 $endDate = request('end_date');
+                 $operation_area_id = request('operation_area_id');
+                 $payment_type_id = request('payment_type_id');
+
                  $payments = PaymentConfiguration::query()->with('paymentType','requestType','operator','operationArea')
-                     ->orderBy('id','DESC')->get();
+
+                     ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
+                         $builder->whereDate('created_at', '>=', $startDate);
+                     })
+                     ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
+                         $builder->whereDate('created_at', '<=', $endDate);
+                     })
+                     ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
+                         $builder->where('operation_area_id', $operation_area_id);
+                     })
+                     ->when(!empty($payment_type_id), function (Builder $builder) use ($payment_type_id) {
+                         $builder->where('payment_type_id', $payment_type_id);
+                     })
+                     ->orderBy('id','DESC')
+                     ->get();
                  $operators = Operator::all();
              }else{
                  $payments = PaymentConfiguration::query()->with('paymentType','requestType','operator','operationArea')
@@ -25,7 +47,7 @@ class PaymentConfigurationController extends Controller
         return view('admin.settings.payment_configurations',compact('payments','operators'));
     }
 
-    public function store(Request $request){
+    public function store(ValidatePaymentConfiguration $request){
 
 //        $request->validated();
         $payment = new PaymentConfiguration();
@@ -45,7 +67,7 @@ class PaymentConfigurationController extends Controller
         $payment->payment_type_id=$request->payment_type_id;
         $payment->request_type_id=$request->request_type_id;
         $payment->operator_id=$request->operator_id;
-        $payment->operation_area=$request->operation_area;
+        $payment->operation_area_id=$request->operation_area_id;
         $payment->amount=$request->amount;
         $payment->save();
         return redirect()->back()->with('success','Payment Configuration updated successfully');
@@ -61,5 +83,14 @@ class PaymentConfigurationController extends Controller
             info($exception);
             return redirect()->back()->with('success','Payment Configuration can not be deleted');
         }
+    }
+
+    public function loadAreaOperation($id){
+        $areas = OperationArea::where('operator_id',$id)->get();
+        return response()->json($areas);
+    }
+
+    public function export(){
+        return \Excel::download(new PaymentConfigurationExport(),'payment-configuration.xlsx');
     }
 }

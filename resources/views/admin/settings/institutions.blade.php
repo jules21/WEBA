@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section("title","Payment Mappings")
+@section("title","Institutions")
 @section('css')
 @endsection
 @section('page-header')
@@ -10,7 +10,7 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-2 mr-5">Payment Mappings</h5>
+                    <h5 class="text-dark font-weight-bold my-2 mr-5">Institutions</h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -18,7 +18,7 @@
                             <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a class="text-muted">Payment Mappings</a>
+                            <a class="text-muted">Institutions</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -35,45 +35,38 @@
     <div class="card card-custom">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label">Payment Mappings List</h3>
+                <h3 class="card-label">Institutions List</h3>
             </div>
-            <div class="card-toolbar">
-                <!-- Button trigger modal-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#exampleModalLong">
-                    <span class="flaticon-add"></span>
-                    Add New Record
-                </button>
+                        <div class="card-toolbar">
+                            <!-- Button trigger modal-->
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#exampleModalLong">
+                                <span class="flaticon-add"></span>
+                                Add New Institution
+                            </button>
 
-                <!-- Modal-->
-            </div>
+                            <!-- Modal-->
+                        </div>
         </div>
         <div class="card-body">
-
-
             <!--begin: Datatable-->
             <div class="table-responsive">
                 <table class="table table-head-custom border table-head-solid table-hover" id="table">
-                    {{--                    <table class="table table-striped" id="kt_datatable">--}}
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>PSP Account Name</th>
-                        <th>PSP Account Number</th>
-                        <th>Bank</th>
+                        <th>Name</th>
                         <th>Created At</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
 
-                    @foreach($paymentMappings as $key=>$mapping)
+                    @foreach($institutions as $key=>$institution)
                         <tr>
                             <td>{{++$key}}</td>
-                            <td>{{$mapping->account->account_name?? ''}}</td>
-                            <td>{{$mapping->account->account_number?? ''}}</td>
-                            <td>{{$mapping->account->paymentServiceProvider->name?? ''}}</td>
-                            <td>{{$mapping->created_at}}</td>
+                            <td>{{$institution->name}}</td>
+                            <td>{{$institution->created_at}}</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
@@ -82,11 +75,10 @@
                                         Action
                                     </button>
                                     <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-
-                                        <a href="#" data-id="{{$mapping->id}}"
-                                           data-account="{{$mapping->psp_account_id}}"
+                                        <a href="#" data-id="{{$institution->id}}"
+                                           data-name="{{$institution->name}}"
                                            class="dropdown-item js-edit">Edit</a>
-                                        <a href="{{route('admin.payment.mapping.delete',$mapping->id)}}"
+                                        <a href="{{route('admin.institution.delete',$institution->id)}}"
                                            class="dropdown-item js-delete">Delete</a>
                                     </div>
                                 </div>
@@ -105,11 +97,11 @@
     <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.payment.mapping.store',[$payment_configuration])}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.institution.store')}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">New Payment Mapping</h4>
+                        <h4 class="modal-title">New Institution</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -118,21 +110,8 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="name">Payment Service Provider</label>
-                            <select name="psp_account_id" id="psp_account_id" class="form-control">
-                                <option value="">Please Select Payment Service Provider</option>
-                                @foreach(App\Models\PaymentServiceProvider::all() as $account)
-                                    <option value="{{$account->id}}">{{$account->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="name">PSP Account Name - PSP Account Number</label>
-                            <select name="account_number" id="account_number" class="form-control">
-                                <option value="">Please Select Service Provider Account Number</option>
-
-                            </select>
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" class="form-control" required/>
                         </div>
 
                     </div>
@@ -155,12 +134,12 @@
     <div class="modal fade" id="modalUpdate" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.payment.mapping.edit')}}" method="post" id="submissionFormEdit" class="submissionFormEdit" enctype="multipart/form-data">
+            <form action="{{route('admin.institution.edit')}}" method="post" id="submissionFormEdit" class="submissionForm" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" value="0"  id="MappingId" name="MappingId">
+                <input type="hidden" value="0"  id="InstitutionId" name="InstitutionId">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Payment Mapping</h4>
+                        <h4 class="modal-title">Edit Institution</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -169,21 +148,8 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="name">Payment Service Provider</label>
-                            <select name="psp_account_id" id="edit_psp_account_id" class="form-control">
-                                <option value="">Please Select Payment Service Provider</option>
-                                @foreach(App\Models\PaymentServiceProvider::all() as $account)
-                                    <option value="{{$account->id}}">{{$account->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="name">PSP Account Name - PSP Account Number</label>
-                            <select name="account_number" id="account_number" class="form-control" data-selected="">
-                                <option value="">Please Select Service Provider Account Number</option>
-
-                            </select>
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="edit_name" class="form-control" required/>
                         </div>
 
                     </div>
@@ -205,8 +171,8 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest(\App\Http\Requests\StorePaymentMappingRequest::class,'.submissionForm') !!}
-    {!! JsValidator::formRequest(\App\Http\Requests\UpdatePaymentMappingRequest::class,'.submissionFormEdit') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\StoreInstitutionRequest::class,'.submissionForm') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\UpdateInstitutionRequest::class,'.submissionFormEdit') !!}
 
     <script>
 
@@ -215,17 +181,15 @@
         } );
 
         $('.nav-settings').addClass('menu-item-active  menu-item-open');
-        $('.nav-payment-configurations').addClass('menu-item-active');
+        $('.nav-institution').addClass('menu-item-active');
 
         $(document).on('click', '.js-edit', function (e) {
             e.preventDefault();
             $("#modalUpdate").modal('show');
             console.log($(this).data('name'));
             var url = $(this).data('url');
-            $("#MappingId").val($(this).data('id'));
-            $("#edit_psp_account_id").val($(this).data('account'));
-            $('#account_number').data('selected',$(this).data('account'))
-            $('select[name="psp_account_id"]').trigger('change')
+            $("#InstitutionId").val($(this).data('id'));
+            $("#edit_name").val($(this).data('name'));
             $('#submissionFormEdit').attr('action', url);
         });
 
@@ -234,7 +198,7 @@
             var href = this.href;
             Swal.fire({
                 title: "Are you sure?",
-                text: "Delete this Account ?",
+                text: "Delete this Institution ?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Yes, delete it!",
@@ -250,38 +214,7 @@
         });
 
         $('#exampleModal').on('hidden.bs.modal', function (e) {
-            $('#MappingId').val(0);
-        });
-
-        $(document).ready(function (){
-            const payConfig = @json($payment_configuration);
-            $('select[name="psp_account_id"]').on('change',function (){
-                var PspAccountId = $(this).val();
-                const selected = $('#account_number').data('selected');
-                // alert(PspAccountId);
-                if (PspAccountId){
-                    $.ajax({
-                        url:'/admin/settings/psp_account_number/'+PspAccountId,
-                        type:"GET",
-                        data:{
-                            'paymentConfigId':payConfig.id
-                        },
-                        dataType:"json",
-                        success:function(data){
-                            $('select[name="account_number"]').empty();
-
-                            $('select[name="account_number"]').append('<option value="">--Select--</option>');
-
-                            $.each(data,function (key,value){
-                                if((selected != '' && selected != null) && (selected == value.id)){
-                                    $('select[name="account_number"]').append('<option value="'+value.id+'" selected>'+value.account_name+' - '+value.account_number+'</option>');
-                                }
-                                $('select[name="account_number"]').append('<option value="'+value.id+'">'+value.account_name+' - '+value.account_number+'</option>');
-                            })
-                        }
-                    })
-                }
-            });
+            $('#InstitutionId').val(0);
         });
 
     </script>
