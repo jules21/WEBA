@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\WaterNetworksExport;
 use App\Http\Requests\StoreWaterNetworkRequest;
 use App\Http\Requests\UpdateWaterNetworkRequest;
 use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\WaterNetwork;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 
 class WaterNetworkController extends Controller
 {
@@ -18,8 +20,27 @@ class WaterNetworkController extends Controller
      */
     public function index()
     {
+        $startDate = request('start_date');
+        $endDate = request('end_date');
+        $operation_area_id = request('operation_area_id');
+        $water_network_type_id = request('water_network_type_id');
+
         $operators = Operator::all();
-        $waterNetworks = WaterNetwork::with('operator','waterNetworkType','operationArea','waterNetworkStatus')->orderBy('id','DESC')->get();
+        $waterNetworks = WaterNetwork::with('operator','waterNetworkType','operationArea','waterNetworkStatus')
+            ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
+                $builder->whereDate('created_at', '>=', $startDate);
+            })
+            ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
+                $builder->whereDate('created_at', '<=', $endDate);
+            })
+            ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
+                $builder->where('operation_area_id', $operation_area_id);
+            })
+            ->when(!empty($water_network_type_id), function (Builder $builder) use ($water_network_type_id) {
+                $builder->where('water_network_type_id', $water_network_type_id);
+            })
+            ->orderBy('id','DESC')
+            ->get();
         return view('admin.settings.water_networks',compact('waterNetworks','operators'));
     }
 
@@ -125,5 +146,9 @@ class WaterNetworkController extends Controller
     public function loadAreaOperation($id){
         $areas = OperationArea::where('operator_id',$id)->get();
         return response()->json($areas);
+    }
+
+    public function export(){
+        return \Excel::download(new WaterNetworksExport(), 'water_network.xlsx');
     }
 }

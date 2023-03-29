@@ -31,22 +31,89 @@
     </div>
 @stop
 @section('content')
+
+    @if(auth()->user()->is_super_admin)
+        <form action="">
+            <div class="card card-body mb-3">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="start_date">Start Date</label>
+                            <input value="{{ request('start_date') }}" type="date" name="start_date" id="start_date"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="end_date">End Date</label>
+                            <input value="{{ request('end_date') }}" type="date" name="end_date" id="end_date"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="water_network_type_id">
+                            Operation Area
+                        </label>
+                        <select name="operation_area_id" id="operation_area_id" class="form-control">
+                            <option value="">Please Select Operation Area</option>
+                            @foreach(App\Models\OperationArea::all() as $area)
+                                <option
+                                    value="{{$area->id}}" {{request('operation_area_id') == $area->id ? 'selected' : ''}}>{{$area->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="" style="visibility: hidden">Submit</label> <br>
+                            <button type="submit" class="btn btn-primary rounded">
+                                Filter <i class="fa fa-filter"></i>
+                            </button>
+                            <a href="{{route('admin.payment.configurations')}}" class="btn btn-outline-dark"> Clear search</a>
+                            {{--                            <button id="reset" class="btn btn-outline-dark">clear search</button>--}}
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </form>
+    @endif
+
     <!--begin::Entry-->
     <div class="card card-custom">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
                 <h3 class="card-label">Payment Configurations List</h3>
             </div>
-            <div class="card-toolbar">
-                <!-- Button trigger modal-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#exampleModalLong">
-                    <span class="flaticon-add"></span>
-                    Add New Record
-                </button>
 
-                <!-- Modal-->
+            <div class="dropdown dropdown-inline mr-2">
+                <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="la la-download"></i>Export</button>
+                <!--begin::Dropdown Menu-->
+                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                    <ul class="nav flex-column nav-hover">
+                        <li class="nav-item export-doc">
+                            <a href="{{route('admin.export.payment.configuration',['start_date'=>request('start_date'),'end_date'=>request('end_date'),'operation_area_id'=>request('operation_area_id'),'payment_type_id'=>request('payment_type_id')])}}" class="nav-link" target="_blank">
+                                <i class="nav-icon la la-file-excel-o"></i>
+                                <span class="nav-text">Excel</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--end::Dropdown Menu-->
             </div>
+
+            @if(auth()->user()->operator_id)
+                <div class="card-toolbar">
+                    <!-- Button trigger modal-->
+                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModalLong">
+                        <span class="flaticon-add"></span>
+                        Add New Record
+                    </button>
+                    <!-- Modal-->
+                </div>
+            @endif
         </div>
         <div class="card-body">
 
