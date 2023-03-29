@@ -57,8 +57,6 @@
 
         </div>
 
-
-        {{--user role modal--}}
         <div data-backdrop="static" class="modal fade" id="addModal" tabindex="-1" role="dialog"
              aria-labelledby="exampleModalLabel"
              aria-hidden="true">
