@@ -3,6 +3,7 @@
 use App\Constants\Permission;
 use App\Http\Controllers\AdjustmentController;
 use App\Http\Controllers\AreaOfOperationController;
+use App\Http\Controllers\AuditingController;
 use App\Http\Controllers\CashMovementController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\ChartAccountController;
@@ -74,6 +75,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/{operator}/users', [OperatorUserController::class, 'index'])->name('users');
 
+        Route::get('/export', [OperatorController::class, 'exportToExcel'])->name('export-to-excel');
+
     });
     Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
         Route::get('/', [CustomerController::class, 'index'])->name('index');
@@ -119,6 +122,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/delivery/{id}/items', [RequestDeliveryController::class, 'items'])->name('delivery.items');
         Route::get('/delivery/{id}/print-delivery', [RequestDeliveryController::class, 'deliveryNote'])->name('print-delivery');
         Route::get('/delivery/{request}/print-receipt', [RequestDeliveryController::class, 'printDelivery'])->name('print-receipt');
+
+        Route::get('/export', [RequestsController::class, 'exportDataToExcel'])->name('export-data-to-excel');
 
     });
     Route::group(['prefix' => 'purchases', 'as' => 'purchases.'], function () {
@@ -235,15 +240,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/payment_configuration/store', [App\Http\Controllers\PaymentConfigurationController::class, 'store'])->name('payment.configuration.store');
         Route::post('/payment_configuration/update', [App\Http\Controllers\PaymentConfigurationController::class, 'update'])->name('payment.configuration.edit');
         Route::get('/payment_configuration/delete/{id}', [App\Http\Controllers\PaymentConfigurationController::class, 'destroy'])->name('payment.configuration.delete');
-        Route::get('/operation_areas/{id}',[App\Http\Controllers\PaymentConfigurationController::class,'loadAreaOperation']);
-        Route::get('/export_payment_configuration',[App\Http\Controllers\PaymentConfigurationController::class,'export'])->name('export.payment.configuration');
+        Route::get('/operation_areas/{id}', [App\Http\Controllers\PaymentConfigurationController::class, 'loadAreaOperation']);
+        Route::get('/export_payment_configuration', [App\Http\Controllers\PaymentConfigurationController::class, 'export'])->name('export.payment.configuration');
 
+        Route::get('/operation_areas/{id}', [App\Http\Controllers\PaymentConfigurationController::class, 'loadAreaOperation']);
         //payment mappings
-        Route::get('/payment_mappings/{id}',[App\Http\Controllers\PaymentMappingController::class,'index'])->name('payment.mappings');
+        Route::get('/payment_mappings/{id}', [App\Http\Controllers\PaymentMappingController::class, 'index'])->name('payment.mappings');
         Route::post('/payment_mapping/store/{payment_configuration_id}', [App\Http\Controllers\PaymentMappingController::class, 'store'])->name('payment.mapping.store');
         Route::post('/payment_mapping/update', [App\Http\Controllers\PaymentMappingController::class, 'update'])->name('payment.mapping.edit');
         Route::get('/payment_mapping/delete/{id}', [App\Http\Controllers\PaymentMappingController::class, 'destroy'])->name('payment.mapping.delete');
-        Route::get('/psp_account_number/{id}',[App\Http\Controllers\PaymentMappingController::class,'loadPspAccount']);
+        Route::get('/psp_account_number/{id}', [App\Http\Controllers\PaymentMappingController::class, 'loadPspAccount']);
 
         //packaging units
         Route::get('/packaging_units', [App\Http\Controllers\PackagingUnitController::class, 'index'])->name('packaging.units');
@@ -271,12 +277,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         //water networks
 
-        Route::get('/water_networks',[App\Http\Controllers\WaterNetworkController::class,'index'])->name('water.networks');
-        Route::post('/water_network/store',[App\Http\Controllers\WaterNetworkController::class,'store'])->name('water.network.store');
-        Route::post('/water_network/update',[App\Http\Controllers\WaterNetworkController::class,'update'])->name('water.network.edit');
-        Route::get('/water_network/delete/{id}',[App\Http\Controllers\WaterNetworkController::class,'destroy'])->name('water.network.delete');
-        Route::get('/operation_areas/{id}',[App\Http\Controllers\WaterNetworkController::class,'loadAreaOperation']);
-        Route::get('/export_water_networks',[App\Http\Controllers\WaterNetworkController::class,'export'])->name('export.water.networks');
+        Route::get('/water_networks', [App\Http\Controllers\WaterNetworkController::class, 'index'])->name('water.networks');
+        Route::post('/water_network/store', [App\Http\Controllers\WaterNetworkController::class, 'store'])->name('water.network.store');
+        Route::post('/water_network/update', [App\Http\Controllers\WaterNetworkController::class, 'update'])->name('water.network.edit');
+        Route::get('/water_network/delete/{id}', [App\Http\Controllers\WaterNetworkController::class, 'destroy'])->name('water.network.delete');
+        Route::get('/operation_areas/{id}', [App\Http\Controllers\WaterNetworkController::class, 'loadAreaOperation']);
+        Route::get('/export_water_networks', [App\Http\Controllers\WaterNetworkController::class, 'export'])->name('export.water.networks');
 
         //institutions
         Route::get('/institutions', [App\Http\Controllers\InstitutionController::class, 'index'])->name('institutions');
@@ -285,10 +291,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/institution/delete/{id}', [App\Http\Controllers\InstitutionController::class, 'destroy'])->name('institution.delete');
 
         //water network statuses
-        Route::get('/water_network_statuses',[App\Http\Controllers\WaterNetworkStatusController::class,'index'])->name('water.network.statuses');
-        Route::post('/water_network_status/store',[App\Http\Controllers\WaterNetworkStatusController::class,'store'])->name('water.network.status.store');
-        Route::post('/water_network_status/update',[App\Http\Controllers\WaterNetworkStatusController::class,'update'])->name('water.network.status.edit');
-        Route::get('/water_network_status/delete/{id}',[App\Http\Controllers\WaterNetworkStatusController::class,'destroy'])->name('water.network.status.delete');
+        Route::get('/water_network_statuses', [App\Http\Controllers\WaterNetworkStatusController::class, 'index'])->name('water.network.statuses');
+        Route::post('/water_network_status/store', [App\Http\Controllers\WaterNetworkStatusController::class, 'store'])->name('water.network.status.store');
+        Route::post('/water_network_status/update', [App\Http\Controllers\WaterNetworkStatusController::class, 'update'])->name('water.network.status.edit');
+        Route::get('/water_network_status/delete/{id}', [App\Http\Controllers\WaterNetworkStatusController::class, 'destroy'])->name('water.network.status.delete');
 
         //suppliers
         Route::get('/suppliers', [App\Http\Controllers\SupplierController::class, 'index'])->name('suppliers');
@@ -355,6 +361,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 //        Route::get('/customer/{customer}', [App\Http\Controllers\PaymentController::class, 'customerPayments'])->name('customer');
         //payment history
         Route::get('/{payment_declaration}/history', [App\Http\Controllers\PaymentDeclarationController::class, 'history'])->name('history');
+    });
+
+    //    audits routes
+    Route::group(['prefix' => 'audits'], function () {
+        Route::get('/audits', [AuditingController::class, 'index'])->name('audits.index');
+        Route::get('/audits-from/{start}/to/{end}', [AuditingController::class, 'customAudits'])->name('audits.custom');
     });
 
 });

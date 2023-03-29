@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none " id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-2">
@@ -27,29 +27,22 @@
                 </ul>
             </div>
             <!--end::Info-->
+
+            <div class="mt-2">
+                <x-simple-export-form action="{{ route('admin.requests.export-data-to-excel') }}"/>
+            </div>
+
         </div>
     </div>
 
 
-    <div class="card shadow-none border">
+    <div class="card tw-shadow-sm border tw-border-gray-300">
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-center">
                 <h4>
                     {{ isset($customer)?$customer->name."'s":'All' }} Requests
                 </h4>
-
-                {{--  @if(auth()->user()->can(\App\Constants\Permission::CreateRequest) && !is_null(auth()->user()->operation_area))
-                      <a href="{{ route('admin.requests.create') }}"
-                         class="btn btn-light-primary rounded-sm font-weight-normal btn-sm" id="addButton">
-                         <span class="svg-icon">
-                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                  stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6"/>
-                              </svg>
-                         </span>
-                          New Request
-                      </a>
-                  @endif--}}
+{{--              <x-simple-export-form action="{{ route('admin.requests.export-data-to-excel') }}"/>--}}
             </div>
 
 
@@ -182,7 +175,7 @@
             $('.nav-request-management').addClass('menu-item-active menu-item-open');
             $('.nav-all-requests').addClass('menu-item-active');
 
-            let dataTable = $('.dataTable').DataTable({
+            window.dataTable = $('.dataTable').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: "{!! request()->fullUrl() !!}",

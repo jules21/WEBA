@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\Permission;
+use App\Exports\OperatorsExport;
 use App\Http\Requests\StoreOperatorRequest;
 use App\Http\Requests\UpdateOperatorRequest;
 use App\Models\LegalType;
@@ -21,7 +22,16 @@ class OperatorController extends Controller
      */
     public function index()
     {
+        $startDate = request('start_date');
+        $endDate = request('end_date');
+
         $data = Operator::with(['legalType'])
+            ->when($startDate, function ($query) use ($startDate) {
+                return $query->whereDate('created_at', '>=', $startDate);
+            })
+            ->when($endDate, function ($query) use ($endDate) {
+                return $query->whereDate('created_at', '<=', $endDate);
+            })
             ->withCount('operationAreas');
 
         if (request()->ajax()) {
@@ -201,4 +211,14 @@ class OperatorController extends Controller
                 'message' => "Operator with the provided information does not exist"
             ], 400);
     }
+
+    public function exportToExcel()
+    {
+        $now = now()->format('Y-m-d-H-i-s');
+        $startDate = request('start_date');
+        $endDate = request('end_date');
+        return (new OperatorsExport($startDate, $endDate))
+            ->download('operators-' . $now . '.xlsx');
+    }
+
 }
