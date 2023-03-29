@@ -630,6 +630,16 @@
                             </a>
                         </li>
                     @endcan
+                    @can('Manage Institutions')
+                        <li class="menu-item nav-institution" aria-haspopup="true">
+                            <a href="{{ route('admin.institutions') }}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">Institutions</span>
+                            </a>
+                        </li>
+                    @endcan
                     @can('Manage Packaging Units')
                         <li class="menu-item nav-packaging-units" aria-haspopup="true">
                             <a href="{{ route('admin.packaging.units') }}" class="menu-link">

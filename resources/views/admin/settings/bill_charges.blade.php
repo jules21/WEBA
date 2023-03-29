@@ -33,7 +33,13 @@
 @section('content')
 
     @if(auth()->user()->is_super_admin)
+
         <form action="">
+            <div class="card-toolbar">
+                <!--begin::Dropdown-->
+
+                <!--end::Dropdown-->
+            </div>
             <div class="card card-body mb-3">
                 <div class="row">
                     <div class="col-md-3">
@@ -52,13 +58,13 @@
                     </div>
                     <div class="col-md-3">
                         <label for="water_network_type_id">
-                            Water Network Type
+                            Operation Area
                         </label>
-                        <select name="water_network_type_id" id="water_network_type_id" class="form-control">
-                            <option value="">Please Select Water Network Type</option>
-                            @foreach(App\Models\WaterNetworkType::all() as $type)
+                        <select name="operation_area_id" id="operation_area_id" class="form-control">
+                            <option value="">Please Select Operation Area</option>
+                            @foreach(App\Models\OperationArea::all() as $area)
                                 <option
-                                    value="{{$type->id}}" {{request('water_network_type_id') == $type->id ? 'selected' : ''}}>{{$type->name}}</option>
+                                    value="{{$area->id}}" {{request('operation_area_id') == $area->id ? 'selected' : ''}}>{{$area->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -84,6 +90,23 @@
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
                 <h3 class="card-label">Bill Charges List</h3>
+            </div>
+
+            <div class="dropdown dropdown-inline mr-2">
+                <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="la la-download"></i>Export</button>
+                <!--begin::Dropdown Menu-->
+                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                    <ul class="nav flex-column nav-hover">
+                        <li class="nav-item export-doc">
+                            <a href="{{route('admin.export.bill.charges')}}" class="nav-link" target="_blank">
+                                <i class="nav-icon la la-file-excel-o"></i>
+                                <span class="nav-text">Excel</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!--end::Dropdown Menu-->
             </div>
 
             @if(auth()->user()->operator_id)
@@ -266,6 +289,12 @@
         </div>
     </div>
 
+    @php
+        //Declare new queries you want to append to string:
+        $newQueries = ['is_download' => 1];
+        $newUrl = request()->fullUrlWithQuery($newQueries);
+    @endphp
+
 @endsection
 
 @section('scripts')
@@ -275,6 +304,11 @@
     {!! JsValidator::formRequest(\App\Http\Requests\UpdateBillChargeRequest::class,'.submissionFormEdit') !!}
 
     <script>
+
+        $(document).on("click","#excel", function(e) {
+            var url = "{!! $newUrl !!}";
+            $(this).attr("href",url);
+        });
 
         let loadOperationAreas = function (networkTypeId, selectedId) {
 
