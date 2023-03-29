@@ -56,6 +56,13 @@ class UserController extends Controller
         $user = User::find($id);
         return view("admin.user_management.profile", compact("user"));
     }
+    public function userPermissions($user_id)
+    {
+        $id = decryptId($user_id);
+        $user = User::find($id);
+        $user->load('roles.permissions');
+        return view("admin.user_management.profile_roles", compact("user"));
+    }
 
 
     public function resetPassword($user_id)

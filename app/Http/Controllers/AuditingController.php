@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Permission;
 use Illuminate\Http\Request;
 use OwenIt\Auditing\Models\Audit;
 use Yajra\DataTables\DataTables;
@@ -9,9 +10,23 @@ use Yajra\DataTables\DataTables;
 class AuditingController extends Controller
 {
     public function index(Request $request){
+        $user = auth()->user();
+        if (!$user->can(Permission::ManageSystemAudit)) {
+            abort(403);
+        }
         if ($request->ajax()) {
             $audits=Audit::query()
                 ->with(['user','auditable'])
+                ->when($user->operator_id, function ($q) use ($user){
+                    $q->whereHas('user',function ($q) use ($user){
+                        $q->where('operator_id','=',$user->operator_id);
+                    });
+                })
+                ->when($user->operation_area , function ($q) use ($user){
+                    $q->whereHas('user',function ($q) use ($user){
+                        $q->where('operation_area','=',$user->operation_area);
+                    });
+                })
                 ->when($request->start_date,function ($q) use ($request){
                     $q->whereDate('created_at','>=',$request->start_date);
                 })

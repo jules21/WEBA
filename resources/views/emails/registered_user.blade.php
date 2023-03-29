@@ -1,13 +1,27 @@
-@component('mail::message', ['data' =>$data])
-    # Hello,
-    <h3>{{$data['name']}}</h3>
-    <p>Welcome to WFP</p>
+{{--@component('mail::message', ['data' =>$data])--}}
+{{--    # Hello,--}}
+{{--    ### {{$data['name']}}--}}
+{{--    Welcome to WFP--}}
 
-    Your Password is <span style="color: blue">{{$data['password']}}</span>
-    <p>please follow the link below to login</p>
-    @component('mail::button', ['url' =>url('/').'/login','color' => 'green'])
-        Login
+{{--    Your Password is **{{$data['password']}}**--}}
+{{--    please follow the link below to login--}}
+{{--    @component('mail::button', ['url' =>url('/').'/login','color' => 'green'])--}}
+{{--        Login--}}
+{{--    @endcomponent--}}
+{{--    Thanks,<br>--}}
+{{--    {{ config('app.name') }}--}}
+{{--@endcomponent--}}
+
+
+@component('mail::message', ['data' =>$data])
+        # Hello,
+
+    The body of your message.
+
+    @component('mail::button', ['url' => $details['url']])
+        Button Text
     @endcomponent
+
     Thanks,<br>
     {{ config('app.name') }}
 @endcomponent

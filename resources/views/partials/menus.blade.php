@@ -738,24 +738,24 @@
             </div>
         </li>
     @endcanany
+    @can(\App\Constants\Permission::ManageSystemAudit)
     <li class="menu-section">
         <h4 class="menu-text">Audits</h4>
         <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
     </li>
-    @can('Manage System Audits')
         <li class="menu-item nav-audits">
             <a href="{{route('admin.audits.index')}}"
                class="menu-link">
                 <span class="svg-icon menu-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-   <path d="M12 8l0 4l2 2"></path>
-   <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path>
-</svg>
+                       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                       <path d="M12 8l0 4l2 2"></path>
+                       <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path>
+                  </svg>
                 </span>
                 <span class="menu-text">
                         System Audit
-                    </span>
+                </span>
             </a>
         </li>
     @endcan

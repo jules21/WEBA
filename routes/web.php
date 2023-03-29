@@ -203,6 +203,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post("/users/update/{user_id}", [App\Http\Controllers\UserController::class, 'update'])->name("users.update");
         Route::get("/users/profile/{user_id}", [App\Http\Controllers\UserController::class, 'userProfile'])->name("users.profile");
         Route::get("/users/delete/{user_id}", [App\Http\Controllers\UserController::class, 'deleteUser'])->name("users.delete");
+        //user permissions
+        Route::get('/users/permissions/{user_id}', [App\Http\Controllers\UserController::class, 'userPermissions'])->name('users.permissions');
 
         //Profile URL
         Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'profile'])->name('profile');
