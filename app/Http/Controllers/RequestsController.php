@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\Permission;
+use App\Exports\RequestsExport;
 use App\Http\Requests\ValidateAppRequest;
 use App\Models\Customer;
 use App\Models\District;
@@ -36,6 +37,7 @@ use LaravelIdea\Helper\App\Models\_IH_Sector_C;
 use LaravelIdea\Helper\App\Models\_IH_Sector_QB;
 use LaravelIdea\Helper\App\Models\_IH_WaterUsage_C;
 use LaravelIdea\Helper\App\Models\_IH_WaterUsage_QB;
+use Maatwebsite\Excel\Excel;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
@@ -48,6 +50,8 @@ class RequestsController extends Controller
     public function index()
     {
         $customerId = \request('cus_id');
+        $startDate = \request('start_date');
+        $endDate = \request('end_date');
 
         $data = AppRequest::query()
             ->with(['customer', 'requestType', 'operator'])
@@ -56,6 +60,10 @@ class RequestsController extends Controller
             })
             ->when(!is_null(auth()->user()->operator_id) && !is_null(auth()->user()->operation_area), function (Builder $query) {
                 return $query->where('operation_area_id', '=', auth()->user()->operation_area);
+            })
+            ->when(!is_null($startDate) && !is_null($endDate), function (Builder $query) use ($startDate, $endDate) {
+                return $query->whereDate('created_at', '>=', $startDate)
+                    ->whereDate('created_at', '<=', $endDate);
             })
             ->select('requests.*');
         if (request()->ajax()) {
@@ -185,7 +193,7 @@ class RequestsController extends Controller
 
         DB::beginTransaction();
         $req = AppRequest::query()->create($data);
-        $road_cross_types = $request->input('road_cross_types');
+        $road_cross_types = $request->input('road_cross_types', []);
         foreach ($road_cross_types as $road_cross_type) {
             $req->pipeCrosses()->create([
                 'road_cross_type_id' => $road_cross_type
@@ -279,7 +287,7 @@ class RequestsController extends Controller
 
         $appRequest->update($data);
         $appRequest->pipeCrosses()->delete();
-        $road_cross_types = $request->input('road_cross_types');
+        $road_cross_types = $request->input('road_cross_types', []);
         foreach ($road_cross_types as $road_cross_type) {
             $appRequest->pipeCrosses()->create([
                 'road_cross_type_id' => $road_cross_type
@@ -523,6 +531,17 @@ class RequestsController extends Controller
     public function getRoadCrossTypes()
     {
         return RoadCrossType::query()->get();
+    }
+
+    /**
+     */
+    public function exportDataToExcel()
+    {
+        $startDate = request('start_date');
+        $endDate = request('end_date');
+
+        $now = now()->format('Y-m-d-H-i-s');
+        return (new RequestsExport($startDate, $endDate))->download("requests_$now.xlsx");
     }
 
 

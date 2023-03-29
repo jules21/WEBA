@@ -351,6 +351,10 @@ class Request extends Model
     {
         return $this->belongsTo(OperationArea::class,"operation_area_id");
     }
+    public function operationArea(): BelongsTo
+    {
+        return $this->belongsTo(OperationArea::class,"operation_area_id");
+    }
 
 
 }

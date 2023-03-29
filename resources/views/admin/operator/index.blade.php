@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none " id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-2">
@@ -25,18 +25,20 @@
                 </ul>
             </div>
             <!--end::Info-->
+            <div class="mt-2">
+                <x-simple-export-form action="{{ route('admin.operator.export-to-excel') }}"/>
+            </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="card shadow-none border">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h4>
-                        Operators
-                    </h4>
+    <div class="card tw-shadow-sm border tw-border-gray-300">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>
+                    Operators
+                </h4>
 
-                    <buttont type="button" class="btn btn-light-primary rounded font-weight-bolder" id="addButton">
+                <buttont type="button" class="btn btn-light-primary rounded font-weight-bolder" id="addButton">
                        <span class="svg-icon">
                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="w-6 h-6">
@@ -44,32 +46,32 @@
 </svg>
 
                        </span>
-                        Add New Operator
-                    </buttont>
-                </div>
+                    Add New Operator
+                </buttont>
+            </div>
 
 
-                <div class="table-responsive my-3">
-                    <table class="table table-head-custom border  table-hover dataTable">
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Doc Number</th>
-                            <th>Address</th>
-                            <th>Created At</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
+            <div class="table-responsive my-3">
+                <table class="table table-head-custom border  table-hover dataTable">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Doc Number</th>
+                        <th>Address</th>
+                        <th>Created At</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
 
-                </div>
             </div>
         </div>
     </div>
+
 
 
     {{--    add modal--}}
@@ -373,12 +375,13 @@
                 $('#addModal').modal();
             });
 
-            let dataTable = $('.dataTable').DataTable({
+            window.dataTable = $('.dataTable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('admin.operator.index') }}",
                 columns: [
-                    {data:'logo',name:'logo',
+                    {
+                        data: 'logo', name: 'logo',
                         render: function (data, type, row, meta) {
                             return `<div class="symbol symbol-50 symbol-circle position-relative bg-transparent">
                                         <div class="symbol-label" style="background-image:url(${row.logo_url})">
@@ -388,7 +391,8 @@
                         searchable: false,
                         orderable: false
                     },
-                    {data: 'name', name: 'name',
+                    {
+                        data: 'name', name: 'name',
                         render: function (data, type, row, meta) {
                             return `<div>
                                         <div class="font-weight-bold">${row.name}</div>
