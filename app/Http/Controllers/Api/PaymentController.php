@@ -50,6 +50,7 @@ class PaymentController extends Controller
                 $data["status"] = "Active";
                 $data["accept_partial"] = false;
                 $data["issue_date"] = $declaration->created_at;
+                $data["due_date"] = optional($declaration->created_at)->format('Y-m-d');
                 return response()->json([
                     'response' => 'Payment reference found',
                     'responsecode' => 201,
@@ -86,6 +87,7 @@ class PaymentController extends Controller
                     $data["status"] = "Active";
                     $data["accept_partial"] = true;
                     $data["issue_date"] = optional($billing->created_at)->format('Y-m-d');
+                    $data["due_date"] = optional($billing->created_at)->format('Y-m-d');
                     return response()->json([
                         'response' => 'Payment reference found',
                         'responsecode' => 201,
