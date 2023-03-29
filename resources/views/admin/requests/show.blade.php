@@ -218,37 +218,116 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="payments">
-                <table class="table table-head-solid table-head-custom border">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Amount</th>
-                        <th>Payment Reference</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-                    <tbody>
+
+                <div class="accordion accordion-solid  accordion-panel accordion-svg-toggle mb-3" id="accordionExample3">
                     @forelse($request->paymentDeclarations as $payment)
-                        <tr>
-                            <td>{{ $payment->paymentConfig->paymentType->name }}</td>
-                            <td>{{ number_format($payment->amount) }}</td>
-                            <td>{{ $payment->payment_reference }}</td>
-                            <td>
-                                <span
-                                    class="label label-lg font-weight-bold label-light-{{ $payment->status_color }} label-inline rounded-pill">
-                                    {{ ucfirst($payment->status=='active'?'Not paid':$payment->status) }}
-                                </span>
-                            </td>
-                        </tr>
+                        <div class="card border">
+                            <div class="card-header" id="headingOne{{$payment->id}}">
+                                <div class="card-title  bg-light rounded-bottom-0" data-toggle="collapse"
+                                     data-target="#collapseOne{{$payment->id}}">
+                                    <div class="d-flex flex-wrap align-items-center justify-content-between w-100">
+                                        <!--begin::Info-->
+                                        <div class="d-flex flex-column  py-2 w-75">
+                                            <!--begin::Title-->
+                                            <a href="#"
+                                               class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">
+                                                {{ $payment->paymentConfig->paymentType->name }}
+
+                                                <span class="ml-3">
+                                                    {{ number_format($payment->amount) }} RWF
+                                                </span>
+                                            </a>
+                                            <!--end::Title-->
+                                            <!--begin::Data-->
+                                            <div>
+
+
+                                                <span>
+                                                    Payment Reference:
+                                                    <span
+                                                        class="font-weight-bold">
+                                                        {{ $payment->payment_reference }}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                            <!--end::Data-->
+                                        </div>
+                                        <!--end::Info-->
+                                        <!--begin::Label-->
+                                        <span
+                                            class="label label-lg font-weight-bold label-light-{{ $payment->status_color }} label-inline rounded-pill mr-4">
+                                            {{ ucfirst($payment->status=='active'?'Not paid':$payment->status) }}
+                                        </span>
+                                        <!--end::Label-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="collapseOne{{$payment->id}}" class="collapse" data-parent="#accordionExample3">
+                                <div class="card-body">
+                                    @if($payment->paymentHistories->count() >0)
+                                        <div class="timeline timeline-6 mt-4">
+
+                                            @foreach($payment->paymentHistories as $item)
+                                                <div class="timeline-item align-items-start hover-opacity-70">
+                                                    <!--begin::Label-->
+                                                    <div
+                                                        class="timeline-label  text-dark-75 font-size-sm">
+                                                            {{ $item->created_at->format('h:i A') }}
+                                                    </div>
+                                                    <!--end::Label-->
+
+                                                    <!--begin::Badge-->
+                                                    <div class="timeline-badge mt-1">
+                                                        <i class="fa fa-chevron-up text-success"></i>
+                                                    </div>
+                                                    <!--end::Badge-->
+
+                                                    <!--begin::Text-->
+                                                    <div class="mx-3 d-flex flex-column w-100">
+                                                        <div class="mb-1 d-flex justify-content-between">
+                                                            <div>
+                                                                <span>Amount Paid</span>
+                                                                <span
+                                                                    class="label label-inline label-light-success rounded-pill font-weight-bolder">{{ number_format($item->amount) }} RWF</span>
+
+                                                            </div>
+                                                            <span
+                                                                class="label label-inline label-secondary rounded-pill font-weight-bolder">{{ $item->created_at->format('d M Y') }}</span>
+                                                        </div>
+                                                        <div class="mt-1 font-weight-bolder">
+                                                          <span>
+                                                                Payment Provider:
+                                                          </span>
+                                                            <span
+                                                                class="label label-inline label-light-primary rounded-pill font-weight-bolder">
+                                                                   {{ $item->mapping->account->paymentServiceProvider->name }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <!--end::Text-->
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="alert alert-light-info p-3 mt-4 mb-0 alert-custom">
+                                            <div class="alert-text">
+                                                No payment made yet.
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
                     @empty
-                        <tr>
-                            <td colspan="4" class="text-center">
-                                No payment declaration yet for this request
-                            </td>
-                        </tr>
+                        <div class="alert alert-light-info p-3 alert-custom">
+                            <div class="alert-text">
+                                No payment declaration yet.
+                            </div>
+                        </div>
                     @endforelse
-                    </tbody>
-                </table>
+                </div>
+
             </div>
         </div>
     </div>
