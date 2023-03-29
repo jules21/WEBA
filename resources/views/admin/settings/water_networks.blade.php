@@ -92,25 +92,27 @@
                 <h3 class="card-label">Water Networks List</h3>
             </div>
 
-            <div class="dropdown dropdown-inline mr-2">
-                <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="la la-download"></i>Export
-                </button>
-                <!--begin::Dropdown Menu-->
-                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                    <ul class="nav flex-column nav-hover">
-                        <li class="nav-item export-doc">
-                            <a href="{{route('admin.export.water.networks',['start_date'=>request('start_date'),'end_date'=>request('end_date'),'operation_area_id'=>request('operation_area_id')])}}"
-                               class="nav-link" target="_blank">
-                                <i class="nav-icon la la-file-excel-o"></i>
-                                <span class="nav-text">Excel</span>
-                            </a>
-                        </li>
-                    </ul>
+            @if(auth()->user()->is_super_admin)
+                <div class="dropdown dropdown-inline mr-2">
+                    <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="la la-download"></i>Export
+                    </button>
+                    <!--begin::Dropdown Menu-->
+                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                        <ul class="nav flex-column nav-hover">
+                            <li class="nav-item export-doc">
+                                <a href="{{route('admin.export.water.networks',['start_date'=>request('start_date'),'end_date'=>request('end_date'),'operation_area_id'=>request('operation_area_id')])}}"
+                                   class="nav-link" target="_blank">
+                                    <i class="nav-icon la la-file-excel-o"></i>
+                                    <span class="nav-text">Excel</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--end::Dropdown Menu-->
                 </div>
-                <!--end::Dropdown Menu-->
-            </div>
+            @endif
 
             @if(auth()->user()->operator_id)
                 <div class="card-toolbar">
