@@ -144,10 +144,37 @@ $menuColor: #f3f6f9;
 .text-accent {
     color: $accent !important;
 }
+
 .timeline.timeline-6 .timeline-item .timeline-label {
     width: 55px !important;
 }
 
 .timeline.timeline-6:before {
     left: 55px !important;
+}
+
+label.error {
+    color: #F64E60 !important;
+    font-size: 12px !important;
+}
+
+.table td {
+    vertical-align: middle !important;
+}
+
+.badge-green {
+    color: #ffffff;
+    background-color: #32b354;
+}
+
+.text-green {
+    color: #32b354;
+}
+
+.datepicker table tr th {
+    vertical-align: bottom !important;
+}
+
+.datepicker table tfoot tr th {
+    vertical-align: middle !important;
 }

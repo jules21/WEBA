@@ -13,6 +13,7 @@
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
     <link href="{{mix('css/master.css')}}" rel="stylesheet" type="text/css"/>
+    <link href="{{mix('css/tailwind.css')}}" rel="stylesheet" type="text/css"/>
     <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css"/>
     <!--end::Global Theme Styles-->
 
@@ -24,25 +25,6 @@
     @yield("css")
     <link rel="icon" type="image/png" href="{{asset('images/logo.png')}}"/>
     <title>@yield('title', 'Home') - CMS RWSS</title>
-    <style>
-        label.error {
-            color: #F64E60 !important;
-            font-size: 12px !important;
-        }
-
-        .table td {
-            vertical-align: middle !important;
-        }
-
-        .badge-green {
-            color: #ffffff;
-            background-color: #32b354;
-        }
-
-        .text-green {
-            color: #32b354;
-        }
-    </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -187,11 +169,10 @@
                                     class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">
                                     {{Auth::user()->name}}
                                 </span>
-                                <span class="symbol symbol-35 symbol-light-success">
+                                <span class="symbol symbol-35 symbol-circle  symbol-light-primary">
 											<span
-                                                class="symbol-label font-size-h5 font-weight-bold">
-
-                                                {{substr(Auth::user()->name,0,1)}}
+                                                class="symbol-label font-size-h5 font-weight-bold text-uppercase">
+                                                {{substr(Auth::user()->name,0,2)}}
                                             </span>
 										</span>
                             </div>
@@ -447,6 +428,43 @@
         $('.custom-file-input').on('change', function () {
             let fileName = $(this).val().split('\\').pop();
             $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+
+        let arrows;
+        if (KTUtil.isRTL()) {
+            arrows = {
+                leftArrow: '<i class="la la-angle-right"></i>',
+                rightArrow: '<i class="la la-angle-left"></i>'
+            }
+        } else {
+            arrows = {
+                leftArrow: '<i class="la la-angle-left"></i>',
+                rightArrow: '<i class="la la-angle-right"></i>'
+            }
+        }
+        // enable clear button
+        $('.datepicker').datepicker({
+            rtl: KTUtil.isRTL(),
+            todayBtn: "linked",
+            clearBtn: true,
+            todayHighlight: true,
+            templates: arrows,
+            format: 'yyyy-mm-dd',
+        });
+
+        $('#btnLoadData').on('click', function () {
+            let $btn = $(this);
+            let startDate = $('#start_date').val();
+            let enDate = $('#end_date').val();
+
+            $btn.addClass('spinner spinner-white spinner-right').attr('disabled', true);
+
+            // replace current url with new one
+            window.history.replaceState({}, '', `{{ request()->url() }}?start_date=${startDate}&end_date=${enDate}`);
+            dataTable.ajax.url(`{{request()->url()}}?start_date=${startDate}&end_date=${enDate}`).load(function () {
+                $btn.removeClass('spinner spinner-white spinner-right').attr('disabled', false);
+            });
+
         });
 
     });
