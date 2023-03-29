@@ -40,18 +40,22 @@
             <div class="card-toolbar">
                 <!-- Button trigger modal-->
                 @can("Manage banks")
-                    <div class="btn-group">
-                        <a href="{{route('admin.banks.sync')}}" class="btn btn-success js-sync-banks">
-                            <span class="flaticon-add"></span>
-                            Sync Banks
-                        </a>
-                        <a href="{{route('admin.banks.sync')}}" class="btn btn-primary"
-                           data-toggle="modal"
-                           data-target="#exampleModalLong">
-                            <span class="flaticon-add"></span>
-                            New Bank
-                        </a>
-                    </div>
+                    @if(auth()->user()->operator_id==null && auth()->user()->operation_area==null)
+                        <div class="btn-group">
+                            <a href="{{route('admin.banks.sync')}}" class="btn btn-success js-sync-banks">
+                                <span class="flaticon-add"></span>
+                                Sync Banks
+                            </a>
+                            <a href="{{route('admin.banks.sync')}}" class="btn btn-primary"
+                               data-toggle="modal"
+                               data-target="#exampleModalLong">
+                                <span class="flaticon-add"></span>
+                                New Bank
+                            </a>
+                        </div>
+
+                    @endif
+
                 @endcan
 
                 <!-- Modal-->
@@ -69,7 +73,9 @@
                         <th>Support Payment</th>
                         <th>Created At</th>
                         @can("Manage banks")
-                            <td>Action</td>
+                            @if(auth()->user()->operator_id==null && auth()->user()->operation_area==null)
+                                <td>Action</td>
+                            @endif
                         @endcan
                     </tr>
                     </thead>
@@ -95,26 +101,28 @@
                             </td>
                             <td>{{optional($bank->created_at)->format('Y-m-d')}}</td>
                             @can("Manage banks")
-                                <td>
-                                    @if(!$bank->supports_payment)
-                                        <a href="#"
-                                           data-url="{{route('admin.banks.update',$bank->id)}}"
-                                           data-name="{{$bank->name}}"
-                                           data-is_active="{{$bank->is_active}}"
-                                           class="btn btn-sm btn-clean btn-icon js-edit"
-                                           title="Edit details">
+                                @if(auth()->user()->operator_id==null && auth()->user()->operation_area==null)
+                                    <td>
+                                        @if(!$bank->supports_payment)
+                                            <a href="#"
+                                               data-url="{{route('admin.banks.update',$bank->id)}}"
+                                               data-name="{{$bank->name}}"
+                                               data-is_active="{{$bank->is_active}}"
+                                               class="btn btn-sm btn-clean btn-icon js-edit"
+                                               title="Edit details">
                                     <span class="svg-icon svg-icon-sm">
                                         <i class="flaticon2-edit text-primary"></i>
                                     </span>
-                                        </a>
-                                        <a href="{{route('admin.banks.destroy',$bank->id)}}"
-                                           class="btn btn-sm btn-clean btn-icon js-delete" title="Delete">
+                                            </a>
+                                            <a href="{{route('admin.banks.destroy',$bank->id)}}"
+                                               class="btn btn-sm btn-clean btn-icon js-delete" title="Delete">
                                     <span class="svg-icon svg-icon-md">
                                         <i class="flaticon2-trash text-danger"></i>
                                     </span>
-                                        </a>
-                                    @endif
-                                </td>
+                                            </a>
+                                        @endif
+                                    </td>
+                                @endif
                             @endcan
                         </tr>
                     @endforeach
