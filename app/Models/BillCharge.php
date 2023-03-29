@@ -39,4 +39,8 @@ class BillCharge extends Model
     public function operationArea(){
         return $this->belongsTo(OperationArea::class,'operation_area_id');
     }
+
+    public function operator(){
+        return $this->belongsTo(Operator::class,'operator_id');
+    }
 }

@@ -215,8 +215,7 @@
                             </select>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
+
                                 @if(auth()->user()->operator_id == null)
                                     <div class="form-group">
                                         <label>Operator</label>
@@ -230,8 +229,8 @@
                                 @else
                                     <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                                 @endif
-                            </div>
-                            <div class="col-md-6">
+
+
                                 @if(auth()->user()->operator_id == null)
                                     <div class="form-group">
                                         <label for="name">Operation Area</label>
@@ -250,8 +249,7 @@
                                         </select>
                                     </div>
                                 @endif
-                            </div>
-                        </div>
+
 
                         <div class="form-group">
                             <label for="name">Amount</label>
@@ -309,8 +307,8 @@
                             </select>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
+
+
                                 @if(auth()->user()->operator_id == null)
                                     <div class="form-group">
                                         <label>Operator</label>
@@ -324,8 +322,8 @@
                                 @else
                                     <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
                                 @endif
-                            </div>
-                            <div class="col-md-6">
+
+
                                 @if(auth()->user()->operator_id == null)
                                     <div class="form-group">
                                         <label for="name">Operation Area</label>
@@ -344,8 +342,7 @@
                                         </select>
                                     </div>
                                 @endif
-                            </div>
-                        </div>
+
 
                         <div class="form-group">
                             <label for="name">Amount</label>

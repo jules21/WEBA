@@ -131,6 +131,7 @@
                     <tr>
                         <th>#</th>
                         <th>Water Network Type</th>
+                        <th>Operator</th>
                         <th>Operation Area</th>
                         <th>Unit Price</th>
                         @if(auth()->user()->operator_id)
@@ -144,6 +145,7 @@
                         <tr>
                             <td>{{++$key}}</td>
                             <td>{{$bill->waterNetworkType->name ?? ''}}</td>
+                            <td>{{$bill->operator->name ?? ''}}</td>
                             <td>{{$bill->operationArea->name ?? ''}}</td>
                             <td>{{$bill->unit_price}}</td>
                             @if(auth()->user()->operator_id)
@@ -204,16 +206,40 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="operation_area_id">Operation Area</label>
-                            <select name="operation_area_id" id="operation_area_id" class="form-control" required>
-                                <option value="">Please Select Operation Area</option>
-                                @foreach(App\Models\OperationArea::query()->get() as $area)
-                                    <option value="{{$area->id}}">{{$area->name}}</option>
-                                @endforeach
+                        @if(auth()->user()->operator_id == null)
+                            <div class="form-group">
+                                <label>Operator</label>
+                                <select name="operator_id" class="form-control select2" style="width: 100% !important;">
+                                    <option value="">Select Operator</option>
+                                    @foreach($operators as $operator)
+                                        <option value="{{$operator->id}}">{{$operator->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @else
+                            <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
+                        @endif
 
-                            </select>
-                        </div>
+                        @if(auth()->user()->operator_id == null)
+                            <div class="form-group">
+                                <label for="name">Operation Area</label>
+                                <select type="text" name="operation_area_id" id="operation_area_id"
+                                        class="form-control">
+                                    <option value="">Please Select Operation Area</option>
+                                </select>
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <label for="name">Operation Area</label>
+                                <select type="text" name="operation_area_id" id="operation_area_id"
+                                        class="form-control">
+                                    <option value="">Please Select Operation Area</option>
+                                    @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                        <option value="{{$area->id}}">{{$area->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
 
                         <div class="form-group">
                             <label for="unit_price">Unit Price</label>
@@ -262,15 +288,40 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="water_network_type_id">Operation Area</label>
-                            <select name="operation_area_id" id="edit_operation_area_id" class="form-control" required>
-                                <option value="">Please Select Operation Area</option>
-                                @foreach(App\Models\OperationArea::all() as $area)
-                                    <option value="{{$area->id}}">{{$area->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @if(auth()->user()->operator_id == null)
+                            <div class="form-group">
+                                <label>Operator</label>
+                                <select name="operator_id" class="form-control select2" style="width: 100% !important;" id="edit_operator_id">
+                                    <option value="">Select Operator</option>
+                                    @foreach($operators as $operator)
+                                        <option value="{{$operator->id}}">{{$operator->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @else
+                            <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
+                        @endif
+
+                        @if(auth()->user()->operator_id == null)
+                            <div class="form-group">
+                                <label for="name">Operation Area</label>
+                                <select type="text" name="operation_area_id" id="edit_operation_area_id"
+                                        class="form-control">
+                                    <option value="">Please Select Operation Area</option>
+                                </select>
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <label for="name">Operation Area</label>
+                                <select type="text" name="operation_area_id" id="edit_operation_area_id"
+                                        class="form-control">
+                                    <option value="">Please Select Operation Area</option>
+                                    @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                        <option value="{{$area->id}}">{{$area->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
 
                         <div class="form-group">
                             <label for="unit_price">Unit Price</label>
@@ -404,6 +455,28 @@
 
         $('#exampleModal').on('hidden.bs.modal', function (e) {
             $('#BillId').val(0);
+        });
+
+        $(document).ready(function () {
+            $('select[name="operator_id"]').on('change', function () {
+                var OperatorId = $(this).val();
+                // alert(OperatorId);
+                if (OperatorId) {
+                    $.ajax({
+
+                        url: '/admin/settings/operation_areas/' + OperatorId,
+                        type: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                            // alert(data);
+                            $('select[name="operation_area_id"]').empty();
+                            $.each(data, function (key, value) {
+                                $('select[name="operation_area_id"]').append('<option value="' + value.id + '">' + value.name + '</option>');
+                            })
+                        }
+                    })
+                }
+            });
         });
 
     </script>
