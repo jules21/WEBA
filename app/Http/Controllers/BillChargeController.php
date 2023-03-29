@@ -9,6 +9,8 @@ use App\Models\OperationArea;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
+use App\Exports\BillChargeExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BillChargeController extends Controller
 {
@@ -143,5 +145,9 @@ class BillChargeController extends Controller
             ->get();
 
         return response()->json($operation_areas);
+    }
+
+    public function export(){
+        return Excel::download(new BillChargeExport(), 'bill-charges.xlsx');
     }
 }
