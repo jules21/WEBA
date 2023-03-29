@@ -47,6 +47,7 @@ class PaymentController extends Controller
                 $data["account_name"] = $paymentMapping->account->account_name;
                 $data["account_number"] = $paymentMapping->account->account_number;
                 $data["currency"] = "RWF";
+                $data["status"] = "Active";
                 $data["accept_partial"] = false;
                 $data["issue_date"] = $declaration->created_at;
                 return response()->json([
@@ -82,6 +83,7 @@ class PaymentController extends Controller
                     $data["account_name"] = $paymentMapping->account->account_name;
                     $data["account_number"] = $paymentMapping->account->account_number;
                     $data["currency"] = "RWF";
+                    $data["status"] = "Active";
                     $data["accept_partial"] = true;
                     $data["issue_date"] = optional($billing->created_at)->format('Y-m-d');
                     return response()->json([
