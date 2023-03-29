@@ -52,7 +52,7 @@
         <div class="card-body">
             <!--begin: Datatable-->
             <div class="table-responsive">
-                {{ $dataTable->table() }}
+                {{ $dataTable->table(['class' => 'table table-head-custom border table-head-solid table-hover'], true) }}
             </div>
 
         </div>
