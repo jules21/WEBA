@@ -6,6 +6,7 @@ use App\Http\Requests\StoreBillChargeRequest;
 use App\Http\Requests\UpdateBillChargeRequest;
 use App\Models\BillCharge;
 use App\Models\OperationArea;
+use App\Models\Operator;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,8 +27,9 @@ class BillChargeController extends Controller
         $operation_area_id = request('operation_area_id');
         $water_network_type_id = request('water_network_type_id');
 
+        $operators  = Operator::all();
 
-        $bills = BillCharge::with('waterNetworkType', 'operationArea')
+        $bills = BillCharge::with('waterNetworkType', 'operationArea','operator')
             ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
                 $builder->whereDate('created_at', '>=', $startDate);
             })
@@ -42,7 +44,7 @@ class BillChargeController extends Controller
             })
             ->orderBy('id', 'DESC')
             ->get();
-        return view('admin.settings.bill_charges', compact('bills'));
+        return view('admin.settings.bill_charges', compact('bills','operators'));
     }
 
     /**
@@ -67,6 +69,7 @@ class BillChargeController extends Controller
         $bill->water_network_type_id = $request->water_network_type_id;
         $bill->operation_area_id = $request->operation_area_id;
         $bill->unit_price = $request->unit_price;
+        $bill->operator_id = $request->operator_id;
         $bill->save();
         return redirect()->back()->with('success', 'Bill Charge Created Successfully');
     }
@@ -106,6 +109,7 @@ class BillChargeController extends Controller
         $bill->water_network_type_id = $request->water_network_type_id;
         $bill->operation_area_id = $request->operation_area_id;
         $bill->unit_price = $request->unit_price;
+        $bill->operator_id = $request->operator_id;
         $bill->save();
         return redirect()->back()->with('success', 'Bill Charge Updated Successfully');
     }
@@ -145,6 +149,11 @@ class BillChargeController extends Controller
             ->get();
 
         return response()->json($operation_areas);
+    }
+
+    public function loadAreaOperation($id){
+        $areas = OperationArea::where('operator_id',$id)->get();
+        return response()->json($areas);
     }
 
     public function export(){

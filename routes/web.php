@@ -307,6 +307,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/bill_charge/store', [App\Http\Controllers\BillChargeController::class, 'store'])->name('bill.charge.store');
         Route::post('/bill_charge/update', [App\Http\Controllers\BillChargeController::class, 'update'])->name('bill.charge.edit');
         Route::get('/bill_charge/delete/{id}', [App\Http\Controllers\BillChargeController::class, 'destroy'])->name('bill.charge.delete');
+        Route::get('/operation_areas/{id}', [App\Http\Controllers\BillChargeController::class, 'loadAreaOperation']);
         Route::get('/export_bill_charges/', [App\Http\Controllers\BillChargeController::class, 'export'])->name('export.bill.charges');
 
         Route::get('/operation-areas/by-water-network-type', [App\Http\Controllers\BillChargeController::class, 'loadAreaOperationAreas'])->name('bill-charge.load-area-operation-areas');
