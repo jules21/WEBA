@@ -354,6 +354,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/{payment_declaration}/history', [App\Http\Controllers\PaymentDeclarationController::class, 'history'])->name('history');
     });
 
+    //    audits routes
+    Route::group(['prefix' => 'audits'], function () {
+        Route::get('/audits', [\App\Http\Controllers\AuditingController::class, 'index'])->name('audits.index');
+        Route::get('/audits-from/{start}/to/{end}', [\App\Http\Controllers\AuditingController::class,'customAudits'])->name('audits.custom');
+    });
+
 });
 
 
