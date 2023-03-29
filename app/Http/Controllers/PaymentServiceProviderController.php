@@ -16,7 +16,7 @@ class PaymentServiceProviderController extends Controller
     {
         //
         if (auth()->user()->can("Manage banks")) {
-            $banks = PaymentServiceProvider::query()->orderBy('created_at','desc')->get();
+            $banks = PaymentServiceProvider::query()->orderBy('created_at', 'desc')->get();
             return view('admin.settings.payment_service_provider', compact('banks'));
         }
         abort(403, 'Unauthorized action.');
@@ -59,14 +59,19 @@ class PaymentServiceProviderController extends Controller
         return redirect()->back()->with('success', 'Bank added successfully');
     }
 
-    public function deleteBank(Request $request)
+    public function deleteBank($bankId)
     {
-        $bank = PaymentServiceProvider::find($request->id);
-        $bank->delete();
-        return redirect()->back()->with('success', 'Bank deleted successfully');
+        try {
+            $bank = PaymentServiceProvider::find($bankId);
+            $bank->delete();
+            return redirect()->back()->with('success', 'Bank deleted successfully');
+        } catch (\Exception $exception) {
+            return redirect()->back()->with('error', 'Bank cannot be deleted it has been used');
+        }
+
     }
 
-    public function updateBank(Request $request,$bankId)
+    public function updateBank(Request $request, $bankId)
     {
         $bank = PaymentServiceProvider::find($bankId);
         $bank->name = $request->name;

@@ -580,7 +580,7 @@
                                 <span class="menu-text">System Settings Management</span>
                             </span>
                     </li>
-                    @can('Manage Banks')
+                    @can('Manage banks')
                         <li class="menu-item nav-banks" aria-haspopup="true">
                             <a href="{{ route('admin.banks') }}" class="menu-link">
                                 <i class="menu-bullet menu-bullet-dot">
