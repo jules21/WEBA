@@ -77,6 +77,7 @@ class PaymentController extends Controller
                     $data = $this->getArr($paymentMapping, $data);
                     $data["issue_date"] = optional($billing->created_at)->format('Y-m-d');
                     $data["due_date"] = optional($billing->created_at)->format('Y-m-d');
+                    $data=array_merge($data,  $this->getArr($paymentMapping, $data, false));
                     return response()->json([
                         'response' => 'Payment reference found',
                         'responsecode' => 201,
