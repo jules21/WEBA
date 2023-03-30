@@ -58,13 +58,26 @@
                     </div>
                     <div class="col-md-3">
                         <label for="water_network_type_id">
+                            Operator
+                        </label>
+                        <select name="operator_id" id="operator_id" class="form-control select2">
+                            <option value="">Please Select Operator</option>
+                            @foreach($operators ?? [] as $operator)
+                                <option
+                                    value="{{$operator->id}}" {{request('operator_id') == $operator->id ? 'selected' : ''}}>{{$operator->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="water_network_type_id">
                             Operation Area
                         </label>
-                        <select name="operation_area_id" id="operation_area_id" class="form-control">
-                            <option value="">Please Select Operation Area</option>
-                            @foreach(App\Models\OperationArea::all() as $area)
+                        <select name="operation_area_id" id="operation_area_id" class="form-control select2"
+                                data-placeholder="Select Operation Area" multiple="multiple">
+{{--                            <option value="">Please Select Operation Area</option>--}}
+                            @foreach($operationAreas ?? [] as $area)
                                 <option
-                                    value="{{$area->id}}" {{request('operation_area_id') == $area->id ? 'selected' : ''}}>{{$area->name}}</option>
+                                    value="{{$area->id}}" {{request()->get('operation_area_id') == $area ? 'selected' : '' }}>{{$area->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -131,7 +144,9 @@
                     <tr>
                         <th>#</th>
                         <th>Water Network Type</th>
-                        <th>Operator</th>
+                        @if(auth()->user()->is_super_admin)
+                            <th>Operator</th>
+                        @endif
                         <th>Operation Area</th>
                         <th>Unit Price</th>
                         @if(auth()->user()->operator_id)
@@ -145,7 +160,9 @@
                         <tr>
                             <td>{{++$key}}</td>
                             <td>{{$bill->waterNetworkType->name ?? ''}}</td>
-                            <td>{{$bill->operator->name ?? ''}}</td>
+                            @if(auth()->user()->is_super_admin)
+                                <td>{{$bill->operator->name ?? ''}}</td>
+                            @endif
                             <td>{{$bill->operationArea->name ?? ''}}</td>
                             <td>{{$bill->unit_price}}</td>
                             @if(auth()->user()->operator_id)

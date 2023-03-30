@@ -26,9 +26,11 @@ class BillChargeController extends Controller
         $endDate = request('end_date');
         $operation_area_id = request('operation_area_id');
         $water_network_type_id = request('water_network_type_id');
+        $operator_id = request('operator_id');
 
         $operators  = Operator::all();
-
+        $user = auth()->user();
+        $operationAreas = $user->operator_id;
         $bills = BillCharge::with('waterNetworkType', 'operationArea','operator')
             ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
                 $builder->whereDate('created_at', '>=', $startDate);
@@ -42,9 +44,12 @@ class BillChargeController extends Controller
             ->when(!empty($water_network_type_id), function (Builder $builder) use ($water_network_type_id) {
                 $builder->where('water_network_type_id', $water_network_type_id);
             })
+            ->when(!empty($operator_id), function (Builder $builder) use ($operator_id) {
+                $builder->where('operator_id', $operator_id);
+            })
             ->orderBy('id', 'DESC')
             ->get();
-        return view('admin.settings.bill_charges', compact('bills','operators'));
+        return view('admin.settings.bill_charges', compact('bills','operators','operationAreas'));
     }
 
     /**
