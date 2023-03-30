@@ -32,7 +32,7 @@
         <div class="card card-body mb-3">
             <h3 class="mb-6">{{$customer->name}} Connections</h3>
             <div class="table-responsive">
-                <table class="table table-head-custom table-head-solid table-hover">
+                    <table class="table table-head-custom table-head-solid table-hover">
                     <thead>
                     <tr>
                         <th>Subscription Number</th>
@@ -47,11 +47,6 @@
                         <tr>
                             <td>{{ $item->subscription_number }}</td>
                             <td>{{ $item->meter_number }}</td>
-{{--                            <td>{{ optional(optional($item->request)->province)->name ?? '-' }}</td>--}}
-{{--                            <td>{{ optional(optional($item->request)->district)->name ?? '-' }}</td>--}}
-{{--                            <td>{{ optional(optional($item->request)->sector)->name ?? '-' }}</td>--}}
-{{--                            <td>{{ optional(optional($item->request)->cell)->name ?? '-' }}</td>--}}
-
                             <td>
                                 <span class="label label-lg font-weight-bold label-light-primary label-inline">{{ optional(optional($item->request)->province)->name ?? '-'  }}
                                 - {{ optional(optional($item->request)->district)->name ?? '-' }}
