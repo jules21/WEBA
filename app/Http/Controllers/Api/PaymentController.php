@@ -38,6 +38,7 @@ class PaymentController extends Controller
                 $data["rura_ref_no"] = $referenceNumber;
                 $payment = $declaration->paymentConfig->paymentType->name;
                 $data["payment_type"] = $payment;
+                $data["license"] = $payment;
                 $data["total_amount"] = $declaration->amount;
                 $data["balance"] = $declaration->balance;
                 $data["applicant"] = $declaration->request->customer->name;
@@ -46,8 +47,10 @@ class PaymentController extends Controller
                 $data["account_name"] = $paymentMapping->account->account_name;
                 $data["account_number"] = $paymentMapping->account->account_number;
                 $data["currency"] = "RWF";
+                $data["status"] = "Active";
                 $data["accept_partial"] = false;
                 $data["issue_date"] = $declaration->created_at;
+                $data["due_date"] = optional($declaration->created_at)->format('Y-m-d');
                 return response()->json([
                     'response' => 'Payment reference found',
                     'responsecode' => 201,
@@ -72,6 +75,7 @@ class PaymentController extends Controller
                     $data["rura_ref_no"] = $referenceNumber;
                     $payment = $paymentConfiguration->paymentType->name;
                     $data["payment_type"] = $payment;
+                    $data["license"] = $payment;
                     $data["total_amount"] = $totalAmount;
                     $data["balance"] = $totalAmount;
                     $data["applicant"] = $meterRequest->request->customer->name;
@@ -80,8 +84,10 @@ class PaymentController extends Controller
                     $data["account_name"] = $paymentMapping->account->account_name;
                     $data["account_number"] = $paymentMapping->account->account_number;
                     $data["currency"] = "RWF";
+                    $data["status"] = "Active";
                     $data["accept_partial"] = true;
                     $data["issue_date"] = optional($billing->created_at)->format('Y-m-d');
+                    $data["due_date"] = optional($billing->created_at)->format('Y-m-d');
                     return response()->json([
                         'response' => 'Payment reference found',
                         'responsecode' => 201,
