@@ -65,6 +65,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::delete('/delete/{operator}', [OperatorController::class, 'destroy'])->name('delete');
         Route::get('/show/{operator}', [OperatorController::class, 'show'])->name('show');
         Route::get("/operator-details", [OperatorController::class, 'operatorDetails'])->name('details');
+        Route::get('/{operator}/details-page', [OperatorController::class, 'details'])->name('details-page');
 
         Route::get("/{operator}/operation-areas", [AreaOfOperationController::class, 'index'])->name('area-of-operation.index');
         Route::post("/{operator}/operation-areas", [AreaOfOperationController::class, 'store'])->name('area-of-operation.store');
