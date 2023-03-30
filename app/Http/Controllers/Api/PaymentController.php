@@ -67,6 +67,8 @@ class PaymentController extends Controller
                 } else {
                     $totalAmount = Billing::query()
                         ->where('subscription_number', $referenceNumber)->sum('balance');
+                    $data=[];
+                    $data = $this->getArr($paymentMapping, $data);
                     $data["rura_ref_no"] = $referenceNumber;
                     $payment = $paymentConfiguration->paymentType->name;
                     $data["payment_type"] = $payment;
@@ -74,7 +76,7 @@ class PaymentController extends Controller
                     $data["total_amount"] = $totalAmount;
                     $data["balance"] = $totalAmount;
                     $data["applicant"] = $meterRequest->request->customer->name;
-                    $data = $this->getArr($paymentMapping, $data);
+
                     $data["issue_date"] = optional($billing->created_at)->format('Y-m-d');
                     $data["due_date"] = optional($billing->created_at)->format('Y-m-d');
                     $data=array_merge($data,  $this->getArr($paymentMapping, $data, false));
