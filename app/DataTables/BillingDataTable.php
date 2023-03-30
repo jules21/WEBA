@@ -98,7 +98,7 @@ class BillingDataTable extends DataTable
                     ->setTableId('billing-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy(9, 'desc');
+                    ->orderBy(10, 'desc');
 
     }
 
