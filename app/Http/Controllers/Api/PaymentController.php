@@ -130,7 +130,7 @@ class PaymentController extends Controller
                 $history->amount = $amount;
                 $history->psp_reference_number = $bank_txn_ref;
                 $history->narration = $narration;
-                $history->payment_date;
+                $history->payment_date=now();
                 $history->payment_mapping_id = $paymentMapping->id;
                 $history->save();
                 if ($declaration->balance == $amount) {
@@ -163,6 +163,7 @@ class PaymentController extends Controller
                 $history->bank_reference_number = $bank_txn_ref;
                 $history->narration = $narration;
                 $history->payment_mapping_id = $paymentMapping->id;
+                $history->payment_date=now();
                 $history->save();
                 $billing = Billing::where('subscription_number', $referenceNumber)
                     ->where("balance", '>', 0)->get();
