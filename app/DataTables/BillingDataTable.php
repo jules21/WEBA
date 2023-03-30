@@ -114,9 +114,11 @@ class BillingDataTable extends DataTable
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
             Column::make('operator_name')
+                ->name('meterRequest.request.operator.name')
                 ->title("Operator Name")
                 ->addClass('text-center'),
             Column::make('customer_name')
+                ->name('meterRequest.request.customer.name')
                 ->title("Customer Name")
                 ->addClass('text-center'),
             Column::make('meter_number')

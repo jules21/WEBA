@@ -115,9 +115,7 @@ class BillingController extends Controller
             $query->whereDate('created_at', '<=', request()->to_date);
         });
 
-
-
-
+        //export
         if (request()->is_download == true && !\request()->ajax()) {
             return $this->exportBilling($query->get());
         }

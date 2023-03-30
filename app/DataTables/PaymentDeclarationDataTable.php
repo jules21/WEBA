@@ -108,9 +108,11 @@ class PaymentDeclarationDataTable extends DataTable
         return [
             Column::make('operation')
                 ->title('Operation')
+                ->name('request.operator.name')
                 ->addClass('text-center'),
             Column::make('customer')
             ->title('Customer')
+            ->name('request.customer.name')
             ->addClass('text-center'),
             Column::make('request_type')
                 ->title('Request Type')
