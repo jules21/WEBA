@@ -24,6 +24,7 @@ class OperatorController extends Controller
     {
         $startDate = request('start_date');
         $endDate = request('end_date');
+        $districtId = request('district_id');
 
         $data = Operator::with(['legalType'])
             ->when($startDate, function ($query) use ($startDate) {
@@ -31,6 +32,9 @@ class OperatorController extends Controller
             })
             ->when($endDate, function ($query) use ($endDate) {
                 return $query->whereDate('created_at', '<=', $endDate);
+            })
+            ->when($districtId, function ($query) use ($districtId) {
+                return $query->where('district_id', $districtId);
             })
             ->withCount('operationAreas');
 
@@ -222,7 +226,8 @@ class OperatorController extends Controller
         $now = now()->format('Y-m-d-H-i-s');
         $startDate = request('start_date');
         $endDate = request('end_date');
-        return (new OperatorsExport($startDate, $endDate))
+        $districtId = request('district_id');
+        return (new OperatorsExport($startDate, $endDate,$districtId))
             ->download('operators-' . $now . '.xlsx');
     }
 

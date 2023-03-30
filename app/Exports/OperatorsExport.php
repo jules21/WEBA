@@ -15,17 +15,19 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class OperatorsExport implements FromQuery, ShouldAutoSize, WithMapping, WithTitle, WithHeadings,WithStyles
+class OperatorsExport implements FromQuery, ShouldAutoSize, WithMapping, WithTitle, WithHeadings, WithStyles
 {
     use Exportable;
 
-    private string $startDate;
-    private string $endDate;
+    private ?string $startDate;
+    private ?string $endDate;
+    private ?string $districtId;
 
-    public function __construct(string $startDate, string $endDate)
+    public function __construct(?string $startDate, ?string $endDate, ?int $districtId)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->districtId = $districtId;
     }
 
     public function ShouldAutoSize(): bool
@@ -42,9 +44,16 @@ class OperatorsExport implements FromQuery, ShouldAutoSize, WithMapping, WithTit
     public function query()
     {
         return Operator::query()
-            ->with(['legalType','province','district','sector','cell'])
-            ->whereDate('created_at', '>=', $this->startDate)
-            ->whereDate('created_at', '<=', $this->endDate);
+            ->with(['legalType', 'province', 'district', 'sector', 'cell'])
+            ->when($this->startDate, function ($query) {
+                return $query->whereDate('created_at', '>=', $this->startDate);
+            })
+            ->when($this->endDate, function ($query) {
+                return $query->whereDate('created_at', '<=', $this->endDate);
+            })
+            ->when($this->districtId, function ($query) {
+                return $query->where('district_id', $this->districtId);
+            });
     }
 
     public function headings(): array
@@ -84,10 +93,9 @@ class OperatorsExport implements FromQuery, ShouldAutoSize, WithMapping, WithTit
     {
         return [
             // Style the first row as bold text.
-            1    => ['font' => ['bold' => true]],
+            1 => ['font' => ['bold' => true]],
         ];
     }
-
 
 
 }
