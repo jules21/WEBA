@@ -28,9 +28,12 @@ class PaymentController extends Controller
             //check if reference number is valid
             $declaration = PaymentDeclaration::query()
                 ->where("payment_reference", $referenceNumber)
-                ->where("balance", '>', 0)
                 ->first();
             if ($declaration) {
+                if($declaration->balance == 0){
+                    return $this->errorResponse("Payment is already paid");
+                }
+
                 $paymentMapping = $this->getMapping($declaration, $bankId);
                 if (!$paymentMapping) {
                     return $this->errorResponse("Payment is not allowed for this bank");
@@ -58,7 +61,6 @@ class PaymentController extends Controller
         } else {
             $billing = Billing::where('subscription_number', $referenceNumber)
                 ->where("balance", '>', 0)->first();
-
             if ($billing) {
                 $meterRequest = $billing->meterRequest;
                 list($paymentConfiguration, $paymentMapping) = $this->getBillPaymentMapping($meterRequest, $bankId);
@@ -123,10 +125,12 @@ class PaymentController extends Controller
         if (strpos($referenceNumber, 'CMS') !== false) {
             $declaration = PaymentDeclaration::query()
                 ->where("payment_reference", $referenceNumber)
-                ->where("balance", '>', 0)
                 ->whereIn("status", [PaymentDeclaration::ACTIVE, PaymentDeclaration::PARTIALLY_PAID])
                 ->first();
             if ($declaration) {
+                if($declaration->balance < $amount){
+                    return $this->errorResponse("Amount paid is greater than the balance");
+                }
                 $paymentMapping = $this->getMapping($declaration, $bankId);
                 $history = new PaymentHistory();
                 $history->payment_declaration_id = $declaration->id;
@@ -154,8 +158,7 @@ class PaymentController extends Controller
                 return $this->errorResponse("Payment reference not found");
             }
         } else {
-            $billing = Billing::where('subscription_number', $referenceNumber)
-                ->where("balance", '>', 0)->first();
+            $billing = Billing::where('subscription_number', $referenceNumber)->first();
             if ($billing) {
                 $meterRequest = $billing->meterRequest;
                 list($paymentConfiguration, $paymentMapping) = $this->getBillPaymentMapping($meterRequest, $bankId);
