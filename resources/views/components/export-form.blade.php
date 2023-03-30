@@ -37,21 +37,24 @@
         </div>
 
 
-        <div class="btn-group">
-            <button type="submit"
-                    class="btn btn-primary  mr-3 font-weight-bolder border-0  rounded">
-                <i class="la la-search"></i>
-                Filter
-            </button>
-            <a href="{!! $exportLink !!}" target="_blank"
-               class="btn btn-light-primary  mr-3 font-weight-bolder border-0  rounded">
-                <i class="la la-download"></i>
-                Export
-            </a>
-            <a href="{{ $action }}" class="btn btn-outline-dark font-weight-bolder rounded">
-                Clear Search
-            </a>
-        </div>
+      <div class="d-flex justify-content-between">
+          <div class="btn-group">
+              <button type="submit"
+                      class="btn btn-primary  mr-3 font-weight-bolder border-0  rounded">
+                  <i class="la la-search"></i>
+                  Filter
+              </button>
+              <a href="{{ $action }}" class="btn btn-outline-dark font-weight-bolder rounded">
+                  Clear Search
+              </a>
+          </div>
+
+          <a href="{!! $exportLink !!}" target="_blank"
+             class="btn btn-light-primary font-weight-bolder border-0  rounded">
+              <i class="la la-download"></i>
+              Export
+          </a>
+      </div>
     </form>
 </div>
 
