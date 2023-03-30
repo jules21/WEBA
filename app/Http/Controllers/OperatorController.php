@@ -64,11 +64,15 @@ class OperatorController extends Controller
 
 
                     return '<div class="dropdown">
-                                 <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                 <button class="btn btn-light-primary rounded-sm btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                     Options
                                  </button>
                                  <div class="dropdown-menu border">
                                         ' . $opAreaBtn . '
+                                        <a class="dropdown-item" href="' . route('admin.operator.details-page', encryptId($row->id)) . '">
+                                         <i class="fas fa-info-circle "></i>
+                                         <span class="ml-2">Details</span>
+                                     </a>
                                      <a class="dropdown-item js-edit"
                                       data-address="' . $row->address . '"
                                       data-logo="' . $row->logo_url . '"
@@ -77,6 +81,7 @@ class OperatorController extends Controller
                                          <span class="ml-2">Edit</span>
                                      </a>
                                         ' . $deleteBtn . '
+
                                  </div>
                             </div>';
                 })
@@ -219,6 +224,14 @@ class OperatorController extends Controller
         $endDate = request('end_date');
         return (new OperatorsExport($startDate, $endDate))
             ->download('operators-' . $now . '.xlsx');
+    }
+
+    public function details(Operator $operator)
+    {
+        $operator->load('province', 'district', 'sector', 'cell', 'village', 'legalType','operationAreas.district');
+        return view('admin.operator.details', [
+            'operator' => $operator
+        ]);
     }
 
 }
