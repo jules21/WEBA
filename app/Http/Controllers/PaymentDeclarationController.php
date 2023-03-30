@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\DataTables\PaymentDeclarationDataTable;
 use App\Exports\PaymentExport;
+use App\Models\OperationArea;
+use App\Models\Operator;
 use App\Models\PaymentDeclaration;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -16,6 +18,9 @@ class PaymentDeclarationController extends Controller
      */
     public function index()
     {
+        $operator_id = request()->operator_id;
+        $operation_area_id = request()->operation_area_id;
+
         $user = auth()->user();
         $query = PaymentDeclaration::with(['request.requestType', 'request.operator', 'request.operator.operationAreas', 'request.customer', 'paymentConfig', 'paymentConfig.paymentType']);
         $query->when($user->operationArea && $user->operationArea->id,
@@ -34,14 +39,21 @@ class PaymentDeclarationController extends Controller
                 $query->where('operator_id', $user->operator->id);
             });
         });
+
+        //operator_id
+        $query->when((request()->has('operator_id') && request()->filled('operator_id'))
+            , function ($query) {
+                    $query->whereHas('request', function ($query) {
+                        $query->where('operator_id', request()->operator_id);
+                    });
+            });
         //operation_area_id
         $query->when((request()->has('operation_area_id') && request()->filled('operation_area_id'))
             , function ($query) {
-                $query->whereHas('meterRequest', function ($query) {
                     $query->whereHas('request', function ($query) {
                         $query->whereIn('operation_area_id', request()->operation_area_id);
                     });
-                });
+
             });
         //reference_number
         $query->when((request()->has('reference_number') && request()->filled('reference_number'))
@@ -84,10 +96,20 @@ class PaymentDeclarationController extends Controller
 
         $datatable = new PaymentDeclarationDataTable($query);
 
-        return $datatable->render('admin.payments.declarations');
+        return $datatable->render('admin.payments.declarations',
+            [
+                'operators' => Operator::query()->get(),
+                'operationAreas' => $user->operator_id ?
+                    OperationArea::query()->where('operator_id', $user->operator_id)->get()
+                    : [],
+                'operator_id' => $operator_id,
+                'operation_area_id' => $operation_area_id,
+            ]
+        );
     }
     public function history(PaymentDeclaration $paymentDeclaration)
     {
+        $paymentDeclaration->load('paymentHistories', 'paymentHistories.paymentDeclaration');
 
         $histories = $paymentDeclaration->paymentHistories;
         return view('admin.payments.histories', compact('paymentDeclaration', 'histories'));

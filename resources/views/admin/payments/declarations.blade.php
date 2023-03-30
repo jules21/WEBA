@@ -80,11 +80,11 @@
                             @unless(Helper::isOperator())
                                 <div class="col-md-3 form-group">
                                     <label for="operator">Operator</label>
-                                    <select name="operator_id[]" id="operator" class="form-control select2"
-                                            data-placeholder="Select Operator" multiple="multiple">
-                                        {{--                                    <option value="">Select Operator</option>--}}
+                                    <select name="operator_id" id="operator" class="form-control select2"
+                                            data-placeholder="Select Operator">
+                                        <option value="">Select Operator</option>
                                         @foreach($operators ?? [] as $operator)
-                                            <option value="{{ $operator->id }}">{{ $operator->name }}</option>
+                                            <option value="{{ $operator->id }}" {{request()->get('operator_id') == $operator->id ? 'selected' : ''}}>{{ $operator->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -164,32 +164,72 @@
 @section('scripts')
     {{$dataTable->scripts()}}
     <script>
-        $('.nav-payments').addClass('menu-item-active');
-        $(document).on("click","#excel", function(e) {
-            var url = "{!! $newUrl !!}";
-            $(this).attr("href",url);
-        });
-        $(document).on('change', '#operator', function (e) {
-            e.preventDefault();
-            let operatorId = $(this).val();
+        $(document).ready(function (){
+            $('.nav-payments').addClass('menu-item-active');
+            initData();
+            $(document).on("click","#excel", function(e) {
+                var url = "{!! $newUrl !!}";
+                $(this).attr("href",url);
+            });
+            $(document).on('change', '#operator', function (e) {
+                e.preventDefault();
+                let operatorId = $(this).val();
+                if (operatorId !== '') {
+                    getOperationArea(operatorId);
+                }
+                else {
+                    $('#operation_area').empty();
+                    $('#operation_area').append('<option value="">Select Operation Area</option>');
+                }
+            });
+            $(document).on('change','#operation_area',function (e) {
+                e.preventDefault();
+                let operationAreaId = $(this).val();
+                if (operationAreaId !== '') {
+                    getCustomerFieldOfficer(operationAreaId);
+                }
+                else {
+                    $('#customer_field_officer').empty();
+                    $('#customer_field_officer').append('<option value="">Select Customer Field Officer</option>');
+                }
+            });
+        })
+        const initData = () => {
+            const operatorId = "{{ request()->get('operator_id') ? request()->get('operator_id') : '' }}";
+            const operationAreaId = @json($operation_area_id);
             if (operatorId !== '') {
                 getOperationArea(operatorId);
             }
-            else {
-                $('#operation_area').empty();
-                $('#operation_area').append('<option value="">Select Operation Area</option>');
-            }
-        });
-        $(document).on('change','#operation_area',function (e) {
-            e.preventDefault();
-            let operationAreaId = $(this).val();
-            if (operationAreaId !== '') {
+            if (operationAreaId !== '' && operationAreaId !== null) {
                 getCustomerFieldOfficer(operationAreaId);
             }
-            else {
-                $('#customer_field_officer').empty();
-                $('#customer_field_officer').append('<option value="">Select Customer Field Officer</option>');
+
+            if (operatorId !== '') {
+                $('#operator').val(operatorId).trigger('change');
             }
-        });
+
+        };
+        const getOperationArea = (operatorId) => {
+            const url = "{{ route('operator-operation-areas') }}";
+            const operationArea = @json($operation_area_id);
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {operator_id: operatorId},
+                success: function (data) {
+
+                    $('#operation_area').empty();
+                    $('#operation_area').append('<option value="">Select Operation Area</option>');
+                    $.each(data, function (key, value) {
+                        if (operationArea && operationArea.includes(value.id.toString())) {
+                            $('#operation_area').append('<option value="' + value.id + '" selected>' + value.name + '</option>');
+                        } else {
+                            $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        }
+                    });
+                    $('#operation_area').select2();
+                }
+            });
+        };
     </script>
 @endsection

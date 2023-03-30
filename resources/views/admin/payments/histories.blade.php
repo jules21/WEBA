@@ -17,7 +17,10 @@
                             <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a class="text-muted">Payment Histories</a>
+                            <a href="{{ route('admin.payments.index') }}" class="text-muted">Payments</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a class="text-success">Payment Histories</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -55,7 +58,8 @@
                             @forelse($histories as $history)
                                 <tr>
                                     <td>{{$history->paymentDeclaration->request->customer->name}}</td>
-                                    <td>{{optional(optional($history->paymentDeclaration->paymentConfig)->paymentType)->name}}</td>
+{{--                                    <td>{{optional(optional($history->paymentDeclaration->paymentConfig)->paymentType)->name}}</td>--}}
+                                    <td>{{$history->psp_reference_number}}</td>
                                     <td>{{$history->amount}}</td>
                                     <td>{{$history->payment_date}}</td>
                                     <td>{{$history->created_at->format('Y-m-d h:m:s')}}</td>
