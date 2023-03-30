@@ -132,6 +132,7 @@
 @section('scripts')
     {{$dataTable->scripts()}}
     <script>
+        $('.nav-payments').addClass('menu-item-active');
         $(document).on("click","#excel", function(e) {
             var url = "{!! $newUrl !!}";
             $(this).attr("href",url);

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\Purchase
@@ -54,14 +55,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Purchase whereTaxAmount($value)
  * @method static Builder|Purchase whereTaxNetAmount($value)
  * @method static Builder|Purchase whereTotal($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $movementDetails
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
  * @mixin Eloquent
  */
-class Purchase extends Model
+class Purchase extends Model implements Auditable
 {
-    use GetClassName, HasStatusColor;
+    use GetClassName, HasStatusColor, \OwenIt\Auditing\Auditable;
 
     const PENDING = "Pending";
     const SUBMITTED = "Submitted";

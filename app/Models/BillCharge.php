@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\BillCharge
@@ -28,9 +29,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\WaterNetworkType $waterNetworkType
  * @mixin \Eloquent
  */
-class BillCharge extends Model
+class BillCharge extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, \OwenIt\Auditing\Auditable;
 
     public function waterNetworkType(){
         return $this->belongsTo(WaterNetworkType::class,'water_network_type_id');

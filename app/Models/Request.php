@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 use ReflectionClass;
 use Storage;
 
@@ -122,13 +123,14 @@ use Storage;
  * s
  * @mixin Eloquent
  */
-class Request extends Model
+class Request extends Model implements Auditable
 {
     protected $appends = ['status_color', 'upi_attachment_url', 'total_qty', 'total_delivered'];
     use HasAddress;
     use HasStatusColor;
     use GetClassName;
     use HasEncryptId;
+    use \OwenIt\Auditing\Auditable;
 
 
     const PENDING = 'Pending';

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\StockMovement
@@ -53,8 +54,9 @@ use Illuminate\Support\Carbon;
  * @method static Builder|StockMovement whereVat($value)
  * @mixin Eloquent
  */
-class StockMovement extends Model
+class StockMovement extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     const StockOut = 'Stock Out';
     const StockIn = 'Stock In';
     const Adjustment = 'Adjustment';
