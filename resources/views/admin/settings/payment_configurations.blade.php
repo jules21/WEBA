@@ -79,7 +79,7 @@
                         <div class="form-group">
                             <label for="" style="visibility: hidden">Submit</label> <br>
                             <button type="submit" class="btn btn-primary rounded">
-                                Filter <i class="fa fa-filter"></i>
+                                <i class="la la-search"></i>Filter
                             </button>
                             <a href="{{route('admin.payment.configurations')}}" class="btn btn-outline-dark"> Clear search</a>
                             {{--                            <button id="reset" class="btn btn-outline-dark">clear search</button>--}}
