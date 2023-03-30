@@ -40,7 +40,7 @@
             </div>
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
-                    <label class="font-weight-bold">UPI Attchment</label>
+                    <label class="font-weight-bold">UPI Attachment</label>
                     <div>
                         <a href="{{ $request->upi_attachment_url }}" class="btn btn-sm btn-light-danger"
                            target="_blank">

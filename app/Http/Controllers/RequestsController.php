@@ -52,6 +52,7 @@ class RequestsController extends Controller
         $customerId = \request('cus_id');
         $startDate = \request('start_date');
         $endDate = \request('end_date');
+        $districtId = \request('district_id');
 
         $data = AppRequest::query()
             ->with(['customer', 'requestType', 'operator'])
@@ -64,6 +65,9 @@ class RequestsController extends Controller
             ->when(!is_null($startDate) && !is_null($endDate), function (Builder $query) use ($startDate, $endDate) {
                 return $query->whereDate('created_at', '>=', $startDate)
                     ->whereDate('created_at', '<=', $endDate);
+            })
+            ->when(!is_null($districtId), function (Builder $query) use ($districtId) {
+                return $query->where('district_id', '=', $districtId);
             })
             ->select('requests.*');
         if (request()->ajax()) {
@@ -539,9 +543,10 @@ class RequestsController extends Controller
     {
         $startDate = request('start_date');
         $endDate = request('end_date');
+        $districtId = request('district_id');
 
         $now = now()->format('Y-m-d-H-i-s');
-        return (new RequestsExport($startDate, $endDate))->download("requests_$now.xlsx");
+        return (new RequestsExport($startDate, $endDate, $districtId))->download("requests_$now.xlsx");
     }
 
 
