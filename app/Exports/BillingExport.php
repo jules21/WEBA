@@ -22,6 +22,7 @@ class BillingExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     public function headings(): array
     {
         return [
+            'Operator',
             'Customer Name',
             'Customer Phone',
             'Meter Number',
@@ -42,6 +43,7 @@ class BillingExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
         $data = collect();
         foreach ($this->data as $key => $bill) {
             $arr = array();
+            $arr[] = $bill->meterRequest->request->operator->name ?? '-';
             $arr[] = $bill->meterRequest->request->customer->name ?? '-';
             $arr[] = $bill->meterRequest->request->customer->phone ?? '-';
             $arr[] = $bill->meter_number ?? '-';
@@ -73,7 +75,7 @@ class BillingExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                $last_column = Coordinate::stringFromColumnIndex(12);
+                $last_column = Coordinate::stringFromColumnIndex(13);
                 $style_text_center = [
                     'alignment' => [
                         'horizontal' => Alignment::HORIZONTAL_CENTER

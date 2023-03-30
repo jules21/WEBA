@@ -361,8 +361,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     });
     Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
         Route::get('/', [App\Http\Controllers\PaymentDeclarationController::class, 'index'])->name('index');
-//        Route::get('/{payment}', [App\Http\Controllers\PaymentController::class, 'show'])->name('show');
-//        Route::get('/customer/{customer}', [App\Http\Controllers\PaymentController::class, 'customerPayments'])->name('customer');
         //payment history
         Route::get('/{payment_declaration}/history', [App\Http\Controllers\PaymentDeclarationController::class, 'history'])->name('history');
     });
