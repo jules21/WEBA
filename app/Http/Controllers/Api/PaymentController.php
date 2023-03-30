@@ -109,6 +109,7 @@ class PaymentController extends Controller
         $amount = $request->amount;
         $narration = $request->narration;
         $bankId = $request->bank_name;
+        $paymentDate = $request->payment_date;
 
         if ($referenceNumber == null || $bank_txn_ref == null || $amount == null || $narration == null || $bankId == null) {
             return $this->errorResponse("Payment reference number or bank id is missing");
@@ -130,7 +131,7 @@ class PaymentController extends Controller
                 $history->amount = $amount;
                 $history->psp_reference_number = $bank_txn_ref;
                 $history->narration = $narration;
-                $history->payment_date=now();
+                $history->payment_date=$paymentDate??now();
                 $history->payment_mapping_id = $paymentMapping->id;
                 $history->save();
                 if ($declaration->balance == $amount) {
@@ -163,7 +164,7 @@ class PaymentController extends Controller
                 $history->bank_reference_number = $bank_txn_ref;
                 $history->narration = $narration;
                 $history->payment_mapping_id = $paymentMapping->id;
-                $history->payment_date=now();
+                $history->payment_date=$paymentDate??now();
                 $history->save();
                 $billing = Billing::where('subscription_number', $referenceNumber)
                     ->where("balance", '>', 0)->get();
