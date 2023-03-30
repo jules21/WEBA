@@ -33,37 +33,6 @@
 @section('content')
         <div class="card shadow-none border">
             <div class="card-body">
-                <div class="d-flex justify-content-between mb-5">
-                    <h3 class="mb-3">
-                        @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
-                            {{ $customer->name ?? '' }}
-                        @else
-                            Customers
-                        @endif
-                        Payments</h3>
-                    <div class="card-toolbar">
-                        <!--begin::Dropdown-->
-                        <div class="dropdown dropdown-inline mr-2">
-                            {{--                            @if ($requests->count() > 0)--}}
-                            <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="la la-download"></i>Export</button>
-                            {{--                            @endif--}}
-                            <!--begin::Dropdown Menu-->
-                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                <ul class="nav flex-column nav-hover">
-                                    <li class="nav-item export-doc">
-                                        <a href="#" class="nav-link" target="_blank" id="excel">
-                                            <i class="nav-icon la la-file-excel-o"></i>
-                                            <span class="nav-text">Excel</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!--end::Dropdown Menu-->
-                        </div>
-                        <!--end::Dropdown-->
-                    </div>
-                </div>
                     <form action="#" id="filter-form">
                         <div class="row">
                             <div class="col-md-3">
@@ -138,15 +107,44 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary btn-sm mr-2">
-                                    <i class="fas fa-search"></i>
+                                <button type="submit" class="btn btn-primary mr-2">
+                                    <i class="la la-search"></i>
                                     Filter</button>
-                                <a href="{{route('admin.payments.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
+                                <a href="{{route('admin.payments.index')}}" class="btn btn-outline-dark"> clear search</a>
                             </div>
                         </div>
                     </form>
                     <hr>
 {{--                @endif--}}
+                <div class="d-flex justify-content-between mb-5">
+                    <h3 class="mb-3">
+                        @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
+                            {{ $customer->name ?? '' }}
+                        @else
+                            Customers
+                        @endif
+                        Payments</h3>
+                        <!--begin::Dropdown-->
+                        <div class="dropdown dropdown-inline mr-2">
+                            {{--                            @if ($requests->count() > 0)--}}
+                            <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="la la-download"></i>Export</button>
+                            {{--                            @endif--}}
+                            <!--begin::Dropdown Menu-->
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="nav flex-column nav-hover">
+                                    <li class="nav-item export-doc">
+                                        <a href="#" class="nav-link" target="_blank" id="excel">
+                                            <i class="nav-icon la la-file-excel-o"></i>
+                                            <span class="nav-text">Excel</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--end::Dropdown Menu-->
+                        </div>
+                        <!--end::Dropdown-->
+                </div>
                 <div class="table-responsive">
                     {{$dataTable->table(['class' => 'table table-head-custom border table-head-solid table-hover'])}}
                 </div>
