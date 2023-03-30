@@ -231,7 +231,7 @@ class PaymentController extends Controller
      * @param array $data
      * @return array
      */
-    public function getArr(PaymentMapping $paymentMapping, array $data, $acceptPartial = true): array
+    public function getArr(PaymentMapping $paymentMapping, array $data, $acceptPartial = true)
     {
         $data["service_provider"] = $paymentMapping->account->paymentServiceProvider->name;
         $data["account_name"] = $paymentMapping->account->account_name;
@@ -240,7 +240,7 @@ class PaymentController extends Controller
         $data["status"] = "Active";
         $data["accept_partial"] = $acceptPartial;
         $data["payment_status"] = "PENDING";
-        return $data;
+//        return $data;
     }
 
 }
