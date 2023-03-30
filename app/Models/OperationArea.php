@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\OperationArea
@@ -38,9 +39,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read int|null $chart_of_accounts_count
  * @mixin \Eloquent
  */
-class OperationArea extends Model
+class OperationArea extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, \OwenIt\Auditing\Auditable;
 
     public function resolveRouteBinding($value, $field = null)
     {

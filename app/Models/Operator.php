@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
 
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
+use OwenIt\Auditing\Contracts\Auditable;
 use Storage;
 
 
@@ -74,9 +75,9 @@ use Storage;
  * @property-read int|null $users_count
  * @mixin Eloquent
  */
-class Operator extends Model
+class Operator extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, \OwenIt\Auditing\Auditable;
 
     protected $appends = ['logo_url'];
 

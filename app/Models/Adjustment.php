@@ -7,6 +7,7 @@ use App\Traits\HasStatusColor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\Adjustment
@@ -37,15 +38,11 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
  * @property-read int|null $movements_count
  * @property-read \App\Models\OperationArea $operationArea
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
- * @property-read string $status_color
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $items
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
  * @mixin \Eloquent
  */
-class Adjustment extends Model
+class Adjustment extends Model implements Auditable
 {
-    use HasFactory, HasStatusColor;
+    use HasFactory, HasStatusColor, \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'status',

@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\Supplier
@@ -40,9 +41,9 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\Operator|null $operator
  * @mixin Eloquent
  */
-class Supplier extends Model
+class Supplier extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, \OwenIt\Auditing\Auditable;
 
 
     public function operator()
