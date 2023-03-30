@@ -46,7 +46,7 @@ class PaymentController extends Controller
                 $data["issue_date"] = $declaration->created_at;
                 $data["due_date"] = optional($declaration->created_at)->format('Y-m-d');
                 return response()->json([
-                    'response' => 'Payment reference found',
+                    'response' => 'Payment paid successfully',
                     'responsecode' => 201,
                     'data' => $data,
                 ], 201);
@@ -111,6 +111,10 @@ class PaymentController extends Controller
         if ($referenceNumber == null || $bank_txn_ref == null || $amount == null || $narration == null || $bankId == null) {
             return $this->errorResponse("Payment reference number or bank id is missing");
         }
+        if ($amount <= 0) {
+            return $this->errorResponse("Amount must be greater than zero");
+        }
+
         if (strpos($referenceNumber, 'CMS') !== false) {
             $declaration = PaymentDeclaration::query()
                 ->where("payment_reference", $referenceNumber)
@@ -136,9 +140,10 @@ class PaymentController extends Controller
                 }
                 $declaration->save();
                 return response()->json([
-                    'response' => 'Payment reference found',
+                    'response' => 'Payment paid successfully',
                     'responsecode' => 201,
-                    'data' => $declaration,
+                    'rura_id' => $referenceNumber,
+                    'pay_ref' => $bank_txn_ref,
                 ], 201);
             } else {
                 return $this->errorResponse("Payment reference not found");
@@ -170,9 +175,10 @@ class PaymentController extends Controller
                     }
                 }
                 return response()->json([
-                    'response' => 'Payment reference found',
+                    'response' => 'Payment paid successfully',
                     'responsecode' => 201,
-                    'data' => $billing,
+                    'rura_id' => $referenceNumber,
+                    'pay_ref' => $bank_txn_ref,
                 ], 201);
             } else {
                 return $this->errorResponse("Payment reference not found");
