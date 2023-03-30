@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\PaymentDeclaration
@@ -42,9 +43,9 @@ use Illuminate\Support\Carbon;
  * @property-read \App\Models\Request|null $request
  * @mixin Eloquent
  */
-class PaymentDeclaration extends Model
+class PaymentDeclaration extends Model implements Auditable
 {
-    use HasStatusColor;
+    use HasStatusColor, \OwenIt\Auditing\Auditable;
 
     const ACTIVE = 'active';
     const PAID = 'paid';

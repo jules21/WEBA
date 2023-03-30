@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\Customer
@@ -73,9 +74,9 @@ use Illuminate\Support\Carbon;
  * @mixin Eloquent
  */
 class
-Customer extends Model
+Customer extends Model implements Auditable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, \OwenIt\Auditing\Auditable;
     use HasAddress;
 
     public function resolveRouteBinding($value, $field = null)

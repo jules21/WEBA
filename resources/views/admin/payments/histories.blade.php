@@ -74,6 +74,7 @@
 @section('scripts')
     <script>
         $(document).ready(function() {
+            $('.nav-payments').addClass('menu-item-active');
             $('.table').DataTable({
                 "language": {
                     "emptyTable": "No Payment History Found"

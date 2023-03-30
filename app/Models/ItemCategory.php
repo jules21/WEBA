@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\ItemCategory
@@ -32,13 +33,12 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Item> $items
  * @property-read int|null $items_count
  * @property int|null $operator_id
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Item> $items
  * @method static Builder|ItemCategory whereOperatorId($value)
  * @mixin Eloquent
  */
-class ItemCategory extends Model
+class ItemCategory extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         "name",
