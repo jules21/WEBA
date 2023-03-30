@@ -31,7 +31,7 @@ class PaymentDeclarationDataTable extends DataTable
                 return $query->request->operator->name ?? '-';
             })
             ->addColumn('operation_area', function ($query) {
-                return $query->request->operator->operationArea->name ?? '-';
+                return $query->request->operationArea->name ?? '-';
             })
             ->addColumn('customer', function ($query) {
                 return $query->request->customer->name ?? '-';
@@ -116,7 +116,7 @@ class PaymentDeclarationDataTable extends DataTable
 
             Column::make('operation_area')
                 ->title('Operation Area')
-                ->name('request.operatingArea.name')
+                ->name('request.operationArea.name')
                 ->addClass('text-center'),
 
             Column::make('customer')
