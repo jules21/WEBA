@@ -42,9 +42,10 @@ class PaymentController extends Controller
                 $data["total_amount"] = $declaration->amount;
                 $data["balance"] = $declaration->balance;
                 $data["applicant"] = $declaration->request->customer->name;
-                $this->getArr($paymentMapping, $data, false);
+
                 $data["issue_date"] = $declaration->created_at;
                 $data["due_date"] = optional($declaration->created_at)->format('Y-m-d');
+                $data=array_merge($data,  $this->getArr($paymentMapping, $data, false));
                 return response()->json([
                     'response' => 'Payment paid successfully',
                     'responsecode' => 201,
@@ -231,7 +232,7 @@ class PaymentController extends Controller
      * @param array $data
      * @return array
      */
-    public function getArr(PaymentMapping $paymentMapping, array $data, $acceptPartial = true)
+    public function getArr(PaymentMapping $paymentMapping, array $data, $acceptPartial = true): array
     {
         $data["service_provider"] = $paymentMapping->account->paymentServiceProvider->name;
         $data["account_name"] = $paymentMapping->account->account_name;
@@ -240,7 +241,7 @@ class PaymentController extends Controller
         $data["status"] = "Active";
         $data["accept_partial"] = $acceptPartial;
         $data["payment_status"] = "PENDING";
-//        return $data;
+        return $data;
     }
 
 }
