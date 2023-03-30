@@ -125,7 +125,7 @@ class PaymentMappingController extends Controller
             return redirect()->back()->with('success','Payment Mapping deleted Successfully');
         }catch (\Exception $exception){
             info($exception);
-            return redirect()->back()->with('success','Payment Mapping can not be deleted');
+            return redirect()->back()->with('error','Payment Mapping can not be deleted');
         }
     }
 
