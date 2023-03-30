@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ChangePasswordRequest;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
@@ -25,11 +26,12 @@ class ProfileController extends Controller
     public function updateProfile(Request $request)
     {
         $user =\auth()->user();
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'phone' => 'required|unique:users,phone,'.$user->id,
-            'email' =>'required|unique:users,email,'.$user->id
+            'email' =>'required|unique:users,email,'.$user->id,
+            'name' => 'required',
         ]);
-        $user->fill($request->input())->save();
+        $user->fill($validator->validated())->save();
         return redirect()->back()->with('success', 'User Profile Updated Successfully');
     }
 }

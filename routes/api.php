@@ -18,8 +18,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::group(['prefix' => '/v1/cms-rwss','middleware' => [\App\Http\Middleware\PaymentApiMiddleware::class]], function () {
-    Route::post('/v1/check-payment', [App\Http\Controllers\Api\PaymentController::class, 'checkPayment']);
-    Route::post('/v1/confirm-payment', [App\Http\Controllers\Api\PaymentController::class, 'confirmPayment']);
+    Route::post('/check-payment', [App\Http\Controllers\Api\PaymentController::class, 'checkPayment']);
+    Route::post('/confirm-payment', [App\Http\Controllers\Api\PaymentController::class, 'confirmPayment']);
 });
 
 Route::group(['prefix' => 'v1/mobile'], function () {

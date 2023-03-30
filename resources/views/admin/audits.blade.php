@@ -80,7 +80,7 @@
             </form>
 
             <div class="table-responsive">
-                <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+                <table class="table table-head-custom border table-head-solid table-hover" id="kt_datatable1">
                     <thead>
                     <tr>
                         <th >#</th>
@@ -106,6 +106,7 @@
 @section('scripts')
     <script src="{{asset("assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.3")}}"></script>
     <script>
+        $('.nav-audits').addClass('menu-item-active');
         $('.end-today-datepicker').datepicker({
             format: 'yyyy-mm-dd',
             endDate: 'today',

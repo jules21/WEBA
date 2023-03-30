@@ -64,5 +64,7 @@ class Permission
 
     const ManageBankAccounts = 'Manage Bank Accounts';
 
+    const ManageSystemAudit = 'Manage System Audit';
+
 
 }

@@ -12,7 +12,10 @@ class OperatorScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         $user = auth()->user();
-        $builder
+        if($user==null){
+            return $builder;
+        }
+       return $builder
             ->when($user->operation_area, function ($builder) use ($user) {
                 $builder->where('operation_area_id', $user->operation_area);
             })

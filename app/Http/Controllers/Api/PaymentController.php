@@ -38,16 +38,13 @@ class PaymentController extends Controller
                 $data["rura_ref_no"] = $referenceNumber;
                 $payment = $declaration->paymentConfig->paymentType->name;
                 $data["payment_type"] = $payment;
+                $data["license"] = $payment;
                 $data["total_amount"] = $declaration->amount;
                 $data["balance"] = $declaration->balance;
                 $data["applicant"] = $declaration->request->customer->name;
-                $data["payment_status"] = $declaration->status;
-                $data["service_provider"] = $paymentMapping->account->paymentServiceProvider->name;
-                $data["account_name"] = $paymentMapping->account->account_name;
-                $data["account_number"] = $paymentMapping->account->account_number;
-                $data["currency"] = "RWF";
-                $data["accept_partial"] = false;
+                $this->getArr($paymentMapping, $data, false);
                 $data["issue_date"] = $declaration->created_at;
+                $data["due_date"] = optional($declaration->created_at)->format('Y-m-d');
                 return response()->json([
                     'response' => 'Payment reference found',
                     'responsecode' => 201,
@@ -72,16 +69,13 @@ class PaymentController extends Controller
                     $data["rura_ref_no"] = $referenceNumber;
                     $payment = $paymentConfiguration->paymentType->name;
                     $data["payment_type"] = $payment;
+                    $data["license"] = $payment;
                     $data["total_amount"] = $totalAmount;
                     $data["balance"] = $totalAmount;
                     $data["applicant"] = $meterRequest->request->customer->name;
-                    $data["payment_status"] = "PENDING";
-                    $data["service_provider"] = $paymentMapping->account->paymentServiceProvider->name;
-                    $data["account_name"] = $paymentMapping->account->account_name;
-                    $data["account_number"] = $paymentMapping->account->account_number;
-                    $data["currency"] = "RWF";
-                    $data["accept_partial"] = true;
+                    $data = $this->getArr($paymentMapping, $data);
                     $data["issue_date"] = optional($billing->created_at)->format('Y-m-d');
+                    $data["due_date"] = optional($billing->created_at)->format('Y-m-d');
                     return response()->json([
                         'response' => 'Payment reference found',
                         'responsecode' => 201,
@@ -216,7 +210,7 @@ class PaymentController extends Controller
      */
     public function getMapping($declaration, $bankId)
     {
-       return  PaymentMapping::query()
+        return PaymentMapping::query()
             ->where("payment_configuration_id", $declaration->payment_configuration_id)
             ->whereHas("account", function ($query) use ($bankId) {
                 $query->whereHas("paymentServiceProvider", function ($query) use ($bankId) {
@@ -224,6 +218,23 @@ class PaymentController extends Controller
                 });
             })->first();
 
+    }
+
+    /**
+     * @param $paymentMapping
+     * @param array $data
+     * @return array
+     */
+    public function getArr(PaymentMapping $paymentMapping, array $data, $acceptPartial = true): array
+    {
+        $data["service_provider"] = $paymentMapping->account->paymentServiceProvider->name;
+        $data["account_name"] = $paymentMapping->account->account_name;
+        $data["account_number"] = $paymentMapping->account->account_number;
+        $data["currency"] = "RWF";
+        $data["status"] = "Active";
+        $data["accept_partial"] = $acceptPartial;
+        $data["payment_status"] = "PENDING";
+        return $data;
     }
 
 }

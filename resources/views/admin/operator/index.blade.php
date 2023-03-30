@@ -52,7 +52,9 @@
 
 
             <div class="table-responsive my-3">
-                <table class="table table-head-custom border  table-hover dataTable">
+                <table class="table table-head-custom border table-head-solid table-hover dataTable">
+{{--                <table class="table table-head-custom border  table-hover dataTable">--}}
+
                     <thead>
                     <tr>
                         <th></th>
