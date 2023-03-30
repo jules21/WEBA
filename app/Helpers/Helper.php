@@ -37,4 +37,12 @@ class Helper{
         $user = auth()->user();
         return $user->is_super_admin || auth()->user()->operator_id == null;
     }
+    public static function paymentDeclarationStatuses(): array
+    {
+        return [
+            \App\Models\PaymentDeclaration::ACTIVE => 'Pending',//Active
+            \App\Models\PaymentDeclaration::PAID => 'Paid',
+            \App\Models\PaymentDeclaration::PARTIALLY_PAID => 'Partially Paid',
+        ];
+    }
 }
