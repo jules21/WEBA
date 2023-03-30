@@ -59,8 +59,7 @@ class PaymentController extends Controller
             }
 
         } else {
-            $billing = Billing::where('subscription_number', $referenceNumber)
-                ->where("balance", '>', 0)->first();
+            $billing = Billing::where('subscription_number', $referenceNumber)->first();
             if ($billing) {
                 $meterRequest = $billing->meterRequest;
                 list($paymentConfiguration, $paymentMapping) = $this->getBillPaymentMapping($meterRequest, $bankId);
@@ -182,6 +181,9 @@ class PaymentController extends Controller
                     if ($amount <= 0) {
                         break;
                     }
+                }
+                if($amount > 0){
+                    $meterRequest->update(['balance' => $meterRequest->balance + $amount]);
                 }
                 return response()->json([
                     'response' => 'Payment paid successfully',
