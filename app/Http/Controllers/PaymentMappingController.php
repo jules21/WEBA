@@ -20,12 +20,31 @@ class PaymentMappingController extends Controller
     public function index($payment_configuration_id)
     {
 //        $payment_configuration_id=decrypt($payment_configuration_id);
+
+        $user = auth()->user();
+        $banks = PaymentServiceProvider::with('accounts');
+        $banks->when($user->operator_id, function ($query){
+            $query->whereHas('accounts', function ($query){
+                $query->whereHas('operationArea', function ($query){
+                    $query->where('operator_id', auth()->user()->operator_id);
+                });
+            });
+        });
+        $banks->when($user->operation_area, function ($query){
+            $query->whereHas('accounts', function ($query){
+                $query->whereHas('operationArea', function ($query){
+                    $query->where('id', auth()->user()->operation_area);
+                });
+            });
+        });
+        $banks = $banks->get();
+
         $paymentMappings = PaymentMapping::query()
             ->orderBy('id','DESC')
             ->with('account.paymentServiceProvider')
             ->where('payment_configuration_id',$payment_configuration_id)->get();
         $payment_configuration = PaymentConfiguration::find($payment_configuration_id);
-        return view('admin.settings.payment_mappings',compact('paymentMappings','payment_configuration'));
+        return view('admin.settings.payment_mappings',compact('paymentMappings','payment_configuration','banks'));
     }
 
     /**
