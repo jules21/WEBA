@@ -29,7 +29,7 @@ class RequestDurationConfigurationController extends Controller
                       $builder->whereDate('created_at', '<=', $endDate);
                   })
                   ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
-                      $builder->where('operation_area_id', $operation_area_id);
+                      $builder->whereIn('operation_area_id', $operation_area_id);
                   })
                   ->when(!empty($request_type_id), function (Builder $builder) use ($request_type_id) {
                       $builder->where('request_type_id', $request_type_id);
@@ -43,7 +43,9 @@ class RequestDurationConfigurationController extends Controller
                   ->where('operator_id',$user->operator_id)->get();
               $operators = Operator::all();
 
-        return view('admin.settings.request_duration_configurations',compact('configurations','operators'));
+        $operationAreas = OperationArea::query()->findMany($operation_area_id);
+
+        return view('admin.settings.request_duration_configurations',compact('configurations','operators','operationAreas'));
     }
 
     public function store(ValidateRequestDurationConfiguration $request){

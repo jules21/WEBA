@@ -52,13 +52,26 @@
                     </div>
                     <div class="col-md-3">
                         <label for="water_network_type_id">
+                            Operator
+                        </label>
+                        <select name="operator_id" id="operator_id" class="form-control select2">
+                            <option value="">Please Select Operator</option>
+                            @foreach($operators ?? [] as $operator)
+                                <option
+                                    value="{{$operator->id}}" {{request('operator_id') == $operator->id ? 'selected' : ''}}>{{$operator->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="water_network_type_id">
                             Operation Area
                         </label>
-                        <select name="operation_area_id" id="operation_area_id" class="form-control">
-                            <option value="">Please Select Operation Area</option>
-                            @foreach(App\Models\OperationArea::all() as $area)
+                        <select name="operation_area_id[]" id="operation_area_id" class="form-control select2"
+                                data-placeholder="Select Operation Area" multiple="multiple">
+                            {{--                            <option value="">Please Select Operation Area</option>--}}
+                            @foreach($operationAreas ?? [] as $area)
                                 <option
-                                    value="{{$area->id}}" {{request('operation_area_id') == $area->id ? 'selected' : ''}}>{{$area->name}}</option>
+                                    value="{{$area->id}}" {{ in_array($area->id,request('operation_area_id',[])) ? 'selected' : '' }}>{{$area->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -423,7 +436,10 @@
         });
 
         $(document).ready(function (){
-            $('select[name="operator_id"]').on('change',function (){
+
+            {{--let selectedAreas =@json(request('operation_area_id',[]));--}}
+
+            $('select[id="operator_id"]').on('change',function (){
                 var OperatorId = $(this).val();
                 // alert(OperatorId);
                 if (OperatorId){
@@ -434,9 +450,9 @@
                         dataType:"json",
                         success:function(data){
                             // alert(data);
-                            $('select[name="operation_area_id"]').empty();
+                            $('select[id="operation_area_id"]').empty();
                             $.each(data,function (key,value){
-                                $('select[name="operation_area_id"]').append('<option value="'+value.id+'">'+value.name+'</option>');
+                                $('select[id="operation_area_id"]').append('<option value="'+value.id+'">'+value.name+'</option>');
                             })
                         }
                     })

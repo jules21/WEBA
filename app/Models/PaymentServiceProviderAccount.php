@@ -57,4 +57,9 @@ class PaymentServiceProviderAccount extends Model
     {
         return $this->belongsTo(PaymentServiceProvider::class);
     }
+
+    public function operationArea(): BelongsTo
+    {
+        return $this->belongsTo(OperationArea::class);
+    }
 }
