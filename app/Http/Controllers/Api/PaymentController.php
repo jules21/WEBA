@@ -240,7 +240,7 @@ class PaymentController extends Controller
         $data["status"] = "Active";
         $data["accept_partial"] = $acceptPartial;
         $data["payment_status"] = "PENDING";
-//        return $data;
+        return $data;
     }
 
 }
