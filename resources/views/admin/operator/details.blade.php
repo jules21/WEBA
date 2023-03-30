@@ -139,7 +139,7 @@
                     <div class="row">
                         @forelse($operator->operationAreas as $item)
                             <div class="col-lg-4">
-                                <div>
+                                <div class="my-2">
                                     <span class="svg-icon text-success font-weight-bolder">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              class="icon icon-tabler icon-tabler-checkbox" width="24" height="24"

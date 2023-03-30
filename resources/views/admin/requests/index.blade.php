@@ -28,12 +28,11 @@
             </div>
             <!--end::Info-->
 
-            <div class="mt-2">
-                <x-simple-export-form action="{{ route('admin.requests.export-data-to-excel') }}"/>
-            </div>
-
         </div>
     </div>
+
+    <x-export-form export-link="{{ route('admin.requests.export-data-to-excel',['start_date'=>request('start_date'),'end_date'=>request('end_date'),'district_id'=>request('district_id')]) }}"
+                   action="{{ route('admin.requests.index') }}"/>
 
 
     <div class="card tw-shadow-sm border tw-border-gray-300">
