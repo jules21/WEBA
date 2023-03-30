@@ -28,6 +28,9 @@ class BillingDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->editColumn('operator_name', function ($model) {
+                return $model->meterRequest->request->operator->name ?? '-';
+            })
             ->editColumn('user_id', function ($model) {
                 return $model->user->name;
             })
@@ -110,6 +113,9 @@ class BillingDataTable extends DataTable
             'id' => ['title' => '#', 'searchable' => false, 'render' => function() {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
+            Column::make('operator_name')
+                ->title("Operator Name")
+                ->addClass('text-center'),
             Column::make('customer_name')
                 ->title("Customer Name")
                 ->addClass('text-center'),

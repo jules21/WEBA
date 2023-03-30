@@ -70,20 +70,11 @@ class BillingController extends Controller
                 });
             });
         });
-//        $customerFieldOfficers->when($user->operator_id, function ($query) use ($user) {
-//            $query->whereHas('bills', function ($query) use ($user) {
-//                $query->whereHas('meterRequest', function ($query) use ($user) {
-//                    $query->whereHas('request', function ($query) use ($user) {
-//                        $query->where('operator_id', $user->operator_id);
-//                    });
-//                });
-//            });
-//        });
-
         //filter data based on request
 
         //operator_id
-        $query->when(request()->has('operator_id'), function ($query) {
+        $query->when((request()->has('operator_id') && request()->filled('operator_id'))
+            , function ($query) {
             $query->whereHas('meterRequest', function ($query) {
                 $query->whereHas('request', function ($query) {
                     $query->where('operator_id', request()->operator_id);
@@ -91,7 +82,8 @@ class BillingController extends Controller
             });
         });
         //operation_area_id
-        $query->when(request()->has('operation_area_id'), function ($query) {
+        $query->when((request()->has('operation_area_id') && request()->filled('operation_area_id'))
+            , function ($query) {
             $query->whereHas('meterRequest', function ($query) {
                 $query->whereHas('request', function ($query) {
                     $query->whereIn('operation_area_id', request()->operation_area_id);
@@ -99,15 +91,18 @@ class BillingController extends Controller
             });
         });
         //customer_field_officer_id
-        $query->when(request()->has('customer_field_officer_id'), function ($query) {
+        $query->when((request()->has('customer_field_officer_id') && request()->filled('customer_field_officer_id'))
+            , function ($query) {
             $query->whereIn('user_id', request()->customer_field_officer_id);
         });
         //meter_number
-        $query->when(request()->has('meter_number'), function ($query) {
+        $query->when((request()->has('meter_number') && request()->filled('meter_number'))
+            , function ($query) {
             $query->where('meter_number', 'like', '%' . request()->meter_number . '%');
         });
         //subscription_number
-        $query->when(request()->has('subscription_number'), function ($query) {
+        $query->when((request()->has('subscription_number') && request()->filled('subscription_number'))
+            , function ($query) {
             $query->where('subscription_number', 'like', '%' . request()->subscription_number . '%');
         });
 
@@ -139,6 +134,7 @@ class BillingController extends Controller
                 'operator_id' => $operator_id,
                 'operation_area_id' => $operation_area_id,
                 'customer_field_officer_id' => $customer_field_officer_id,
+                'query' => $query->get(),
 
             ]);
     }
