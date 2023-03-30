@@ -31,8 +31,92 @@
     <!--end::Subheader-->
 @endsection
 @section('content')
+    <div class="card card-body mb-4">
+        <form action="#" id="filter-form">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+
+                        <label for="from_date">From Date</label>
+                        <input type="date" name="from_date" id="from_date" class="form-control " placeholder="From Date" value="{{request()->get('from_date')}}">
+                    </div>
+                </div>
+                <div class="col-md-3 form-group">
+                    <label for="to_date">To Date</label>
+                    <input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" value="{{request()->get('to_date')}}">
+                </div>
+                @unless(Helper::isOperator())
+                    <div class="col-md-3 form-group">
+                        <label for="operator">Operator</label>
+                        <select name="operator_id" id="operator" class="form-control select2"
+                                data-placeholder="Select Operator">
+                            <option value="">Select Operator</option>
+                            @foreach($operators ?? [] as $operator)
+                                <option value="{{ $operator->id }}" {{request()->get('operator_id') == $operator->id ? 'selected' : ''}}>{{ $operator->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endunless
+                @unless(Helper::hasOperationArea())
+                    <div class="col-md-3 form-group">
+                        <label for="operation_area">Operation Area</label>
+                        <select name="operation_area_id[]" id="operation_area" class="form-control select2"
+                                data-placeholder="Select Operation Area" multiple="multiple">
+                            @foreach($operationAreas  ?? [] as $operationArea)
+                                <option value="{{ $operationArea->id }}">{{ $operationArea->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endunless
+                <div class="col-md-3 form-group">
+                    <label for="items">Request Type</label>
+                    <select name="request_type" id="request_type" class="form-control select2"
+                            data-placeholder="Select Request Type">
+                        <option value="">Select Request Type</option>
+                        @foreach(\App\Models\RequestType::all() ?? [] as $requestType)
+                            <option value="{{ $requestType->id }}" {{request()->get('request_type') == $requestType->id ? 'selected' : ''}}>{{ $requestType->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3 form-group">
+                    <label for="items">Payment Type</label>
+                    <select name="payment_type" id="payment_type" class="form-control select2"
+                            data-placeholder="Select Payment Type">
+                        <option value="">Select Payment Type</option>
+                        @foreach(\App\Models\PaymentType::all() ?? [] as $paymentType)
+                            <option value="{{ $paymentType->id }}" {{request()->get('payment_type') == $paymentType->id ? 'selected' : ''}}>{{ $paymentType->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3 form-group">
+                    <label for="items">Reference Number</label>
+                    <input type="text" name="reference_number" id="reference_number" class="form-control" placeholder="Reference Number" value="{{request()->get('reference_number')}}">
+                </div>
+                <div class="col-md-3 form-group">
+                    <label for="items">Status</label>
+                    <select name="status" id="status" class="form-control select2"
+                            data-placeholder="Select Status">
+                        <option value="">Select Status</option>
+                        @foreach(Helper::paymentDeclarationStatuses() as $key => $status)
+                            <option value="{{ $key }}" {{request()->get('status') == $key ? 'selected' : ''}}>{{ $status }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary mr-2">
+                        <i class="la la-search"></i>
+                        Filter</button>
+                    <a href="{{route('admin.payments.index')}}" class="btn btn-outline-dark"> clear search</a>
+                </div>
+            </div>
+        </form>
+    </div>
         <div class="card shadow-none border">
             <div class="card-body">
+{{--                @endif--}}
                 <div class="d-flex justify-content-between mb-5">
                     <h3 class="mb-3">
                         @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
@@ -41,7 +125,6 @@
                             Customers
                         @endif
                         Payments</h3>
-                    <div class="card-toolbar">
                         <!--begin::Dropdown-->
                         <div class="dropdown dropdown-inline mr-2">
                             {{--                            @if ($requests->count() > 0)--}}
@@ -62,91 +145,7 @@
                             <!--end::Dropdown Menu-->
                         </div>
                         <!--end::Dropdown-->
-                    </div>
                 </div>
-                    <form action="#" id="filter-form">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-
-                                    <label for="from_date">From Date</label>
-                                    <input type="date" name="from_date" id="from_date" class="form-control " placeholder="From Date" value="{{request()->get('from_date')}}">
-                                </div>
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <label for="to_date">To Date</label>
-                                <input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" value="{{request()->get('to_date')}}">
-                            </div>
-                            @unless(Helper::isOperator())
-                                <div class="col-md-3 form-group">
-                                    <label for="operator">Operator</label>
-                                    <select name="operator_id" id="operator" class="form-control select2"
-                                            data-placeholder="Select Operator">
-                                        <option value="">Select Operator</option>
-                                        @foreach($operators ?? [] as $operator)
-                                            <option value="{{ $operator->id }}" {{request()->get('operator_id') == $operator->id ? 'selected' : ''}}>{{ $operator->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endunless
-                            @unless(Helper::hasOperationArea())
-                                <div class="col-md-3 form-group">
-                                    <label for="operation_area">Operation Area</label>
-                                    <select name="operation_area_id[]" id="operation_area" class="form-control select2"
-                                            data-placeholder="Select Operation Area" multiple="multiple">
-                                        @foreach($operationAreas  ?? [] as $operationArea)
-                                            <option value="{{ $operationArea->id }}">{{ $operationArea->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endunless
-                            <div class="col-md-3 form-group">
-                                <label for="items">Request Type</label>
-                                <select name="request_type" id="request_type" class="form-control select2"
-                                        data-placeholder="Select Request Type">
-                                    <option value="">Select Request Type</option>
-                                    @foreach(\App\Models\RequestType::all() ?? [] as $requestType)
-                                        <option value="{{ $requestType->id }}" {{request()->get('request_type') == $requestType->id ? 'selected' : ''}}>{{ $requestType->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <label for="items">Payment Type</label>
-                                <select name="payment_type" id="payment_type" class="form-control select2"
-                                        data-placeholder="Select Payment Type">
-                                    <option value="">Select Payment Type</option>
-                                    @foreach(\App\Models\PaymentType::all() ?? [] as $paymentType)
-                                        <option value="{{ $paymentType->id }}" {{request()->get('payment_type') == $paymentType->id ? 'selected' : ''}}>{{ $paymentType->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <label for="items">Reference Number</label>
-                                <input type="text" name="reference_number" id="reference_number" class="form-control" placeholder="Reference Number" value="{{request()->get('reference_number')}}">
-                            </div>
-                            <div class="col-md-3 form-group">
-                                <label for="items">Status</label>
-                                <select name="status" id="status" class="form-control select2"
-                                        data-placeholder="Select Status">
-                                    <option value="">Select Status</option>
-                                    @foreach(Helper::paymentDeclarationStatuses() as $key => $status)
-                                        <option value="{{ $key }}" {{request()->get('status') == $key ? 'selected' : ''}}>{{ $status }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary btn-sm mr-2">
-                                    <i class="fas fa-search"></i>
-                                    Filter</button>
-                                <a href="{{route('admin.payments.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
-                            </div>
-                        </div>
-                    </form>
-                    <hr>
-{{--                @endif--}}
                 <div class="table-responsive">
                     {{$dataTable->table(['class' => 'table table-head-custom border table-head-solid table-hover'])}}
                 </div>

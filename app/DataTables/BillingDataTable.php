@@ -31,6 +31,9 @@ class BillingDataTable extends DataTable
             ->addColumn('operator_name', function ($model) {
                 return $model->meterRequest->request->operator->name ?? '-';
             })
+            ->addColumn('operation_area', function ($model) {
+                return $model->meterRequest->request->operationArea->name ?? '-';
+            })
             ->editColumn('user_id', function ($model) {
                 return $model->user->name;
             })
@@ -115,7 +118,10 @@ class BillingDataTable extends DataTable
             }],
             Column::make('operator_name')
                 ->name('meterRequest.request.operator.name')
-                ->title("Operator Name")
+                ->title("Operator Name"),
+                Column::make('operation_area')
+                ->name('meterRequest.request.operationArea.name')
+                ->title("Operation Area")
                 ->addClass('text-center'),
             Column::make('customer_name')
                 ->name('meterRequest.request.customer.name')
