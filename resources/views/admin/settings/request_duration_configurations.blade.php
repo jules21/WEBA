@@ -52,13 +52,26 @@
                     </div>
                     <div class="col-md-3">
                         <label for="water_network_type_id">
+                            Operator
+                        </label>
+                        <select name="operator_id" id="operator_id" class="form-control select2">
+                            <option value="">Please Select Operator</option>
+                            @foreach($operators ?? [] as $operator)
+                                <option
+                                    value="{{$operator->id}}" {{request('operator_id') == $operator->id ? 'selected' : ''}}>{{$operator->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="water_network_type_id">
                             Operation Area
                         </label>
-                        <select name="operation_area_id" id="operation_area_id" class="form-control">
-                            <option value="">Please Select Operation Area</option>
-                            @foreach(App\Models\OperationArea::all() as $area)
+                        <select name="operation_area_id[]" id="operation_area_id" class="form-control select2"
+                                data-placeholder="Select Operation Area" multiple="multiple">
+                            {{--                            <option value="">Please Select Operation Area</option>--}}
+                            @foreach($operationAreas ?? [] as $area)
                                 <option
-                                    value="{{$area->id}}" {{request('operation_area_id') == $area->id ? 'selected' : ''}}>{{$area->name}}</option>
+                                    value="{{$area->id}}" {{ in_array($area->id,request('operation_area_id',[])) ? 'selected' : '' }}>{{$area->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -66,7 +79,7 @@
                         <div class="form-group">
                             <label for="" style="visibility: hidden">Submit</label> <br>
                             <button type="submit" class="btn btn-primary rounded">
-                                Filter <i class="fa fa-filter"></i>
+                                <i class="la la-search"></i>Filter
                             </button>
                             <a href="{{route('admin.request.duration.configurations')}}" class="btn btn-outline-dark"> Clear search</a>
                             {{--                            <button id="reset" class="btn btn-outline-dark">clear search</button>--}}
@@ -419,7 +432,7 @@
         });
 
         $(document).ready(function (){
-            $('select[name="operator_id"]').on('change',function (){
+            $('select[id="operator_id"]').on('change',function (){
                 var OperatorId = $(this).val();
                 // alert(OperatorId);
                 if (OperatorId){
@@ -430,9 +443,9 @@
                         dataType:"json",
                         success:function(data){
                             // alert(data);
-                            $('select[name="operation_area_id"]').empty();
+                            $('select[id="operation_area_id"]').empty();
                             $.each(data,function (key,value){
-                                $('select[name="operation_area_id"]').append('<option value="'+value.id+'">'+value.name+'</option>');
+                                $('select[id="operation_area_id"]').append('<option value="'+value.id+'">'+value.name+'</option>');
                             })
                         }
                     })
