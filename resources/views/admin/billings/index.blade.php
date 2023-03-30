@@ -63,6 +63,79 @@
 
 @section('content')
     <div class="container">
+        <div class="card card-body mb-4">
+            @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
+                <form action="#" id="filter-form">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+
+                                <label for="from_date">From Date</label>
+                                <input type="date" name="from_date" id="from_date" class="form-control " placeholder="From Date" value="{{request()->get('from_date')}}">
+                            </div>
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="to_date">To Date</label>
+                            <input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" value="{{request()->get('to_date')}}">
+                        </div>
+                        @unless(Helper::isOperator())
+                            <div class="col-md-3 form-group">
+                                <label for="operator">Operator</label>
+                                <select name="operator_id" id="operator" class="form-control select2"
+                                        data-placeholder="Select Operator">
+                                    <option value="">Select Operator</option>
+                                    @foreach($operators ?? [] as $operator)
+                                        <option value="{{ $operator->id }}" {{request()->get('operator_id') == $operator->id ? 'selected' : ''}}>{{ $operator->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endunless
+                        @unless(Helper::hasOperationArea())
+                            <div class="col-md-3 form-group">
+                                <label for="operation_area">Operation Area</label>
+                                <select name="operation_area_id[]" id="operation_area" class="form-control select2"
+                                        data-placeholder="Select Operation Area" multiple="multiple">
+                                    @foreach($operationAreas  ?? [] as $operationArea)
+                                        <option value="{{ $operationArea->id }}">{{ $operationArea->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endunless
+                        @if(Helper::isOperator())
+                            <div class="col-md-3 form-group">
+                                <label for="items">Customer Field Officer</label>
+                                <select name="customer_field_officer_id[]" id="customer_field_officer" class="form-control select2"
+                                        data-placeholder="Select Customer Field Officer" multiple="multiple">
+                                    @foreach($customerFieldOfficers ?? [] as $customerFieldOfficer)
+                                        <option value="{{ $customerFieldOfficer->id }}"
+                                            {{request()->get('customer_field_officer_id') == $customerFieldOfficer->id ? 'selected' : ''}}
+                                        >{{ $customerFieldOfficer->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
+                        <div class="col-md-3 form-group">
+                            <label for="items">Meter Number</label>
+                            <input type="text" name="meter_number" id="meter_number" class="form-control" placeholder="Meter Number" value="{{request()->get('meter_number')}}">
+                        </div>
+                        <div class="col-md-3 form-group">
+                            <label for="items">Subscription Number</label>
+                            <input type="text" name="subscription_number" id="subscription_number" class="form-control" placeholder="Subscription Number" value="{{request()->get('subscription_number')}}">
+                        </div>
+                        <div class="col-md-6 form-group align-self-end">
+                            <div class="row col-12">
+                                <button type="submit" class="btn btn-primary mr-2" id="submit-btn">
+                                    <i class="la la-search"></i>
+                                    Filter
+                                </button>
+                                <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark"> clear search</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            @endif
+        </div>
         <div class="card shadow-none border">
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-5">
@@ -73,101 +146,27 @@
                                 Customers
                             @endif
                             Billing</h3>
-                        <div class="card-toolbar">
-                            <!--begin::Dropdown-->
-                            <div class="dropdown dropdown-inline mr-2">
-                                {{--                            @if ($requests->count() > 0)--}}
-                                <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="la la-download"></i>Export</button>
-                                {{--                            @endif--}}
-                                <!--begin::Dropdown Menu-->
-                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                    <ul class="nav flex-column nav-hover">
-                                        <li class="nav-item export-doc">
-                                            <a href="#" class="nav-link" target="_blank" id="excel">
-                                                <i class="nav-icon la la-file-excel-o"></i>
-                                                <span class="nav-text">Excel</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!--end::Dropdown Menu-->
+                        <!--begin::Dropdown-->
+                        <div class="dropdown dropdown-inline mr-2">
+                            {{--                            @if ($requests->count() > 0)--}}
+                            <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="la la-download"></i>Export</button>
+                            {{--                            @endif--}}
+                            <!--begin::Dropdown Menu-->
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="nav flex-column nav-hover">
+                                    <li class="nav-item export-doc">
+                                        <a href="#" class="nav-link" target="_blank" id="excel">
+                                            <i class="nav-icon la la-file-excel-o"></i>
+                                            <span class="nav-text">Excel</span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
-                            <!--end::Dropdown-->
+                            <!--end::Dropdown Menu-->
                         </div>
+                        <!--end::Dropdown-->
                     </div>
-                    @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
-                        <form action="#" id="filter-form">
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-
-                                        <label for="from_date">From Date</label>
-                                        <input type="date" name="from_date" id="from_date" class="form-control " placeholder="From Date" value="{{request()->get('from_date')}}">
-                                    </div>
-                                </div>
-                                <div class="col-md-3 form-group">
-                                    <label for="to_date">To Date</label>
-                                    <input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" value="{{request()->get('to_date')}}">
-                                </div>
-                                @unless(Helper::isOperator())
-                                    <div class="col-md-3 form-group">
-                                        <label for="operator">Operator</label>
-                                        <select name="operator_id" id="operator" class="form-control select2"
-                                                data-placeholder="Select Operator">
-                                            <option value="">Select Operator</option>
-                                            @foreach($operators ?? [] as $operator)
-                                                <option value="{{ $operator->id }}" {{request()->get('operator_id') == $operator->id ? 'selected' : ''}}>{{ $operator->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                @endunless
-                                @unless(Helper::hasOperationArea())
-                                <div class="col-md-3 form-group">
-                                    <label for="operation_area">Operation Area</label>
-                                    <select name="operation_area_id[]" id="operation_area" class="form-control select2"
-                                            data-placeholder="Select Operation Area" multiple="multiple">
-                                        @foreach($operationAreas  ?? [] as $operationArea)
-                                            <option value="{{ $operationArea->id }}">{{ $operationArea->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                @endunless
-                                    @if(Helper::isOperator())
-                                        <div class="col-md-3 form-group">
-                                            <label for="items">Customer Field Officer</label>
-                                            <select name="customer_field_officer_id[]" id="customer_field_officer" class="form-control select2"
-                                                    data-placeholder="Select Customer Field Officer" multiple="multiple">
-                                                @foreach($customerFieldOfficers ?? [] as $customerFieldOfficer)
-                                                    <option value="{{ $customerFieldOfficer->id }}"
-                                                        {{request()->get('customer_field_officer_id') == $customerFieldOfficer->id ? 'selected' : ''}}
-                                                    >{{ $customerFieldOfficer->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    @endif
-                                <div class="col-md-3 form-group">
-                                    <label for="items">Meter Number</label>
-                                    <input type="text" name="meter_number" id="meter_number" class="form-control" placeholder="Meter Number" value="{{request()->get('meter_number')}}">
-                                </div>
-                                <div class="col-md-3 form-group">
-                                    <label for="items">Subscription Number</label>
-                                    <input type="text" name="subscription_number" id="subscription_number" class="form-control" placeholder="Subscription Number" value="{{request()->get('subscription_number')}}">
-                                </div>
-                                <div class="col-md-6 form-group align-self-end">
-                                    <div class="row col-12">
-                                        <button type="submit" class="btn btn-primary mr-2" id="submit-btn">
-                                            <i class="fas fa-search"></i>
-                                            Filter
-                                        </button>
-                                        <a href="{{route('admin.billings.index')}}" class="btn btn-outline-dark"> clear search</a>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </form>
-                        <hr>
-                    @endif
                     <div class="table-responsive">
                         {{$dataTable->table(['class' => 'table table-head-custom border table-head-solid table-hover'])}}
                     </div>

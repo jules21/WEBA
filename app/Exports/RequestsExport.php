@@ -20,13 +20,15 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
 {
     use Exportable;
 
-    private string $startDate;
-    private string $endDate;
+    private ?string $startDate = null;
+    private ?string $endDate;
+    private ?int $districtId;
 
-    public function __construct(string $startDate, string $endDate)
+    public function __construct(?string $startDate, ?string $endDate, ?int $districtId)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->districtId = $districtId;
     }
 
     public function ShouldAutoSize(): bool
@@ -43,8 +45,15 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
     {
         return Request::query()
             ->with('customer', 'requestType', 'operator', 'operationArea', 'waterUsage')
-            ->whereDate('created_at', '>=', $this->startDate)
-            ->whereDate('created_at', '<=', $this->endDate);
+            ->when($this->startDate, function ($query) {
+                return $query->whereDate('created_at', '>=', $this->startDate);
+            })
+            ->when($this->endDate, function ($query) {
+                return $query->whereDate('created_at', '<=', $this->endDate);
+            })
+            ->when($this->districtId, function ($query) {
+                return $query->where('district_id', $this->districtId);
+            });
 
     }
 

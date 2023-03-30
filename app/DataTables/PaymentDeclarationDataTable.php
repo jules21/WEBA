@@ -27,7 +27,13 @@ class PaymentDeclarationDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->editColumn('customer', function ($query) {
+            ->addColumn('operator', function ($query) {
+                return $query->request->operator->name ?? '-';
+            })
+            ->addColumn('operation_area', function ($query) {
+                return $query->request->operator->operationArea->name ?? '-';
+            })
+            ->addColumn('customer', function ($query) {
                 return $query->request->customer->name ?? '-';
             })
             ->addColumn('request_type', function ($query) {
@@ -92,7 +98,7 @@ class PaymentDeclarationDataTable extends DataTable
                     ->setTableId('paymentdeclaration-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy(1);
+                    ->orderBy(7, 'desc');
     }
 
     /**
@@ -103,8 +109,19 @@ class PaymentDeclarationDataTable extends DataTable
     protected function getColumns()
     {
         return [
+            Column::make('operator')
+                ->title('Operator')
+                ->name('request.operator.name')
+                ->addClass('text-center'),
+
+            Column::make('operation_area')
+                ->title('Operation Area')
+                ->name('request.operatingArea.name')
+                ->addClass('text-center'),
+
             Column::make('customer')
             ->title('Customer')
+            ->name('request.customer.name')
             ->addClass('text-center'),
             Column::make('request_type')
                 ->title('Request Type')

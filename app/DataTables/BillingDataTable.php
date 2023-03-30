@@ -28,6 +28,12 @@ class BillingDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
+            ->addColumn('operator_name', function ($model) {
+                return $model->meterRequest->request->operator->name ?? '-';
+            })
+            ->addColumn('operation_area', function ($model) {
+                return $model->meterRequest->request->operationArea->name ?? '-';
+            })
             ->editColumn('user_id', function ($model) {
                 return $model->user->name;
             })
@@ -69,7 +75,7 @@ class BillingDataTable extends DataTable
                             </div>
                         </div>';
             })
-            ->rawColumns(['starting_index', 'action'])
+            ->rawColumns(['starting_index', 'action', 'unit_price', 'amount', 'balance'])
             ;
     }
 
@@ -95,7 +101,7 @@ class BillingDataTable extends DataTable
                     ->setTableId('billing-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy(9, 'desc');
+                    ->orderBy(10, 'desc');
 
     }
 
@@ -110,7 +116,15 @@ class BillingDataTable extends DataTable
             'id' => ['title' => '#', 'searchable' => false, 'render' => function() {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
+            Column::make('operator_name')
+                ->name('meterRequest.request.operator.name')
+                ->title("Operator Name"),
+                Column::make('operation_area')
+                ->name('meterRequest.request.operationArea.name')
+                ->title("Operation Area")
+                ->addClass('text-center'),
             Column::make('customer_name')
+                ->name('meterRequest.request.customer.name')
                 ->title("Customer Name")
                 ->addClass('text-center'),
             Column::make('meter_number')

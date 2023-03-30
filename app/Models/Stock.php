@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\Stock
@@ -28,9 +29,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\OperationArea $operationArea
  * @mixin \Eloquent
  */
-class Stock extends Model
+class Stock extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'operation_area_id',

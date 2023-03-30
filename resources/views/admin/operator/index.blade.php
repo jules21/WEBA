@@ -25,11 +25,15 @@
                 </ul>
             </div>
             <!--end::Info-->
-            <div class="mt-2">
-                <x-simple-export-form action="{{ route('admin.operator.export-to-excel') }}"/>
-            </div>
+
         </div>
     </div>
+
+    {{--    <x-simple-export-form action="{{ route('admin.operator.export-to-excel') }}"/>--}}
+
+    <x-export-form export-link="{{ route('admin.operator.export-to-excel',['start_date'=>request('start_date'),'end_date'=>request('end_date'),'district_id'=>request('district_id')]) }}"
+                   action="{{ route('admin.operator.index') }}"/>
+
 
     <div class="card tw-shadow-sm border tw-border-gray-300">
         <div class="card-body">
@@ -53,7 +57,7 @@
 
             <div class="table-responsive my-3">
                 <table class="table table-head-custom border table-head-solid table-hover dataTable">
-{{--                <table class="table table-head-custom border  table-hover dataTable">--}}
+                    {{--                <table class="table table-head-custom border  table-hover dataTable">--}}
 
                     <thead>
                     <tr>
@@ -380,7 +384,7 @@
             window.dataTable = $('.dataTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.operator.index') }}",
+                ajax: "{!! request()->fullUrl() !!}",
                 columns: [
                     {
                         data: 'logo', name: 'logo',

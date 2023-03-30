@@ -65,6 +65,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::delete('/delete/{operator}', [OperatorController::class, 'destroy'])->name('delete');
         Route::get('/show/{operator}', [OperatorController::class, 'show'])->name('show');
         Route::get("/operator-details", [OperatorController::class, 'operatorDetails'])->name('details');
+        Route::get('/{operator}/details-page', [OperatorController::class, 'details'])->name('details-page');
 
         Route::get("/{operator}/operation-areas", [AreaOfOperationController::class, 'index'])->name('area-of-operation.index');
         Route::post("/{operator}/operation-areas", [AreaOfOperationController::class, 'store'])->name('area-of-operation.store');
@@ -360,8 +361,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     });
     Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
         Route::get('/', [App\Http\Controllers\PaymentDeclarationController::class, 'index'])->name('index');
-//        Route::get('/{payment}', [App\Http\Controllers\PaymentController::class, 'show'])->name('show');
-//        Route::get('/customer/{customer}', [App\Http\Controllers\PaymentController::class, 'customerPayments'])->name('customer');
         //payment history
         Route::get('/{payment_declaration}/history', [App\Http\Controllers\PaymentDeclarationController::class, 'history'])->name('history');
     });
