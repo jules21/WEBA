@@ -10,11 +10,11 @@
 
     <div class="btn-group btn-group-sm">
         <button type="button" id="btnLoadData"
-                class="btn btn-primary mb-2 mr-3 rounded-sm font-weight-bolder border-0">
+                class="btn btn-primary mb-2 mr-3 rounded font-weight-bolder border-0">
             <i class="la la-refresh"></i>
             Reload
         </button>
-        <button type="submit" class="btn btn-light-success mb-2 font-weight-bolder rounded-sm">
+        <button type="submit" class="btn btn-light-success mb-2 font-weight-bolder rounded">
             Export
             <i class="la la-file-export"></i>
         </button>
