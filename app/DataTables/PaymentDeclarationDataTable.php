@@ -27,7 +27,7 @@ class PaymentDeclarationDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->editColumn('customer', function ($query) {
+            ->addColumn('customer', function ($query) {
                 return $query->request->customer->name ?? '-';
             })
             ->addColumn('request_type', function ($query) {

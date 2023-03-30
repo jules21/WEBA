@@ -28,7 +28,7 @@ class BillingDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->editColumn('operator_name', function ($model) {
+            ->addColumn('operator_name', function ($model) {
                 return $model->meterRequest->request->operator->name ?? '-';
             })
             ->editColumn('user_id', function ($model) {
@@ -72,7 +72,7 @@ class BillingDataTable extends DataTable
                             </div>
                         </div>';
             })
-            ->rawColumns(['starting_index', 'action'])
+            ->rawColumns(['starting_index', 'action', 'unit_price', 'amount', 'balance'])
             ;
     }
 
