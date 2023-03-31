@@ -24,7 +24,7 @@ class UserController extends Controller
     public function index()
     {
         $operator_id = auth()->user()->operator_id;
-        $data = User::with(["permissions",'roles','operator','institution']);
+        $data = User::with(["permissions",'roles','operator','institution','operationArea']);
         $data->when($operator_id, function ($query) use ($operator_id) {
             return $query->where('operator_id', $operator_id);
         });

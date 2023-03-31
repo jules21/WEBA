@@ -259,6 +259,7 @@
             $("#_operator_id").trigger('change');
             $("#operation_area").val($(button).data("operation_area"));
             $("#_institution_id").val($(button).data("institution"));
+            $("#_institution_id").select2();
             $("#_operator_id").select2();
             @if(auth()->user()->operator_id == null)
                 getOperationArea(Array.from($("#_operator_id").val()), $(button).data("operation_area"));
@@ -273,6 +274,7 @@
             if (operatorId !== '') {
                 getOperationArea(Array.from(operatorId));
                 $('.institution_container').css('display', 'none')
+                $('[name="institution_id"]').val('');
             } else {
                 $('.institution_container').css('display', 'block')
                 $('.operation_area_id').empty();
