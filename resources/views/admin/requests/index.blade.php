@@ -31,8 +31,10 @@
         </div>
     </div>
 
-    <x-export-form export-link="{{ route('admin.requests.export-data-to-excel',['start_date'=>request('start_date'),'end_date'=>request('end_date'),'district_id'=>request('district_id')]) }}"
-                   action="{{ route('admin.requests.index') }}"/>
+    @if(isOperatorOrSuperAdmin())
+        @include('admin.requests.partials._all_requests_filter')
+    @endif
+
 
 
     <div class="card tw-shadow-sm border tw-border-gray-300">
@@ -41,7 +43,7 @@
                 <h4>
                     {{ isset($customer)?$customer->name."'s":'All' }} Requests
                 </h4>
-{{--              <x-simple-export-form action="{{ route('admin.requests.export-data-to-excel') }}"/>--}}
+                {{--              <x-simple-export-form action="{{ route('admin.requests.export-data-to-excel') }}"/>--}}
             </div>
 
 
@@ -76,99 +78,23 @@
 
     <script>
 
-        function getDistricts(provinceId, selectedDistrictId) {
-            let districtId = $('#district_id');
-            districtId.empty();
-            districtId.append('<option value="">Select District</option>');
+        function getOperatorAreas(operatorId, $selectedAreaId = null) {
+            let operationArea = $('#operation_area_id');
+            if (operatorId) {
+                operationArea.html('<option value="">Loading...</option>');
 
-            $.ajax({
-                url: "/districts/" + provinceId,
-                method: "GET",
-                success: function (data) {
-                    console.log(data);
-                    $.each(data, function (index, value) {
-                        districtId.append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                    districtId.val(selectedDistrictId);
-                }
-            });
+                $.ajax({
+                    url: "{{ route('operator-operation-areas') }}",
+                    data: {operator_id: operatorId},
+                    success: function (response) {
+                        operationArea.html('<option value="">All</option>');
+                        response.forEach(function (item) {
+                            operationArea.append(`<option value="${item.id}" ${$selectedAreaId == item.id ? 'selected' : ''}>${item.name}</option>`);
+                        });
+                    }
+                });
+            }
         }
-
-
-        function getSectors(districtId, selectedSectorId) {
-            let sectorId = $('#sector_id');
-            sectorId.empty();
-            sectorId.append('<option value="">Select Sector</option>');
-
-
-            $.ajax({
-                url: "/sectors/" + districtId,
-                method: "GET",
-                success: function (data) {
-                    console.log(data);
-                    $.each(data, function (index, value) {
-                        sectorId.append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                    sectorId.val(selectedSectorId);
-                }
-            });
-        }
-
-
-        function getCells(sectorId, selectedCellId) {
-            let cellId = $('#cell_id');
-            cellId.empty();
-            cellId.append('<option value="">Select Cell</option>');
-            $.ajax({
-                url: "/cells/" + sectorId,
-                method: "GET",
-                success: function (data) {
-                    console.log(data);
-                    $.each(data, function (index, value) {
-                        cellId.append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                    cellId.val(selectedCellId);
-                }
-            })
-        }
-
-        function getVillages(cellId, selectedVillageId) {
-            let villageId = $('#village_id');
-            villageId.empty();
-            villageId.append('<option value="">Select Village</option>');
-            $.ajax({
-                url: "/villages/" + cellId,
-                method: "GET",
-                success: function (data) {
-                    console.log(data);
-                    $.each(data, function (index, value) {
-                        villageId.append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                    villageId.val(selectedVillageId);
-                }
-            })
-        }
-
-        function getDocumentTypes(legalTypeId, selectedDocTypedId) {
-            let docTypeId = $('#document_type_id');
-
-            docTypeId.empty();
-            docTypeId.append('<option value="">Select Doc Type</option>');
-            $.ajax({
-                url: "/documents-types/" + legalTypeId,
-                method: "GET",
-                success: function (data) {
-                    console.log(data);
-                    $.each(data, function (index, value) {
-                        docTypeId.append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                    docTypeId.val(selectedDocTypedId);
-                }
-            })
-
-
-        }
-
 
         $(document).ready(function () {
             $('.nav-request-management').addClass('menu-item-active menu-item-open');
@@ -205,23 +131,11 @@
                 $('#addModal').modal('show');
             });
 
-            $('#province_id').on('change', function (e) {
-                getDistricts($(this).val());
+            $('#operator_id').on('change', function () {
+                getOperatorAreas($(this).val());
             });
 
-
-            $('#district_id').on('change', function (e) {
-                getSectors($(this).val());
-            });
-
-
-            $('#sector_id').on('change', function (e) {
-                getCells($(this).val());
-            });
-
-            $('#legal_type_id').on('change', function () {
-                getDocumentTypes($(this).val());
-            });
+            getOperatorAreas($('#operator_id').val(), "{{ request('operation_area_id') }}");
 
 
             $(document).on('click', '.js-delete', function (e) {

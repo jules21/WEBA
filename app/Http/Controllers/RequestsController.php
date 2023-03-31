@@ -53,13 +53,15 @@ class RequestsController extends Controller
         $startDate = \request('start_date');
         $endDate = \request('end_date');
         $districtId = \request('district_id');
+        $operatorId = \request('operator_id');
+        $opAreaId = \request('operation_area_id');
 
         $data = AppRequest::query()
             ->with(['customer', 'requestType', 'operator'])
             ->when(!is_null($customerId), function (Builder $query) use ($customerId) {
                 return $query->where('customer_id', '=', decryptId($customerId));
             })
-            ->when(!is_null(auth()->user()->operator_id) && !is_null(auth()->user()->operation_area), function (Builder $query) {
+            ->when(isForOperationArea(), function (Builder $query) {
                 return $query->where('operation_area_id', '=', auth()->user()->operation_area);
             })
             ->when(!is_null($startDate) && !is_null($endDate), function (Builder $query) use ($startDate, $endDate) {
@@ -68,6 +70,12 @@ class RequestsController extends Controller
             })
             ->when(!is_null($districtId), function (Builder $query) use ($districtId) {
                 return $query->where('district_id', '=', $districtId);
+            })
+            ->when(!is_null($operatorId), function (Builder $query) use ($operatorId) {
+                return $query->where('operator_id', '=', $operatorId);
+            })
+            ->when(!is_null($opAreaId), function (Builder $query) use ($opAreaId) {
+                return $query->where('operation_area_id', '=', $opAreaId);
             })
             ->select('requests.*');
         if (request()->ajax()) {
@@ -544,9 +552,13 @@ class RequestsController extends Controller
         $startDate = request('start_date');
         $endDate = request('end_date');
         $districtId = request('district_id');
+        $operationAreaId = request('operation_area_id');
+        $operatorId = request('operator_id');
 
         $now = now()->format('Y-m-d-H-i-s');
-        return (new RequestsExport($startDate, $endDate, $districtId))->download("requests_$now.xlsx");
+        $requestsExport = new RequestsExport($startDate, $endDate, $districtId, $operatorId, $operationAreaId);
+        return $requestsExport
+            ->download("requests_$now.xlsx");
     }
 
 

@@ -48,3 +48,23 @@ function stockPermissions(): array
         Permission::ManageStockMovements, Permission::CreateAdjustment, Permission::ApproveAdjustment,
         Permission::ViewAdjustment, Permission::StockInItems, Permission::ApproveStockIn];
 }
+
+function isOperator(): bool
+{
+    return auth()->check() && auth()->user()->operator_id != null && auth()->user()->operation_area == null;
+}
+
+function isOperatorOrSuperAdmin(): bool
+{
+    return isOperator() || isSuperAdmin();
+}
+
+function isSuperAdmin(): bool
+{
+    return auth()->check() && auth()->user()->is_super_admin;
+}
+
+function isForOperationArea(): bool
+{
+    return auth()->check() && auth()->user()->operation_area;
+}
