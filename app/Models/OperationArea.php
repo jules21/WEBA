@@ -69,4 +69,9 @@ class OperationArea extends Model implements Auditable
         return $this->hasMany(BillCharge::class);
     }
 
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class, 'operation_area');
+    }
+
 }

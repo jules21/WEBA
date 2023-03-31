@@ -26,8 +26,21 @@ class UserDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-            ->editColumn('operator', function ($item) {
-                return $item->operator ? $item->operator->name : "-";
+//            ->editColumn('institution_id', function ($item) {
+//                return $item->institution ? $item->institution->name : "-";
+//            })
+//            ->editColumn('operator', function ($item) {
+//                return $item->operator ? $item->operator->name : "-";
+//            })
+            ->editColumn('name', function ($item) {
+                return '<div>
+                            <div class="font-weight-bold">'.$item->name.'</div>
+                            <div class="text-muted mt-1">'.
+                                    ($item->institution ? optional($item->institution)->name :
+                                    (!$item->operator ?  "-": (optional($item->operator)->name .
+                                        ( $item->operationArea ? '/ '.optional($item->operationArea)->name:'') ) ))
+                                    .'</div>
+                        </div>';
             })
             ->editColumn('phone', function ($item) {
                 return $item->phone ? $item->phone : "-";
@@ -79,12 +92,13 @@ class UserDataTable extends DataTable
                                        data-id="'.$item->id.'"
                                        data-operator="'.$item->operator_id.'"
                                        data-national_id="'.$item->national_id.'"
+                                       data-institution="'.$item->institution_id.'"
                                        data-status="'.$item->status.'"
                                        data-url="'.route("admin.users.update",$item->id).'"> Edit</a>';
                                 '</div>
                             </div>';
             })
-            ->rawColumns(['action','roles','status','phone','operator']);
+            ->rawColumns(['action','roles','status','phone','operator','name']);
     }
 
 
@@ -126,9 +140,13 @@ class UserDataTable extends DataTable
             'id' => ['title' => '#', 'searchable' => false, 'render' => function() {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
-            Column::make('operator')
-                ->title("Operator")
-                ->addClass('text-center'),
+//            Column::make('institution_id')//must be column name in database
+//                ->title("Institution")
+//                ->name("institution.name") //must be relation name in model
+//                ->addClass('text-center'),
+//            Column::make('operator')
+//                ->title("Operator")
+//                ->addClass('text-center'),
             Column::make('name'),
             Column::make('email')
                 ->addClass('text-center'),
