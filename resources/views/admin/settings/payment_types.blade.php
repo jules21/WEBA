@@ -37,16 +37,16 @@
             <div class="card-title">
                 <h3 class="card-label">Payment Types List</h3>
             </div>
-            <div class="card-toolbar">
-                <!-- Button trigger modal-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#exampleModalLong">
-                    <span class="flaticon-add"></span>
-                    Add New Type
-                </button>
+{{--            <div class="card-toolbar">--}}
+{{--                <!-- Button trigger modal-->--}}
+{{--                <button type="button" class="btn btn-primary" data-toggle="modal"--}}
+{{--                        data-target="#exampleModalLong">--}}
+{{--                    <span class="flaticon-add"></span>--}}
+{{--                    Add New Type--}}
+{{--                </button>--}}
 
-                <!-- Modal-->
-            </div>
+{{--                <!-- Modal-->--}}
+{{--            </div>--}}
         </div>
         <div class="card-body">
 
@@ -61,7 +61,7 @@
                         <th>Name (Eng)</th>
                         <th>Name (Kin)</th>
                         <th>Active</th>
-                        <th>Action</th>
+{{--                        <th>Action</th>--}}
                     </tr>
                     </thead>
                     <tbody>
@@ -76,24 +76,24 @@
                             @else
                                 <td><span class="badge badge-danger">No</span></td>
                             @endif
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                        Action
-                                    </button>
-                                    <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-                                        <a href="#" data-id="{{$type->id}}"
-                                           data-name="{{$type->name}}"
-                                           data-kin="{{$type->name_kin}}"
-                                           data-active="{{$type->is_active}}"
-                                           class="dropdown-item js-edit">Edit</a>
-                                        <a href="{{route('admin.payment.type.delete',$type->id)}}"
-                                           class="dropdown-item js-delete">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
+{{--                            <td>--}}
+{{--                                <div class="dropdown">--}}
+{{--                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"--}}
+{{--                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"--}}
+{{--                                            aria-expanded="false">--}}
+{{--                                        Action--}}
+{{--                                    </button>--}}
+{{--                                    <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">--}}
+{{--                                        <a href="#" data-id="{{$type->id}}"--}}
+{{--                                           data-name="{{$type->name}}"--}}
+{{--                                           data-kin="{{$type->name_kin}}"--}}
+{{--                                           data-active="{{$type->is_active}}"--}}
+{{--                                           class="dropdown-item js-edit">Edit</a>--}}
+{{--                                        <a href="{{route('admin.payment.type.delete',$type->id)}}"--}}
+{{--                                           class="dropdown-item js-delete">Delete</a>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </td>--}}
                         </tr>
                     @endforeach
 
