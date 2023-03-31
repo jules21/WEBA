@@ -22,33 +22,68 @@ class BillChargeController extends Controller
      */
     public function index()
     {
-        $startDate = request('start_date');
-        $endDate = request('end_date');
-        $operation_area_id = request('operation_area_id');
-        $water_network_type_id = request('water_network_type_id');
-        $operator_id = request('operator_id');
 
-        $operators  = Operator::all();
-        $operationAreas = OperationArea::query()->findMany($operation_area_id);
-        $bills = BillCharge::with('waterNetworkType', 'operationArea','operator')
-            ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
-                $builder->whereDate('created_at', '>=', $startDate);
-            })
-            ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
-                $builder->whereDate('created_at', '<=', $endDate);
-            })
-            ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
-                $builder->whereIn('operation_area_id', $operation_area_id);
-            })
-            ->when(!empty($water_network_type_id), function (Builder $builder) use ($water_network_type_id) {
-                $builder->where('water_network_type_id', $water_network_type_id);
-            })
-            ->when(!empty($operator_id), function (Builder $builder) use ($operator_id) {
-                $builder->where('operator_id', $operator_id);
-            })
-            ->orderBy('id', 'DESC')
-            ->get();
-        return view('admin.settings.bill_charges', compact('bills','operators','operationAreas'));
+        $user = auth()->user();
+
+        if ($user->is_super_admin){
+            $startDate = request('start_date');
+            $endDate = request('end_date');
+            $operation_area_id = request('operation_area_id');
+            $water_network_type_id = request('water_network_type_id');
+            $operator_id = request('operator_id');
+
+            $operators  = Operator::all();
+            $operationAreas = OperationArea::query()->findMany($operation_area_id);
+            $bills = BillCharge::with('waterNetworkType', 'operationArea','operator')
+                ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
+                    $builder->whereDate('created_at', '>=', $startDate);
+                })
+                ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
+                    $builder->whereDate('created_at', '<=', $endDate);
+                })
+                ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
+                    $builder->whereIn('operation_area_id', $operation_area_id);
+                })
+                ->when(!empty($water_network_type_id), function (Builder $builder) use ($water_network_type_id) {
+                    $builder->where('water_network_type_id', $water_network_type_id);
+                })
+                ->when(!empty($operator_id), function (Builder $builder) use ($operator_id) {
+                    $builder->where('operator_id', $operator_id);
+                })
+                ->orderBy('id', 'DESC')
+                ->get();
+            return view('admin.settings.bill_charges', compact('bills','operators','operationAreas'));
+        }else{
+            $startDate = request('start_date');
+            $endDate = request('end_date');
+            $operation_area_id = request('operation_area_id');
+            $water_network_type_id = request('water_network_type_id');
+            $operator_id = request('operator_id');
+
+            $operators  = Operator::all();
+            $operationAreas = OperationArea::query()->findMany($operation_area_id);
+            $bills = BillCharge::query()->where('operator_id','=',auth()->user()->operator_id)->with('waterNetworkType', 'operationArea','operator')
+                ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
+                    $builder->whereDate('created_at', '>=', $startDate);
+                })
+                ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
+                    $builder->whereDate('created_at', '<=', $endDate);
+                })
+                ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
+                    $builder->whereIn('operation_area_id', $operation_area_id);
+                })
+                ->when(!empty($water_network_type_id), function (Builder $builder) use ($water_network_type_id) {
+                    $builder->where('water_network_type_id', $water_network_type_id);
+                })
+                ->when(!empty($operator_id), function (Builder $builder) use ($operator_id) {
+                    $builder->where('operator_id', $operator_id);
+                })
+                ->orderBy('id', 'DESC')
+                ->get();
+            return view('admin.settings.bill_charges', compact('bills','operators','operationAreas'));
+        }
+
+
     }
 
     /**

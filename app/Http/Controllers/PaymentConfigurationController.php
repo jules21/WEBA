@@ -37,16 +37,39 @@ class PaymentConfigurationController extends Controller
                 ->orderBy('id', 'DESC')
                 ->get();
             $operators = Operator::all();
+            $operationAreas = OperationArea::query()
+                ->findMany($operation_area_id);
+            return view('admin.settings.payment_configurations', compact('payments', 'operators', 'operationAreas'));
         } else {
-            $payments = PaymentConfiguration::query()->with('paymentType', 'requestType', 'operator', 'operationArea')
-                ->orderBy('id', 'DESC')
-                ->where('operator_id', $user->operator_id)->get();
-            $operators = Operator::all();
-        }
-        $operationAreas = OperationArea::query()
-            ->findMany($operation_area_id);
+            $startDate = request('start_date');
+            $endDate = request('end_date');
+            $payment_type_id = request('payment_type_id');
 
-        return view('admin.settings.payment_configurations', compact('payments', 'operators', 'operationAreas'));
+            $payments = PaymentConfiguration::query()
+                ->where('operator_id','=',auth()->user()->operator_id)
+                ->with('paymentType', 'requestType', 'operator', 'operationArea')
+                ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
+                    $builder->whereDate('created_at', '>=', $startDate);
+                })
+                ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
+                    $builder->whereDate('created_at', '<=', $endDate);
+                })
+                ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
+                    $builder->whereIn('operation_area_id', $operation_area_id);
+                })
+                ->when(!empty($payment_type_id), function (Builder $builder) use ($payment_type_id) {
+                    $builder->where('payment_type_id', $payment_type_id);
+                })
+                ->orderBy('id', 'DESC')
+                ->get();
+            $operators = Operator::all();
+            $operationAreas = OperationArea::query()
+                ->findMany($operation_area_id);
+            return view('admin.settings.payment_configurations', compact('payments', 'operators', 'operationAreas'));
+        }
+
+
+
     }
 
     public function store(ValidatePaymentConfiguration $request)
