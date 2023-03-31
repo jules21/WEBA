@@ -22,7 +22,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        if(!\Helper::isOperator())
+        if (!\Helper::isOperator())
             abort(403);
         $items = Item::query()
             ->where('operator_id', auth()->user()->operator_id)
@@ -101,7 +101,9 @@ class ItemController extends Controller
 
     public function itemsByCategory($categoryId)
     {
-        $category = ItemCategory::query()->findOrFail($categoryId);
-        return $category->items()->get();
+        return Item::query()
+//            ->with('category', 'packagingUnit')
+            ->where('item_category_id', $categoryId)
+            ->get();
     }
 }

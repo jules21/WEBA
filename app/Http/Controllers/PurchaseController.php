@@ -131,12 +131,12 @@ class PurchaseController extends Controller
     {
         $suppliers = $this->getSuppliers();
 
-        $items = $this->getItems();
-
+        $categories = $this->getCategories();
 
         return view('admin.purchases.create', [
             'suppliers' => $suppliers,
-            'items' => $items
+            'categories' => $categories,
+            'items' => $this->getitems(),
         ]);
 
 
@@ -198,7 +198,7 @@ class PurchaseController extends Controller
 
         $suppliers = $this->getSuppliers();
 
-        $items = $this->getItems();
+        $categories = $this->getCategories();
 
         $purchase->load(['movements.item']);
 
@@ -206,7 +206,8 @@ class PurchaseController extends Controller
         return view('admin.purchases.create', [
             'purchase' => $purchase,
             'suppliers' => $suppliers,
-            'items' => $items
+            'items' => $this->getItems(),
+            'categories'=>$categories
         ]);
     }
 
@@ -378,9 +379,16 @@ class PurchaseController extends Controller
             ->get();
     }
 
-    /**
-     * @return Item[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection|_IH_Item_C|_IH_Item_QB[]
-     */
+
+    public function getCategories()
+    {
+        return ItemCategory::query()
+            ->where('operator_id', '=', auth()->user()->operator_id)
+            ->orderBy('name')
+            ->whereHas('items')
+            ->get();
+    }
+
     public function getItems()
     {
         return Item::query()
