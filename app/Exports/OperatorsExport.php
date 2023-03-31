@@ -22,12 +22,14 @@ class OperatorsExport implements FromQuery, ShouldAutoSize, WithMapping, WithTit
     private ?string $startDate;
     private ?string $endDate;
     private ?string $districtId;
+    private ?int $operationAreaId;
 
-    public function __construct(?string $startDate, ?string $endDate, ?int $districtId)
+    public function __construct(?string $startDate, ?string $endDate, ?int $districtId, ?int $operationAreaId)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->districtId = $districtId;
+        $this->operationAreaId = $operationAreaId;
     }
 
     public function ShouldAutoSize(): bool
@@ -52,7 +54,14 @@ class OperatorsExport implements FromQuery, ShouldAutoSize, WithMapping, WithTit
                 return $query->whereDate('created_at', '<=', $this->endDate);
             })
             ->when($this->districtId, function ($query) {
-                return $query->where('district_id', $this->districtId);
+                return $query->whereHas('operationAreas', function ($query) {
+                    return $query->where('district_id', $this->districtId);
+                });
+            })
+            ->when($this->operationAreaId, function ($query) {
+                return $query->whereHas('operationAreas', function ($query) {
+                    return $query->where('operation_areas.id', $this->operationAreaId);
+                });
             });
     }
 

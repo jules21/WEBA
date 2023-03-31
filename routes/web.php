@@ -376,10 +376,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
+Route::get('/home', [HomeController::class, 'home'])->name('home');
 //ajax routes
-Route::get('/operation-area', [App\Http\Controllers\OperationAreaController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
-Route::get('/Operator-operation-areas', [App\Http\Controllers\OperationAreaController::class, 'getOperationAreasByOperator'])->name('operator-operation-areas');
+Route::get('/operation-area', [OperationAreaController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
+Route::get('/Operator-operation-areas', [OperationAreaController::class, 'getOperationAreasByOperator'])->name('operator-operation-areas');
 //officers by operation area
-Route::get('/operation-area-officers', [App\Http\Controllers\OperationAreaController::class, 'getOfficersByOperationArea'])->name('get-operation-area-officers');
+Route::get('/operation-area-officers', [OperationAreaController::class, 'getOfficersByOperationArea'])->name('get-operation-area-officers');
+Route::get('/operation-areas-by-district', [OperationAreaController::class, 'getAreasByDistrict'])->name('get-operation-areas-by-district');
 

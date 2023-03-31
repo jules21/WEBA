@@ -469,7 +469,7 @@
             }
         }
         // enable clear button
-        $('.datepicker').datepicker({
+        $('.date_picker').datepicker({
             rtl: KTUtil.isRTL(),
             todayBtn: "linked",
             clearBtn: true,

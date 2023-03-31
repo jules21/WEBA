@@ -266,5 +266,13 @@ class OperationAreaController extends Controller
         return $customerFieldOfficers->get();
     }
 
+    public function getAreasByDistrict()
+    {
+        $districtId = request()->input('district_id');
+        return OperationArea::query()
+            ->where('district_id', $districtId)
+            ->get();
+    }
+
 
 }
