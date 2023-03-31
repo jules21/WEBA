@@ -2,7 +2,7 @@
 
 use App\Constants\Permission;
 use App\Http\Controllers\AdjustmentController;
-use App\Http\Controllers\AreaOfOperationController;
+use App\Http\Controllers\OperationAreaController;
 use App\Http\Controllers\AuditingController;
 use App\Http\Controllers\CashMovementController;
 use App\Http\Controllers\CellController;
@@ -67,12 +67,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get("/operator-details", [OperatorController::class, 'operatorDetails'])->name('details');
         Route::get('/{operator}/details-page', [OperatorController::class, 'details'])->name('details-page');
 
-        Route::get("/{operator}/operation-areas", [AreaOfOperationController::class, 'index'])->name('area-of-operation.index');
-        Route::post("/{operator}/operation-areas", [AreaOfOperationController::class, 'store'])->name('area-of-operation.store');
-        Route::delete("/operation-areas/{areaOfOperation}", [AreaOfOperationController::class, 'destroy'])->name('area-of-operation.destroy');
-        Route::get("/operation-areas/{areaOfOperation}", [AreaOfOperationController::class, 'show'])->name('area-of-operation.show');
+        Route::get("/{operator}/operation-areas", [OperationAreaController::class, 'index'])->name('area-of-operation.index');
+        Route::post("/{operator}/operation-areas", [OperationAreaController::class, 'store'])->name('area-of-operation.store');
+        Route::delete("/operation-areas/{operationArea}", [OperationAreaController::class, 'destroy'])->name('area-of-operation.destroy');
+        Route::get("/operation-areas/{operationArea}", [OperationAreaController::class, 'show'])->name('area-of-operation.show');
 
-        Route::get('/operation-areas/{id}/get', [AreaOfOperationController::class, 'getAreaOfOperations'])->name('get-area-of-operations');
+        Route::get('/operation-areas/{id}/get', [OperationAreaController::class, 'getAreaOfOperations'])->name('get-area-of-operations');
 
         Route::get('/{operator}/users', [OperatorUserController::class, 'index'])->name('users');
 
@@ -378,8 +378,8 @@ Auth::routes(['register' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 //ajax routes
-Route::get('/operation-area', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
-Route::get('/Operator-operation-areas', [App\Http\Controllers\AreaOfOperationController::class, 'getOperationAreasByOperator'])->name('operator-operation-areas');
+Route::get('/operation-area', [App\Http\Controllers\OperationAreaController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
+Route::get('/Operator-operation-areas', [App\Http\Controllers\OperationAreaController::class, 'getOperationAreasByOperator'])->name('operator-operation-areas');
 //officers by operation area
-Route::get('/operation-area-officers', [App\Http\Controllers\AreaOfOperationController::class, 'getOfficersByOperationArea'])->name('get-operation-area-officers');
+Route::get('/operation-area-officers', [App\Http\Controllers\OperationAreaController::class, 'getOfficersByOperationArea'])->name('get-operation-area-officers');
 

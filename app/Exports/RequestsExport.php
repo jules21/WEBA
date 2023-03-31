@@ -23,12 +23,16 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
     private ?string $startDate = null;
     private ?string $endDate;
     private ?int $districtId;
+    private ?string $operatorId;
+    private ?string $operationAreaId;
 
-    public function __construct(?string $startDate, ?string $endDate, ?int $districtId)
+    public function __construct(?string $startDate, ?string $endDate, ?int $districtId, ?string $operatorId, ?string $operationAreaId)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->districtId = $districtId;
+        $this->operatorId = $operatorId;
+        $this->operationAreaId = $operationAreaId;
     }
 
     public function ShouldAutoSize(): bool
@@ -53,6 +57,12 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
             })
             ->when($this->districtId, function ($query) {
                 return $query->where('district_id', $this->districtId);
+            })
+            ->when($this->operatorId, function ($query) {
+                return $query->where('operator_id', $this->operatorId);
+            })
+            ->when($this->operationAreaId, function ($query) {
+                return $query->where('operation_area_id', $this->operationAreaId);
             });
 
     }
