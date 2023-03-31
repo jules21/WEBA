@@ -114,6 +114,17 @@
                                     </div>
 
                                 @endif
+                                @if(Helper::isSuperAdmin())
+                                    <div class="col-md-12 form-group institution_container">
+                                        <label>Institution</label>
+                                        <select name="institution_id" class="form-control select2 institution_id" style="width: 100% !important;">
+                                            <option value="">Select Institution</option>
+                                            @foreach(\App\Models\Institution::get() ?? [] as $institution)
+                                                <option value="{{$institution->id}}">{{$institution->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @endif
                             </div>
                             </div>
                         <div class="modal-footer">
@@ -185,6 +196,19 @@
                                     </div>
 
                                 @endif
+
+                                @if(Helper::isSuperAdmin())
+                                    <div class="col-md-12 form-group institution_container">
+                                        <label>Institution</label>
+                                        <select name="institution_id" class="form-control select2 institution_id" id="_institution_id" style="width: 100% !important;">
+                                            <option value="">Select Institution</option>
+                                            @foreach(\App\Models\Institution::get() ?? [] as $institution)
+                                                <option value="{{$institution->id}}">{{$institution->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @endif
+
                                 <div class="col-md-12 form-group">
                                     <label for="status">Active</label>
                                     <select class="form-control form-control-sm" id="status" name="status">
@@ -232,7 +256,9 @@
             $("#telephone").val($(button).data("phone"));
             $("#status").val($(button).data("status"));
             $("#_operator_id").val($(button).data("operator"));
+            $("#_operator_id").trigger('change');
             $("#operation_area").val($(button).data("operation_area"));
+            $("#_institution_id").val($(button).data("institution"));
             $("#_operator_id").select2();
             @if(auth()->user()->operator_id == null)
                 getOperationArea(Array.from($("#_operator_id").val()), $(button).data("operation_area"));
@@ -246,7 +272,9 @@
             let operatorId = $(this).val();
             if (operatorId !== '') {
                 getOperationArea(Array.from(operatorId));
+                $('.institution_container').css('display', 'none')
             } else {
+                $('.institution_container').css('display', 'block')
                 $('.operation_area_id').empty();
                 $('.operation_area_id').append('<option value="">Select Operation Area</option>');
             }
@@ -275,7 +303,6 @@
             }
 
         };
-
     </script>
 
     @endsection
