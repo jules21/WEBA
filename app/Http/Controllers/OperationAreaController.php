@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 use Yajra\DataTables\Facades\DataTables;
 
-class AreaOfOperationController extends Controller
+class OperationAreaController extends Controller
 {
 
     /**
@@ -43,6 +43,11 @@ class AreaOfOperationController extends Controller
                                                     Options
                                                  </button>
                                                  <div class="dropdown-menu border">
+                                                 <a class="dropdown-item" href="' . route('admin.operator.operator-area-users', encryptId($row->id)) . '">
+                                                         <i class="fas fa-users"></i>
+                                                         <span class="ml-2">Users</span>
+                                                      </a>
+                                                      <div class="dropdown-divider"></div>
                                                      <a class="dropdown-item js-edit" href="' . route('admin.operator.area-of-operation.show', encryptId($row->id)) . '">
                                                          <i class="fas fa-edit"></i>
                                                          <span class="ml-2">Edit</span>
@@ -119,16 +124,16 @@ class AreaOfOperationController extends Controller
     }
 
 
-    public function show(OperationArea $areaOfOperation)
+    public function show(OperationArea $operationArea)
     {
-        $areaOfOperation->load('operator');
-        return $areaOfOperation;
+        $operationArea->load('operator');
+        return $operationArea;
     }
 
 
-    public function destroy(OperationArea $areaOfOperation)
+    public function destroy(OperationArea $operationArea)
     {
-        $areaOfOperation->delete();
+        $operationArea->delete();
 
         if (request()->ajax())
             return response()->noContent();
@@ -178,15 +183,13 @@ class AreaOfOperationController extends Controller
             return $operator->operationAreas;
         });
     }
+
     public function getOperationAreasByOperator()
     {
-
         $operatorId = request()->input('operator_id');
-        $operator = Operator::query()->where('id', $operatorId)
-            ->with('operationAreas')
-            ->first();
-
-        return $operator->operationAreas ?? [];
+        return OperationArea::query()
+            ->where('operator_id', $operatorId)
+            ->get();
     }
 
     /**
@@ -265,7 +268,15 @@ class AreaOfOperationController extends Controller
             });
 
 //        dump(User::has('bills')->first()->bills()->first()->meterRequest()->first()->request()->first()->operation_area_id);
-            return $customerFieldOfficers->get();
+        return $customerFieldOfficers->get();
+    }
+
+    public function getAreasByDistrict()
+    {
+        $districtId = request()->input('district_id');
+        return OperationArea::query()
+            ->where('district_id', $districtId)
+            ->get();
     }
 
 

@@ -32,7 +32,7 @@ class ValidateUser extends FormRequest
             ],
             'operator_id' => 'nullable',
             'operation_area' => 'nullable',
-            'institution_id' => 'nullable',
+            'institution_id' => 'required_if:operator_id,==,null',
         ];
     }
 
@@ -43,6 +43,7 @@ class ValidateUser extends FormRequest
             'email.required' => 'Email field is required',
             'phone.required' => 'Telephone field is required',
             'phone.regex' => 'Telephone field must be start with 07 and must be 10 digits',
+            'institution_id.required_if' => 'Institution field is required if Operator field is empty',
         ];
     }
 }

@@ -25,6 +25,7 @@ class OperatorController extends Controller
         $startDate = request('start_date');
         $endDate = request('end_date');
         $districtId = request('district_id');
+        $operationAreaId = request('operation_area_id');
 
         $data = Operator::with(['legalType'])
             ->when($startDate, function ($query) use ($startDate) {
@@ -34,7 +35,14 @@ class OperatorController extends Controller
                 return $query->whereDate('created_at', '<=', $endDate);
             })
             ->when($districtId, function ($query) use ($districtId) {
-                return $query->where('district_id', $districtId);
+                return $query->whereHas('operationAreas', function ($query) use ($districtId) {
+                    return $query->where('district_id', $districtId);
+                });
+            })
+            ->when($operationAreaId, function ($query) use ($operationAreaId) {
+                return $query->whereHas('operationAreas', function ($query) use ($operationAreaId) {
+                    return $query->where('operation_areas.id', $operationAreaId);
+                });
             })
             ->withCount('operationAreas');
 
@@ -227,13 +235,16 @@ class OperatorController extends Controller
         $startDate = request('start_date');
         $endDate = request('end_date');
         $districtId = request('district_id');
-        return (new OperatorsExport($startDate, $endDate,$districtId))
+        $operationAreaId = request('operation_area_id');
+
+
+        return (new OperatorsExport($startDate, $endDate, $districtId, $operationAreaId))
             ->download('operators-' . $now . '.xlsx');
     }
 
     public function details(Operator $operator)
     {
-        $operator->load('province', 'district', 'sector', 'cell', 'village', 'legalType','operationAreas.district');
+        $operator->load('province', 'district', 'sector', 'cell', 'village', 'legalType', 'operationAreas.district');
         return view('admin.operator.details', [
             'operator' => $operator
         ]);
