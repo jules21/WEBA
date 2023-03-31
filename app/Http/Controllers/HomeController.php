@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\MeterRequest;
 use App\Models\Operator;
 use App\Models\Request;
 use App\Models\WaterNetwork;
@@ -26,7 +27,7 @@ class HomeController extends Controller
             ->whereHas('requests', function ($query) {
                 $query->whereNotIn('status', [Request::REJECTED, Request::ASSIGNED, Request::PENDING]);
             })->count();
-        $totalWaterConnections = Request::query()->whereHas('meterNumbers')->count();
+        $totalWaterConnections = MeterRequest::query()->count();
         $totalWaterNetworks = WaterNetwork::query()->count();
         return view('welcome', [
             'operators' => $operators,
