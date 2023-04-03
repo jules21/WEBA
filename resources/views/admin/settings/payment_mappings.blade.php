@@ -172,8 +172,8 @@
                             <label for="name">Payment Service Provider</label>
                             <select name="psp_account_id" id="edit_psp_account_id" class="form-control">
                                 <option value="">Please Select Payment Service Provider</option>
-                                @foreach(App\Models\PaymentServiceProvider::all() as $account)
-                                    <option value="{{$account->id}}">{{$account->name}}</option>
+                                @foreach($banks as $bank)
+                                    <option value="{{$bank->id}}">{{$bank->name}}</option>
                                 @endforeach
                             </select>
                         </div>
