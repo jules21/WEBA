@@ -251,7 +251,10 @@ class RequestsController extends Controller
 
         $itemCategories = ItemCategory::query()
             ->whereHas('items')
-            ->where('is_meter', '=', true)
+            ->where([
+                ['is_meter', '=', true],
+                ['operator_id', '=', auth()->user()->operator_id]
+            ])
             ->get();
 
         $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, $request->request_type_id);
