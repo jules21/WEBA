@@ -39,9 +39,9 @@
             </div>
             <div class="card-toolbar">
                 <!-- Button trigger modal-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
+                <button type="button" class="btn btn-light-primary" data-toggle="modal"
                         data-target="#exampleModalLong">
-                    <span class="flaticon-add"></span>
+                    <span class="la la-plus"></span>
                     Add New Supplier
                 </button>
 
@@ -54,7 +54,6 @@
             <!--begin: Datatable-->
             <div class="table-responsive">
                 <table class="table table-head-custom border table-head-solid table-hover" id="table">
-                    {{--                    <table class="table table-striped" id="kt_datatable">--}}
                     <thead>
                     <tr>
                         <th>#</th>
@@ -82,7 +81,7 @@
                             <td>{{$supplier->contact_email}}</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                    <button class="btn btn-light-primary btn-sm dropdown-toggle" type="button"
                                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
                                         Action
