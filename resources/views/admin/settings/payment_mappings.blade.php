@@ -39,9 +39,9 @@
             </div>
             <div class="card-toolbar">
                 <!-- Button trigger modal-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
+                <button type="button" class="btn btn-light-primary" data-toggle="modal"
                         data-target="#exampleModalLong">
-                    <span class="flaticon-add"></span>
+                    <i class="flaticon2-plus"></i>
                     Add New Record
                 </button>
 
@@ -76,7 +76,7 @@
                             <td>{{$mapping->created_at}}</td>
                             <td>
                                 <div class="dropdown">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
+                                    <button class="btn btn-light-primary btn-sm dropdown-toggle" type="button"
                                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                             aria-expanded="false">
                                         Action
@@ -121,8 +121,8 @@
                             <label for="name">Payment Service Provider</label>
                             <select name="psp_account_id" id="psp_account_id" class="form-control">
                                 <option value="">Please Select Payment Service Provider</option>
-                                @foreach(App\Models\PaymentServiceProvider::all() as $account)
-                                    <option value="{{$account->id}}">{{$account->name}}</option>
+                                @foreach($banks as $bank)
+                                    <option value="{{$bank->id}}">{{$bank->name}}</option>
                                 @endforeach
                             </select>
                         </div>

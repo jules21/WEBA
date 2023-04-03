@@ -29,10 +29,11 @@
         </div>
     </div>
 
-    {{--    <x-simple-export-form action="{{ route('admin.operator.export-to-excel') }}"/>--}}
+    {{--    <x-simple-export-form action=""/>--}}
 
-    <x-export-form export-link="{{ route('admin.operator.export-to-excel',['start_date'=>request('start_date'),'end_date'=>request('end_date'),'district_id'=>request('district_id')]) }}"
-                   action="{{ route('admin.operator.index') }}"/>
+    @if(isOperatorOrSuperAdmin())
+        @include('admin.operator.partials._filters')
+    @endif
 
 
     <div class="card tw-shadow-sm border tw-border-gray-300">
@@ -374,6 +375,31 @@
             })
         }
 
+        function getOperationAreasByDistrict(districtId, selectedOperationAreaId) {
+            if (districtId === '') {
+                return;
+            }
+
+            let operationAreaId = $('#operation_area_id');
+            operationAreaId.empty();
+            operationAreaId.append('<option value="">Loading..</option>');
+            $.ajax({
+                url: " {{ route('get-operation-areas-by-district') }}",
+                method: "GET",
+                data: {
+                    district_id: districtId
+                },
+                success: function (data) {
+                    operationAreaId.empty();
+                    operationAreaId.append('<option value="">All</option>');
+                    $.each(data, function (index, value) {
+                        operationAreaId.append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                    operationAreaId.val(selectedOperationAreaId);
+                }
+            })
+        }
+
 
         $(document).ready(function () {
             $('.nav-operators').addClass('menu-item-active');
@@ -446,6 +472,12 @@
                 getVillages(cellId);
             });
 
+            $('#district_id').on('change', function () {
+                let districtId = $(this).val();
+                getOperationAreasByDistrict(districtId);
+            });
+
+            getOperationAreasByDistrict($('#district_id').val(), "{{ request('operation_area_id') }}");
 
             $('#searchButton').on('click', function () {
 

@@ -57,7 +57,7 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Created At</th>
-                        <th>Action</th>
+{{--                        <th>Action</th>--}}
                     </tr>
                     </thead>
                     <tbody>
@@ -67,22 +67,22 @@
                             <td>{{++$key}}</td>
                             <td>{{$document->name}}</td>
                             <td>{{$document->created_at}}</td>
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                        Action
-                                    </button>
-                                    <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-                                        <a href="#" data-id="{{$document->id}}"
-                                           data-name="{{$document->name}}"
-                                           class="dropdown-item js-edit">Edit</a>
-                                        <a href="{{route('admin.document.type.delete',$document->id)}}"
-                                           class="dropdown-item js-delete">Delete</a>
-                                    </div>
-                                </div>
-                            </td>
+{{--                            <td>--}}
+{{--                                <div class="dropdown">--}}
+{{--                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"--}}
+{{--                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"--}}
+{{--                                            aria-expanded="false">--}}
+{{--                                        Action--}}
+{{--                                    </button>--}}
+{{--                                    <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">--}}
+{{--                                        <a href="#" data-id="{{$document->id}}"--}}
+{{--                                           data-name="{{$document->name}}"--}}
+{{--                                           class="dropdown-item js-edit">Edit</a>--}}
+{{--                                        <a href="{{route('admin.document.type.delete',$document->id)}}"--}}
+{{--                                           class="dropdown-item js-delete">Delete</a>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </td>--}}
                         </tr>
                     @endforeach
 

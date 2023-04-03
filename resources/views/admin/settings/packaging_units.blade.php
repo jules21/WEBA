@@ -37,16 +37,18 @@
             <div class="card-title">
                 <h3 class="card-label">Packaging Units List</h3>
             </div>
-            <div class="card-toolbar">
-                <!-- Button trigger modal-->
-                <button type="button" class="btn btn-primary" data-toggle="modal"
-                        data-target="#exampleModalLong">
-                    <span class="flaticon-add"></span>
-                    Add New Record
-                </button>
+            @if(auth()->user()->is_super_admin)
+                <div class="card-toolbar">
+                    <!-- Button trigger modal-->
+                    <button type="button" class="btn btn-light-primary" data-toggle="modal"
+                            data-target="#exampleModalLong">
+                        <i class="flaticon2-plus"></i>
+                        Add New Record
+                    </button>
 
-                <!-- Modal-->
-            </div>
+                    <!-- Modal-->
+                </div>
+            @endif
         </div>
         <div class="card-body">
 
@@ -60,7 +62,9 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Active</th>
-                        <th>Action</th>
+                        @if(auth()->user()->is_super_admin)
+                            <th>Action</th>
+                        @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -74,23 +78,25 @@
                             @else
                                 <td><span class="badge badge-danger">No</span></td>
                             @endif
-                            <td>
-                                <div class="dropdown">
-                                    <button class="btn btn-primary btn-sm dropdown-toggle" type="button"
-                                            id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                            aria-expanded="false">
-                                        Action
-                                    </button>
-                                    <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-                                        <a href="#" data-id="{{$unit->id}}"
-                                           data-name="{{$unit->name}}"
-                                           data-active="{{$unit->is_active}}"
-                                           class="dropdown-item js-edit">Edit</a>
-                                        <a href="{{route('admin.packaging.unit.delete',$unit->id)}}"
-                                           class="dropdown-item js-delete">Delete</a>
+                            @if(auth()->user()->is_super_admin)
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-light-primary btn-sm dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                            Action
+                                        </button>
+                                        <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
+                                            <a href="#" data-id="{{$unit->id}}"
+                                               data-name="{{$unit->name}}"
+                                               data-active="{{$unit->is_active}}"
+                                               class="dropdown-item js-edit">Edit</a>
+                                            <a href="{{route('admin.packaging.unit.delete',$unit->id)}}"
+                                               class="dropdown-item js-delete">Delete</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
 
