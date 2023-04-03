@@ -68,7 +68,7 @@ class PaymentMappingController extends Controller
         $payment_configuration = PaymentConfiguration::find($payment_configuration_id);
         $paymentMapping = new PaymentMapping();
         $paymentMapping->payment_configuration_id=$payment_configuration->id;
-        $paymentMapping->psp_account_id=$request->psp_account_id;
+        $paymentMapping->psp_account_id=$request->account_number;
 //        return $paymentMapping;
         $paymentMapping->save();
         return redirect()->back()->with('success','Payment Mapping Created Successfully');
@@ -106,7 +106,7 @@ class PaymentMappingController extends Controller
     public function update(UpdatePaymentMappingRequest $request, PaymentMapping $paymentMapping)
     {
         $paymentMapping = PaymentMapping::findOrFail($request->input('MappingId'));
-        $paymentMapping->psp_account_id=$request->psp_account_id;
+        $paymentMapping->psp_account_id=$request->account_number;
         $paymentMapping->save();
         return redirect()->back()->with('success','Payment Mapping Updated Successfully');
     }

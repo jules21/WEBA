@@ -353,7 +353,7 @@
                                             </div>
                                         </div>
                                         <div class="label label-light label-inline font-weight-bold text-dark-75 py-4 px-3 font-size-lg">
-                                            {{$row["consumed_water"]}} &#13221;</div>
+                                            {{number_format($row["consumed_water"])}} &#13221;</div>
                                     </div>
                                     <!--end::Item-->
                                 </div>

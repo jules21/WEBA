@@ -36,7 +36,7 @@
             <div class="card-header flex-wrap">
                 <h3 class="card-title">Categories</h3>
                 <div class="card-toolbar">
-                    <a href="javascript:void(0)" class="btn btn-primary"
+                    <a href="javascript:void(0)" class="btn btn-light-primary"
                        data-toggle="modal"
                        data-target="#addModal" >
                         <i class="la la-plus"></i>

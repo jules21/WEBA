@@ -164,22 +164,22 @@ class DashboardController extends Controller
 
     private function getTopOperators()
     {
-        $billings = Billing::query()
-            ->join('meter_requests', 'meter_requests.meter_number', '=', 'billings.meter_number')
-            ->join('requests', 'requests.id', '=', 'meter_requests.request_id')
-            ->join('operators', 'operators.id', '=', 'requests.operator_id')
-            ->select(\DB::raw("SUM(billings.last_index-starting_index), operators.id, operators.name,operators.logo,operators.address"))
+        $operators = Operator::query()
+            ->join('requests', 'requests.operator_id', '=', 'operators.id')
+            ->join('meter_requests', 'meter_requests.request_id', '=', 'requests.id')
+            ->join('billings', 'billings.subscription_number', '=', 'meter_requests.subscription_number')
+            ->select(\DB::raw("SUM(billings.last_index-starting_index) as consumed_water, operators.id, operators.name,operators.logo,operators.address"))
             ->groupByRaw('operators.id,operators.name')
+            ->orderBy('consumed_water', 'desc')
             ->limit(5)
             ->get();
         $data = collect();
-        $path = 'operators/logos/';
-        foreach ($billings as $billing) {
+        foreach ($operators as $operator) {
             $data->push([
-                'name' => $billing->name,
-                'consumed_water' => doubleval($billing->sum ?? 0),
-                'url_logo' => $billing->logo ? Storage::url($path . $billing->logo) : asset('img/logo.svg'),
-                'address' => $billing->address ?? '',
+                'name' => $operator->name,
+                'consumed_water' => doubleval($operator->consumed_water ?? 0),
+                'url_logo' => $operator->logo_url,
+                'address' => $operator->address ?? '',
             ]);
         }
         return $data;
@@ -226,12 +226,12 @@ class DashboardController extends Controller
     {
         $operatorId = auth()->user()->operator_id;
         $operationAreaId = auth()->user()->operation_area;
-        $billings = Billing::query()
-            ->join('meter_requests', 'meter_requests.meter_number', '=', 'billings.meter_number')
-            ->join('requests', 'requests.id', '=', 'meter_requests.request_id')
-            ->join('operators', 'operators.id', '=', 'requests.operator_id')
-            ->join('water_networks', 'water_networks.id', '=', 'requests.water_network_id')
-            ->join('operation_areas', 'operation_areas.operator_id', '=', 'operators.id')
+        $waterNetworks = WaterNetwork::query()
+        ->join('requests', 'requests.water_network_id', '=', 'water_networks.id')
+            ->join('meter_requests', 'meter_requests.request_id', '=', 'requests.id')
+            ->join('billings', 'billings.subscription_number', '=', 'meter_requests.subscription_number')
+            ->join('operation_areas', 'operation_areas.id', '=', 'requests.operation_area_id')
+            ->join('operators', 'operators.id', '=', 'operation_areas.operator_id')
             ->when($operationAreaId, function ($query) use ($operationAreaId) {
                 return $query->where('operation_areas.id', $operationAreaId);
             })->when($operatorId, function ($query) use ($operatorId) {
@@ -241,7 +241,7 @@ class DashboardController extends Controller
             ->limit(5)
             ->get();
         $data = collect();
-        foreach ($billings as $billing) {
+        foreach ($waterNetworks as $billing) {
             $data->push([
                 'name' => $billing->name,
                 'consumed_water' => doubleval($billing->sum ?? 0),
