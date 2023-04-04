@@ -122,40 +122,34 @@ class BillingDataTable extends DataTable
                 Column::make('operation_area')
                 ->name('meterRequest.request.operationArea.name')
                 ->title("Operation Area")
-                ->addClass('text-center'),
+            ,
             Column::make('customer_name')
                 ->name('meterRequest.request.customer.name')
                 ->title("Customer Name")
-                ->addClass('text-center'),
+            ,
             Column::make('meter_number')
                 ->title("Meter Number")
-                ->addClass('text-center'),
+            ,
             Column::make('subscription_number')
                 ->title("Subscription Number")
-                ->addClass('text-center'),
+            ,
         Column::make('starting_index')
-            ->title("Indexes")
-            ->addClass('text-center'),
+            ->title("Indexes"),
         Column::make('unit_price')
-            ->title("Unit Price")
-            ->addClass('text-center'),
+            ->title("Unit Price"),
         Column::make('amount')
-            ->title("Amount")
-            ->addClass('text-center'),
+            ->title("Amount"),
         Column::make('balance')
-            ->title("Balance")
-            ->addClass('text-center'),
+            ->title("Balance"),
             Column::make('user_id')
                 ->title("Officer")
-                ->addClass('text-center'),
+            ,
         Column::make('created_at')
-            ->title("Creation Date")
-            ->addClass('text-center'),
+            ->title("Creation Date"),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
-                ->addClass('text-center')
                 ->title(''),
 
         ];
