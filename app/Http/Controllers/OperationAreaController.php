@@ -43,6 +43,11 @@ class OperationAreaController extends Controller
                                                     Options
                                                  </button>
                                                  <div class="dropdown-menu border">
+                                                 <a class="dropdown-item" href="' . route('admin.operator.operator-area-users', encryptId($row->id)) . '">
+                                                         <i class="fas fa-users"></i>
+                                                         <span class="ml-2">Users</span>
+                                                      </a>
+                                                      <div class="dropdown-divider"></div>
                                                      <a class="dropdown-item js-edit" href="' . route('admin.operator.area-of-operation.show', encryptId($row->id)) . '">
                                                          <i class="fas fa-edit"></i>
                                                          <span class="ml-2">Edit</span>

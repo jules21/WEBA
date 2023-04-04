@@ -24,7 +24,12 @@ class SupplierController extends Controller
     public function index()
     {
         $operators = Operator::all();
-        $suppliers = Supplier::with('operator')->orderBy('id', 'DESC')->get();
+        if (\Helper::isSuperAdmin())
+            $suppliers = Supplier::with('operator')->orderBy('id', 'DESC')->get();
+        else
+            $suppliers = Supplier::with('operator')
+                ->where('operator_id', auth()->user()->operator_id)
+                ->orderBy('id', 'DESC')->get();
         return view('admin.settings.suppliers', compact('suppliers', 'operators'));
     }
 

@@ -37,15 +37,34 @@ class RequestDurationConfigurationController extends Controller
                   ->orderBy('id','DESC')
                   ->get();
               $operators = Operator::all();
-          }else
-              $configurations = RequestDurationConfiguration::with(['requestType','operator','operationArea'])
+              $operationAreas = OperationArea::query()->findMany($operation_area_id);
+              return view('admin.settings.request_duration_configurations',compact('configurations','operators','operationAreas'));
+          }else{
+              $startDate = request('start_date');
+              $endDate = request('end_date');
+              $operation_area_id = request('operation_area_id');
+              $request_type_id = request('request_type_id');
+
+              $configurations = RequestDurationConfiguration::query()->where('operator_id','=',auth()->user()->operator_id)
+                  ->with(['requestType','operator','operationArea'])
+                  ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
+                      $builder->whereDate('created_at', '>=', $startDate);
+                  })
+                  ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
+                      $builder->whereDate('created_at', '<=', $endDate);
+                  })
+                  ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
+                      $builder->whereIn('operation_area_id', $operation_area_id);
+                  })
+                  ->when(!empty($request_type_id), function (Builder $builder) use ($request_type_id) {
+                      $builder->where('request_type_id', $request_type_id);
+                  })
                   ->orderBy('id','DESC')
-                  ->where('operator_id',$user->operator_id)->get();
+                  ->get();
               $operators = Operator::all();
-
-        $operationAreas = OperationArea::query()->findMany($operation_area_id);
-
-        return view('admin.settings.request_duration_configurations',compact('configurations','operators','operationAreas'));
+              $operationAreas = OperationArea::query()->findMany($operation_area_id);
+              return view('admin.settings.request_duration_configurations',compact('configurations','operators','operationAreas'));
+          }
     }
 
     public function store(ValidateRequestDurationConfiguration $request){

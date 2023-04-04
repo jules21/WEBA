@@ -106,4 +106,8 @@ class User extends Authenticatable implements Auditable
     {
         return $this->hasMany(Billing::class, 'user_id', 'id');
     }
+
+    public function institution(){
+        return $this->belongsTo(Institution::class);
+    }
 }

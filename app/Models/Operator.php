@@ -151,5 +151,10 @@ class Operator extends Model implements Auditable
         return $this->hasMany(User::class, 'operator_id');
     }
 
+    public function requests(): HasMany
+    {
+        return $this->hasMany(Request::class, 'operator_id');
+    }
+
 
 }

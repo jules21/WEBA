@@ -31,6 +31,7 @@ class ValidateUpdateUser extends FormRequest
             'status'=>'nullable',
 //            'phone' => 'nullable|regex:/^[07][0-9]{9}$/|unique:users,telephone,'.request()->route()->parameter('user_id'),
             'operation_area' => 'nullable',
+            'institution_id' => 'required_if:operator_id,==,null',
         ];
     }
     public function messages()
@@ -40,6 +41,7 @@ class ValidateUpdateUser extends FormRequest
             'email.required' => 'Email field is required',
 //            'phone.required' => 'Telephone field is required',
 //            'phone.regex' => 'Telephone field must be start with 07 and must be 10 digits',
+            'institution_id.required_if' => 'Institution field is required if Operator field is empty',
         ];
     }
 }

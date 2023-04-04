@@ -62,7 +62,6 @@
 @endsection
 
 @section('content')
-    <div class="container">
         <div class="card card-body mb-4">
             @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
                 <form action="#" id="filter-form">
@@ -103,7 +102,7 @@
                         @endunless
                         @if(Helper::isOperator())
                             <div class="col-md-3 form-group">
-                                <label for="items">Customer Field Officer</label>
+                                <label for="customer_field_officer">Customer Field Officer</label>
                                 <select name="customer_field_officer_id[]" id="customer_field_officer" class="form-control select2"
                                         data-placeholder="Select Customer Field Officer" multiple="multiple">
                                     @foreach($customerFieldOfficers ?? [] as $customerFieldOfficer)
@@ -115,11 +114,11 @@
                             </div>
                         @endif
                         <div class="col-md-3 form-group">
-                            <label for="items">Meter Number</label>
+                            <label for="meter_number">Meter Number</label>
                             <input type="text" name="meter_number" id="meter_number" class="form-control" placeholder="Meter Number" value="{{request()->get('meter_number')}}">
                         </div>
                         <div class="col-md-3 form-group">
-                            <label for="items">Subscription Number</label>
+                            <label for="subscription_number">Subscription Number</label>
                             <input type="text" name="subscription_number" id="subscription_number" class="form-control" placeholder="Subscription Number" value="{{request()->get('subscription_number')}}">
                         </div>
                         <div class="col-md-6 form-group align-self-end">
@@ -233,7 +232,7 @@
                 }
             });
             $(document).on("click","#excel", function(e) {
-                var url = "{!! $newUrl !!}";
+                let url = "{!! $newUrl !!}";
                 $(this).attr("href",url);
             });
 
