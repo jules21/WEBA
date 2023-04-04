@@ -50,4 +50,10 @@ class ItemCategory extends Model implements Auditable
     {
         return $this->hasMany(Item::class);
     }
+
+    public function resolveRouteBinding($value, $field = null)
+    {
+        $id = decryptId($value);
+        return $this->where('id', $id)->first() ?? abort(404);
+    }
 }

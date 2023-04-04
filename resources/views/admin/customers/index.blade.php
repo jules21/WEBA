@@ -2,8 +2,7 @@
 
 @section('title',"Customers")
 
-@section('content')
-
+@section('page-header')
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
@@ -27,9 +26,8 @@
             <!--end::Info-->
         </div>
     </div>
-
-
-    <div class="container">
+@endsection
+@section('content')
         <div class="card shadow-none border">
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center">
@@ -65,9 +63,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
     <!-- Modal -->
     <div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
          aria-labelledby="staticBackdropLabel" aria-hidden="true">
