@@ -121,7 +121,6 @@
                     @endif
                     @include('admin.requests.partials._assign_meter_numbers')
 
-
                     @if( $request->canBeApprovedByMe() && auth()->user()->operation_area)
                         @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
                             @include('admin.requests.partials._review_form')
@@ -218,8 +217,8 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="payments">
-
-                <div class="accordion accordion-solid  accordion-panel accordion-svg-toggle mb-3" id="accordionExample3">
+                <div class="accordion accordion-solid  accordion-panel accordion-svg-toggle mb-3"
+                     id="accordionExample3">
                     @forelse($request->paymentDeclarations as $payment)
                         <div class="card border">
                             <div class="card-header" id="headingOne{{$payment->id}}">
@@ -272,7 +271,7 @@
                                                     <!--begin::Label-->
                                                     <div
                                                         class="timeline-label  text-dark-75 font-size-sm">
-                                                            {{ $item->created_at->format('h:i A') }}
+                                                        {{ $item->created_at->format('h:i A') }}
                                                     </div>
                                                     <!--end::Label-->
 
@@ -393,6 +392,8 @@
                 <form action="{{ route('admin.requests.save-item',encryptId($request->id)) }}" method="post"
                       id="saveItemForm">
                     @csrf
+                    <input type="hidden" name="request_id" value="{{ $request->id }}"/>
+                    <input type="hidden" name="id" value="0" id="materialId"/>
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="item_id">Item</label>
@@ -409,10 +410,10 @@
                             <label for="quantity">Quantity</label>
                             <input type="number" name="quantity" id="quantity" class="form-control"/>
                         </div>
-                        <div class="form-group">
-                            <label for="unit_price">Unit Price</label>
-                            <input type="number" name="unit_price" id="unit_price" class="form-control"/>
-                        </div>
+                        {{--      <div class="form-group">
+                                  <label for="unit_price">Unit Price</label>
+                                  <input type="number" name="unit_price" id="unit_price" disabled class="form-control"/>
+                              </div>--}}
 
 
                     </div>
@@ -519,9 +520,13 @@
                     },
                 });
             });
-
+            let $itemId = $('#item_id');
             $('#addBtn').on('click', function () {
                 $('#addModal').modal('show');
+                $('#saveItemForm')[0].reset();
+                $('#materialId').val(0);
+                $itemId.val('');
+                $itemId.trigger('change');
             });
 
 
@@ -566,12 +571,28 @@
                     },
                     error: function (xhr, status, error) {
                         isSubmitting = false;
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'Something went wrong',
-                            icon: 'error',
-                            confirmButtonText: 'Ok'
-                        });
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            let message = '';
+                            $.each(errors, function (index, error) {
+                                message += error[0] + ' ';
+                            });
+                            Swal.fire({
+                                title: 'Error!',
+                                text: message,
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Something went wrong',
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            });
+                        }
+                        btn.removeClass('spinner spinner-white spinner-right')
+                            .prop('disabled', false);
                     },
                     complete: function () {
                         /*      btn.removeClass('spinner spinner-white spinner-right')
@@ -582,10 +603,10 @@
             });
 
             $(document).on('click', '.js-edit', function () {
-                let $itemId = $('#item_id');
+
                 $itemId.val($(this).data('item_id'));
+                $('#materialId').val($(this).data('id'))
                 $('#quantity').val($(this).data('quantity'));
-                $('#unit_price').val($(this).data('unit_price'));
                 $itemId.trigger('change');
                 $('#addModal').modal('show');
             });

@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidateAddWaterNetwork;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Http\Requests\ValidateStoreItemRequest;
+use App\Models\Item;
 use App\Models\MeterRequest;
 use App\Models\PaymentDeclaration;
 use App\Models\PaymentType;
 use App\Models\Request as AppRequest;
+use App\Models\RequestType;
 use App\Models\StockMovementDetail;
 use App\Notifications\PaymentNotification;
 use Illuminate\Database\Eloquent\Collection;
@@ -76,26 +78,38 @@ class RequestReviewController extends Controller
 
     public function storeItem(ValidateStoreItemRequest $itemRequest, AppRequest $request)
     {
-
         $data = $itemRequest->validated();
 
-        $item = $request->items()
-            ->updateOrCreate(
-                ['item_id' => $data['item_id']],
-                [
+        $item_id = $data['item_id'];
+        $item = Item::query()->find($item_id);
+        $id = $itemRequest->input('id');
+        if ($id > 0) {
+            $moveMovement = StockMovementDetail::query()->find($id);
+            $model = $moveMovement->update([
+                    'item_id' => $item_id,
                     'quantity' => $data['quantity'],
-                    'unit_price' => $data['unit_price'],
+                    'unit_price' => $item->selling_price,
                     'type' => $request->getClassName(),
                     'status' => 'pending'
                 ]
             );
+        } else {
+            $model = $request->items()
+                ->create([
+                    'item_id' => $item_id,
+                    'quantity' => $data['quantity'],
+                    'unit_price' => $item->selling_price,
+                    'type' => $request->getClassName(),
+                    'status' => 'pending'
+                ]);
+        }
 
 
         if ($itemRequest->ajax()) {
             return response()->json([
                 'message' => 'Item saved successfully',
                 'status' => 'success',
-                'data' => $item
+                'data' => $model
             ], ResponseAlias::HTTP_OK);
         }
 
@@ -133,9 +147,10 @@ class RequestReviewController extends Controller
     {
         $data = $request->validated();
         DB::beginTransaction();
+        $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, RequestType::NEW_CONNECTION);
         $req->update([
             'water_network_id' => $data['water_network_id'],
-            'connection_fee' => $data['connection_fee'],
+            'connection_fee' => $paymentConfig->amount,
         ]);
 
         DB::commit();

@@ -50,7 +50,8 @@
                 @csrf
                 @method(isset($request)?'PUT':'POST')
                 <input type="hidden" value="{{ $request->id??0 }}" name="id">
-                <div class="row">
+                <input type="hidden" value="{{ \App\Models\RequestType::NEW_CONNECTION }}" name="request_type_id">
+                <div class="row align-items-center">
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="customer_id">Customer</label>
@@ -59,27 +60,54 @@
                                 <option value="">Select Customer</option>
                                 @foreach($customers as $customer)
                                     <option
-                                        {{ isset($request) && $request->customer_id == $customer->id ? 'selected' : '' }}
+                                        {{ isset($request) && $request->customer_id == $customer->id ? 'selected' : (request()->has('c_id')&& decryptId(request('c_id'))==$customer->id?'selected':'') }}
                                         value="{{ $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="request_type_id">
-                                Request Type
-                            </label>
-                            <select name="request_type_id" id="request_type_id" class="form-control select2"
-                                    style="width:100% !important;">
-                                <option value="">Select Request Type</option>
-                                @foreach($requestTypes as $requestType)
-                                    <option
-                                        {{ isset($request) && $request->request_type_id == $requestType->id ? 'selected' : '' }}
-                                        value="{{ $requestType->id }}">{{ $requestType->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @can(\App\Constants\Permission::ManageCustomers)
+                            <div class="alert alert-light-info alert-custom mb-0 py-2 px-3">
+                                <div class="alert-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="icon icon-tabler icon-tabler-info-circle"
+                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75"
+                                         stroke="currentColor" fill="none" stroke-linecap="round"
+                                         stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                        <path d="M12 9h.01"></path>
+                                        <path d="M11 12h1v4h1"></path>
+                                    </svg>
+                                </div>
+                                <div class="alert-text text-dark">
+                                    Can't find a customer in the list?
+                                    <a href="{{ route('admin.customers.index',['add'=>'new']) }}"
+                                       class="btn btn-sm btn-link font-weight-bolder">
+                                        Go to customers
+                                    </a>
+                                </div>
+                            </div>
+                        @elsecannot(\App\Constants\Permission::ManageCustomers)
+                            <div class="alert alert-light-warning alert-custom mb-0 py-2 px-3">
+                                <div class="alert-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="icon icon-tabler icon-tabler-exclamation-circle" width="24" height="24"
+                                         viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                                         stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                        <path d="M12 9v4"></path>
+                                        <path d="M12 16v.01"></path>
+                                    </svg>
+                                </div>
+                                <div class="alert-text text-dark">
+                                    If you can't find a customer in the list, please contact the admin.
+                                </div>
+                            </div>
+                        @endcan
+
                     </div>
                 </div>
                 <div class="row">

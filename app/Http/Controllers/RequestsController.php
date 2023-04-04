@@ -85,7 +85,7 @@ class RequestsController extends Controller
                 ->addColumn('action', function (AppRequest $row) {
                     $buttons = '';
 
-                    if ($row->status == AppRequest::PENDING && auth()->user()->can(Permission::CreateRequest)) {
+                    if ($row->status == AppRequest::PENDING && auth()->user()->can(Permission::CreateRequest) && isForOperationArea()) {
                         $buttons = '<a class="dropdown-item js-edit" href="' . route('admin.requests.edit', encryptId($row->id)) . '">
                                         <i class="fas fa-edit"></i>
                                         <span class="ml-2">Edit</span>
@@ -196,6 +196,7 @@ class RequestsController extends Controller
         $data['created_by'] = auth()->id();
         $data['province_id'] = $district->province_id;
         $data['district_id'] = $district->id;
+        $data['request_type_id'] = RequestType::NEW_CONNECTION;
         unset($data['road_cross_types']);
 
         if ($request->hasFile('upi_attachment')) {
@@ -223,7 +224,7 @@ class RequestsController extends Controller
         }
 
         $detailsRoute = route('admin.requests.show', encryptId($req->id));
-        return redirect()->back()
+        return redirect()->route('admin.requests.create')
             ->with('success', 'Request saved successfully <a class="btn btn-sm" href="' . $detailsRoute . '">View Details</a>');
 
     }
@@ -251,10 +252,13 @@ class RequestsController extends Controller
 
         $itemCategories = ItemCategory::query()
             ->whereHas('items')
-            ->where('is_meter', '=', true)
+            ->where([
+                ['is_meter', '=', true],
+                ['operator_id', '=', auth()->user()->operator_id]
+            ])
             ->get();
 
-        $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, $request->request_type_id);
+
 
         return view('admin.requests.show', [
             'request' => $request,
@@ -263,8 +267,7 @@ class RequestsController extends Controller
             'items' => $items,
             'requestItems' => $requestItems,
             'waterNetworks' => $waterNetworks,
-            'itemCategories' => $itemCategories,
-            'paymentConfig' => $paymentConfig
+            'itemCategories' => $itemCategories
         ]);
     }
 

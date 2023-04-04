@@ -124,7 +124,8 @@ class CustomerController extends Controller
         if (request()->ajax()) {
             return response()->json([
                 'message' => 'Customer created successfully',
-                'data' => $customer
+                'data' => $customer,
+                'encrypted_id' => encryptId($customer->id)
             ], ResponseAlias::HTTP_CREATED);
         }
 
@@ -140,9 +141,9 @@ class CustomerController extends Controller
 
     public function connections(Customer $customer)
     {
-        $customer->load(['connections','connections.request',
+        $customer->load(['connections', 'connections.request',
             'connections.request.province', 'connections.request.district',
-            'connections.request.sector','connections.request.cell']);
+            'connections.request.sector', 'connections.request.cell']);
         return view('admin.customers.connections', [
             'customer' => $customer
         ]);

@@ -4,14 +4,14 @@
             Request Details
         </h5>
         <div class="row">
-            <div class="col-md-6 col-xl-4">
+      {{--      <div class="col-md-6 col-xl-4">
                 <div class="form-group">
                     <label class="font-weight-bold">Type</label>
                     <div class="form-control-plaintext py-0">
                         {{ $request->requestType->name }}
                     </div>
                 </div>
-            </div>
+            </div>--}}
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
                     <label for="name" class="font-weight-bold">Water Usage</label>
@@ -150,14 +150,7 @@
                               method="post" id="saveWaterNetworkForm">
                             @csrf
                             <div class="row">
-                                <div class="col-md-4 my-2">
-                                    <div class="form-group">
-                                        <label for="connection_fee">Connection Fee</label>
-                                        <input type="number" name="connection_fee" id="connection_fee"
-                                               class="form-control"
-                                               value="{{ $request->connection_fee??$paymentConfig->amount??'' }}"/>
-                                    </div>
-                                </div>
+
                                 <div class="col-md-4 my-2">
                                     <div class="form-group">
                                         <label for="water_network_id">
@@ -178,7 +171,7 @@
                                 </div>
                                 <div class="col-md-4 my-2">
                                     <div class="form-group">
-                                        <div style="visibility: hidden" class="mb-1">
+                                        <div style="visibility: hidden" class="mb-2">
                                             Save Button
                                         </div>
                                         <button type="submit"

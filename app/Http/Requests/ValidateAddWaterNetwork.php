@@ -24,7 +24,6 @@ class ValidateAddWaterNetwork extends FormRequest
     public function rules(): array
     {
         return [
-            'connection_fee' => ['required', 'numeric'],
             'water_network_id' => ['required', 'exists:water_networks,id']
         ];
     }
