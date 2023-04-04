@@ -29,4 +29,6 @@ use Illuminate\Database\Eloquent\Model;
 class RequestType extends Model
 {
     use HasFactory;
+
+    const NEW_CONNECTION = 1;
 }

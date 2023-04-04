@@ -44,7 +44,7 @@
 
                 <div class="table-responsive my-3">
                     <table class="table table-head-custom border table-head-solid table-hover dataTable">
-{{--                    <table class="table table-head-custom border rounded-lg table-hover dataTable">--}}
+                        {{--                    <table class="table table-head-custom border rounded-lg table-hover dataTable">--}}
                         <thead>
                         <tr>
                             <th>Name</th>
@@ -364,10 +364,16 @@
                 ]
             });
 
-            $('#addButton').on('click', function () {
+            let $addButton = $('#addButton');
+            $addButton.on('click', function () {
                 $('#addModal').modal('show');
                 $('#id').val(0);
             });
+
+            @if(request('add')=='new')
+            $addButton.trigger('click');
+            @endif
+
             $('#addModal').on('hidden.bs.modal', function () {
                 $formSave.trigger('reset');
                 $formSave.validate().resetForm();
@@ -514,6 +520,9 @@
                     success: function (response) {
                         dataTable.ajax.reload();
                         $('#addModal').modal('hide');
+                        @if(request('add')=='new')
+                            location.href = "{{ route('admin.requests.create') }}?c_id=" + response.encrypted_id;
+                        @endif
                     }, error: function (response) {
                         let message = response.responseJSON.message ?? 'Something went wrong, please try again later';
                         Swal.fire({

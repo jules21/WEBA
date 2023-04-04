@@ -127,7 +127,9 @@
                                     style="width: 100% !important;">
                                 <option value="">Select User</option>
                                 @foreach($users as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}">
+                                        {{ $item->name }} - {{ $item->email }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -270,7 +272,12 @@
                     {data: "request_type.name", name: "requestType.name"},
                     {data: "meter_qty", name: "meter_qty"},
                     {data: "upi", name: "upi"},
-                    {data: "request_assignment.user.name", name: "requestAssignment.user.name", orderable: false, searchable: false},
+                    {
+                        data: "request_assignment.user.name",
+                        name: "requestAssignment.user.name",
+                        orderable: false,
+                        searchable: false
+                    },
                     {
                         data: "created_at", name: "created_at",
                         render: function (data, type, row) {

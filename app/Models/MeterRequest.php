@@ -90,4 +90,8 @@ class MeterRequest extends Model
     {
         return $this->morphMany(StockMovementDetail::class, 'model');
     }
+    public function billings()
+    {
+        return $this->hasMany(Billing::class, 'subscription_number', 'subscription_number');
+    }
 }
