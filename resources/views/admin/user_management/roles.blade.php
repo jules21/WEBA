@@ -53,7 +53,7 @@
         </div>
         <div class="card-body">
             <!--begin: Datatable -->
-            <table class="table table-separate table-head-custom table-checkable" id="kt_datatable1">
+            <table class="table table-head-custom border table-head-solid table-hover" id="kt_datatable1">
                 <thead>
                 <tr>
                     <th>#</th>

@@ -30,11 +30,16 @@
     </div>
     <!--end::Subheader-->
 @endsection
+
 @section('content')
     <div class="">
         <div class="card card-custom">
             <div class="card-header flex-wrap">
-                <h3 class="card-title">Items</h3>
+                <h3 class="card-title">
+                    @isset($category)
+                        {{optional($category)->name}} ({{optional($category)->items->count()}})
+                    @endisset
+                    Items</h3>
                 <div class="card-toolbar">
                     <a href="javascript:void(0)" class="btn btn-light-primary"
                        data-toggle="modal"
@@ -77,7 +82,16 @@
                                     <select name="item_category_id" class="form-control">
                                         <option value="">--select--</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                            //if category isset then show only that category
+                                            @isset($category)
+                                                @if($category->id == optional($category)->id)
+                                                    <option value="{{$category->id}}" selected>{{$category->name}}</option>
+                                                @endif
+                                            @endisset
+                                            //if category not isset then show all categories
+                                            @if(!isset($category))
+                                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
@@ -95,19 +109,19 @@
                                     <input type="number" name="selling_price" class="form-control" aria-describedby="emailHelp"
                                            placeholder="Selling Price">
                                 </div>
-                                <div class="col-6 form-group">
-                                    <label>Vatable</label>
-                                    <select name="vatable" class="form-control" id="vatable">
-                                        <option value="">--select--</option>
-                                        <option value="1">Yes</option>
-                                        <option value="0">No</option>
-                                    </select>
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="vat_rate">Vat Rate</label>
-                                    <input type="number" name="vat_rate" class="form-control" aria-describedby="emailHelp" id="vat_rate"
-                                           placeholder="Vat Rate">
-                                </div>
+{{--                                <div class="col-6 form-group">--}}
+{{--                                    <label>Vatable</label>--}}
+{{--                                    <select name="vatable" class="form-control" id="vatable">--}}
+{{--                                        <option value="">--select--</option>--}}
+{{--                                        <option value="1">Yes</option>--}}
+{{--                                        <option value="0">No</option>--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
+{{--                                <div class="col-6 form-group">--}}
+{{--                                    <label for="vat_rate">Vat Rate</label>--}}
+{{--                                    <input type="number" name="vat_rate" class="form-control" aria-describedby="emailHelp" id="vat_rate"--}}
+{{--                                           placeholder="Vat Rate">--}}
+{{--                                </div>--}}
                                 <div class="col-12 form-group">
                                     <label>Item Description</label>
                                     <textarea name="description" class="form-control" aria-describedby="emailHelp"
@@ -173,19 +187,19 @@
                                     <input type="number" name="selling_price" class="form-control" aria-describedby="emailHelp"
                                            placeholder="Selling Price" id="_selling_price">
                                 </div>
-                                <div class="col-6 form-group">
-                                    <label for="vatable">Vatable</label>
-                                    <select name="vatable" class="form-control" id="_vatable">
-                                        <option value="">--select--</option>
-                                        <option value="1">Yes</option>
-                                        <option value="0">No</option>
-                                    </select>
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="vat_rate">Vat Rate</label>
-                                    <input type="number" name="vat_rate" class="form-control" aria-describedby="emailHelp"
-                                           placeholder="Vat Rate" id="_vat_rate">
-                                </div>
+{{--                                <div class="col-6 form-group">--}}
+{{--                                    <label for="vatable">Vatable</label>--}}
+{{--                                    <select name="vatable" class="form-control" id="_vatable">--}}
+{{--                                        <option value="">--select--</option>--}}
+{{--                                        <option value="1">Yes</option>--}}
+{{--                                        <option value="0">No</option>--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
+{{--                                <div class="col-6 form-group">--}}
+{{--                                    <label for="vat_rate">Vat Rate</label>--}}
+{{--                                    <input type="number" name="vat_rate" class="form-control" aria-describedby="emailHelp"--}}
+{{--                                           placeholder="Vat Rate" id="_vat_rate">--}}
+{{--                                </div>--}}
                                 <div class="col-6 form-group">
                                     <label for="status">Status</label>
                                     <select name="is_active" class="form-control" id="_status">

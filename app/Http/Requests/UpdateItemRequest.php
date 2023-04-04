@@ -29,8 +29,8 @@ class UpdateItemRequest extends FormRequest
             "description" => 'required',
             "packaging_unit_id" => 'required',
             "selling_price" => 'required',
-            "vatable" => 'required',
-            "vat_rate" => 'required_if:vatable,1',
+//            "vatable" => 'required',
+//            "vat_rate" => 'required_if:vatable,1',
         ];
     }
 
@@ -42,9 +42,9 @@ class UpdateItemRequest extends FormRequest
             "description.required" => "Please enter a description",
             "packaging_unit_id.required" => "Please select a packaging unit",
             "selling_price.required" => "Please enter a selling price",
-            "vatable.required" => "Please select if the item is vatable",
-            "vat_rate.required" => "Please enter a VAT rate",
-            "vat_rate.required_if" => "Please enter a VAT rate",
+//            "vatable.required" => "Please select if the item is vatable",
+//            "vat_rate.required" => "Please enter a VAT rate",
+//            "vat_rate.required_if" => "Please enter a VAT rate",
         ];
     }
 }

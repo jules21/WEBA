@@ -108,4 +108,9 @@ class Adjustment extends Model implements Auditable
     {
         return $this->hasMany(StockMovement::class, 'adjustment_id');
     }
+
+    public function createdBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

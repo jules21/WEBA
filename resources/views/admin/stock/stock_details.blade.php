@@ -35,57 +35,73 @@
 @endsection
 
 @section('content')
-    <div class="container">
-        <div class="card">
-            <div class="card-content card-custom">
-                <div class="card-header pb-1 pt-3">
-                    <h3>{{$stock->item->name}} Movements</h3>
-                </div>
-                <div class="card-body">
-                    <table class="table table-head-custom table-head-solid table-hover" id="kt_datatable1">
-                        <thead>
+    <div class="card">
+        <div class="card-content card-custom">
+            <div class="card-header pb-1 pt-3">
+                <h3>{{$stock->item->name}} Stock Card</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-head-custom table-head-solid table-hover" id="kt_datatable1">
+                    <thead>
+                    <tr>
+                        <th>Done At</th>
+                        {{--                            <th>Operation Area</th>--}}
+                        <th>Product</th>
+                        <th>Product Category</th>
+                        <th>Opening Qty</th>
+                        <th>Qty In</th>
+                        <th>Qty Out</th>
+                        <th>Closing Qty</th>
+                        <th>Unit Price</th>
+                        <th>Initiated By</th>
+{{--                        <th>Description</th>--}}
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($movements as $stock)
                         <tr>
+                            <th>{{$stock->created_at}}</th>
+                            {{--                                <td>{{ $stock->operationArea->name ?? '' }}</td>--}}
+                            <td>{{ $stock->item->name ?? '' }}</td>
+                            <td>{{ $stock->item->category->name ?? '' }}</td>
+                            <td>
+                                <span class=" text-black">{{ $stock->opening_qty ? " $stock->opening_qty" : '0' }}</span>
+                            </td>
+                            <td>
+                                <span class=" text-success font-weight-bold">{{ $stock->qty_in ? " +$stock->qty_in" : '0' }}</span>
+                            </td>
+                            <td>
+                                <span class=" text-danger font-weight-bold">{{ $stock->qty_out ? " -$stock->qty_out" : '0' }}</span>
+                            </td>
+                            <td>
+                                <span class=" text-info font-weight-bold">
+                                @if($stock->qty_in > 0)
+                                    {{ $stock->opening_qty + $stock->qty_in - $stock->qty_out }}
+                                    @else
+                                    {{ $stock->opening_qty - $stock->qty_out }}
+                                @endif
+                                </span>
+                            </td>
+                            <td>{{ $stock->unit_price ?? '0' }} RWF</td>
+{{--                            <td>--}}
 
-                            <th>Operation Area</th>
-                            <th>Product</th>
-                            <th>Product Category</th>
-                            <th>Qty In</th>
-                            <th>Qty Out</th>
-                            <th>Unit Price</th>
-                            <th>Description</th>
-                            <th>Done At</th>
+{{--                                @if(strlen($stock->description) > 50)--}}
+{{--                                    <a href="#" data-toggle="tooltip" data-trigger="focus" data-html="true" title="{{ $stock->description }}">--}}
+{{--                                        {{ Str::limit($stock->description, 50) }}--}}
+{{--                                    </a>--}}
+{{--                                @else--}}
+{{--                                    {{ Str::limit($stock->description, 50) }}--}}
+{{--                                @endif--}}
+{{--                            </td>--}}
+                            <td>
+                                {{Helper::stockCardInitiator($stock->id)}}
+                            </td>
+
                         </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($movements as $stock)
-                            <tr>
-                                <td>{{ $stock->operationArea->name ?? '' }}</td>
-                                <td>{{ $stock->item->name ?? '' }}</td>
-                                <td>{{ $stock->item->category->name ?? '' }}</td>
-                                <td>
-                                    <span class=" text-success">{{ $stock->qty_in ? " +$stock->qty_in" : '0' }}</span>
-                                </td>
-                                <td>
-                                    <span class=" text-danger">{{ $stock->qty_out ? " -$stock->qty_out" : '0' }}</span>
-                                </td>
-                                <td>{{ $stock->unit_price ?? '0' }}</td>
-                                <td>
 
-                                        @if(strlen($stock->description) > 50)
-                                            <a href="#" data-toggle="tooltip" data-trigger="focus" data-html="true" title="{{ $stock->description }}">
-                                                {{ Str::limit($stock->description, 50) }}
-                                            </a>
-                                        @else
-                                            {{ Str::limit($stock->description, 50) }}
-                                        @endif
-                                </td>
-                                <th>{{$stock->created_at}}</th>
-                            </tr>
-
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -96,7 +112,7 @@
             // initData();
             $("#kt_datatable1").DataTable({
                 responsive:true,
-                "order": [[ 7, "desc" ]],
+                "order": [[ 0, "desc" ]],
             });
         });
     </script>

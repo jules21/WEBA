@@ -267,7 +267,7 @@
         @endif
     @endif
 
-    @if(Helper::isOperator())
+    @if(Helper::hasOperationArea())
         @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems,
         \App\Constants\Permission::ManageStocks,
         \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment,

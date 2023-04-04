@@ -114,5 +114,10 @@ class Purchase extends Model implements Auditable
     }
 
 
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
 
 }

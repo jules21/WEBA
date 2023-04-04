@@ -24,7 +24,8 @@ class StoreItemCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|string|max:255',
+            //name is required, string and max 255 characters, must be unique but each operator can have a category with the same name
+            'name'=>'required|string|max:255|unique:item_categories,name,NULL,id,operator_id,'.$this->operator_id,
             'is_meter'=>'required|boolean',
             'operator_id'=>'required',
         ];
