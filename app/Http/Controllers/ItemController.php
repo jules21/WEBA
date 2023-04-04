@@ -29,7 +29,7 @@ class ItemController extends Controller
             ->select('items.*')->with('category', 'packagingUnit');
         $dataTable = new ItemsDataTable($items);
         return $dataTable->render('admin.stock.items', [
-            'categories' => ItemCategory::query()->get(),
+            'categories' => ItemCategory::query()->where('operator_id', auth()->user()->operator_id)->get(),
             'units' => PackagingUnit::query()->get()
         ]);
     }

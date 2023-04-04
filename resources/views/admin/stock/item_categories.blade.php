@@ -74,6 +74,12 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-light-primary btn-sm  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
                                         <div class="dropdown-menu" style="">
+
+                                            <a href="{{route('admin.stock.item-categories.items', encryptId($category->id))}}" class="dropdown-item">
+                                                Items
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+
                                             <a href="#" class=" edit-btn dropdown-item "
                                                data-toggle="modal"
                                                data-target="#user_category_edit_modal"
@@ -81,11 +87,11 @@
                                                data-is_meter="{{$category->is_meter}}"
                                                data-is_active="{{$category->is_active}}"
                                                data-id="{{$category->id}}"
-                                               data-url="{{ route('admin.stock.item-categories.update', $category->id) }}">
+                                               data-url="{{ route('admin.stock.item-categories.update', encryptId($category->id)) }}">
                                                 Edit
                                             </a>
                                             <a class="delete_btn dropdown-item"
-                                               data-url="{{route('admin.stock.item-categories.destroy', $category->id) }}">
+                                               data-url="{{route('admin.stock.item-categories.destroy', encryptId($category->id)) }}">
                                                 Delete
                                             </a>
                                         </div>

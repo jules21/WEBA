@@ -30,11 +30,16 @@
     </div>
     <!--end::Subheader-->
 @endsection
+
 @section('content')
     <div class="">
         <div class="card card-custom">
             <div class="card-header flex-wrap">
-                <h3 class="card-title">Items</h3>
+                <h3 class="card-title">
+                    @isset($category)
+                        {{optional($category)->name}} ({{optional($category)->items->count()}})
+                    @endisset
+                    Items</h3>
                 <div class="card-toolbar">
                     <a href="javascript:void(0)" class="btn btn-light-primary"
                        data-toggle="modal"
@@ -77,7 +82,16 @@
                                     <select name="item_category_id" class="form-control">
                                         <option value="">--select--</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                            //if category isset then show only that category
+                                            @isset($category)
+                                                @if($category->id == optional($category)->id)
+                                                    <option value="{{$category->id}}" selected>{{$category->name}}</option>
+                                                @endif
+                                            @endisset
+                                            //if category not isset then show all categories
+                                            @if(!isset($category))
+                                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>

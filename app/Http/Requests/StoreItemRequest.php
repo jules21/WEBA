@@ -25,7 +25,7 @@ class StoreItemRequest extends FormRequest
     {
         return [
             "item_category_id" => 'required',
-            "name" => 'required',
+            'name'=>'required|string|max:255|unique:items,name,NULL,id,operator_id,'.$this->operator_id,
             "description" => 'required',
             "packaging_unit_id" => 'required',
             "selling_price" => 'required',

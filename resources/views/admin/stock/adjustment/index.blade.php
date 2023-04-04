@@ -38,7 +38,7 @@
                 @can('Create Adjustment')
                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
                         <div class="card-toolbar">
-                            <a href="javascript:void(0)" class="btn btn-primary"
+                            <a href="javascript:void(0)" class="btn btn-light-primary"
                                data-toggle="modal"
                                data-target="#addModal" >
                                 <i class="la la-plus"></i>
@@ -67,13 +67,13 @@
                                 <td>{{$adjustment->description}}</td>
                                 <td>
                                     @if($adjustment->status == 'Pending')
-                                        <span class="label label-lg font-weight-bold label-light-warning label-inline">Pending</span>
+                                        <span class="badge label-lg font-weight-bold badge-warning rounded-pill">Pending</span>
                                     @elseif($adjustment->status == 'Submitted')
-                                        <span class="label label-lg font-weight-bold label-light-info label-inline">Submitted</span>
+                                        <span class="badge label-lg font-weight-bold badge-info rounded-pill">Submitted</span>
                                     @elseif($adjustment->status == 'Approved')
-                                        <span class="label label-lg font-weight-bold label-light-success label-inline">Approved</span>
+                                        <span class="badge label-lg font-weight-bold badge-success rounded-pill">Approved</span>
                                     @elseif($adjustment->status == 'Rejected')
-                                        <span class="label label-lg font-weight-bold label-light-danger label-inline">Rejected</span>
+                                        <span class="badge label-lg font-weight-bold badge-danger rounded-pill">Rejected</span>
                                     @endif
                                 </td>
 

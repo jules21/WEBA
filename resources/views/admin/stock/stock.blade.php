@@ -99,10 +99,10 @@
                         <tr>
 
                             <th>Product</th>
-                            <th>Product Category</th>
                             <th>Quantity</th>
-                            <th>operator</th>
-                            <th>Operation Area</th>
+                            <th>Product Category</th>
+{{--                            <th>operator</th>--}}
+{{--                            <th>Operation Area</th>--}}
                             <th></th>
                         </tr>
                         </thead>
@@ -110,12 +110,12 @@
                         @foreach($stocks as $stock)
                             <tr>
                                 <td>{{ $stock->item->name ?? '' }}</td>
-                                <td>{{ $stock->item->category->name ?? '' }}</td>
                                 <td>{{ $stock->quantity }}</td>
-                                <td>{{ $stock->operator->name ?? '' }}</td>
-                                <td>{{ $stock->operationArea->name ?? '' }}</td>
+                                <td>{{ $stock->item->category->name ?? '' }}</td>
+{{--                                <td>{{ $stock->operator->name ?? '' }}</td>--}}
+{{--                                <td>{{ $stock->operationArea->name ?? '' }}</td>--}}
                                 <td>
-                                    <a href="{{route('admin.stock.stock-items.show',encryptId( $stock->id))}}" class="btn btn-sm btn-light-primary">details</a>
+                                    <a href="{{route('admin.stock.stock-items.show',encryptId( $stock->id))}}" class="btn btn-sm btn-light-primary">Details</a>
                                 </td>
                             </tr>
                         @endforeach

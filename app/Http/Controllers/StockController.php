@@ -17,7 +17,7 @@ class StockController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -48,6 +48,7 @@ class StockController extends Controller
         $stock->when($request->has('item_id'), function ($query) use ($request) {
             $query->whereIn('item_id', $request->item_id);
         });
+        //get stock items
 
 
         return view('admin.stock.stock', [
