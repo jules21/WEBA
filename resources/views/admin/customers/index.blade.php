@@ -376,7 +376,7 @@
             });
 
             @if(request('add')=='new')
-            $addButton.trigger('click');
+            // $addButton.trigger('click');
             @endif
 
             $('#addModal').on('hidden.bs.modal', function () {
