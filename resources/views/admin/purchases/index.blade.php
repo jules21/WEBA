@@ -3,7 +3,7 @@
 
 @section('content')
 
-    <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none " id="kt_subheader">
+    <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none mb-4" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-2">
@@ -36,7 +36,7 @@
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>
-                    {{ request('type')=='all'?"Stock In":"My Tasks" }}
+                    {{ request('type')=='all'?"All Stock In":"My Tasks" }}
                 </h4>
 
                 {{--    @if( auth()->user()->can(\App\Constants\Permission::StockInItems) && auth()->user()->operation_area)
@@ -57,7 +57,6 @@
                         <th>Created At</th>
                         <th>Supplier</th>
                         <th>Items</th>
-                        <th>Sub Total</th>
                         <th>Tax</th>
                         <th>Total</th>
                         <th>Status</th>
@@ -99,23 +98,29 @@
                         }
                     },
                     {data: 'supplier.name', name: "supplier.name"},
-                    {data: 'movements_count', name: 'movements_count', searchable: false, orderable: false},
                     {
-                        data: 'subtotal', name: 'subtotal',
-                        render: function (data) {
-                            return Number(data).toLocaleString();
-                        }
+                        data: 'movement_details_count',
+                        name: 'movement_details_count',
+                        searchable: false,
+                        orderable: false
                     },
                     {
                         data: 'tax_amount', name: 'tax_amount',
                         render: function (data) {
-                            return Number(data).toLocaleString();
+                            return Number(data).toLocaleString("en-US", {
+                                style: "currency",
+                                currency: "RWF"
+                            });
                         }
                     },
                     {
                         data: 'total', name: 'total',
                         render: function (data) {
-                            return Number(data).toLocaleString();
+                            return Number(data).toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "RWF"
+                                }
+                            );
                         }
                     },
                     {

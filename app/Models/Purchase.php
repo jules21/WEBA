@@ -113,9 +113,11 @@ class Purchase extends Model implements Auditable
             && auth()->user()->can(Permission::ApproveStockIn);
     }
 
+
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
 
 }

@@ -3,8 +3,7 @@
 @section('title','Stock In')
 
 @section('content')
-
-    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none mb-4" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-2">
@@ -36,6 +35,7 @@
             <!--end::Info-->
         </div>
     </div>
+
 
     <div class="card tw-shadow-sm border tw-border-gray-300">
         <div class="card-body">
@@ -95,15 +95,16 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <div class="table-responsive ">
-                            <table class="table rounded table-head-solid table-head-custom border " id="itemsTable">
+                        <div class="table-responsive rounded border  mb-3">
+                            <table class="table  table-hea table-head-custom " id="itemsTable">
                                 <thead>
                                 <tr>
                                     <th style="width: 40%;">Item</th>
                                     <th>Qty</th>
+                                    <th>VAT({{ config('services.VAT_RATE') }}%)</th>
                                     <th>Unit Price</th>
+                                    <th>VAT Amount</th>
                                     <th>Total</th>
-                                    <th>VAT</th>
                                     <th>
 
                                     </th>
@@ -112,7 +113,7 @@
                                 <tbody>
 
                                 @if(isset($purchase))
-                                    @foreach($purchase->movements as $item)
+                                    @foreach($purchase->movementDetails as $item)
                                         <tr>
                                             <td>
                                                 <select name="items[]" class="form-control select2" required
@@ -132,39 +133,41 @@
                                                        style="display: none;"></label>
                                             </td>
                                             <td>
-                                                <input type="number" value="{{ $item->qty_in }}" min="0.1"
+                                                <input type="number" value="{{ $item->quantity }}" min="0.1"
                                                        required name="quantities[]"
-                                                       class="form-control form-control-sm w-100px"/>
+                                                       class="form-control w-80px"/>
                                                 <label id="quantities[]-error" class="error" for="quantities[]"
+                                                       style="display: none;"></label>
+                                            </td>
+                                            <td>
+                                                <input type="hidden" value="{{ $item->vat??0 }}" name="vat_values[]"/>
+                                                <label class="checkbox">
+                                                    <input type="checkbox" value="{{ config('services.VAT_RATE') }}"
+                                                           {{ $item->vat!=0?"checked":"" }} name="vats[]"/>
+                                                    <span class="rounded-0 mr-2"></span>
+                                                    VAT
+                                                </label>
+                                                <label id="vats[]-error" class="error" for="vats[]"
                                                        style="display: none;"></label>
                                             </td>
                                             <td>
                                                 <input type="number" value="{{ $item->unit_price }}" min="1"
                                                        required name="prices[]"
-                                                       class="form-control form-control-sm w-150px"/>
+                                                       class="form-control w-120px"/>
                                                 <label id="prices[]-error" class="error" for="prices[]"
                                                        style="display: none;"></label>
+                                            </td>
+                                            <td>
+                                                <span class="vat_total">
+                                                    {{ number_format($item->vatAmount) }}
+                                                </span>
                                             </td>
                                             <td>
                                                 <span class="total">
                                                     {{ number_format($item->total) }}
                                                 </span>
                                             </td>
-                                            <td>
-                                                <select name="vats[]" required
-                                                        class="form-control form-control-sm w-100px">
-                                                    <option
-                                                        {{ $item->vat==18?"selected":"" }} value="18">
-                                                        VAT ({{$item->item->vat_rate}}%)
-                                                    </option>
-                                                    <option
-                                                        {{ $item->vat==0?"selected":"" }} value="0">
-                                                        NO VAT(0%)
-                                                    </option>
-                                                </select>
-                                                <label id="vats[]-error" class="error" for="vats[]"
-                                                       style="display: none;"></label>
-                                            </td>
+
                                             <td>
                                                 <button type="button"
                                                         class="btn btn-sm btn-light-danger btn-icon font-weight-bold rounded-circle js-delete">
@@ -181,21 +184,22 @@
                     </div>
                 </div>
 
+                <button type="button" class="btn btn-sm btn-light-primary font-weight-bold" id="btnAddNew">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24"
+                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M12 5l0 14"></path>
+                        <path d="M5 12l14 0"></path>
+                    </svg>
+                    Add Item
+                </button>
+
                 <div class="row">
                     <div class="col-lg-7">
-                        <button type="button" class="btn btn-sm btn-light-primary font-weight-bold" id="btnAddNew">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus" width="24"
-                                 height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
-                                 stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M12 5l0 14"></path>
-                                <path d="M5 12l14 0"></path>
-                            </svg>
-                            Add Item
-                        </button>
                         <div class="form-group mt-4">
                             <label for="description">Description</label>
-                            <textarea name="description" id="description" required cols="30" rows="3"
+                            <textarea name="description" id="description" cols="30" rows="3"
                                       class="form-control">{{ isset($purchase)?$purchase->description:'' }}</textarea>
                         </div>
                     </div>
@@ -204,10 +208,10 @@
                             Summary:
                         </h4>
                         <ul class="list-group rounded">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span class="font-weight-bolder">SUBTOTAL</span>
-                                <span class="font-weight-bolder"><span id="sub_total">RWF 0.00</span></span>
-                            </li>
+                            {{--   <li class="list-group-item d-flex justify-content-between align-items-center">
+                                   <span class="font-weight-bolder">SUBTOTAL</span>
+                                   <span class="font-weight-bolder"><span id="sub_total">RWF 0.00</span></span>
+                               </li>--}}
                             <li class="list-group-item" id="tax_list_item">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="font-weight-bolder" id="tax_label_span">Total VAT</span>
@@ -221,7 +225,6 @@
                             </li>
                         </ul>
                     </div>
-                    <input type="hidden" name="subtotal" id="sub_total_input">
                     <input type="hidden" name="tax_amount" id="tax_amount_input">
                     <input type="hidden" name="grand_total" id="grand_total_input">
                 </div>
@@ -234,7 +237,7 @@
                         <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
                         <path d="M9 12l2 2l4 -4"></path>
                     </svg>
-                    Submit Purchase
+                    Submit Stock In
                 </button>
 
             </form>
@@ -257,7 +260,7 @@
         function addItem() {
             let tbody = $('#itemsTable tbody');
             // create a select element
-            let select = $('<select></select>');
+            let select = $('<select required></select>');
             select.attr('name', 'items[]');
             select.addClass('form-control select2');
             select.css('width', '100% !important');
@@ -286,15 +289,28 @@
 
             // create a td element
             td = $('<td></td>');
-            td.append('<input type="number" min="0.1"  required name="quantities[]" class="form-control form-control-sm w-100px"/>');
+            td.append('<input type="number" min="0.1"  required name="quantities[]" class="form-control w-80px"/>');
             td.append(`<label id="quantities[]-error" class="error" for="quantities[]" style="display: none;"></label>`);
+            // append td to tr
+            tr.append(td);
+
+            // create a td element
+            td = $('<td></td>');
+            td.append(`
+                    <input type="hidden" value="0" name="vat_values[]"/>
+                    <label class="checkbox">
+                            <input type="checkbox" value="{{ config('services.VAT_RATE') }}"  name="vats[]">
+                            <span class="rounded-0 mr-2"></span>
+                            VAT
+                       </label>`);
+            td.append(`<label id="vats[]-error" class="error" for="vats[]" style="display: none;"></label>`);
 
             // append td to tr
             tr.append(td);
 
             // create a td element
             td = $('<td></td>');
-            td.append('<input type="number" min="1"  required name="prices[]" class="form-control form-control-sm w-150px"/>');
+            td.append('<input type="number" min="1"  required name="prices[]" class="form-control  w-120px"/>');
             td.append(`<label id="prices[]-error" class="error" for="prices[]" style="display: none;"></label>`);
 
             // append td to tr
@@ -302,22 +318,16 @@
 
             // create a td element
             td = $('<td></td>');
-            td.append('<span class="total"></span>');
-
+            td.append('<span class="vat_total"></span>');
             // append td to tr
             tr.append(td);
 
             // create a td element
             td = $('<td></td>');
-            td.append('<select name="vats[]" required id="" class="form-control form-control-sm w-100px">\n' +
-                '                                            <option value=""></option>\n' +
-                '                                            <option value="18">VAT</option>\n' +
-                '                                            <option value="0">NO VAT</option>\n' +
-                '                                        </select>');
-            td.append(`<label id="vats[]-error" class="error" for="vats[]" style="display: none;"></label>`);
-
+            td.append('<span class="total"></span>');
             // append td to tr
             tr.append(td);
+
 
             // create a td element
             td = $('<td></td>');
@@ -366,6 +376,7 @@
         $(function () {
             $('.nav-purchases').addClass('menu-item-active menu-item-open');
             $('.nav-create-purchase').addClass('menu-item-active');
+            $('body').addClass('aside-minimize');
             let $form = $('#submitForm');
             $form.validate();
 
@@ -380,7 +391,7 @@
                 calculateTotal();
             });
 
-            $(document).on('input', 'input[name="quantities[]"], input[name="prices[]"], select[name="vats[]"]', function () {
+            $(document).on('input', 'input[name="quantities[]"], input[name="prices[]"], input[name="vats[]"]', function () {
                 calculateTotal();
             });
 
@@ -427,35 +438,45 @@
 
         function calculateTotal() {
             let tax = 0;
-            let subTotal = 0;
+            let total = 0;
             $('#itemsTable tbody tr').each(function () {
                 let itemElement = $(this).find('select[name="items[]"]');
 
                 let itemId = itemElement.val();
                 let quantity = $(this).find('input[name="quantities[]"]').val();
                 let unit_price = $(this).find('input[name="prices[]"]').val();
-                let vat = $(this).find('select[name="vats[]"]').val();
+                let vatElement = $(this).find('input[name="vats[]"]');
+                let vat = vatElement.val();
 
                 let item = items.find(item => item.id === parseInt(itemId));
 
                 if (quantity && unit_price) {
                     let total_price = quantity * unit_price;
                     $(this).find('.total').text(total_price.toLocaleString());
-                    if (vat !== '0') {
-                        let tax_rate = (item.vat_rate / 100).toFixed(2);
-                        tax += total_price * tax_rate;
+                    let currentVat = 0;
+                    let $vatValue = $(this).find('input[name="vat_values[]"]');
+                    if (vatElement.prop('checked')) {
+                        $vatValue.val(vat);
+                        let basePrice = total_price / (1 + (vat / 100));
+                        currentVat = total_price - basePrice;
+                        tax += currentVat;
+                    } else {
+                        $vatValue.val(0);
                     }
-                    subTotal += total_price;
+                    total += total_price;
+                    $(this).find('.vat_total').text(currentVat.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "RWF"
+                    }));
                 }
             });
-            $('#sub_total').text(subTotal.toLocaleString("en-US", {style: "currency", currency: "RWF"}));
+            // $('#sub_total').text(total.toLocaleString("en-US", {style: "currency", currency: "RWF"}));
             $('#includes_vat').text(tax.toLocaleString("en-US", {style: "currency", currency: "RWF"}));
-            let grandTotal = subTotal + tax;
-            $('#grand_total').text(grandTotal.toLocaleString("en-US", {style: "currency", currency: "RWF"}));
+            $('#grand_total').text(total.toLocaleString("en-US", {style: "currency", currency: "RWF"}));
 
-            $('#sub_total_input').val(subTotal);
+            // $('#sub_total_input').val(total);
             $('#tax_amount_input').val(tax);
-            $('#grand_total_input').val(grandTotal);
+            $('#grand_total_input').val(total);
         }
 
     </script>
