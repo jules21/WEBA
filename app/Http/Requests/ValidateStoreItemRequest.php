@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Request;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ValidateStoreItemRequest extends FormRequest
 {
@@ -24,9 +26,20 @@ class ValidateStoreItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'item_id' => ['required', 'exists:items,id'],
+            'item_id' => [
+                'required',
+                'exists:items,id',
+                Rule::unique('stock_movement_details')
+                    ->where(function ($query) {
+                        $query->where([
+                            ['model_type', '=', Request::class],
+                            ['model_id', '=', \request('request_id')],
+                            ['id', '!=', \request('id')]
+                        ]);
+                    })
+
+            ],
             'quantity' => ['required', 'numeric', 'min:1'],
-            'unit_price' => ['required', 'numeric', 'min:1'],
         ];
     }
 
@@ -41,6 +54,7 @@ class ValidateStoreItemRequest extends FormRequest
             'unit_price.required' => 'Unit price is required',
             'unit_price.numeric' => 'Unit price must be a number',
             'unit_price.min' => 'Unit price must be greater than 0',
+            'item_id.unique' => "Item already added to list"
         ];
     }
 

@@ -127,7 +127,7 @@
                     </li>
                     @if(auth()->user()->operation_area)
                         @can(\App\Constants\Permission::CreateRequest)
-                            <x-menu-item title="Create New Request" item-class="nav-create-request"
+                            <x-menu-item title="New Connection" item-class="nav-create-request"
                                          :route="route('admin.requests.create')"/>
                         @endcan
                         @can(\App\Constants\Permission::AssignRequest)

@@ -31,6 +31,11 @@
         </div>
     </div>
 
+    @if(isOperatorOrSuperAdmin())
+        @include('admin.requests.partials._all_requests_filter')
+    @endif
+
+
 
     <div class="card tw-shadow-sm border tw-border-gray-300">
         <div class="card-body">
@@ -47,6 +52,7 @@
                     <thead>
                     <tr>
                         <th>Created At</th>
+                        <th>Operator</th>
                         <th>Customer</th>
                         <th>Request Type</th>
                         <th>Meter Qty</th>
@@ -105,6 +111,7 @@
                             return (new Date(data)).toLocaleDateString();
                         }
                     },
+                    {data: "operator.name", name: "operator.name"},
                     {data: "customer.name", name: "customer.name"},
                     {data: "request_type.name", name: "requestType.name"},
                     {data: "meter_qty", name: "meter_qty"},

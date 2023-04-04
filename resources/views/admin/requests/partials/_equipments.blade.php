@@ -4,8 +4,8 @@
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="mb-0">Materials</h5>
             @if($request->canAddMaterials())
-                <button type="button" class="btn btn-sm rounded btn-primary" id="addBtn">
-                    <i class="flaticon2-add"></i>
+                <button type="button" class="btn btn-sm rounded btn-light-primary" id="addBtn">
+                    <i class="flaticon2-add-1"></i>
                     Add New
                 </button>
             @endif

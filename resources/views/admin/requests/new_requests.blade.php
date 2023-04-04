@@ -125,7 +125,9 @@
                                     style="width: 100% !important;">
                                 <option value="">Select User</option>
                                 @foreach($users as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}">
+                                        {{ $item->name }} - {{ $item->phone }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
