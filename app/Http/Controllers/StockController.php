@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StockExport;
 use App\Models\Adjustment;
 use App\Models\Item;
 use App\Models\ItemCategory;
@@ -11,6 +12,7 @@ use App\Models\Stock;
 use App\Models\StockMovement;
 use App\Models\StockMovementDetail;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StockController extends Controller
 {
@@ -50,6 +52,11 @@ class StockController extends Controller
         });
         //get stock items
 
+        //export
+        if (request()->is_download == true && !\request()->ajax()) {
+            return $this->exportStock($stock->get());
+        }
+
 
         return view('admin.stock.stock', [
             'operators' => Operator::query()->get(),
@@ -68,4 +75,10 @@ class StockController extends Controller
                     ->get();
         return view('admin.stock.stock_details', compact('stock','movements'));
     }
+
+    public function exportStock($query)
+    {
+        return Excel::download(new StockExport($query), 'Stock List.xlsx');
+    }
+
 }

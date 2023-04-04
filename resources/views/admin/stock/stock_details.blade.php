@@ -47,12 +47,14 @@
                         <th>Done At</th>
                         {{--                            <th>Operation Area</th>--}}
                         <th>Product</th>
+                        <th>Product Category</th>
+                        <th>Opening Qty</th>
                         <th>Qty In</th>
                         <th>Qty Out</th>
+                        <th>Closing Qty</th>
                         <th>Unit Price</th>
                         <th>Initiated By</th>
 {{--                        <th>Description</th>--}}
-                        <th>Product Category</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,13 +63,26 @@
                             <th>{{$stock->created_at}}</th>
                             {{--                                <td>{{ $stock->operationArea->name ?? '' }}</td>--}}
                             <td>{{ $stock->item->name ?? '' }}</td>
+                            <td>{{ $stock->item->category->name ?? '' }}</td>
                             <td>
-                                <span class=" text-success">{{ $stock->qty_in ? " +$stock->qty_in" : '0' }}</span>
+                                <span class=" text-black">{{ $stock->opening_qty ? " $stock->opening_qty" : '0' }}</span>
                             </td>
                             <td>
-                                <span class=" text-danger">{{ $stock->qty_out ? " -$stock->qty_out" : '0' }}</span>
+                                <span class=" text-success font-weight-bold">{{ $stock->qty_in ? " +$stock->qty_in" : '0' }}</span>
                             </td>
-                            <td>{{ $stock->unit_price ?? '0' }}</td>
+                            <td>
+                                <span class=" text-danger font-weight-bold">{{ $stock->qty_out ? " -$stock->qty_out" : '0' }}</span>
+                            </td>
+                            <td>
+                                <span class=" text-info font-weight-bold">
+                                @if($stock->qty_in > 0)
+                                    {{ $stock->opening_qty + $stock->qty_in - $stock->qty_out }}
+                                    @else
+                                    {{ $stock->opening_qty - $stock->qty_out }}
+                                @endif
+                                </span>
+                            </td>
+                            <td>{{ $stock->unit_price ?? '0' }} RWF</td>
 {{--                            <td>--}}
 
 {{--                                @if(strlen($stock->description) > 50)--}}
@@ -82,7 +97,6 @@
                                 {{Helper::stockCardInitiator($stock->id)}}
                             </td>
 
-                            <td>{{ $stock->item->category->name ?? '' }}</td>
                         </tr>
 
                     @endforeach
