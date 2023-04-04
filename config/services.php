@@ -39,7 +39,8 @@ return [
         'token' => env("BESOFT_TOKEN", "oe1MNXW6O8GdKmWM3nCSqoVROQSZD31O"),
         'sender_name' => env('BESOFT_SENDER_NAME', 'besoft')
     ],
-    'CLMS_NIDA_URL'=>env('CLMS_NIDA_URL','https://licensing.rura.rw/search-id-number'),
+    'CLMS_NIDA_URL' => env('CLMS_NIDA_URL', 'https://licensing.rura.rw/search-id-number'),
+    'VAT_RATE' => env('VAT_RATE', 18),
 
 
 ];

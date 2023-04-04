@@ -113,4 +113,6 @@ class Purchase extends Model implements Auditable
             && auth()->user()->can(Permission::ApproveStockIn);
     }
 
+
+
 }

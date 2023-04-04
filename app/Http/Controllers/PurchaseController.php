@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\Permission;
+use App\Constants\Status;
 use App\Http\Requests\ValidatePurchaseRequest;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Models\Item;
@@ -38,18 +39,14 @@ class PurchaseController extends Controller
     {
 
         if (\request()->ajax()) {
-            $type = redirect('type');
-
             $data = Purchase::query()
                 ->with(['supplier'])
                 ->where('operation_area_id', '=', auth()->user()->operation_area)
-                ->withCount('movements')
+                ->withCount('movementDetails')
                 ->where(function (Builder $builder) {
-
                     if (\request('type') == 'all') {
                         return;
                     }
-
                     $statuses = [];
                     if (auth()->user()->can(Permission::StockInItems)) {
                         $statuses[] = Purchase::PENDING;
@@ -69,7 +66,7 @@ class PurchaseController extends Controller
                     $editBtn = '';
                     $deleteBtn = '';
                     $submitBtn = '';
-                    if ($row->status == Purchase::PENDING && auth()->user()->can(Permission::StockInItems)) {
+                    if ($row->status == Status::RETURN_BACK && auth()->user()->can(Permission::StockInItems)) {
                         $submitBtn = '<a href="' . route('admin.purchases.submit', encryptId($row->id)) . '" class="dropdown-item js-submit"><i class="fa fa-cloud-upload-alt mr-2"></i> Submit</a>';
                         $editBtn = '<a href="' . route('admin.purchases.edit', encryptId($row->id)) . '" class="dropdown-item"><i class="fa fa-edit mr-2"></i> Edit</a>';
                         $deleteBtn = '<a href="' . route('admin.purchases.destroy', encryptId($row->id)) . '" class="dropdown-item js-delete"><i class="fa fa-trash mr-2"></i> Delete</a>';
@@ -200,14 +197,14 @@ class PurchaseController extends Controller
 
         $categories = $this->getCategories();
 
-        $purchase->load(['movements.item']);
+        $purchase->load(['movementDetails.item']);
 
 
         return view('admin.purchases.create', [
             'purchase' => $purchase,
             'suppliers' => $suppliers,
             'items' => $this->getItems(),
-            'categories'=>$categories
+            'categories' => $categories
         ]);
     }
 
@@ -413,15 +410,14 @@ class PurchaseController extends Controller
     public function saveItems(array $data, $purchase): void
     {
         foreach ($data['items'] as $key => $item) {
-
             $qty = $data['quantities'][$key];
             $price = $data['prices'][$key];
-            $vat = $data['vats'][$key];
+            $vat = $data['vat_values'][$key];
             $purchase->movementDetails()->create([
                 'item_id' => $item,
                 'quantity' => $qty,
                 'unit_price' => $price,
-                'type' => StockMovement::StockOut,
+                'type' => StockMovement::StockIn,
                 'vat' => $vat,
                 'status' => Purchase::PENDING,
             ]);
@@ -438,10 +434,8 @@ class PurchaseController extends Controller
             'supplier_id' => $data['supplier_id'],
             'description' => $data['description'],
             'created_by' => auth()->id(),
-            'status' => Purchase::PENDING,
-            'subtotal' => $data['subtotal'],
+            'status' => Purchase::SUBMITTED,
             'tax_amount' => $data['tax_amount'],
-            'tax_net_amount' => $data['tax_amount'],
             'total' => $data['grand_total'],
             'operation_area_id' => auth()->user()->operation_area
         ];
