@@ -57,7 +57,7 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Operator</th>
+{{--                        <th>Operator</th>--}}
                         <th>Name</th>
                         <th>Phone Number</th>
                         <th>Email</th>
@@ -72,7 +72,7 @@
                     @foreach($suppliers as $key=>$supplier)
                         <tr>
                             <td>{{++$key}}</td>
-                            <td>{{$supplier->operator->name}}</td>
+{{--                            <td>{{$supplier->operator->name}}</td>--}}
                             <td>{{$supplier->name}}</td>
                             <td>{{$supplier->phone_number}}</td>
                             <td>{{$supplier->email}}</td>

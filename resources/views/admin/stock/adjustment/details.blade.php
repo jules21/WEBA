@@ -89,7 +89,7 @@
                                 <h5 class="mb-0">Items</h5>
                                 <button type="button" class="btn btn-sm rounded btn-primary" id="addBtn">
                                     <i class="flaticon2-add"></i>
-                                    Add New
+                                    Add Item
                                 </button>
                             </div>
                         @endif

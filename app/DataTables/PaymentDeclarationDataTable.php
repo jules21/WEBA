@@ -17,6 +17,7 @@ class PaymentDeclarationDataTable extends DataTable
     {
         $this->query = $query;
     }
+
     /**
      * Build DataTable class.
      *
@@ -58,14 +59,14 @@ class PaymentDeclarationDataTable extends DataTable
             ->editColumn('created_at', function ($query) {
                 return $query->created_at->format('d/m/Y H:m:s') ?? '-';
             })
-            ->addColumn('action',function($query){
+            ->addColumn('action', function ($query) {
                 return '
                        <div class="dropdown">
                                  <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                     Options
                                 </button>
                                 <div class="dropdown-menu border">
-                                    <a class="dropdown-item" href="'.route('admin.payments.history', $query->id).'">
+                                    <a class="dropdown-item" href="' . route('admin.payments.history', $query->id) . '">
                                         <i class="fas fa-info-circle"></i>
                                         <span class="ml-2">History</span>
                                     </a>
@@ -73,7 +74,7 @@ class PaymentDeclarationDataTable extends DataTable
                             </div>
                 ';
             })
-            ->rawColumns(['status','action']);
+            ->rawColumns(['status', 'action']);
     }
 
     /**
@@ -95,10 +96,10 @@ class PaymentDeclarationDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('paymentdeclaration-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->orderBy(7, 'desc');
+            ->setTableId('paymentdeclaration-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->orderBy(7, 'desc');
     }
 
     /**
@@ -112,42 +113,40 @@ class PaymentDeclarationDataTable extends DataTable
             Column::make('operator')
                 ->title('Operator')
                 ->name('request.operator.name')
-                ->addClass('text-center'),
+            ,
 
             Column::make('operation_area')
                 ->title('Operation Area')
                 ->name('request.operationArea.name')
-                ->addClass('text-center'),
+            ,
 
             Column::make('customer')
-            ->title('Customer')
-            ->name('request.customer.name')
-            ->addClass('text-center'),
+                ->title('Customer')
+                ->name('request.customer.name'),
             Column::make('request_type')
                 ->title('Request Type')
-                ->addClass('text-center'),
+            ,
             Column::make('payment_type')
                 ->title('Payment Type')
-                ->addClass('text-center'),
+            ,
             Column::make('payment_reference')
                 ->title('Ref Number')
-                ->addClass('text-center'),
+            ,
             Column::make('amount')
                 ->title('Amount')
-                ->addClass('text-center'),
+            ,
             Column::make('status')
                 ->title('Status')
-                ->addClass('text-center'),
+            ,
             Column::make('created_at')
                 ->title('Creation Date')
-                ->addClass('text-center'),
+            ,
             Column::Computed('action')
                 ->title('Action')
-                ->addClass('text-center')
                 ->exportable(false)
                 ->printable(false)
                 ->width(60)
-                ->addClass('text-center')
+
 
         ];
     }

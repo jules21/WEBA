@@ -103,15 +103,15 @@ class ItemsDataTable extends DataTable
             'id' => ['title' => '#', 'searchable' => false, 'render' => function() {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
-            Column::make('item_category_id')
-                ->title('Category'),
             Column::make('name'),
             Column::make('description'),
+            Column::make('item_category_id')
+                ->title('Category'),
             Column::make('packaging_unit_id')
                 ->title('Packaging Unit'),
             Column::make('selling_price'),
-            Column::make('vatable'),
-            Column::make('vat_rate'),
+//            Column::make('vatable'),
+//            Column::make('vat_rate'),
             Column::make('is_active')
                 ->title('Status'),
             Column::computed('action')

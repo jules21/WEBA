@@ -29,7 +29,7 @@ class ItemController extends Controller
             ->select('items.*')->with('category', 'packagingUnit');
         $dataTable = new ItemsDataTable($items);
         return $dataTable->render('admin.stock.items', [
-            'categories' => ItemCategory::query()->get(),
+            'categories' => ItemCategory::query()->where('operator_id', auth()->user()->operator_id)->get(),
             'units' => PackagingUnit::query()->get()
         ]);
     }
@@ -45,8 +45,8 @@ class ItemController extends Controller
     {
         $validated = $request->validated();
 
-        if (!$validated['vatable'])
-            $validated['vat_rate'] = 0;
+//        if (!$validated['vatable'])
+//            $validated['vat_rate'] = 0;
 
         Item::query()->create($validated);
         return redirect()->back()->with('success', 'Item created successfully');
@@ -63,8 +63,8 @@ class ItemController extends Controller
     {
         $validated = $request->validated();
 
-        if (!$validated['vatable'])
-            $validated['vat_rate'] = 0;
+//        if (!$validated['vatable'])
+//            $validated['vat_rate'] = 0;
 
         $item->update($validated);
 

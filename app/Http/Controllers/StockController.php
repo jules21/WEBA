@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StockExport;
 use App\Models\Adjustment;
 use App\Models\Item;
 use App\Models\ItemCategory;
@@ -11,13 +12,14 @@ use App\Models\Stock;
 use App\Models\StockMovement;
 use App\Models\StockMovementDetail;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StockController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -48,6 +50,12 @@ class StockController extends Controller
         $stock->when($request->has('item_id'), function ($query) use ($request) {
             $query->whereIn('item_id', $request->item_id);
         });
+        //get stock items
+
+        //export
+        if (request()->is_download == true && !\request()->ajax()) {
+            return $this->exportStock($stock->get());
+        }
 
 
         return view('admin.stock.stock', [
@@ -67,4 +75,10 @@ class StockController extends Controller
                     ->get();
         return view('admin.stock.stock_details', compact('stock','movements'));
     }
+
+    public function exportStock($query)
+    {
+        return Excel::download(new StockExport($query), 'Stock List.xlsx');
+    }
+
 }
