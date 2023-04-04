@@ -38,7 +38,7 @@
     <div class="card">
         <div class="card-content card-custom">
             <div class="card-header pb-1 pt-3">
-                <h3>{{$stock->item->name}} Stock Card</h3>
+                <h3>{{$item->name}} Stock Card</h3>
             </div>
             <div class="card-body">
                 <table class="table table-head-custom table-head-solid table-hover" id="kt_datatable1">

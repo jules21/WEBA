@@ -95,10 +95,8 @@
                     <div class="d-flex justify-content-between mb-5">
                         <h3>Stock</h3>
                         <div class="dropdown dropdown-inline mr-2">
-                            {{--                            @if ($requests->count() > 0)--}}
                             <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="la la-download"></i>Export</button>
-                            {{--                            @endif--}}
                             <!--begin::Dropdown Menu-->
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <ul class="nav flex-column nav-hover">
@@ -121,17 +119,16 @@
                                 <th>Product</th>
                                 <th>Quantity</th>
                                 <th>Product Category</th>
-                                {{--                            <th>operator</th>--}}
-                                {{--                            <th>Operation Area</th>--}}
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($stocks as $stock)
+{{--                                @dd($stock)--}}
                                 <tr>
-                                    <td>{{ $stock->item->name ?? '' }}</td>
+                                    <td>{{ $stock->name ?? '' }}</td>
                                     <td>{{ $stock->quantity }}</td>
-                                    <td>{{ $stock->item->category->name ?? '' }}</td>
+                                    <td>{{ $stock->category->name ?? '' }}</td>
                                     {{--                                <td>{{ $stock->operator->name ?? '' }}</td>--}}
                                     {{--                                <td>{{ $stock->operationArea->name ?? '' }}</td>--}}
                                     <td>

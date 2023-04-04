@@ -32,9 +32,9 @@ class StockExport implements FromCollection, WithHeadings, ShouldAutoSize, WithT
         $data = collect();
         foreach ($this->data as $key => $stock) {
             $arr = array();
-            $arr[] = $stock->item->name ?? '-';
-            $arr[] = optional(optional($stock->item)->category)->name ?? '-';
-            $arr[] = $stock->quantity ?? '-';
+            $arr[] = $stock->name ?? '-';
+            $arr[] = optional($stock->category)->name ?? '-';
+            $arr[] = $stock->quantity ? $stock->quantity : '0';
             $data->push($arr);
         }
         return $data;

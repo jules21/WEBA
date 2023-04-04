@@ -51,10 +51,19 @@ class StockController extends Controller
             $query->whereIn('item_id', $request->item_id);
         });
         //get stock items
-
+        $stock = $stock->get();
+        //expected response
+        $items = Item::query()->with('category')->where('operator_id', $user->operator_id)->get();
+        $stock_data = $items->map(function ($item)use($user,$stock){
+            $item->quantity = collect($stock)
+                ->where('item_id', $item->id)
+                ->where('operation_area_id', $user->operation_area)
+                ->sum('quantity');
+            return $item;
+        });
         //export
         if (request()->is_download == true && !\request()->ajax()) {
-            return $this->exportStock($stock->get());
+            return $this->exportStock($stock_data);
         }
 
 
@@ -62,18 +71,19 @@ class StockController extends Controller
             'operators' => Operator::query()->get(),
             'items' => Item::query()->get(),
             'categories' => ItemCategory::query()->get(),
-            'stocks' => $stock->get(),
+            'stocks' => $stock_data,
             'operationAreas' => $user->operator_id ? OperationArea::query()->where('operator_id', $user->operator_id)->get() : OperationArea::query()->get(),
         ]);
     }
-    public function show(Stock $stock)
+    public function show($item)
     {
+        $item = Item::query()->find(decryptId($item));
         $movements = StockMovement::query()
-                    ->where('item_id', $stock->item_id)
-                    ->where('operation_area_id', $stock->operation_area_id)
+                    ->where('item_id', $item->id)
+                    ->where('operation_area_id', auth()->user()->operation_area)
                     ->with('item', 'operationArea.operator')
                     ->get();
-        return view('admin.stock.stock_details', compact('stock','movements'));
+        return view('admin.stock.stock_details', compact('item','movements'));
     }
 
     public function exportStock($query)

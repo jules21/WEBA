@@ -331,7 +331,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::resource('items', ItemController::class);
         Route::get('/items-by-category/{categoryId}', [ItemController::class, 'itemsByCategory'])->name('items.by-category');
         Route::get('/stock-items', [App\Http\Controllers\StockController::class, 'index'])->name('stock-items.index');
-        Route::get('/stock-items/{stock}', [App\Http\Controllers\StockController::class, 'show'])->name('stock-items.show');
+        Route::get('/stock-items/{item}', [App\Http\Controllers\StockController::class, 'show'])->name('stock-items.show');
         Route::get('/stock-movements', [App\Http\Controllers\StockMovementController::class, 'index'])->name('stock-items.movements');
         Route::get('/stock-movements/{movement}', [App\Http\Controllers\StockMovementController::class, 'show'])->name('stock-items.movements.show');
 
