@@ -45,4 +45,20 @@ class Helper{
             \App\Models\PaymentDeclaration::PARTIALLY_PAID => 'Partially Paid',
         ];
     }
+
+    public static function stockCardInitiator($card_id): string
+    {
+        $card = \App\Models\StockMovement::query()->find($card_id);
+        if ($card->type == \App\Models\StockMovement::Adjustment){
+            $adjustment = \App\Models\Adjustment::query()->find($card->adjustment_id);
+            return $adjustment ? optional($adjustment->createdBy)->name : '-';
+        }elseif ($card->type == \App\Models\StockMovement::StockIn){
+            $purchase = \App\Models\Purchase::query()->find($card->purchase_id);
+            return $purchase ? optional($purchase->createdBy)->name : '-';
+        }elseif ($card->type == \App\Models\StockMovement::StockOut){
+            $request = \App\Models\Request::query()->find($card->request_id);
+            return $request ? optional(optional($request->requestAssignment)->user)->name : '-';
+        }else
+            return '-';
+    }
 }

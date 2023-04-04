@@ -1,9 +1,7 @@
 @extends('layouts.master')
 
 @section('title',"Customers Connections")
-
-@section('content')
-
+@section('page-header')
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
@@ -20,6 +18,11 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
+                        <a href="{{ route('admin.customers.index') }}" class="text-muted">
+                            Customers
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
                         <span class="text-muted">Customer Connections</span>
                     </li>
                 </ul>
@@ -27,8 +30,8 @@
             <!--end::Info-->
         </div>
     </div>
-
-    <div class="container">
+@endsection
+@section('content')
         <div class="card card-body mb-3">
             <h3 class="mb-6">{{$customer->name}} Connections</h3>
             <div class="table-responsive">
@@ -81,8 +84,6 @@
 
             </div>
         </div>
-
-    </div>
 @endsection
 @section('scripts')
     <script>

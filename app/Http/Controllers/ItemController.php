@@ -45,8 +45,8 @@ class ItemController extends Controller
     {
         $validated = $request->validated();
 
-        if (!$validated['vatable'])
-            $validated['vat_rate'] = 0;
+//        if (!$validated['vatable'])
+//            $validated['vat_rate'] = 0;
 
         Item::query()->create($validated);
         return redirect()->back()->with('success', 'Item created successfully');
@@ -63,8 +63,8 @@ class ItemController extends Controller
     {
         $validated = $request->validated();
 
-        if (!$validated['vatable'])
-            $validated['vat_rate'] = 0;
+//        if (!$validated['vatable'])
+//            $validated['vat_rate'] = 0;
 
         $item->update($validated);
 

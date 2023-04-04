@@ -101,7 +101,7 @@ class BillingDataTable extends DataTable
                     ->setTableId('billing-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->orderBy(10, 'desc');
+                    ->orderBy(9, 'desc');
 
     }
 
@@ -116,13 +116,6 @@ class BillingDataTable extends DataTable
             'id' => ['title' => '#', 'searchable' => false, 'render' => function() {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
-            Column::make('operator_name')
-                ->name('meterRequest.request.operator.name')
-                ->title("Operator Name"),
-                Column::make('operation_area')
-                ->name('meterRequest.request.operationArea.name')
-                ->title("Operation Area")
-            ,
             Column::make('customer_name')
                 ->name('meterRequest.request.customer.name')
                 ->title("Customer Name")

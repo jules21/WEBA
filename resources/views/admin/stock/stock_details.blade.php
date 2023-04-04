@@ -38,7 +38,7 @@
     <div class="card">
         <div class="card-content card-custom">
             <div class="card-header pb-1 pt-3">
-                <h3>{{$stock->item->name}} Movements</h3>
+                <h3>{{$stock->item->name}} Stock Card</h3>
             </div>
             <div class="card-body">
                 <table class="table table-head-custom table-head-solid table-hover" id="kt_datatable1">
@@ -50,7 +50,8 @@
                         <th>Qty In</th>
                         <th>Qty Out</th>
                         <th>Unit Price</th>
-                        <th>Description</th>
+                        <th>Initiated By</th>
+{{--                        <th>Description</th>--}}
                         <th>Product Category</th>
                     </tr>
                     </thead>
@@ -67,16 +68,20 @@
                                 <span class=" text-danger">{{ $stock->qty_out ? " -$stock->qty_out" : '0' }}</span>
                             </td>
                             <td>{{ $stock->unit_price ?? '0' }}</td>
-                            <td>
+{{--                            <td>--}}
 
-                                @if(strlen($stock->description) > 50)
-                                    <a href="#" data-toggle="tooltip" data-trigger="focus" data-html="true" title="{{ $stock->description }}">
-                                        {{ Str::limit($stock->description, 50) }}
-                                    </a>
-                                @else
-                                    {{ Str::limit($stock->description, 50) }}
-                                @endif
+{{--                                @if(strlen($stock->description) > 50)--}}
+{{--                                    <a href="#" data-toggle="tooltip" data-trigger="focus" data-html="true" title="{{ $stock->description }}">--}}
+{{--                                        {{ Str::limit($stock->description, 50) }}--}}
+{{--                                    </a>--}}
+{{--                                @else--}}
+{{--                                    {{ Str::limit($stock->description, 50) }}--}}
+{{--                                @endif--}}
+{{--                            </td>--}}
+                            <td>
+                                {{Helper::stockCardInitiator($stock->id)}}
                             </td>
+
                             <td>{{ $stock->item->category->name ?? '' }}</td>
                         </tr>
 

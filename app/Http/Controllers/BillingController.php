@@ -144,11 +144,17 @@ class BillingController extends Controller
 
     public function customerBillings(Customer $customer)
     {
+
+
         $billings = Billing::query()->whereHas('meterRequest', function ($query) use ($customer) {
             $query->whereHas('request', function ($query) use ($customer) {
                 $query->where('customer_id', $customer->id);
             });
         });
+        //export
+        if (request()->is_download == true && !\request()->ajax()) {
+            return $this->exportBilling($billings->get());
+        }
         $datatable = new BillingDataTable($billings);
         return $datatable->render('admin.billings.customer_bills', compact('customer'));
     }
