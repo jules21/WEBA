@@ -31,6 +31,8 @@ class UpdateItemRequest extends FormRequest
             "selling_price" => 'required',
 //            "vatable" => 'required',
 //            "vat_rate" => 'required_if:vatable,1',
+//            "operator_id" => 'required',
+            'is_active' => 'nullable',
         ];
     }
 

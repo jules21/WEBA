@@ -32,6 +32,7 @@ class StoreItemRequest extends FormRequest
 //            "vatable" => 'required',
 //            "vat_rate" => 'required_if:vatable,1',
             "operator_id" => 'required',
+            'is_active' => 'nullable',
         ];
     }
 
