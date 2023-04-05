@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class StockExport implements FromCollection, WithHeadings, ShouldAutoSize, WithTitle, WithEvents
+class StockMovementExport implements FromCollection, WithHeadings, ShouldAutoSize, WithTitle, WithEvents
 {
     protected $data;
 
@@ -22,19 +22,23 @@ class StockExport implements FromCollection, WithHeadings, ShouldAutoSize, WithT
     public function headings(): array
     {
         return [
-            'Item Name',
-            'Item Category',
-            'Quantity',
+            	"TYPE",	"ITEM",	"OPENING QTY","QTY IN/OUT",	"CLOSING QTY",	"DESCRIPTION",	"CREATED AT"
         ];
     }
     public function collection()
     {
         $data = collect();
-        foreach ($this->data as $key => $stock) {
+        foreach ($this->data as $key => $movement) {
             $arr = array();
-            $arr[] = $stock->name ?? '-';
-            $arr[] = optional($stock->category)->name ?? '-';
-            $arr[] = $stock->quantity ? $stock->quantity : '0';
+            $arr[] = $movement->type ?? '-';
+            $arr[] = $movement->item ? $movement->item->name : "-";
+            $arr[] = $movement->opening_qty > 0 ?  $movement->opening_qty:"0";
+            $arr[] = ($movement->qty_in > 0 ?
+                ("+ $movement->qty_in ".  $movement->item->packagingUnit->name):
+                ("- $movement->qty_out ". $movement->item->packagingUnit->name));
+            $arr[] = ($movement->qty_in > 0 ?($movement->opening_qty + $movement->qty_in):($movement->opening_qty - $movement->qty_out));
+            $arr[] = $movement->description ?? '-';
+            $arr[] = $movement->created_at ?? '-';
             $data->push($arr);
         }
         return $data;
@@ -47,14 +51,14 @@ class StockExport implements FromCollection, WithHeadings, ShouldAutoSize, WithT
 
     public function title(): string
     {
-        return 'Stock Card';
+        return 'Stock Movement List';
     }
 
     public function registerEvents(): array
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                $last_column = Coordinate::stringFromColumnIndex(3);
+                $last_column = Coordinate::stringFromColumnIndex(7);
                 $style_text_center = [
                     'alignment' => [
                         'horizontal' => Alignment::HORIZONTAL_CENTER
@@ -64,7 +68,7 @@ class StockExport implements FromCollection, WithHeadings, ShouldAutoSize, WithT
                 // merge cells for full-width
                 $event->sheet->mergeCells(sprintf('A1:%s1',$last_column));
                 // assign cell values
-                $event->sheet->setCellValue('A1','Stock List');
+                $event->sheet->setCellValue('A1','Stock Movement List');
                 // assign cell styles
                 $event->sheet->getStyle('A1:A2')->applyFromArray($style_text_center);
                 $cellRange = sprintf('A2:%s2',$last_column); // All headers

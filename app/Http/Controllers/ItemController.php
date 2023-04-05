@@ -106,4 +106,15 @@ class ItemController extends Controller
             ->where('item_category_id', $categoryId)
             ->get();
     }
+    public function getItemsByCategories()
+    {
+
+        $categoryyIds = request()->input('item_category_id');
+        if (empty($categoryyIds))
+            return [];
+        $items = Item::query()->whereIn('item_category_id', $categoryyIds)
+            ->with('category')
+            ->get();
+        return $items;
+    }
 }

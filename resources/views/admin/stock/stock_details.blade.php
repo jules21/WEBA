@@ -37,10 +37,26 @@
 @section('content')
     <div class="card">
         <div class="card-content card-custom">
-            <div class="card-header pb-1 pt-3">
-                <h3>{{$stock->item->name}} Stock Card</h3>
-            </div>
             <div class="card-body">
+                <div class="d-flex justify-content-between mb-5">
+                    <h3>{{$item->name}} Stock Card</h3>
+                    <div class="dropdown dropdown-inline">
+                        <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="la la-download"></i>Export</button>
+                        <!--begin::Dropdown Menu-->
+                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                            <ul class="nav flex-column nav-hover">
+                                <li class="nav-item export-doc">
+                                    <a href="#" class="nav-link" target="_blank" id="excel">
+                                        <i class="nav-icon la la-file-excel-o"></i>
+                                        <span class="nav-text">Excel</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--end::Dropdown Menu-->
+                    </div>
+                </div>
                 <table class="table table-head-custom table-head-solid table-hover" id="kt_datatable1">
                     <thead>
                     <tr>
@@ -105,14 +121,22 @@
             </div>
         </div>
     </div>
+    @php
+        //Declare new queries you want to append to string:
+        $newQueries = ['is_download' => 1];
+        $newUrl = request()->fullUrlWithQuery($newQueries);
+    @endphp
 @endsection
 @section('scripts')
     <script>
         $(document).ready(function () {
-            // initData();
             $("#kt_datatable1").DataTable({
                 responsive:true,
                 "order": [[ 0, "desc" ]],
+            });
+            $(document).on("click","#excel", function(e) {
+                let url = "{!! $newUrl !!}";
+                $(this).attr("href",url);
             });
         });
     </script>

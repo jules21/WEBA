@@ -29,26 +29,19 @@ class StockMovementsDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->editColumn('type', function ($item) {
-                if($item->type == 'Adjustment' || $item->type == 'AdjustmentController') {
+                if(in_array($item->type,['AdjustmentController', StockMovement::Adjustment])) {
                     return '
                     <span class="label label-light-success label-inline"> Adjustment </span>';
-                }else if($item->type == 'Purchase') {
+                }else if(in_array($item->type,['Purchase', StockMovement::StockIn])) {
                     return '
                     <span class="label label-light-primary label-inline"> Stock In </span>';
-                }else if($item->type == 'Sale') {
+                }else if(in_array($item->type, ['Sale','Sales',StockMovement::StockOut])) {
                     return '
                     <span class="label label-light-danger label-inline"> Stock Out </span>';
                 }else{
                     return '
                  <span class="label label-primary label-inline font-weight-lighter">'.$item->type.'</span>';
                 }
-            })
-
-            ->editColumn('operator', function ($item) {
-                return $item->operationArea ? optional(optional($item->operationArea)->operator)->name : "-";
-            })
-            ->editColumn('operation_area_id', function ($item) {
-                return $item->operationArea ? $item->operationArea->name : "-";
             })
             ->editColumn('item_id', function ($item) {
                 return $item->item ? $item->item->name : "-";
@@ -57,14 +50,6 @@ class StockMovementsDataTable extends DataTable
                 return $item->quantity ?
                     $item->quantity . ' ' . $item->item->packagingUnit->name
                     : "-";
-            })
-            ->editColumn('qty_in', function ($item) {
-                return $item->qty_in ?
-                    '<span class="text-success  font-weight-lighter">+'.$item->qty_in . ' ' . $item->item->packagingUnit->name.'</span>' : "0";
-            })
-            ->editColumn('qty_out', function ($item) {
-                return $item->qty_out ?
-                    '<span class="text-danger font-weight-lighter">-'.$item->qty_out . ' ' . $item->item->packagingUnit->name.'</span>' : "0";
             })
             ->editColumn('created_at', function ($item) {
                 return $item->created_at ? $item->created_at->format('d-m-Y H:i') : "-";
@@ -77,8 +62,21 @@ class StockMovementsDataTable extends DataTable
                     : $item->description;
 
             })
-
-            ->rawColumns(['type', 'item_id', 'operator_id', 'quantity', 'created_at', 'qty_in', 'qty_out', 'description']);
+            ->addColumn('closing_qty', function ($item) {
+                if ($item->qty_in > 0) {
+                    return $item->opening_qty + $item->qty_in;
+                } else {
+                    return $item->opening_qty - $item->qty_out;
+                }
+            })
+            ->addColumn('qty_change', function ($item) {
+                if ($item->qty_in > 0) {
+                    return '<span class="text-success  font-weight-lighter">+'.$item->qty_in . ' ' . $item->item->packagingUnit->name.'</span>';
+                } else {
+                    return '<span class="text-danger font-weight-lighter">-'.$item->qty_out . ' ' . $item->item->packagingUnit->name.'</span>';
+                }
+            })
+            ->rawColumns(['type', 'item_id', 'quantity', 'created_at', 'qty_change', 'description']);
     }
 
     /**
@@ -105,7 +103,7 @@ class StockMovementsDataTable extends DataTable
                     ->addTableClass('table border table-head-custom table-hover  table-head-solid')
                     ->minifiedAjax()
                     ->addTableClass('table table-striped- table-hover table-checkable')
-                    ->orderBy(9, 'desc');
+                    ->orderBy(7, 'desc');
     }
 
     /**
@@ -120,39 +118,19 @@ class StockMovementsDataTable extends DataTable
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
             Column::make('type')
-                ->title("Type")
-                ->addClass('text-center'),
+                ->title("Type"),
             Column::make('item_id')
-                ->title("Item")
-                ->addClass('text-center'),
-            Column::make('operator')
-                ->title("operator")
-                ->addClass('text-center'),
-            Column::make('operation_area_id')
-                ->title("Operation Area")
-                ->addClass('text-center'),
+                ->title("Item"),
             Column::make('opening_qty')
-                ->title("Opening Qty")
-                ->addClass('text-center'),
-            Column::make('qty_in')
-                ->title("Qty In")
-                ->addClass('text-center'),
-            Column::make('qty_out')
-                ->title("Qty Out")
-                ->addClass('text-center'),
+                ->title("Opening Qty"),
+            Column::make('qty_change')
+                ->title("Qty In/Out"),
+            Column::make('closing_qty')
+                ->title("Closing Qty"),
             Column::make('description')
-                ->title("Description")
-                ->addClass('text-center '),
+                ->title("Description"),
             Column::make('created_at')
-                ->title("Created At")
-                ->addClass('text-center'),
-//            Column::computed('action')
-//                ->title("Action")
-//                ->addClass('text-center')
-//                ->exportable(false)
-//                ->printable(false)
-//                ->width(60)
-//                ->addClass('text-center')
+                ->title("Created At"),
         ];
     }
 
