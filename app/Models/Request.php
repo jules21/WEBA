@@ -278,6 +278,13 @@ class Request extends Model implements Auditable
         return false;
     }
 
+    public function canEditMeterNumber(): bool
+    {
+        return $this->status == Request::APPROVED
+            && auth()->user()->can(Permission::AssignMeterNumber)
+            && !$this->pendingPayments(PaymentType::METERS_FEE);
+    }
+
     public function canAssignMeterNumber(): bool
     {
         return $this->meterNumbers->count() < $this->meter_qty
@@ -351,11 +358,17 @@ class Request extends Model implements Auditable
 
     public function operatingArea(): BelongsTo
     {
-        return $this->belongsTo(OperationArea::class,"operation_area_id");
+        return $this->belongsTo(OperationArea::class, "operation_area_id");
     }
+
     public function operationArea(): BelongsTo
     {
-        return $this->belongsTo(OperationArea::class,"operation_area_id");
+        return $this->belongsTo(OperationArea::class, "operation_area_id");
+    }
+
+    public function canMeterNumberBeShown(): bool
+    {
+        return !in_array($this->status, [self::PENDING, self::ASSIGNED, self::PROPOSE_TO_APPROVE]);
     }
 
 

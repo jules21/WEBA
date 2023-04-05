@@ -26,15 +26,16 @@ class ValidateAssignMeterNumber extends FormRequest
     {
         return [
             'item_category_id' => ['required', 'exists:item_categories,id'],
-            'item_id' => ['required', 'exists:items,id'],
+            'item_id' => ['required', 'exists:items,id',
+                Rule::unique('meter_requests')->where(function ($query) {
+                    return $query->where('request_id', request('request_id'));
+                })->ignore(request('id'))
+            ],
             'meter_number' => [
                 'required',
-                Rule::unique("meter_requests")
-                    ->where(function ($query) {
-                        $query->where('request_id', '=', request('request_id'));
-                    }),
+//                Rule::unique("meter_requests")->ignore(request('id'))
             ],
-            'last_index' => ['required', 'numeric']
+            'last_index' => ['required', 'numeric', 'integer']
         ];
     }
 
@@ -48,7 +49,8 @@ class ValidateAssignMeterNumber extends FormRequest
             'meter_number.required' => 'Please enter a meter number',
             'last_index.required' => 'Please enter a last index',
             'last_index.numeric' => 'Last index must be a number',
-            'meter_number.unique' => "Meter number already exists"
+            'meter_number.unique' => "Meter number already exists",
+            'item_id.unique' => "Item already exists",
         ];
     }
 }
