@@ -1,33 +1,43 @@
-<div class="card card-body mb-3">
-
+<div class="mb-3">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h6 class="mb-0">Meter Numbers</h6>
         @if($request->canAssignMeterNumber())
-            <button type="button" class="btn btn-sm btn-primary" id="addMeterBtn">
-                <i class="flaticon2-plus"></i>
+            <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder" id="addMeterBtn">
+                <i class="flaticon2-plus icon-1x"></i>
                 Add New
             </button>
         @endif
     </div>
-
-    <div class="table-responsive">
+    <div class="table-responsive border rounded">
         @if($request->meterNumbers->isEmpty())
             <div class="alert alert-light-info alert-custom mb-0">
                 No meter numbers assigned yet.
             </div>
         @else
-            <table class="table table-head-custom table-head-solid table-hover">
+            <table class="table table-head-custom table-head-solid">
                 <thead>
                 <tr>
                     <th>Subscription Number</th>
                     <th>Meter Number</th>
                     <th>Category</th>
                     <th>Item</th>
-                    @if($request->canAssignMeterNumber())
+                    <th>Price</th>
+                    @if($request->canEditMeterNumber())
                         <th>Actions</th>
                     @endif
                 </tr>
                 </thead>
+                <tfoot>
+                <tr>
+                    <td colspan="4" class="text-right font-weight-bold">Total:</td>
+                    <td class="font-weight-bolder">
+                        RWF
+                        <span id="total">{{ number_format($request->meterNumbers->sum('item.selling_price')) }}</span>
+                    </td>
+                    @if($request->canEditMeterNumber())
+                        <td></td>
+                    @endif
+                </tfoot>
                 <tbody>
                 @forelse($request->meterNumbers as $item)
                     <tr>
@@ -35,7 +45,8 @@
                         <td>{{ $item->meter_number }}</td>
                         <td>{{ $item->itemCategory->name }}</td>
                         <td>{{ $item->item->name }}</td>
-                        @if($request->canAssignMeterNumber())
+                        <td>{{ number_format($item->item->selling_price) }}</td>
+                        @if($request->canEditMeterNumber())
                             <td>
                                 <button type="button"
                                         data-id="{{ $item->id }}"
