@@ -39,6 +39,7 @@ class StoreItemCategoryRequest extends FormRequest
             'is_meter.required'=>'Please select if the category is metered',
             'is_meter.boolean'=>'Please select if the category is metered',
             'operator_id.required'=>'Please select an operator',
+            "name.unique" => "Item already exists",
         ];
     }
 }
