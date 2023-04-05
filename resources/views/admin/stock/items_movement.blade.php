@@ -60,7 +60,7 @@
                     <button type="submit" class="btn btn-primary btn-sm mr-2">
                         <i class="la la-search"></i>
                         Filter</button>
-                    <a href="{{route('admin.stock.stock-items.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
+                    <a href="{{route('admin.stock.stock-items.movements')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
                 </div>
             </div>
         </form>

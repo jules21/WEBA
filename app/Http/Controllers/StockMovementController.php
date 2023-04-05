@@ -19,6 +19,7 @@ class StockMovementController extends Controller
      */
     public function index()
     {
+
         $user = auth()->user();
         $data = StockMovement::with('item', 'operationArea.operator')->select('stock_movements.*');
         $data->when($user->operator_id, function ($query) use ($user) {
@@ -28,6 +29,14 @@ class StockMovementController extends Controller
         });
         $data->when($user->operation_area, function ($query) use ($user) {
             $query->where('operation_area_id', $user->operation_area);
+        });
+        $data->when(request()->item_id, function ($query) {
+            $query->whereItem_id(request()->item_id);
+        });
+        $data->when(request()->item_category_id, function ($query) {
+            $query->whereHas('item', function ($query) {
+                $query->whereIn('item_category_id', request()->item_category_id);
+            });
         });
         $datatable =  new StockMovementsDataTable($data);
 
@@ -39,7 +48,7 @@ class StockMovementController extends Controller
         return $datatable->render('admin.stock.items_movement',
             [
                 'categories' => ItemCategory::query()->where('operator_id', $user->operator_id)->get(),
-                'items' => Item::query()->where('operator_id', $user->operator_id)->get(),
+                'items' =>[]// Item::query()->where('operator_id', $user->operator_id)->get(),
             ]
         );
     }

@@ -54,7 +54,14 @@ class StockController extends Controller
         //get stock items
         $stock = $stock->get();
         //expected response
-        $items = Item::query()->with('category')->where('operator_id', $user->operator_id)->get();
+        $items = Item::query()->with('category')->where('operator_id', $user->operator_id);
+        $items->when($request->has('item_category_id'), function ($query) use ($request) {
+            $query->whereIn('item_category_id', $request->item_category_id);
+        });
+        $items->when($request->has('item_id'), function ($query) use ($request) {
+            $query->whereIn('id', $request->item_id);
+        });
+        $items = $items->get();
         $stock_data = $items->map(function ($item)use($user,$stock){
             $item->quantity = collect($stock)
                 ->where('item_id', $item->id)
@@ -70,7 +77,7 @@ class StockController extends Controller
 
         return view('admin.stock.stock', [
             'operators' => Operator::query()->get(),
-            'items' => Item::query()->get(),
+            'items' =>[],// Item::query()->get(),
             'categories' => ItemCategory::query()->get(),
             'stocks' => $stock_data,
             'operationAreas' => $user->operator_id ? OperationArea::query()->where('operator_id', $user->operator_id)->get() : OperationArea::query()->get(),

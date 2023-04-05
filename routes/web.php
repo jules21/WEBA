@@ -387,4 +387,6 @@ Route::get('/Operator-operation-areas', [OperationAreaController::class, 'getOpe
 //officers by operation area
 Route::get('/operation-area-officers', [OperationAreaController::class, 'getOfficersByOperationArea'])->name('get-operation-area-officers');
 Route::get('/operation-areas-by-district', [OperationAreaController::class, 'getAreasByDistrict'])->name('get-operation-areas-by-district');
+//get items by categories
+Route::get('/items-by-categories', [ItemController::class, 'getItemsByCategories'])->name('get-items-by-categories');
 

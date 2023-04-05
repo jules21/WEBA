@@ -116,9 +116,9 @@
                             <thead>
                             <tr>
 
-                                <th>Product</th>
+                                <th>Item</th>
                                 <th>Quantity</th>
-                                <th>Product Category</th>
+                                <th>Item Category</th>
                                 <th></th>
                             </tr>
                             </thead>
@@ -167,6 +167,15 @@
                 $('#operation_area').append('<option value="">Select Operation Area</option>');
             }
         });
+        $(document).on('change', '#item_category', function () {
+            let categoryId = $(this).val();
+            if (categoryId !== '') {
+                getItems(categoryId);
+            } else {
+                $('#item').empty();
+                $('#item').append('<option value="">Select Item</option>');
+            }
+        });
         const getOperationArea = (operatorId) => {
             const url = "{{ route('get-operation-areas') }}";
             $.ajax({
@@ -201,9 +210,29 @@
                 $('#item_category').val(itemCategoryId.split(',')).trigger('change');
             }
             if (itemId !== '') {
-                $('#item').val(itemId.split(',')).trigger('change');
+                //TODO : fix this
+                $('#item').val(itemId.split(','));
+                console.log($('#item').val())
+                console.log(itemId.split(','))
+                $('#item').val(itemId.split(','))
+                console.log($('#item').val())
             }
 
+        };
+        const getItems = (itemCategoryId) => {
+            const url = "{{ route('get-items-by-categories') }}";
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {item_category_id: itemCategoryId},
+                success: function (data) {
+                    $('#item').empty();
+                    $('#item').append('<option value="">Select Item</option>');
+                    $.each(data, function (key, value) {
+                        $('#item').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                }
+            });
         };
 
         $(document).on("click","#excel", function(e) {
