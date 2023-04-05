@@ -31,10 +31,59 @@
     <!--end::Subheader-->
 @endsection
 @section('content')
-    <div class="">
+
+    <div class="card card-body mb-5">
+        <form action="#" id="filter-form">
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <label for="items">Item Category</label>
+                    <select name="item_category_id[]" id="item_category" class="form-control select2"
+                            data-placeholder="Select Category" multiple="multiple">
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3 form-group">
+                    <label for="items">Items</label>
+                    <select name="item_id[]" id="item" class="form-control select2"
+                            data-placeholder="Select Item" multiple="multiple">
+                        <option value="">Select Item</option>
+                        @foreach($items as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary btn-sm mr-2">
+                        <i class="la la-search"></i>
+                        Filter</button>
+                    <a href="{{route('admin.stock.stock-items.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
+                </div>
+            </div>
+        </form>
+    </div>
         <div class="card card-custom">
             <div class="card-header flex-wrap">
                 <h3 class="card-title">Stock Movements</h3>
+                <div class="dropdown dropdown-inline pt-5">
+                    <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="la la-download"></i>Export</button>
+                    <!--begin::Dropdown Menu-->
+                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                        <ul class="nav flex-column nav-hover">
+                            <li class="nav-item export-doc">
+                                <a href="#" class="nav-link" target="_blank" id="excel">
+                                    <i class="nav-icon la la-file-excel-o"></i>
+                                    <span class="nav-text">Excel</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--end::Dropdown Menu-->
+                </div>
 
             </div>
             <div class="card-body">
@@ -50,7 +99,7 @@
                         <div class="modal-title">
                             Stock Movement Details
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                <span aria-hidden="true">&times;</span></button>
                         </div>
                     </div>
                     <div class="modal-body"></div>
@@ -60,11 +109,19 @@
                 </div>
             </div>
         </div>
-    </div>
+    @php
+        //Declare new queries you want to append to string:
+        $newQueries = ['is_download' => 1];
+        $newUrl = request()->fullUrlWithQuery($newQueries);
+    @endphp
 @endsection
 @section('scripts')
     {!! $dataTable->scripts() !!}
     <script>
+        $(document).on("click","#excel", function(e) {
+            let url = "{!! $newUrl !!}";
+            $(this).attr("href",url);
+        });
         $('.nav-stock-managements').addClass('menu-item-active menu-item-open');
         $('.nav-stock-movements').addClass('menu-item-active');
         // $(document).on('click','.btn-details', function(e){

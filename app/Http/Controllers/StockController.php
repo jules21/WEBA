@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StockCardExport;
 use App\Exports\StockExport;
 use App\Models\Adjustment;
 use App\Models\Item;
@@ -83,12 +84,20 @@ class StockController extends Controller
                     ->where('operation_area_id', auth()->user()->operation_area)
                     ->with('item', 'operationArea.operator')
                     ->get();
+        //export
+        if (request()->is_download == true && !\request()->ajax()) {
+            return $this->exportStockCard($movements);
+        }
         return view('admin.stock.stock_details', compact('item','movements'));
     }
 
     public function exportStock($query)
     {
         return Excel::download(new StockExport($query), 'Stock List.xlsx');
+    }
+    public function exportStockCard($query)
+    {
+        return Excel::download(new StockCardExport($query), 'Stock Card List.xlsx');
     }
 
 }

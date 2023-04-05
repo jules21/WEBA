@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class StockExport implements FromCollection, WithHeadings, ShouldAutoSize, WithTitle, WithEvents
+class StockMovementExport implements FromCollection, WithHeadings, ShouldAutoSize, WithTitle, WithEvents
 {
     protected $data;
 
@@ -47,7 +47,7 @@ class StockExport implements FromCollection, WithHeadings, ShouldAutoSize, WithT
 
     public function title(): string
     {
-        return 'Stock Card';
+        return 'Stock Movement List';
     }
 
     public function registerEvents(): array
@@ -64,7 +64,7 @@ class StockExport implements FromCollection, WithHeadings, ShouldAutoSize, WithT
                 // merge cells for full-width
                 $event->sheet->mergeCells(sprintf('A1:%s1',$last_column));
                 // assign cell values
-                $event->sheet->setCellValue('A1','Stock List');
+                $event->sheet->setCellValue('A1','Stock Movement List');
                 // assign cell styles
                 $event->sheet->getStyle('A1:A2')->applyFromArray($style_text_center);
                 $cellRange = sprintf('A2:%s2',$last_column); // All headers
