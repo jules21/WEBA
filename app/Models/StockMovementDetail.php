@@ -84,4 +84,23 @@ class StockMovementDetail extends Model
     {
         return $this->quantity - $this->delivered_items;
     }
+
+    public function getVatAmountAttribute()
+    {
+        $basePrice = $this->basePrice();
+        return $this->unit_price - $basePrice;
+    }
+
+    /**
+     * @return float
+     */
+    public function basePrice(): float
+    {
+        return $this->unit_price / (1 + ($this->vat / 100));
+    }
+
+    public function getTotalVatAmountAttribute()
+    {
+        return $this->quantity * $this->vat_amount;
+    }
 }

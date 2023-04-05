@@ -1,8 +1,8 @@
 @extends('layouts.master')
-@section('title',"Purchase details")
+@section('title',"Stock In details")
 
 @section('content')
-    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none mb-4" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-2">
@@ -21,12 +21,12 @@
                     </li>
                     <li class="breadcrumb-item">
                         <a href="{{ route('admin.purchases.index') }}" class="text-muted">
-                            Purchases
+                            Stock In
                         </a>
                     </li>
                     <li class="breadcrumb-item">
                         <span class="text-muted">
-                            Purchase Details
+                            Stock In Details
                         </span>
                     </li>
                 </ul>
@@ -45,9 +45,7 @@
         </div>
     </div>
 
-
-
-    <div class="card card-body">
+    <div class="card card-body tw-shadow-sm border tw-border-gray-300">
         <ul class="nav nav-light-primary nav-pills" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link font-weight-bolder active" id="home-tab" data-toggle="tab" href="#home" role="tab"
@@ -84,17 +82,14 @@
                     <div class="col-lg-4">
                         {{--                        supplier name --}}
                         <strong class="d-block">Items:</strong>
-                        <input readonly value=" {{ $purchase->movementDetails->count()}}" class="form-control-plaintext"/>
+                        <input readonly value=" {{ $purchase->movementDetails->count()}}"
+                               class="form-control-plaintext"/>
                     </div>
 
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-4">
-                        <strong class="d-block">Sub Total:</strong>
-                        <input readonly value=" {{ number_format($purchase->subtotal) }}"
-                               class="form-control-plaintext"/>
-                    </div>
+
                     <div class="col-lg-4">
                         <strong class="d-block">VAT Amount:</strong>
                         <input readonly value=" {{ number_format($purchase->tax_amount) }}"
@@ -117,32 +112,41 @@
                     Items
                 </h6>
 
-                <table class="table table-head-custom table-head-solid border">
-                    <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Quantity</th>
-                        <th>Unit Price</th>
-                        <th>Sub Total</th>
-                    </tr>
-                    </thead>
-                    <tfoot>
-                    <tr>
-                        <td colspan="3" class="text-right font-weight-bolder">Sub Total:</td>
-                        <td>{{ number_format($purchase->subtotal) }}</td>
-                    </tr>
-                    </tfoot>
-                    <tbody>
-                    @foreach($purchase->movementDetails as $item)
+                <div class="table-responsive border rounded">
+                    <table class="table table-head-custom">
+                        <thead>
                         <tr>
-                            <td>{{ $item->item->name }}</td>
-                            <td>{{ $item->quantity }}</td>
-                            <td>{{ number_format($item->unit_price) }}</td>
-                            <td>{{ number_format($item->total) }}</td>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Tax Amount</th>
+                            <th>Total</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th colspan="3" class=" font-weight-bolder"></th>
+                            <th class="font-weight-bolder text-left">
+                                {{ number_format($purchase->movementDetails->sum('total_vat_amount')) }}
+                            </th>
+                            <th class="font-weight-bolder text-left">
+                                {{ number_format($purchase->movementDetails->sum('total')) }}
+                            </th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        @foreach($purchase->movementDetails as $item)
+                            <tr>
+                                <td>{{ $item->item->name }}</td>
+                                <td>{{ $item->quantity }}</td>
+                                <td>{{ number_format($item->unit_price) }}</td>
+                                <td>{{ number_format($item->total_vat_amount) }}</td>
+                                <td>{{ number_format($item->total) }}</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
 
 
                 {{--                review form--}}
@@ -298,6 +302,7 @@
 
     <script>
         $(document).ready(function () {
+            $('.nav-purchases').addClass('menu-item-active menu-item-open');
 
 
             $('#formSaveReview').on('submit', function (e) {
