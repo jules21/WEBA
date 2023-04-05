@@ -36,6 +36,15 @@
         <form action="#" id="filter-form">
             <div class="row">
                 <div class="col-md-3 form-group">
+                    <label for="type">Type</label>
+                    <select name="type[]" id="type" class="form-control select2"
+                            data-placeholder="Select Type" multiple="multiple">
+                        @foreach(Helper::stockMovementType() as $item)
+                            <option value="{{ $item}}">{{ $item }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-3 form-group">
                     <label for="items">Item Category</label>
                     <select name="item_category_id[]" id="item_category" class="form-control select2"
                             data-placeholder="Select Category" multiple="multiple">
@@ -118,32 +127,62 @@
 @section('scripts')
     {!! $dataTable->scripts() !!}
     <script>
-        $(document).on("click","#excel", function(e) {
-            let url = "{!! $newUrl !!}";
-            $(this).attr("href",url);
+        $(document).ready(function () {
+            initData();
+            $(document).on("click","#excel", function(e) {
+                let url = "{!! $newUrl !!}";
+                $(this).attr("href",url);
+            });
+            $('.nav-stock-managements').addClass('menu-item-active menu-item-open');
+            $('.nav-stock-movements').addClass('menu-item-active');
         });
-        $('.nav-stock-managements').addClass('menu-item-active menu-item-open');
-        $('.nav-stock-movements').addClass('menu-item-active');
-        // $(document).on('click','.btn-details', function(e){
-        //     e.preventDefault();
-        //     console.log('clicked');
-        //     const link = $(this);
-        //     link.addClass('spinner spinner-white spinner-right');
-        //     const url = link.attr('href');
-        //     $.ajax({
-        //         url: url,
-        //         method: 'GET',
-        //         success: function (response) {
-        //             link.removeClass('spinner spinner-white spinner-right');
-        //             $('#modal').modal('show');
-        //             $('#modal .modal-title').html('Stock Movement Details');
-        //             $('#modal .modal-body').html(response);
-        //         },
-        //         error: function (error) {
-        //             link.removeClass('spinner spinner-white spinner-right');
-        //             console.log(error);
-        //         }
-        //     })
-        // })
+
+        const getItems = (itemCategoryId) => {
+            const url = "{{ route('get-items-by-categories') }}";
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {item_category_id: itemCategoryId},
+                success: function (data) {
+                    $('#item').empty();
+                    $('#item').append('<option value="">Select Item</option>');
+                    $.each(data, function (key, value) {
+                        $('#item').append('<option value="' + value.id + '">' + value.name + '</option>');
+                    });
+                }
+            });
+        };
+        const initData = () => {
+            const itemCategoryId = "{{ request()->get('item_category_id') ? implode(',', request()->get('item_category_id')) : '' }}";
+            const itemId = "{{ request()->get('item_id') ? implode(',', request()->get('item_id')) : '' }}";
+            const selectedType = "{{ request()->get('type') ? implode(',', request()->get('type')) : '' }}";
+            if (itemCategoryId !== '') {
+                $('#item_category').val(itemCategoryId.split(',')).trigger('change')
+
+            }
+            if (itemId !== '') {
+                $('#item').val(itemId.split(','));
+                // //TODO : fix this
+                // $('#item').val(itemId.split(','));
+                // console.log($('#item').val())
+                // console.log(itemId.split(','))
+                // $('#item').val(itemId.split(','))
+                // console.log($('#item').val())
+            }
+            if (type !== '') {
+                $('#type').val(selectedType.split(',')).trigger('change');
+            }
+
+        };
+        $(document).on('change', '#item_category', function () {
+            let categoryId = $(this).val();
+            if (categoryId !== '') {
+                console.log('here')
+                getItems(categoryId);
+            } else {
+                $('#item').empty();
+                $('#item').append('<option value="">Select Item</option>');
+            }
+        });
         </script>
 @endsection

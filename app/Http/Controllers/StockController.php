@@ -78,7 +78,7 @@ class StockController extends Controller
         return view('admin.stock.stock', [
             'operators' => Operator::query()->get(),
             'items' =>[],// Item::query()->get(),
-            'categories' => ItemCategory::query()->get(),
+            'categories' => ItemCategory::query()->where('operator_id', $user->operator_id)->get(),
             'stocks' => $stock_data,
             'operationAreas' => $user->operator_id ? OperationArea::query()->where('operator_id', $user->operator_id)->get() : OperationArea::query()->get(),
         ]);

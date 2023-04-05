@@ -61,4 +61,13 @@ class Helper{
         }else
             return '-';
     }
+
+    public static function stockMovementType(){
+        return[
+            \App\Models\StockMovement::Adjustment,
+            \App\Models\StockMovement::StockIn,
+            \App\Models\StockMovement::StockOut,
+
+        ];
+    }
 }

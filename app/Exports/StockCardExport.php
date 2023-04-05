@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Helper;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -22,9 +23,7 @@ class StockCardExport implements FromCollection, WithHeadings, ShouldAutoSize, W
     public function headings(): array
     {
         return [
-            'Item Name',
-            'Item Category',
-            'Quantity',
+           	"Item",	"Item CATEGORY",	"OPENING QTY",	"QTY IN",	"QTY OUT",	"CLOSING QTY",	"UNIT PRICE",	"INITIATED BY", "DONE AT"
         ];
     }
     public function collection()
@@ -32,9 +31,15 @@ class StockCardExport implements FromCollection, WithHeadings, ShouldAutoSize, W
         $data = collect();
         foreach ($this->data as $key => $stock) {
             $arr = array();
-            $arr[] = $stock->name ?? '-';
-            $arr[] = optional($stock->category)->name ?? '-';
-            $arr[] = $stock->quantity ? $stock->quantity : '0';
+            $arr[] = $stock->item->name ?? '';
+            $arr[] = optional(optional($stock->item)->category)->name ?? '';
+            $arr[] = $stock->opening_qty ?  $stock->opening_qty : '0';
+            $arr[] =  $stock->qty_in ? " +$stock->qty_in" : '0';
+            $arr[] =  $stock->qty_out ? " -$stock->qty_out" : '0';
+            $arr[] =  ($stock->qty_in > 0 ? ($stock->opening_qty + $stock->qty_in - $stock->qty_out ): ($stock->opening_qty - $stock->qty_out));
+            $arr[] = $stock->unit_price ?? '0';
+            $arr[] = Helper::stockCardInitiator($stock->id);
+            $arr[] = $stock->created_at;
             $data->push($arr);
         }
         return $data;
@@ -54,7 +59,7 @@ class StockCardExport implements FromCollection, WithHeadings, ShouldAutoSize, W
     {
         return [
             AfterSheet::class => function(AfterSheet $event) {
-                $last_column = Coordinate::stringFromColumnIndex(3);
+                $last_column = Coordinate::stringFromColumnIndex(9);
                 $style_text_center = [
                     'alignment' => [
                         'horizontal' => Alignment::HORIZONTAL_CENTER

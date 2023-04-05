@@ -31,12 +31,15 @@ class StockMovementController extends Controller
             $query->where('operation_area_id', $user->operation_area);
         });
         $data->when(request()->item_id, function ($query) {
-            $query->whereItem_id(request()->item_id);
+            $query->whereIn('item_id', request()->item_id);
         });
         $data->when(request()->item_category_id, function ($query) {
             $query->whereHas('item', function ($query) {
                 $query->whereIn('item_category_id', request()->item_category_id);
             });
+        });
+        $data->when(request()->type, function ($query) {
+            $query->whereIn('type', request()->type);
         });
         $datatable =  new StockMovementsDataTable($data);
 
