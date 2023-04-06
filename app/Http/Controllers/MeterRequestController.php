@@ -7,7 +7,6 @@ use App\Http\Requests\ValidateAssignMeterNumber;
 use App\Models\MeterRequest;
 use App\Models\Request as AppRequest;
 use DB;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Str;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -39,9 +38,9 @@ class MeterRequestController extends Controller
 
         if ($validateAssignMeterNumber->ajax()) {
             return response()->json([
-                'message' => "Meter number successfully saved",
+                'message' => 'Meter number successfully saved',
                 'status' => 'success',
-                'data' => $results
+                'data' => $results,
             ], ResponseAlias::HTTP_OK);
         }
 
@@ -67,9 +66,9 @@ class MeterRequestController extends Controller
     private function generateSubscriptionNumber(MeterRequest $meterRequest): void
     {
         // generate  8 number prefixed with request id left padded with zeroes
-        $subscriptionNumber = "SN" . str_pad($meterRequest->id, 8, '0', STR_PAD_LEFT);
+        $subscriptionNumber = 'SN'.str_pad($meterRequest->id, 8, '0', STR_PAD_LEFT);
         $meterRequest->update([
-            'subscription_number' => $subscriptionNumber
+            'subscription_number' => $subscriptionNumber,
         ]);
     }
 }

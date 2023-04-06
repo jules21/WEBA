@@ -3,17 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCustomerRequest;
-use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
 use App\Models\DocumentType;
-use App\Models\IdType;
 use App\Models\LegalType;
 use App\Models\Province;
 use DataTables;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use LaravelIdea\Helper\App\Models\_IH_Customer_QB;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -27,24 +24,24 @@ class CustomerController extends Controller
 
         $customer = $this->getCustomer($idType, $id);
 
-        if (!is_null($customer)) {
+        if (! is_null($customer)) {
             return \response()->json([
-                'content' => "Customer with provided ID Number already exists",
-                'status' => 400
+                'content' => 'Customer with provided ID Number already exists',
+                'status' => 400,
             ]);
         }
 
-        $url = config('services.CLMS_NIDA_URL') . "?id=$id";
+        $url = config('services.CLMS_NIDA_URL')."?id=$id";
         $response = Http::get($url);
         if ($response->status() !== ResponseAlias::HTTP_OK) {
             return response()->json([
                 'message' => 'Failed to fetch data from NIDA',
-                'errors' => $response->json()
+                'errors' => $response->json(),
             ], ResponseAlias::HTTP_BAD_REQUEST);
         }
+
         return json_decode($response->body(), true);
     }
-
 
     /**
      * @throws Exception
@@ -63,6 +60,10 @@ class CustomerController extends Controller
                                 Options
                             </button>
                             <div class="dropdown-menu border">
+                                <a class="dropdown-item" href="' . route('admin.requests.create', ['c_id' => encryptId($row->id)]) . '">
+                                    <i class="fas fa-plus mr-1"></i>
+                                    <span class="ml-2">New Connection</span>
+                                </a>
                                 <a class="dropdown-item" href="' . route('admin.requests.index', ['cus_id' => encryptId($row->id)]) . '">
                                     <i class="fas fa-list mr-1"></i>
                                     <span class="ml-2">Requests</span>
@@ -87,9 +88,9 @@ class CustomerController extends Controller
                         </div>';
                 })
                 ->addColumn('connection', function (Customer $row) {
-                    return '<a href="' . route('admin.customers.connections', encryptId($row->id)) . '">
+                    return '<a href="'.route('admin.customers.connections', encryptId($row->id)).'">
 
-                                                    <span class="badge badge-primary">' . $row->connections_count . '</span>
+                                                    <span class="badge badge-primary">'.$row->connections_count.'</span>
                                                 </a>';
                 })
                 ->rawColumns(['action', 'name', 'connection'])
@@ -97,13 +98,13 @@ class CustomerController extends Controller
         }
         $legalTypes = LegalType::all();
         $provinces = Province::all();
+
         return view('admin.customers.index', [
             'legalTypes' => $legalTypes,
             'provinces' => $provinces,
-            'idTypes' => DocumentType::query()->get()
+            'idTypes' => DocumentType::query()->get(),
         ]);
     }
-
 
     public function store(StoreCustomerRequest $request)
     {
@@ -125,14 +126,13 @@ class CustomerController extends Controller
             return response()->json([
                 'message' => 'Customer created successfully',
                 'data' => $customer,
-                'encrypted_id' => encryptId($customer->id)
+                'encrypted_id' => encryptId($customer->id),
             ], ResponseAlias::HTTP_CREATED);
         }
 
         return back()
             ->with('success', 'Customer created successfully.');
     }
-
 
     public function show(Customer $customer)
     {
@@ -144,11 +144,11 @@ class CustomerController extends Controller
         $customer->load(['connections', 'connections.request',
             'connections.request.province', 'connections.request.district',
             'connections.request.sector', 'connections.request.cell']);
+
         return view('admin.customers.connections', [
-            'customer' => $customer
+            'customer' => $customer,
         ]);
     }
-
 
     public function destroy(Customer $customer)
     {
@@ -156,15 +156,14 @@ class CustomerController extends Controller
 
         if (request()->ajax()) {
             return response()->json([
-                'message' => 'Customer deleted successfully'
+                'message' => 'Customer deleted successfully',
             ], ResponseAlias::HTTP_NO_CONTENT);
         }
+
         return back();
     }
 
     /**
-     * @param $idType
-     * @param $id
      * @return Customer|Builder|Model|_IH_Customer_QB|object|null
      */
     public function getCustomer($idType, $id)
@@ -173,7 +172,7 @@ class CustomerController extends Controller
             ->where([
                 ['document_type_id', '=', $idType],
                 ['doc_number', '=', $id],
-                ['operator_id', '=', auth()->user()->operator_id]
+                ['operator_id', '=', auth()->user()->operator_id],
             ])->first();
     }
 }

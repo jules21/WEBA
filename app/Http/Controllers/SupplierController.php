@@ -12,7 +12,6 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 
 class SupplierController extends Controller
 {
@@ -24,12 +23,14 @@ class SupplierController extends Controller
     public function index()
     {
         $operators = Operator::all();
-        if (\Helper::isSuperAdmin())
+        if (\Helper::isSuperAdmin()) {
             $suppliers = Supplier::with('operator')->orderBy('id', 'DESC')->get();
-        else
-            $suppliers = Supplier::with('operator')
+        } else {
+        $suppliers = Supplier::with('operator')
                 ->where('operator_id', auth()->user()->operator_id)
                 ->orderBy('id', 'DESC')->get();
+        }
+
         return view('admin.settings.suppliers', compact('suppliers', 'operators'));
     }
 
@@ -46,7 +47,6 @@ class SupplierController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreSupplierRequest $request
      * @return JsonResponse|RedirectResponse
      */
     public function store(StoreSupplierRequest $request)
@@ -61,7 +61,7 @@ class SupplierController extends Controller
         $supplier->contact_email = $request->contact_email;
         $supplier->save();
 
-        if ($request->ajax()){
+        if ($request->ajax()) {
             return response()->json([
                 'success' => 'Supplier Created Successfully',
                 'data' => $supplier,
@@ -71,12 +71,9 @@ class SupplierController extends Controller
         return redirect()->back()->with('success', 'Supplier Created Successfully');
     }
 
-
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateSupplierRequest $request
-     * @param Supplier $supplier
      * @return RedirectResponse
      */
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
@@ -89,14 +86,13 @@ class SupplierController extends Controller
         $supplier->address = $request->address;
         $supplier->contact_name = $request->contact_name;
         $supplier->save();
+
         return redirect()->back()->with('success', 'Supplier updated Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Supplier $supplier
-     * @param $id
      * @return RedirectResponse
      */
     public function destroy(Supplier $supplier, $id)
@@ -104,9 +100,11 @@ class SupplierController extends Controller
         try {
             $supplier = Supplier::find($id);
             $supplier->delete();
+
             return redirect()->back()->with('success', 'Supplier deleted Successfully');
         } catch (Exception $exception) {
             info($exception);
+
             return redirect()->back()->with('success', 'Supplier can not be deleted');
         }
     }

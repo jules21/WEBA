@@ -22,6 +22,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\District|null $district
  * @property-read \App\Models\Operator $operator
+ *
  * @method static \Database\Factories\OperationAreaFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea newQuery()
@@ -35,8 +36,10 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereOperatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereUpdatedAt($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChartAccount> $chartOfAccounts
  * @property-read int|null $chart_of_accounts_count
+ *
  * @mixin \Eloquent
  */
 class OperationArea extends Model implements Auditable
@@ -46,6 +49,7 @@ class OperationArea extends Model implements Auditable
     public function resolveRouteBinding($value, $field = null)
     {
         $id = decryptId($value);
+
         return $this->where('id', '=', $id)->firstOrFail();
     }
 
@@ -73,5 +77,4 @@ class OperationArea extends Model implements Auditable
     {
         return $this->hasMany(User::class, 'operation_area');
     }
-
 }

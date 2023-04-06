@@ -15,7 +15,7 @@ class AddIsActiveToPaymentServiceProvidersTable extends Migration
     {
         Schema::table('payment_service_providers', function (Blueprint $table) {
             //
-            $table->boolean("is_active")->default(false);
+            $table->boolean('is_active')->default(false);
         });
     }
 
@@ -28,7 +28,7 @@ class AddIsActiveToPaymentServiceProvidersTable extends Migration
     {
         Schema::table('payment_service_providers', function (Blueprint $table) {
             //
-            $table->dropColumn("is_active");
+            $table->dropColumn('is_active');
         });
     }
 }

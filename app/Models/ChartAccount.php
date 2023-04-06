@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, ChartAccount> $children
  * @property-read int|null $children_count
  * @property-read ChartAccount|null $parent
+ *
  * @method static \Database\Factories\ChartAccountFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|ChartAccount newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ChartAccount newQuery()
@@ -37,7 +38,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|ChartAccount whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChartAccount whereParentLedgerNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChartAccount whereUpdatedAt($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, ChartAccount> $children
+ *
  * @mixin \Eloquent
  */
 class ChartAccount extends Model

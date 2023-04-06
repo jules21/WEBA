@@ -10,8 +10,6 @@ class ValidateStoreItemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -20,8 +18,6 @@ class ValidateStoreItemRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -34,9 +30,9 @@ class ValidateStoreItemRequest extends FormRequest
                         $query->where([
                             ['model_type', '=', Request::class],
                             ['model_id', '=', \request('request_id')],
-                            ['id', '!=', \request('id')]
+                            ['id', '!=', \request('id')],
                         ]);
-                    })
+                    }),
 
             ],
             'quantity' => ['required', 'numeric', 'min:1'],
@@ -54,8 +50,7 @@ class ValidateStoreItemRequest extends FormRequest
             'unit_price.required' => 'Unit price is required',
             'unit_price.numeric' => 'Unit price must be a number',
             'unit_price.min' => 'Unit price must be greater than 0',
-            'item_id.unique' => "Item already added to list"
+            'item_id.unique' => 'Item already added to list',
         ];
     }
-
 }

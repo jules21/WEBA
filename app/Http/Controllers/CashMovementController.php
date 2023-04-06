@@ -14,7 +14,6 @@ use function request;
 
 class CashMovementController extends Controller
 {
-
     /**
      * @throws Exception
      */
@@ -24,6 +23,7 @@ class CashMovementController extends Controller
             $data = CashMovement::query()
                 ->with(['paymentServiceProvider', 'paymentServiceProviderAccount'])
                 ->select('cash_movements.*');
+
             return datatables()->of($data)
                 ->addColumn('action', function ($row) {
                     if (auth()->user()->operation_area) {
@@ -32,23 +32,24 @@ class CashMovementController extends Controller
                             Options
                           </button>
                           <div class="dropdown-menu">
-                            <a class="dropdown-item js-edit" href="' . route('admin.accounting.cash-movements.show', encryptId($row->id)) . '"> <i class="fa fa-edit mr-2"></i> Edit</a>
-                            <a class="dropdown-item js-delete" href="' . route('admin.accounting.cash-movements.delete', encryptId($row->id)) . '"> <i class="fa fa-trash  mr-2"></i> Delete</a>
+                            <a class="dropdown-item js-edit" href="'.route('admin.accounting.cash-movements.show', encryptId($row->id)).'"> <i class="fa fa-edit mr-2"></i> Edit</a>
+                            <a class="dropdown-item js-delete" href="'.route('admin.accounting.cash-movements.delete', encryptId($row->id)).'"> <i class="fa fa-trash  mr-2"></i> Delete</a>
                           </div>
                         </div>';
                     }
-                    return "";
+
+                    return '';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
 
-
         $banks = PaymentServiceProvider::query()
             ->whereHas('accounts')
             ->get();
+
         return view('admin.accounting.cash-movements', [
-            'banks' => $banks
+            'banks' => $banks,
         ]);
     }
 
@@ -87,7 +88,7 @@ class CashMovementController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Cash Movement saved successfully',
-                'data' => $model
+                'data' => $model,
             ]);
         }
 
@@ -98,7 +99,6 @@ class CashMovementController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param CashMovement $cashMovement
      * @return CashMovement
      */
     public function show(CashMovement $cashMovement)
@@ -106,16 +106,15 @@ class CashMovementController extends Controller
         return $cashMovement;
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
-     * @param CashMovement $cashMovement
      * @return JsonResponse
      */
     public function destroy(CashMovement $cashMovement)
     {
         $cashMovement->delete();
+
         return response()->json([
             'success' => true,
             'message' => 'Cash Movement deleted successfully',

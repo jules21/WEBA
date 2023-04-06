@@ -8,8 +8,6 @@ class ValidateReviewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -18,13 +16,12 @@ class ValidateReviewRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         return [
             'status' => ['required', 'string'],
+            'attachment' => ['nullable', 'file', 'mimes:pdf,jpeg,jpg', 'max:1024'],
             'comment' => ['required', 'string', 'max:500'],
         ];
     }

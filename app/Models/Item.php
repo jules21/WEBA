@@ -27,6 +27,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property bool $is_active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static ItemFactory factory(...$parameters)
  * @method static Builder|Item newModelQuery()
  * @method static Builder|Item newQuery()
@@ -42,13 +43,16 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|Item whereUpdatedAt($value)
  * @method static Builder|Item whereVatRate($value)
  * @method static Builder|Item whereVatable($value)
+ *
  * @property-read \App\Models\ItemCategory $category
  * @property-read \App\Models\PackagingUnit $packagingUnit
  * @property-read \App\Models\Stock|null $stock
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $stockMovements
  * @property-read int|null $stock_movements_count
  * @property int|null $operator_id
+ *
  * @method static Builder|Item whereOperatorId($value)
+ *
  * @mixin Eloquent
  */
 class Item extends Model implements Auditable
@@ -56,20 +60,19 @@ class Item extends Model implements Auditable
     use HasFactory, \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        "item_category_id",
-        "name",
-        "description",
-        "packaging_unit_id",
-        "selling_price",
-        "vatable",
-        "vat_rate",
+        'item_category_id',
+        'name',
+        'description',
+        'packaging_unit_id',
+        'selling_price',
+        'vatable',
+        'vat_rate',
     ];
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(ItemCategory::class, 'item_category_id');
     }
-
 
     public function stockMovements(): HasMany
     {
@@ -85,6 +88,4 @@ class Item extends Model implements Auditable
     {
         return $this->hasOne(Stock::class);
     }
-
 }
-

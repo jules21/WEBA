@@ -31,7 +31,6 @@ class LagalTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreLagalTypeRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreLagalTypeRequest $request)
@@ -42,7 +41,6 @@ class LagalTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LegalType  $lagalType
      * @return \Illuminate\Http\Response
      */
     public function show(LegalType $lagalType)
@@ -53,7 +51,6 @@ class LagalTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\LegalType  $lagalType
      * @return \Illuminate\Http\Response
      */
     public function edit(LegalType $lagalType)
@@ -64,8 +61,6 @@ class LagalTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateLagalTypeRequest  $request
-     * @param  \App\Models\LegalType  $lagalType
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateLagalTypeRequest $request, LegalType $lagalType)
@@ -76,7 +71,6 @@ class LagalTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\LegalType  $lagalType
      * @return \Illuminate\Http\Response
      */
     public function destroy(LegalType $lagalType)

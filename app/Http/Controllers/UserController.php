@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Imports\ClientImport;
+use App\DataTables\UserDataTable;
+use App\Http\Requests\ValidateUpdateUser;
+use App\Http\Requests\ValidateUser;
+use App\Jobs\MailRegisteredUser;
 use App\Jobs\SendSms;
 use App\Mail\MailResetPassword;
 use App\Models\OperationArea;
@@ -10,30 +13,26 @@ use App\Models\Operator;
 use App\Models\User;
 use App\Models\UserFlowHistory;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Jobs\MailRegisteredUser;
-use App\DataTables\UserDataTable;
-use App\Http\Requests\ValidateUser;
-use App\Http\Requests\ValidateUpdateUser;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    const FILE_PATH = "public/files/users";
+    const FILE_PATH = 'public/files/users';
 
     public function index()
     {
         $operator_id = auth()->user()->operator_id;
-        $data = User::with(["permissions",'roles','operator','institution','operationArea']);
+        $data = User::with(['permissions', 'roles', 'operator', 'institution', 'operationArea']);
         $data->when($operator_id, function ($query) use ($operator_id) {
             return $query->where('operator_id', $operator_id);
         });
-        $data = $data->orderBy('updated_at', 'desc')->select("users.*")->get();
+        $data = $data->orderBy('updated_at', 'desc')->select('users.*')->get();
         $dataTable = new UserDataTable($data);
         $operationAreas = OperationArea::query()->where('operator_id', $operator_id)->get();
-        return $dataTable->render('admin.user_management.users',['operators'=>Operator::all(),'operationAreas'=>$operationAreas]);
-    }
 
+        return $dataTable->render('admin.user_management.users', ['operators' => Operator::all(), 'operationAreas' => $operationAreas]);
+    }
 
     public function store(ValidateUser $request)
     {
@@ -41,12 +40,14 @@ class UserController extends Controller
         $password = \Helper::generatePassword();
         $user->fill(['password' => bcrypt($password)])->save();
         $this->dispatch(new MailRegisteredUser($user->email, $password, $user->name, $user->phone));
+
         return redirect()->back()->with('success', 'User created successfully');
     }
 
     public function update(ValidateUpdateUser $request, $user_id)
     {
         User::query()->find($user_id)->update($request->validated());
+
         return redirect()->back()->with('success', 'User Updated successfully');
     }
 
@@ -54,16 +55,18 @@ class UserController extends Controller
     {
         $id = decryptId($user_id);
         $user = User::find($id);
-        return view("admin.user_management.profile", compact("user"));
+
+        return view('admin.user_management.profile', compact('user'));
     }
+
     public function userPermissions($user_id)
     {
         $id = decryptId($user_id);
         $user = User::find($id);
         $user->load('roles.permissions');
-        return view("admin.user_management.profile_roles", compact("user"));
-    }
 
+        return view('admin.user_management.profile_roles', compact('user'));
+    }
 
     public function resetPassword($user_id)
     {
@@ -73,6 +76,7 @@ class UserController extends Controller
         $user->password = bcrypt($password);
         $user->save();
         $this->notifyResetPassword($user, $password);
+
         return redirect()->back()->with('success', "{$user->email} reset successfully");
     }
 
@@ -87,7 +91,7 @@ class UserController extends Controller
     {
         $branches = $request->branches;
         if ($branches) {
-            return User::whereIn("operator_id", $branches)->get();
+            return User::whereIn('operator_id', $branches)->get();
         }
 
         return [];
@@ -97,10 +101,11 @@ class UserController extends Controller
     {
         $file = $request->file($paramName);
         $extension = $file->extension();
-        $image_name=$file->getClientOriginalName();
-        $uuid = "attachment_" . str_slug(Str::uuid(), '_');
-        $path = $file->storeAs(self::FILE_PATH, "$uuid" . ".$extension");
-        $path=str_replace(' ','_',$path);
+        $image_name = $file->getClientOriginalName();
+        $uuid = 'attachment_'.str_slug(Str::uuid(), '_');
+        $path = $file->storeAs(self::FILE_PATH, "$uuid".".$extension");
+        $path = str_replace(' ', '_', $path);
+
         return str_replace(self::FILE_PATH, '', $path);
     }
 
@@ -109,13 +114,15 @@ class UserController extends Controller
         $id = decryptId($user_id);
         $user = User::find($id);
         $action = $user->is_active ? 'Deactivate' : 'Activate';
-        $user->is_active = !$user->is_active;
+        $user->is_active = ! $user->is_active;
         $user->save();
-        $this->saveFlowHistory($user,\request('reason'), $action);
+        $this->saveFlowHistory($user, \request('reason'), $action);
+
         return redirect()->back()->with('success', "{$user->email} {$action}d successfully");
     }
 
-    public function saveFlowHistory($user, $reason, $action){
+    public function saveFlowHistory($user, $reason, $action)
+    {
         $flow = new UserFlowHistory();
         $flow->user_id = $user->id;
         $flow->reason = $reason;
@@ -142,11 +149,10 @@ class UserController extends Controller
             $id = decryptId($user_id);
             $user = User::find($id);
             $user->delete();
+
             return redirect()->back()->with('success', "{$user->name} deleted successfully");
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             return redirect()->back()->with('error', "Unable to delete {$user->name}");
         }
     }
-
-
 }

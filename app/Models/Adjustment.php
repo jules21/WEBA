@@ -21,6 +21,7 @@ use Storage;
  * @property int|null $approved_by
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment query()
@@ -32,6 +33,7 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereUpdatedAt($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
  * @property-read int|null $flow_histories_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $items
@@ -39,6 +41,7 @@ use Storage;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
  * @property-read int|null $movements_count
  * @property-read \App\Models\OperationArea $operationArea
+ *
  * @mixin \Eloquent
  */
 class Adjustment extends Model implements Auditable
@@ -53,20 +56,21 @@ class Adjustment extends Model implements Auditable
         'approved_by',
     ];
 
-    const PENDING = "Pending";
-    const SUBMITTED = "Submitted";
-    const APPROVED = "Approved";
+    const PENDING = 'Pending';
 
-    const REJECTED = "Rejected";
-    const RETURN_BACK = "Return Back";
+    const SUBMITTED = 'Submitted';
+
+    const APPROVED = 'Approved';
+
+    const REJECTED = 'Rejected';
 
     protected $appends = ['status_color'];
-
 
     public function resolveRouteBinding($value, $field = null)
     {
         $id = decryptId($value);
-        return $this->where('id','=', $id)->firstOrFail();
+
+        return $this->where('id', '=', $id)->firstOrFail();
     }
 
     public function operationArea(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -88,7 +92,7 @@ class Adjustment extends Model implements Auditable
     {
         return [
             self::APPROVED,
-            self::RETURN_BACK
+            self::REJECTED,
         ];
     }
 
@@ -101,7 +105,7 @@ class Adjustment extends Model implements Auditable
 
     public function canBeSubmitted(): bool
     {
-        return in_array($this->status,[self::PENDING,self::RETURN_BACK])
+        return $this->status === self::PENDING
             && auth()->user()->operation_area
             && auth()->user()->can(Permission::CreateAdjustment);
     }

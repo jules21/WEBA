@@ -20,7 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->dateTime('payment_date');
             $table->string('source');
             $table->foreignId('payment_mapping_id')->constrained();
-            $table->decimal('amount',18);
+            $table->decimal('amount', 18);
             $table->timestamps();
         });
     }

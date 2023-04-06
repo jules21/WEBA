@@ -2,7 +2,6 @@
 
 use App\Constants\Permission;
 use App\Http\Controllers\AdjustmentController;
-use App\Http\Controllers\OperationAreaController;
 use App\Http\Controllers\AuditingController;
 use App\Http\Controllers\CashMovementController;
 use App\Http\Controllers\CellController;
@@ -18,6 +17,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JournalEntryController;
 use App\Http\Controllers\LedgerMigrationController;
 use App\Http\Controllers\MeterRequestController;
+use App\Http\Controllers\OperationAreaController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OperatorUserController;
 use App\Http\Controllers\PaymentServiceProviderAccountController;
@@ -46,7 +46,6 @@ Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 
 Route::post('/money', [HomeController::class, 'generateQrCodeFromExcelFile'])->name('file-excel-from-code-qr-generate');
 
-
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
 Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('villages');
 Route::get('/districts/{province}', [DistrictController::class, 'getByProvince'])->name('districts.province');
@@ -55,7 +54,7 @@ Route::get('/documents-types/{legalType}', [DocumentTypeController::class, 'getB
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get("/users/profile/{user_id}", [App\Http\Controllers\UserController::class, 'userProfile'])->name("users.profile");
+    Route::get('/users/profile/{user_id}', [App\Http\Controllers\UserController::class, 'userProfile'])->name('users.profile');
     Route::group(['prefix' => 'operators', 'as' => 'operator.'], function () {
 
         Route::get('/', [OperatorController::class, 'index'])->name('index');
@@ -64,20 +63,19 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::put('/update/{operator}', [OperatorController::class, 'update'])->name('update');
         Route::delete('/delete/{operator}', [OperatorController::class, 'destroy'])->name('delete');
         Route::get('/show/{operator}', [OperatorController::class, 'show'])->name('show');
-        Route::get("/operator-details", [OperatorController::class, 'operatorDetails'])->name('details');
+        Route::get('/operator-details', [OperatorController::class, 'operatorDetails'])->name('details');
         Route::get('/{operator}/details-page', [OperatorController::class, 'details'])->name('details-page');
 
-        Route::get("/{operator}/operation-areas", [OperationAreaController::class, 'index'])->name('area-of-operation.index');
-        Route::post("/{operator}/operation-areas", [OperationAreaController::class, 'store'])->name('area-of-operation.store');
-        Route::delete("/operation-areas/{operationArea}", [OperationAreaController::class, 'destroy'])->name('area-of-operation.destroy');
-        Route::get("/operation-areas/{operationArea}", [OperationAreaController::class, 'show'])->name('area-of-operation.show');
+        Route::get('/{operator}/operation-areas', [OperationAreaController::class, 'index'])->name('area-of-operation.index');
+        Route::post('/{operator}/operation-areas', [OperationAreaController::class, 'store'])->name('area-of-operation.store');
+        Route::delete('/operation-areas/{operationArea}', [OperationAreaController::class, 'destroy'])->name('area-of-operation.destroy');
+        Route::get('/operation-areas/{operationArea}', [OperationAreaController::class, 'show'])->name('area-of-operation.show');
 
         Route::get('/operation-areas/{id}/get', [OperationAreaController::class, 'getAreaOfOperations'])->name('get-area-of-operations');
 
         Route::get('/{operator}/users', [OperatorUserController::class, 'index'])->name('users');
 
         Route::get('/{operator_area}/users', [OperatorUserController::class, 'operatorAreaUsers'])->name('operator-area-users');
-
 
         Route::get('/export', [OperatorController::class, 'exportToExcel'])->name('export-to-excel');
 
@@ -99,13 +97,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::put('/{appRequest}/update', [RequestsController::class, 'update'])->name('update');
         Route::delete('/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
 
-        Route::group(['middleware' => 'can:' . Permission::AssignRequest], function () {
+        Route::group(['middleware' => 'can:'.Permission::AssignRequest], function () {
             Route::get('/new', [RequestsController::class, 'newRequests'])->name('new');
             Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
             Route::post('/requests/re-assign', [RequestAssignmentController::class, 'reAssign'])->name('re-assign');
             Route::get('/assigned', [RequestsController::class, 'assignedRequests'])->name('assigned');
         });
-
 
         Route::get('/my-tasks', [RequestsController::class, 'myTasks'])->name('my-tasks');
 
@@ -138,7 +135,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/create', [PurchaseController::class, 'create'])->name('create');
         Route::patch('/{purchase}/submit', [PurchaseController::class, 'submit'])->name('submit');
 
-
         Route::get('/{purchase}/show', [PurchaseController::class, 'show'])->name('show');
         Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('edit');
         Route::put('/{purchase}/update', [PurchaseController::class, 'update'])->name('update');
@@ -147,12 +143,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     });
     Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
         Route::get('/chart-of-accounts', [ChartAccountController::class, 'index'])->name('chart-of-accounts');
-        Route::get("/bank-accounts", [PaymentServiceProviderAccountController::class, 'index'])->name("bank-accounts.index");
-        Route::post("/bank-accounts/store", [PaymentServiceProviderAccountController::class, 'store'])->name("bank-accounts.store");
-        Route::delete("/bank-accounts/{id}/delete", [PaymentServiceProviderAccountController::class, 'destroy'])->name("bank-accounts.delete");
-        Route::get("/bank-accounts/{paymentServiceProviderAccount}/show", [PaymentServiceProviderAccountController::class, 'show'])->name("bank-accounts.show");
-        Route::get("/bank-accounts/{paymentServiceProviderAccount}/edit", [PaymentServiceProviderAccountController::class, 'accountsByServiceProvider'])
-            ->name("provider-service-by-accounts");
+        Route::get('/bank-accounts', [PaymentServiceProviderAccountController::class, 'index'])->name('bank-accounts.index');
+        Route::post('/bank-accounts/store', [PaymentServiceProviderAccountController::class, 'store'])->name('bank-accounts.store');
+        Route::delete('/bank-accounts/{id}/delete', [PaymentServiceProviderAccountController::class, 'destroy'])->name('bank-accounts.delete');
+        Route::get('/bank-accounts/{paymentServiceProviderAccount}/show', [PaymentServiceProviderAccountController::class, 'show'])->name('bank-accounts.show');
+        Route::get('/bank-accounts/{paymentServiceProviderAccount}/edit', [PaymentServiceProviderAccountController::class, 'accountsByServiceProvider'])
+            ->name('provider-service-by-accounts');
 
         Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses');
         Route::post('/expenses/store', [ExpenseController::class, 'store'])->name('expenses.store');
@@ -160,10 +156,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::delete('/expenses/{expense}/delete', [ExpenseController::class, 'destroy'])->name('expenses.delete');
         Route::get('/expenses/{id}/expense-ledgers', [ExpenseController::class, 'getExpenseLedgers'])->name('expense-ledgers');
 
-        Route::get("/cash-movements", [CashMovementController::class, 'index'])->name("cash-movements.index");
-        Route::post("/cash-movements/store", [CashMovementController::class, 'store'])->name("cash-movements.store");
-        Route::delete("/cash-movements/{id}/delete", [CashMovementController::class, 'destroy'])->name("cash-movements.delete");
-        Route::get("/cash-movements/{cashMovement}/show", [CashMovementController::class, 'show'])->name("cash-movements.show");
+        Route::get('/cash-movements', [CashMovementController::class, 'index'])->name('cash-movements.index');
+        Route::post('/cash-movements/store', [CashMovementController::class, 'store'])->name('cash-movements.store');
+        Route::delete('/cash-movements/{id}/delete', [CashMovementController::class, 'destroy'])->name('cash-movements.delete');
+        Route::get('/cash-movements/{cashMovement}/show', [CashMovementController::class, 'show'])->name('cash-movements.show');
 
         Route::get('/journal-entries', [JournalEntryController::class, 'index'])->name('journal-entries');
         Route::post('/journal-entries/store', [JournalEntryController::class, 'store'])->name('journal-entries.store');
@@ -179,9 +175,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     });
     Route::prefix('user-management')->group(function () {
         //roles routes
-        Route::get("/roles", [RoleController::class, 'index'])->name("roles.index");
-        Route::post("/roles/update/{role}", [RoleController::class, 'update'])->name("roles.update");
-        Route::post("/roles/store", [RoleController::class, 'store'])->name("roles.store");
+        Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+        Route::post('/roles/update/{role}', [RoleController::class, 'update'])->name('roles.update');
+        Route::post('/roles/store', [RoleController::class, 'store'])->name('roles.store');
         Route::get('/add-permissions-to-role/{role_id}', [RoleController::class, 'addPermissionToRole'])->name('roles.add.permissions');
         Route::get('/add-roles-to-user/{user_id}', [RoleController::class, 'addRoleToUser'])->name('user.add.roles');
         Route::post('/add-roles-to-user/store', [RoleController::class, 'storeRoleToUser'])->name('user.add.roles.store');
@@ -202,11 +198,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/permissions/add-permissions-to-user/store', [App\Http\Controllers\PermissionController::class, 'storePermissionToUser'])->name('permissions_to_user.store');
 
         //users routes
-        Route::get("/users", [App\Http\Controllers\UserController::class, 'index'])->name("users.index");
-        Route::post("/users/store", [App\Http\Controllers\UserController::class, 'store'])->name("users.store");
-        Route::post("/users/update/{user_id}", [App\Http\Controllers\UserController::class, 'update'])->name("users.update");
-        Route::get("/users/profile/{user_id}", [App\Http\Controllers\UserController::class, 'userProfile'])->name("users.profile");
-        Route::get("/users/delete/{user_id}", [App\Http\Controllers\UserController::class, 'deleteUser'])->name("users.delete");
+        Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+        Route::post('/users/store', [App\Http\Controllers\UserController::class, 'store'])->name('users.store');
+        Route::post('/users/update/{user_id}', [App\Http\Controllers\UserController::class, 'update'])->name('users.update');
+        Route::get('/users/profile/{user_id}', [App\Http\Controllers\UserController::class, 'userProfile'])->name('users.profile');
+        Route::get('/users/delete/{user_id}', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('users.delete');
         //user permissions
         Route::get('/users/permissions/{user_id}', [App\Http\Controllers\UserController::class, 'userPermissions'])->name('users.permissions');
 
@@ -335,7 +331,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/stock-movements', [App\Http\Controllers\StockMovementController::class, 'index'])->name('stock-items.movements');
         Route::get('/stock-movements/{movement}', [App\Http\Controllers\StockMovementController::class, 'show'])->name('stock-items.movements.show');
 
-
         //stock adjustment
         Route::resource('/adjustments', AdjustmentController::class);
         Route::get('/adjustments/{adjustment}/items', [App\Http\Controllers\AdjustmentController::class, 'items'])->name('stock-adjustments.items');
@@ -379,7 +374,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
 });
 
-
 Auth::routes(['register' => false]);
 
 Route::get('/home', [HomeController::class, 'home'])->name('home');
@@ -391,4 +385,3 @@ Route::get('/operation-area-officers', [OperationAreaController::class, 'getOffi
 Route::get('/operation-areas-by-district', [OperationAreaController::class, 'getAreasByDistrict'])->name('get-operation-areas-by-district');
 //get items by categories
 Route::get('/items-by-categories', [ItemController::class, 'getItemsByCategories'])->name('get-items-by-categories');
-

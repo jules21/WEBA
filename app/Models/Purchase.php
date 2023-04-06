@@ -3,16 +3,18 @@
 namespace App\Models;
 
 use App\Constants\Permission;
+use App\Constants\Status;
 use App\Traits\GetClassName;
 use App\Traits\HasStatusColor;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
 
 /**
@@ -27,6 +29,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string $status Pending,Approved
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|Purchase newModelQuery()
  * @method static Builder|Purchase newQuery()
  * @method static Builder|Purchase query()
@@ -39,35 +42,35 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|Purchase whereStatus($value)
  * @method static Builder|Purchase whereSupplierId($value)
  * @method static Builder|Purchase whereUpdatedAt($value)
+ *
  * @property string|null $subtotal
  * @property string|null $tax_amount
  * @property string|null $tax_net_amount
  * @property string|null $total
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
+ * @property-read Collection<int, FlowHistory> $flowHistories
  * @property-read int|null $flow_histories_count
  * @property-read string $status_color
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $movementDetails
+ * @property-read Collection<int, StockMovementDetail> $movementDetails
  * @property-read int|null $movement_details_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
+ * @property-read Collection<int, StockMovement> $movements
  * @property-read int|null $movements_count
- * @property-read \App\Models\Supplier $supplier
+ * @property-read Supplier $supplier
+ *
  * @method static Builder|Purchase whereSubtotal($value)
  * @method static Builder|Purchase whereTaxAmount($value)
  * @method static Builder|Purchase whereTaxNetAmount($value)
  * @method static Builder|Purchase whereTotal($value)
+ *
  * @mixin Eloquent
  */
 class Purchase extends Model implements Auditable
 {
     use GetClassName, HasStatusColor, \OwenIt\Auditing\Auditable;
 
-    const PENDING = "Pending";
-    const SUBMITTED = "Submitted";
-    const APPROVED = "Approved";
-
-    const REJECTED = "Rejected";
 
     protected $appends = ['status_color'];
+
+    const ATTACHMENT_PATH = 'attachments/purchases/';
 
 
     public function resolveRouteBinding($value, $field = null)
@@ -92,7 +95,6 @@ class Purchase extends Model implements Auditable
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 
-
     public function flowHistories(): MorphMany
     {
         return $this->morphMany(FlowHistory::class, 'model');
@@ -101,23 +103,21 @@ class Purchase extends Model implements Auditable
     public function getApprovalStatuses(): array
     {
         return [
-            self::APPROVED,
-            self::REJECTED
+            Status::APPROVED,
+            Status::RETURN_BACK,
+            Status::REJECTED,
         ];
     }
 
     public function canBeReviewed(): bool
     {
-        return $this->status === self::SUBMITTED
+        return $this->status === Status::SUBMITTED
             && auth()->user()->operation_area
             && auth()->user()->can(Permission::ApproveStockIn);
     }
-
 
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }
-
-
 }

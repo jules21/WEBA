@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 class BesoftSmsService
 {
     private string $phoneNumber;
+
     private string $message;
 
     public function __construct($phoneNumber, $message)
@@ -19,10 +20,10 @@ class BesoftSmsService
     public function sendSms(): Response
     {
         return Http::post(config('services.besoft.sms_url'), [
-            "token" => config('services.besoft.token'),
-            "phone" => $this->phoneNumber,
-            "message" => $this->message,
-            "sender_name" => config('services.besoft.sender_name')
+            'token' => config('services.besoft.token'),
+            'phone' => $this->phoneNumber,
+            'message' => $this->message,
+            'sender_name' => config('services.besoft.sender_name'),
         ]);
 
     }

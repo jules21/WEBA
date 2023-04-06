@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Traits\HasStatusColor;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -26,6 +25,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read string $status_color
+ *
  * @method static Builder|PaymentDeclaration newModelQuery()
  * @method static Builder|PaymentDeclaration newQuery()
  * @method static Builder|PaymentDeclaration query()
@@ -39,8 +39,10 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|PaymentDeclaration whereStatus($value)
  * @method static Builder|PaymentDeclaration whereType($value)
  * @method static Builder|PaymentDeclaration whereUpdatedAt($value)
+ *
  * @property-read \App\Models\PaymentConfiguration $paymentConfig
  * @property-read \App\Models\Request|null $request
+ *
  * @mixin Eloquent
  */
 class PaymentDeclaration extends Model implements Auditable
@@ -48,15 +50,18 @@ class PaymentDeclaration extends Model implements Auditable
     use HasStatusColor, \OwenIt\Auditing\Auditable;
 
     const ACTIVE = 'active';
+
     const PAID = 'paid';
+
     const PARTIALLY_PAID = 'partially paid';
 
     public function generateReferenceNumber($prefix = 'CMS', $length = 8): string
     {
         $number = str_pad($this->id, $length, '0', STR_PAD_LEFT);
-        $ref = $prefix . $number;
+        $ref = $prefix.$number;
         $this->payment_reference = $ref;
         $this->save();
+
         return $ref;
     }
 

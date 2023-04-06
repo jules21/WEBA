@@ -31,7 +31,6 @@ class ProvinceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreProvinceRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreProvinceRequest $request)
@@ -42,7 +41,6 @@ class ProvinceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Province  $province
      * @return \Illuminate\Http\Response
      */
     public function show(Province $province)
@@ -53,7 +51,6 @@ class ProvinceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Province  $province
      * @return \Illuminate\Http\Response
      */
     public function edit(Province $province)
@@ -64,8 +61,6 @@ class ProvinceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateProvinceRequest  $request
-     * @param  \App\Models\Province  $province
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateProvinceRequest $request, Province $province)
@@ -76,7 +71,6 @@ class ProvinceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Province  $province
      * @return \Illuminate\Http\Response
      */
     public function destroy(Province $province)

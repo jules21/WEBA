@@ -8,7 +8,6 @@ use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\StockMovement;
 use Excel;
-use Illuminate\Http\Request;
 
 class StockMovementController extends Controller
 {
@@ -41,17 +40,17 @@ class StockMovementController extends Controller
         $data->when(request()->type, function ($query) {
             $query->whereIn('type', request()->type);
         });
-        $datatable =  new StockMovementsDataTable($data);
+        $datatable = new StockMovementsDataTable($data);
 
         //export
-        if (request()->is_download == true && !\request()->ajax()) {
+        if (request()->is_download == true && ! \request()->ajax()) {
             return $this->exportStockMovement($data->get());
         }
 
         return $datatable->render('admin.stock.items_movement',
             [
                 'categories' => ItemCategory::query()->where('operator_id', $user->operator_id)->get(),
-                'items' =>[]// Item::query()->where('operator_id', $user->operator_id)->get(),
+                'items' => [], // Item::query()->where('operator_id', $user->operator_id)->get(),
             ]
         );
     }
@@ -66,6 +65,4 @@ class StockMovementController extends Controller
     {
         return Excel::download(new StockMovementExport($query), 'Stock Movement List.xlsx');
     }
-
-
 }

@@ -14,7 +14,7 @@ class RenameOperationAreaColumn extends Migration
     public function up()
     {
         Schema::table('request_duration_configurations', function (Blueprint $table) {
-            $table->renameColumn('operation_area','operation_area_id');
+            $table->renameColumn('operation_area', 'operation_area_id');
         });
     }
 
@@ -26,7 +26,7 @@ class RenameOperationAreaColumn extends Migration
     public function down()
     {
         Schema::table('request_duration_configurations', function (Blueprint $table) {
-            $table->renameColumn('operation_area_id','operation_area');
+            $table->renameColumn('operation_area_id', 'operation_area');
         });
     }
 }

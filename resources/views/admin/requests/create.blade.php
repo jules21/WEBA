@@ -1,10 +1,10 @@
 @extends('layouts.master')
 
-@section('title',(isset($request)?'Edit':'New'). " Request")
+@section('title',(isset($request)?'Edit':'New'). " Connection")
 
 @section('content')
 
-    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none mb-4" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-2">
@@ -26,7 +26,7 @@
                     </li>
                     <li class="breadcrumb-item">
                         <span class="text-muted">
-                            New Request
+                            New Connection
                         </span>
                     </li>
                 </ul>
@@ -35,11 +35,11 @@
         </div>
     </div>
 
-    <div class="card shadow-none border">
+    <div class="card card-body tw-shadow-sm border tw-border-gray-300">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>
-                    {{ isset($request)?'Edit':'New' }} Request
+                    {{ isset($request)?'Edit':'New' }} Connection
                 </h4>
             </div>
 

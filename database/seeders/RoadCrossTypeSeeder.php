@@ -15,21 +15,22 @@ class RoadCrossTypeSeeder extends Seeder
     public function run()
     {
         $types = [
-            "Gravel or dirt",
-            "Swamp",
-            "Ruhurura",
-            "River",
-            "Strong fence",
-            "Other people's lands"
+            'Gravel or dirt',
+            'Swamp',
+            'Ruhurura',
+            'River',
+            'Strong fence',
+            "Other people's lands",
         ];
 
-        if (RoadCrossType::query()->exists())
+        if (RoadCrossType::query()->exists()) {
             return;
+        }
 
         foreach ($types as $type) {
             RoadCrossType::query()
                 ->create([
-                    'name' => $type
+                    'name' => $type,
                 ]);
         }
     }

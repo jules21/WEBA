@@ -8,8 +8,6 @@ class ValidateAppRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -18,8 +16,6 @@ class ValidateAppRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -27,8 +23,8 @@ class ValidateAppRequest extends FormRequest
             'customer_id' => ['required', 'integer'],
             'request_type_id' => ['required', 'integer'],
             'water_usage_id' => ['required', 'integer'],
-//            'province_id' => ['required', 'integer'],
-//            'district_id' => ['required', 'integer'],
+            //            'province_id' => ['required', 'integer'],
+            //            'district_id' => ['required', 'integer'],
             'sector_id' => ['required', 'integer'],
             'cell_id' => ['required', 'integer'],
             'village_id' => ['nullable'],

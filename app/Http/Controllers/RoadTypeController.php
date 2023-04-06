@@ -31,7 +31,6 @@ class RoadTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreRoadTypeRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreRoadTypeRequest $request)
@@ -42,7 +41,6 @@ class RoadTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\RoadType  $roadType
      * @return \Illuminate\Http\Response
      */
     public function show(RoadType $roadType)
@@ -53,7 +51,6 @@ class RoadTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\RoadType  $roadType
      * @return \Illuminate\Http\Response
      */
     public function edit(RoadType $roadType)
@@ -64,8 +61,6 @@ class RoadTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateRoadTypeRequest  $request
-     * @param  \App\Models\RoadType  $roadType
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateRoadTypeRequest $request, RoadType $roadType)
@@ -76,7 +71,6 @@ class RoadTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\RoadType  $roadType
      * @return \Illuminate\Http\Response
      */
     public function destroy(RoadType $roadType)

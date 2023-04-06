@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Status;
 use App\Models\Billing;
 use App\Models\Customer;
 use App\Models\MeterRequest;
@@ -12,7 +13,6 @@ use App\Models\Request;
 use App\Models\Stock;
 use App\Models\WaterNetwork;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -20,11 +20,12 @@ class DashboardController extends Controller
     {
         if (auth()->user()->operator_id == null && auth()->user()->operation_area == null) {
             return $this->level1Dashboard();
-        } else if (auth()->user()->operator_id != null && auth()->user()->operation_area == null) {
+        } elseif (auth()->user()->operator_id != null && auth()->user()->operation_area == null) {
             return $this->level2Dashboard();
-        } else if (auth()->user()->operation_area != null) {
+        } elseif (auth()->user()->operation_area != null) {
             return $this->level3Dashboard();
         }
+        return back()->with('error', 'You are not authorized to access this page');
     }
 
     /**
@@ -33,13 +34,14 @@ class DashboardController extends Controller
     public function level1Dashboard()
     {
         $totalOperators = Operator::count();
-        $totalOperationAreas = OperationArea::count("district_id");
+        $totalOperationAreas = OperationArea::count('district_id');
         $totalMeters = MeterRequest::count();
-        $totalCustomers = Customer::query()->wherehas("connections")->count("doc_number");
+        $totalCustomers = Customer::query()->wherehas('connections')->count('doc_number');
         $consumptionPerMonth = $this->getConsumedWater();
         $topOperators = $this->getTopOperators();
         $consumerPerOperators = $this->getOperatorConsumers();
         $recentPayment = $this->getRecentFiveMothPayment();
+
         return view('admin.dashboard.level1', compact('totalOperators', 'totalOperationAreas',
             'totalMeters', 'totalCustomers', 'consumptionPerMonth',
             'topOperators', 'consumerPerOperators', 'recentPayment'));
@@ -50,27 +52,26 @@ class DashboardController extends Controller
      */
     public function level2Dashboard()
     {
-        $totalOperationAreas = OperationArea::
-        where('operator_id', auth()->user()->operator_id)->count("district_id");
+        $totalOperationAreas = OperationArea::where('operator_id', auth()->user()->operator_id)->count('district_id');
         $totalMeters = MeterRequest::query()
             ->whereHas('request', function ($query) {
                 $query->where('operator_id', auth()->user()->operator_id);
             })->count();
         $totalCustomers = Customer::where('operator_id', auth()->user()->operator_id)
-            ->wherehas("connections")->count("doc_number");
+            ->wherehas('connections')->count('doc_number');
         $waterNetworks = WaterNetwork::query()
             ->where('operator_id', auth()->user()->operator_id)->count();
         $requests = Request::query()
             ->where('operator_id', auth()->user()->operator_id)->get(['id', 'status']);
         $allRequests = $requests->count();
-        $rejectRequests = $requests->whereIn('status', [Request::REJECTED,
-            Request::CANCELLED])->count();
-        $approveRequests = $requests->whereIn('status', [
-            Request::APPROVED,
-            Request::DELIVERED,
-            Request::PARTIALLY_DELIVERED,
-            Request::METER_ASSIGNED,])->count();
-        $pendingRequests = $requests->whereIn('status', [Request::PENDING])->count();
+        $rejectRequests = $requests->whereIn('status', [Status::REJECTED,
+            Status::CANCELLED])->count();
+        $approveRequests = Request::query()->whereIn('status', [
+            Status::APPROVED,
+            Status::DELIVERED,
+            Status::PARTIALLY_DELIVERED,
+            Status::METER_ASSIGNED,])->count();
+        $pendingRequests = $requests->whereIn('status', [Status::PENDING])->count();
 
         $consumptionPerMonth = $this->getConsumedWater();
         $topOperators = $this->getTopWaterNetWorks();
@@ -102,10 +103,10 @@ class DashboardController extends Controller
             ->whereHas('request', function ($query) {
                 $query->where('operator_id', auth()->user()->operator_id);
             })->count();
-        $totalCustomers = Customer::wherehas("requests", function ($query) {
+        $totalCustomers = Customer::wherehas('requests', function ($query) {
             $query->where('operation_area_id', auth()->user()->operation_area)
-                ->whereHas("meterNumbers");
-        })->count("doc_number");
+                ->whereHas('meterNumbers');
+        })->count('doc_number');
 
         $waterNetworks = WaterNetwork::query()
             ->where('operation_area_id', auth()->user()->operation_area)->count();
@@ -113,14 +114,14 @@ class DashboardController extends Controller
             ->where('operation_area_id', auth()->user()->operation_area)->get(['id', 'status']);
 
         $allRequests = $requests->count();
-        $rejectRequests = $requests->whereIn('status', [Request::REJECTED,
-            Request::CANCELLED])->count();
+        $rejectRequests = $requests->whereIn('status', [Status::REJECTED,
+            Status::CANCELLED])->count();
         $approveRequests = $requests->whereIn('status', [
-            Request::APPROVED,
-            Request::DELIVERED,
-            Request::PARTIALLY_DELIVERED,
-            Request::METER_ASSIGNED,])->count();
-        $pendingRequests = $requests->whereIn('status', [Request::PENDING])->count();
+            Status::APPROVED,
+            Status::DELIVERED,
+            Status::PARTIALLY_DELIVERED,
+            Status::METER_ASSIGNED,])->count();
+        $pendingRequests = $requests->whereIn('status', [Status::PENDING])->count();
 
         $consumptionPerMonth = $this->getConsumedWater();
         $topOperators = $this->getTopWaterNetWorks();
@@ -135,7 +136,6 @@ class DashboardController extends Controller
                 'rejectRequests', 'approveRequests', 'pendingRequests', 'allRequests',
                 'billingsPerMonth'));
     }
-
 
     private function getConsumedWater()
     {
@@ -157,8 +157,9 @@ class DashboardController extends Controller
         for ($i = 1; $i <= 12; $i++) {
             $water = $billings->where('month', $i)->first();
             $monthShortName = date('M', mktime(0, 0, 0, $i, 10));
-            $data[$monthShortName] = doubleval($water->consumed_water ?? 0) ?? 0;
+            $data[$monthShortName] = floatval($water->consumed_water ?? 0) ?? 0;
         }
+
         return $data;
     }
 
@@ -168,7 +169,7 @@ class DashboardController extends Controller
             ->join('requests', 'requests.operator_id', '=', 'operators.id')
             ->join('meter_requests', 'meter_requests.request_id', '=', 'requests.id')
             ->join('billings', 'billings.subscription_number', '=', 'meter_requests.subscription_number')
-            ->select(\DB::raw("SUM(billings.last_index-starting_index) as consumed_water, operators.id, operators.name,operators.logo,operators.address"))
+            ->select(\DB::raw('SUM(billings.last_index-starting_index) as consumed_water, operators.id, operators.name,operators.logo,operators.address'))
             ->groupByRaw('operators.id,operators.name')
             ->orderBy('consumed_water', 'desc')
             ->limit(5)
@@ -177,11 +178,12 @@ class DashboardController extends Controller
         foreach ($operators as $operator) {
             $data->push([
                 'name' => $operator->name,
-                'consumed_water' => doubleval($operator->consumed_water ?? 0),
+                'consumed_water' => floatval($operator->consumed_water ?? 0),
                 'url_logo' => $operator->logo_url,
                 'address' => $operator->address ?? '',
             ]);
         }
+
         return $data;
     }
 
@@ -200,25 +202,27 @@ class DashboardController extends Controller
             $total = $customers->where('operator_id', $operator->id)->sum('total');
             $data[$operator->name] = $total;
         }
+
         return $data;
     }
 
     public function getRecentFiveMothPayment()
     {
         $billings = Payment::query()
-            ->whereDate("created_at", ">=", date("Y-m-d", strtotime("-5 months")))
+            ->whereDate('created_at', '>=', date('Y-m-d', strtotime('-5 months')))
             ->select(\DB::raw('sum(amount) as amount, extract("MONTH" FROM created_at) as month, extract("YEAR" FROM created_at) as year'))
             ->groupByRaw('extract("MONTH" FROM created_at),extract("YEAR" FROM created_at)')
             ->get();
         $data = [];
         //get recent five months
         for ($i = 5; $i >= 0; $i--) {
-            $month = date("m", strtotime("-$i months"));
+            $month = date('m', strtotime("-$i months"));
             $monthShortName = date('M-Y', mktime(0, 0, 0, $month, 10));
-            $year = date("Y", strtotime("-$i months"));
+            $year = date('Y', strtotime("-$i months"));
             $amount = $billings->where('month', $month)->where('year', $year)->first();
-            $data[$monthShortName] = doubleval($amount->amount ?? 0) ?? 0;
+            $data[$monthShortName] = floatval($amount->amount ?? 0) ?? 0;
         }
+
         return $data;
     }
 
@@ -227,7 +231,7 @@ class DashboardController extends Controller
         $operatorId = auth()->user()->operator_id;
         $operationAreaId = auth()->user()->operation_area;
         $waterNetworks = WaterNetwork::query()
-        ->join('requests', 'requests.water_network_id', '=', 'water_networks.id')
+            ->join('requests', 'requests.water_network_id', '=', 'water_networks.id')
             ->join('meter_requests', 'meter_requests.request_id', '=', 'requests.id')
             ->join('billings', 'billings.subscription_number', '=', 'meter_requests.subscription_number')
             ->join('operation_areas', 'operation_areas.id', '=', 'requests.operation_area_id')
@@ -236,7 +240,7 @@ class DashboardController extends Controller
                 return $query->where('operation_areas.id', $operationAreaId);
             })->when($operatorId, function ($query) use ($operatorId) {
                 return $query->where('operators.id', $operatorId);
-            })->select(\DB::raw("SUM(billings.last_index-starting_index), water_networks.id,water_networks.name,operation_areas.name as operation_area_name"))
+            })->select(\DB::raw('SUM(billings.last_index-starting_index), water_networks.id,water_networks.name,operation_areas.name as operation_area_name'))
             ->groupByRaw('water_networks.id,water_networks.name,operation_area_name')
             ->limit(5)
             ->get();
@@ -244,11 +248,12 @@ class DashboardController extends Controller
         foreach ($waterNetworks as $billing) {
             $data->push([
                 'name' => $billing->name,
-                'consumed_water' => doubleval($billing->sum ?? 0),
+                'consumed_water' => floatval($billing->sum ?? 0),
                 'url_logo' => asset('img/logo.svg'),
                 'address' => $billing->operation_area_name ?? '',
             ]);
         }
+
         return $data;
 
     }
@@ -273,8 +278,9 @@ class DashboardController extends Controller
         for ($i = 1; $i <= 12; $i++) {
             $monthShortName = date('M', mktime(0, 0, 0, $i, 10));
             $amount = $payments->where('month', $i)->first();
-            $data[$monthShortName] = doubleval($amount->amount ?? 0) ?? 0;
+            $data[$monthShortName] = floatval($amount->amount ?? 0) ?? 0;
         }
+
         return $data;
     }
 
@@ -299,10 +305,9 @@ class DashboardController extends Controller
         for ($i = 1; $i <= 12; $i++) {
             $monthShortName = date('M', mktime(0, 0, 0, $i, 10));
             $amount = $billings->where('month', $i)->first();
-            $data[$monthShortName] = doubleval($amount->amount ?? 0) ?? 0;
+            $data[$monthShortName] = floatval($amount->amount ?? 0) ?? 0;
         }
+
         return $data;
     }
-
-
 }

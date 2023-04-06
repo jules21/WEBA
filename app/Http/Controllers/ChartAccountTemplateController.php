@@ -31,7 +31,6 @@ class ChartAccountTemplateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreChartAccountTemplateRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreChartAccountTemplateRequest $request)
@@ -42,7 +41,6 @@ class ChartAccountTemplateController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ChartAccountTemplate  $chartAccountTemplate
      * @return \Illuminate\Http\Response
      */
     public function show(ChartAccountTemplate $chartAccountTemplate)
@@ -53,7 +51,6 @@ class ChartAccountTemplateController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ChartAccountTemplate  $chartAccountTemplate
      * @return \Illuminate\Http\Response
      */
     public function edit(ChartAccountTemplate $chartAccountTemplate)
@@ -64,8 +61,6 @@ class ChartAccountTemplateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateChartAccountTemplateRequest  $request
-     * @param  \App\Models\ChartAccountTemplate  $chartAccountTemplate
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateChartAccountTemplateRequest $request, ChartAccountTemplate $chartAccountTemplate)
@@ -76,7 +71,6 @@ class ChartAccountTemplateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ChartAccountTemplate  $chartAccountTemplate
      * @return \Illuminate\Http\Response
      */
     public function destroy(ChartAccountTemplate $chartAccountTemplate)

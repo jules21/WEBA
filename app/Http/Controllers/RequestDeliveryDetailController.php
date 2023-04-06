@@ -30,7 +30,6 @@ class RequestDeliveryDetailController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +40,6 @@ class RequestDeliveryDetailController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\RequestDeliveryDetail  $requestDeliveryDetail
      * @return \Illuminate\Http\Response
      */
     public function show(RequestDeliveryDetail $requestDeliveryDetail)
@@ -52,7 +50,6 @@ class RequestDeliveryDetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\RequestDeliveryDetail  $requestDeliveryDetail
      * @return \Illuminate\Http\Response
      */
     public function edit(RequestDeliveryDetail $requestDeliveryDetail)
@@ -63,8 +60,6 @@ class RequestDeliveryDetailController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\RequestDeliveryDetail  $requestDeliveryDetail
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, RequestDeliveryDetail $requestDeliveryDetail)
@@ -75,7 +70,6 @@ class RequestDeliveryDetailController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\RequestDeliveryDetail  $requestDeliveryDetail
      * @return \Illuminate\Http\Response
      */
     public function destroy(RequestDeliveryDetail $requestDeliveryDetail)

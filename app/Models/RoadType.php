@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Database\Factories\RoadTypeFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|RoadType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RoadType newQuery()
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|RoadType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoadType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoadType whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class RoadType extends Model

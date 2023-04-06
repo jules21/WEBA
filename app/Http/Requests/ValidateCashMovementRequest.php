@@ -20,8 +20,6 @@ class ValidateCashMovementRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -29,7 +27,7 @@ class ValidateCashMovementRequest extends FormRequest
             'psp_id' => ['required'],
             'psp_account_id' => ['required'],
             'amount' => ['required'],
-            'transaction_type' => ['required', 'in:' . implode(',', TransactionType::getTypes())],
+            'transaction_type' => ['required', 'in:'.implode(',', TransactionType::getTypes())],
             'date' => ['required', 'date'],
             'description' => ['required'],
             'reference_no' => ['required'],

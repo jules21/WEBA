@@ -10,8 +10,6 @@ class StoreCustomerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -20,8 +18,6 @@ class StoreCustomerRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -37,22 +33,20 @@ class StoreCustomerRequest extends FormRequest
                         ['document_type_id', '=', request('document_type_id')],
                         ['document_type_id', '=', request('document_type_id')],
                         ['operator_id', '=', auth()->user()->operator_id],
-                        ['id', '!=', request('id')]
+                        ['id', '!=', request('id')],
                     ]);
                 }),
-                new  ValidateDocNumber()
+                new ValidateDocNumber(),
             ],
-//            'input_doc_number' => ['required', 'string', 'max:255'],
+            //            'input_doc_number' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'email', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
             'legal_type_id' => ['required'],
-            'province_id' => ['required',],
-            'district_id' => ['required',],
+            'province_id' => ['required'],
+            'district_id' => ['required'],
             'sector_id' => ['required'],
-            'cell_id' => ['required',],
-//            'village_id' => ['nullable', 'integer', 'exists:villages,id'],
+            'cell_id' => ['required'],
+            //            'village_id' => ['nullable', 'integer', 'exists:villages,id'],
         ];
     }
-
-
 }

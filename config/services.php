@@ -32,15 +32,14 @@ return [
         'username' => env('RURA_USERNAME', 'misuser'),
         'password' => env('RURA_PASSWORD', 'ubutabiire'),
         'sms_url' => env('RURA_SMS_URL', 'http://10.10.30.26/api/sendsms'),
-        'sender_name' => env('RURA_SENDER_NAME', 'rura')
+        'sender_name' => env('RURA_SENDER_NAME', 'rura'),
     ],
     'besoft' => [
         'sms_url' => env('BESOFT_SMS_URL', 'http://sms.besoft.rw/api/v1/client/bulksms'),
-        'token' => env("BESOFT_TOKEN", "oe1MNXW6O8GdKmWM3nCSqoVROQSZD31O"),
-        'sender_name' => env('BESOFT_SENDER_NAME', 'besoft')
+        'token' => env('BESOFT_TOKEN', 'oe1MNXW6O8GdKmWM3nCSqoVROQSZD31O'),
+        'sender_name' => env('BESOFT_SENDER_NAME', 'besoft'),
     ],
     'CLMS_NIDA_URL' => env('CLMS_NIDA_URL', 'https://licensing.rura.rw/search-id-number'),
     'VAT_RATE' => env('VAT_RATE', 18),
-
 
 ];

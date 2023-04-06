@@ -7,6 +7,7 @@ use Illuminate\View\Component;
 class ExportForm extends Component
 {
     public $action;
+
     public $exportLink;
 
     /**
@@ -14,7 +15,6 @@ class ExportForm extends Component
      *
      * @return void
      */
-
     public function __construct($action, $exportLink)
     {
         $this->action = $action;

@@ -9,8 +9,7 @@ class SmsChannel
     /**
      * Send the given notification.
      *
-     * @param mixed $notifiable
-     * @param Notification $notification
+     * @param  mixed  $notifiable
      * @return void
      */
     public function send($notifiable, Notification $notification)
@@ -18,5 +17,4 @@ class SmsChannel
         $gateway = $notification->toSms($notifiable);
         $gateway->sendSms();
     }
-
 }

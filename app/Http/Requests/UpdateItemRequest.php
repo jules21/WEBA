@@ -24,14 +24,14 @@ class UpdateItemRequest extends FormRequest
     public function rules()
     {
         return [
-            "item_category_id" => 'required',
-            "name" => 'required',
-            "description" => 'required',
-            "packaging_unit_id" => 'required',
-            "selling_price" => 'required',
-//            "vatable" => 'required',
-//            "vat_rate" => 'required_if:vatable,1',
-//            "operator_id" => 'required',
+            'item_category_id' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'packaging_unit_id' => 'required',
+            'selling_price' => 'required',
+            //            "vatable" => 'required',
+            //            "vat_rate" => 'required_if:vatable,1',
+            //            "operator_id" => 'required',
             'is_active' => 'nullable',
         ];
     }
@@ -39,14 +39,14 @@ class UpdateItemRequest extends FormRequest
     public function messages()
     {
         return [
-            "item_category_id.required" => "Please select a category",
-            "name.required" => "Please enter a name",
-            "description.required" => "Please enter a description",
-            "packaging_unit_id.required" => "Please select a packaging unit",
-            "selling_price.required" => "Please enter a selling price",
-//            "vatable.required" => "Please select if the item is vatable",
-//            "vat_rate.required" => "Please enter a VAT rate",
-//            "vat_rate.required_if" => "Please enter a VAT rate",
+            'item_category_id.required' => 'Please select a category',
+            'name.required' => 'Please enter a name',
+            'description.required' => 'Please enter a description',
+            'packaging_unit_id.required' => 'Please select a packaging unit',
+            'selling_price.required' => 'Please enter a selling price',
+            //            "vatable.required" => "Please select if the item is vatable",
+            //            "vat_rate.required" => "Please enter a VAT rate",
+            //            "vat_rate.required_if" => "Please enter a VAT rate",
         ];
     }
 }

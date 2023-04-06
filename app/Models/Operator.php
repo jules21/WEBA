@@ -11,14 +11,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
-use Illuminate\Support\Carbon;
-
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-
+use Illuminate\Support\Carbon;
 use OwenIt\Auditing\Contracts\Auditable;
 use Storage;
-
 
 /**
  * App\Models\Operator
@@ -48,6 +44,7 @@ use Storage;
  * @property-read Province|null $province
  * @property-read Sector|null $sector
  * @property-read Village|null $village
+ *
  * @method static OperatorFactory factory(...$parameters)
  * @method static Builder|Operator newModelQuery()
  * @method static Builder|Operator newQuery()
@@ -67,12 +64,14 @@ use Storage;
  * @method static Builder|Operator whereSectorId($value)
  * @method static Builder|Operator whereUpdatedAt($value)
  * @method static Builder|Operator whereVillageId($value)
+ *
  * @property-read Collection<int, \App\Models\Customer> $customers
  * @property-read int|null $customers_count
  * @property-read Collection<int, \App\Models\Stock> $stocks
  * @property-read int|null $stocks_count
  * @property-read Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
+ *
  * @mixin Eloquent
  */
 class Operator extends Model implements Auditable
@@ -120,15 +119,14 @@ class Operator extends Model implements Auditable
         return $this->belongsTo(Village::class);
     }
 
-
     public function getFullAddressAttribute(): string
     {
-        return $this->address . ' ' . $this->village->name . ' ' . $this->cell->name . ' ' . $this->sector->name . ' ' . $this->district->name . ' ' . $this->province->name;
+        return $this->address.' '.$this->village->name.' '.$this->cell->name.' '.$this->sector->name.' '.$this->district->name.' '.$this->province->name;
     }
 
     public function getLogoUrlAttribute(): string
     {
-        return $this->logo ? Storage::url(self::LOGO_PATH . $this->logo) : asset('img/logo.svg');
+        return $this->logo ? Storage::url(self::LOGO_PATH.$this->logo) : asset('img/logo.svg');
     }
 
     public function operationAreas(): HasMany
@@ -155,6 +153,4 @@ class Operator extends Model implements Auditable
     {
         return $this->hasMany(Request::class, 'operator_id');
     }
-
-
 }

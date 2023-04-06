@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Traits;
-
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +10,6 @@ trait HasProfilePhoto
     /**
      * Update the user's profile photo.
      *
-     * @param UploadedFile $photo
      * @return void
      */
     public function updateProfilePhoto(UploadedFile $photo)
@@ -38,7 +35,6 @@ trait HasProfilePhoto
     public function deleteProfilePhoto()
     {
 
-
         Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo);
 
         $this->forceFill([
@@ -48,8 +44,6 @@ trait HasProfilePhoto
 
     /**
      * Get the URL to the user's profile photo.
-     *
-     * @return string
      */
     public function getProfilePhotoUrlAttribute(): string
     {
@@ -60,8 +54,6 @@ trait HasProfilePhoto
 
     /**
      * Get the URL to the user's profile photo.
-     *
-     * @return string
      */
     public function getDefaultPhotoUrlAttribute(): string
     {
@@ -70,18 +62,14 @@ trait HasProfilePhoto
 
     /**
      * Get the default profile photo URL if no profile photo has been uploaded.
-     *
-     * @return string
      */
     protected function defaultProfilePhotoUrl(): string
     {
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=2A337E&background=EDEFF3';
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=2A337E&background=EDEFF3';
     }
 
     /**
      * Get the disk that profile photos should be stored on.
-     *
-     * @return string
      */
     protected function profilePhotoDisk(): string
     {

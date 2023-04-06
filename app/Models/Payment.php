@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Payment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Payment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Payment query()
@@ -29,12 +30,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereSource($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereSubscriptionNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Payment whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Payment extends Model
 {
     use HasFactory;
-
 
     protected $guarded = [];
 
@@ -45,7 +46,6 @@ class Payment extends Model
 
     public function billing()
     {
-        return $this->belongsTo(Billing::class,'subscription_number','subscription_number');
+        return $this->belongsTo(Billing::class, 'subscription_number', 'subscription_number');
     }
-
 }

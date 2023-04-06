@@ -3,10 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\PaymentDeclaration;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class PaymentDeclarationDataTable extends DataTable
@@ -21,7 +18,7 @@ class PaymentDeclarationDataTable extends DataTable
     /**
      * Build DataTable class.
      *
-     * @param mixed $query Results from query() method.
+     * @param  mixed  $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
     public function dataTable($query)
@@ -50,7 +47,7 @@ class PaymentDeclarationDataTable extends DataTable
                 return $query->amount ?? '-';
             })
             ->editColumn('status', function ($query) {
-                if (!(strtolower($query->status) == 'active')) {
+                if (! (strtolower($query->status) == 'active')) {
                     return '<span class="label  label-success label-inline">Paid</span>';
                 } else {
                     return '<span class="label label-light-primary label-inline">Pending</span>';
@@ -66,7 +63,7 @@ class PaymentDeclarationDataTable extends DataTable
                                     Options
                                 </button>
                                 <div class="dropdown-menu border">
-                                    <a class="dropdown-item" href="' . route('admin.payments.history', $query->id) . '">
+                                    <a class="dropdown-item" href="'.route('admin.payments.history', $query->id).'">
                                         <i class="fas fa-info-circle"></i>
                                         <span class="ml-2">History</span>
                                     </a>
@@ -80,7 +77,6 @@ class PaymentDeclarationDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\PaymentDeclaration $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(PaymentDeclaration $model)
@@ -112,41 +108,32 @@ class PaymentDeclarationDataTable extends DataTable
         return [
             Column::make('operator')
                 ->title('Operator')
-                ->name('request.operator.name')
-            ,
+                ->name('request.operator.name'),
 
             Column::make('operation_area')
                 ->title('Operation Area')
-                ->name('request.operationArea.name')
-            ,
+                ->name('request.operationArea.name'),
 
             Column::make('customer')
                 ->title('Customer')
                 ->name('request.customer.name'),
             Column::make('request_type')
-                ->title('Request Type')
-            ,
+                ->title('Request Type'),
             Column::make('payment_type')
-                ->title('Payment Type')
-            ,
+                ->title('Payment Type'),
             Column::make('payment_reference')
-                ->title('Ref Number')
-            ,
+                ->title('Ref Number'),
             Column::make('amount')
-                ->title('Amount')
-            ,
+                ->title('Amount'),
             Column::make('status')
-                ->title('Status')
-            ,
+                ->title('Status'),
             Column::make('created_at')
-                ->title('Creation Date')
-            ,
+                ->title('Creation Date'),
             Column::Computed('action')
                 ->title('Action')
                 ->exportable(false)
                 ->printable(false)
-                ->width(60)
-
+                ->width(60),
 
         ];
     }
@@ -158,6 +145,6 @@ class PaymentDeclarationDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'PaymentDeclaration_' . date('YmdHis');
+        return 'PaymentDeclaration_'.date('YmdHis');
     }
 }

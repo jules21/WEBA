@@ -16,7 +16,7 @@ class RemoveColumnsToMeterRequests extends Migration
         Schema::table('meter_requests', function (Blueprint $table) {
             $table->dropForeign('meter_requests_meter_id_foreign');
             $table->dropForeign('meter_requests_request_type_id_foreign');
-            $table->dropColumn(['meter_id','request_type_id']);
+            $table->dropColumn(['meter_id', 'request_type_id']);
         });
     }
 

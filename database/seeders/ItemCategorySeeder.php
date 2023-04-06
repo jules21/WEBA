@@ -24,7 +24,7 @@ class ItemCategorySeeder extends Seeder
             'Meat',
             'Produce',
             'Raw Materials',
-            'Other'
+            'Other',
         ];
 
         if (ItemCategory::count() > 0) {
@@ -35,7 +35,7 @@ class ItemCategorySeeder extends Seeder
             ItemCategory::create([
                 'name' => $category,
                 'is_meter' => false,
-                'is_active' => true
+                'is_active' => true,
             ]);
         }
     }
