@@ -37,7 +37,14 @@
             <!--begin::Toolbar-->
 
             <div class="d-flex align-items-center">
-              <span class="badge badge-{{$purchase->status_color}} rounded-pill">
+                @if($purchase->return_back_status==\App\Constants\Status::RE_SUBMITTED)
+                    <span class="badge badge-warning rounded-pill align-self-start">Re-Submitted</span>
+                @elseif($purchase->return_back_status==\App\Constants\Status::RETURN_BACK)
+                    <span class="badge badge-warning rounded-pill align-self-start">
+                    Returned Back
+                </span>
+                @endif
+              <span class="badge badge-{{$purchase->status_color}} rounded-pill ml-2">
                   {{ $purchase->status }}
               </span>
             </div>
@@ -73,9 +80,7 @@
                     </a>
                 </li>
             </ul>
-            @if($purchase->return_back_status==\App\Constants\Status::RE_SUBMITTED)
-                <span class="badge badge-warning rounded-pill align-self-start">Re-Submitted</span>
-            @endif
+
             @if($purchase->return_back_status==\App\Constants\Status::RETURN_BACK && auth()->user()->can(\App\Constants\Permission::StockInItems))
                 <a href="{{ route('admin.purchases.edit', encryptId($purchase->id)) }}"
                    class="btn btn-sm bg-accent font-weight-bolder align-self-start text-primary">

@@ -432,6 +432,7 @@ class PurchaseController extends Controller
             'item_id' => $item_id,
             'opening_qty' => $prevStockItem->quantity ?? 0,
             'qty_in' => $movement->quantity,
+            'qty_available' => $movement->quantity,
             'qty_out' => 0,
             'operation_area_id' => auth()->user()->operation_area,
             'type' => StockMovement::StockIn,
