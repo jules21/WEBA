@@ -219,16 +219,19 @@ class Request extends Model implements Auditable
         if ($this->status == Status::ASSIGNED) {
             return [
                 Status::PROPOSE_TO_APPROVE,
+                Status::RETURN_BACK,
                 Status::REJECTED,
             ];
         } elseif ($this->status == Status::PROPOSE_TO_APPROVE) {
             return [
                 Status::APPROVED,
+                Status::RETURN_BACK,
                 Status::REJECTED,
             ];
         } elseif ($this->status == Status::APPROVED) {
             return [
                 Status::METER_ASSIGNED,
+                Status::RETURN_BACK,
                 Status::REJECTED,
             ];
         }
@@ -360,5 +363,16 @@ class Request extends Model implements Auditable
     public function canMeterNumberBeShown(): bool
     {
         return !in_array($this->status, [Status::PENDING, Status::ASSIGNED, Status::PROPOSE_TO_APPROVE]);
+    }
+
+    public function getPreviousStatus(): ?string
+    {
+        $currentStatus = $this->status;
+        if ($currentStatus == Status::APPROVED)
+            return Status::PROPOSE_TO_APPROVE;
+        else if ($currentStatus == Status::PROPOSE_TO_APPROVE) {
+            return Status::ASSIGNED;
+        }
+        return null;
     }
 }
