@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Constants\Permission;
+use App\Constants\Status;
 use App\Traits\HasStatusColor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -93,6 +94,7 @@ class Adjustment extends Model implements Auditable
         return [
             self::APPROVED,
             self::REJECTED,
+            Status::RETURN_BACK,
         ];
     }
 

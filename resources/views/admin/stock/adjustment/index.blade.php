@@ -64,8 +64,8 @@
                                 <td>{{$adjustment->operationArea->name ?? ''}}</td>
                                 <td>{{$adjustment->description}}</td>
                                 <td>
-                                    @if($adjustment->status == 'Pending')
-                                        <span class="badge label-lg font-weight-bold badge-warning rounded-pill">Pending</span>
+                                    @if(in_array($adjustment->status, [\App\Constants\Status::RETURN_BACK, \App\Constants\Status::PENDING]))
+                                        <span class="badge label-lg font-weight-bold badge-warning rounded-pill">{{$adjustment->status}}</span>
                                     @elseif($adjustment->status == 'Submitted')
                                         <span class="badge label-lg font-weight-bold badge-info rounded-pill">Submitted</span>
                                     @elseif($adjustment->status == 'Approved')
@@ -80,8 +80,8 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-light-primary btn-sm  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
                                         <div class="dropdown-menu" style="">
-                                            @if($adjustment->status == \App\Models\Adjustment::PENDING)
-                                                <a href="{{route('admin.stock.stock-adjustments.new')}}"
+                                            @if(in_array($adjustment->status, [\App\Constants\Status::RETURN_BACK, \App\Constants\Status::PENDING]))
+                                                <a href="{{route('admin.stock.stock-adjustments.new',['adjustment_id' => $adjustment->id])}}"
                                                    class="dropdown-item">
                                                     Details
                                                 </a>

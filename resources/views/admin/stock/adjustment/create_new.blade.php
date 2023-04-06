@@ -302,7 +302,6 @@
                         success: function (response) {
                             $('#adjustment_id').val(response.id);
                             $('#item_adjustment_id').val(response.id);
-                            $('#reason').val(response.reason);
                             $('#_description').val(response.reason);
                             $('#items_container').removeClass('d-none');
                             $('#reason').prop('disabled', true);

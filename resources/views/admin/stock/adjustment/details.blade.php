@@ -178,6 +178,14 @@
                                 </div>
 
                                 <div class=" form-group">
+                                    <label for="attachment">Attachment:</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="attachment" name="attachment">
+                                        <label class="custom-file-label" for="attachment">Choose file</label>
+                                    </div>
+                                </div>
+
+                                <div class=" form-group">
                                     <label for="comment">Description:</label>
                                     <textarea name="comment" id="comment" rows="5"
                                               class="form-control"></textarea>

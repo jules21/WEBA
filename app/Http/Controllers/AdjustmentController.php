@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\Permission;
+use App\Constants\Status;
 use App\Http\Requests\StoreAdjustmentRequest;
 use App\Http\Requests\UpdateAdjustmentRequest;
 use App\Http\Requests\ValidateAdjustmentItemRequest;
@@ -55,14 +56,13 @@ class AdjustmentController extends Controller
         }
 
         $query = $this->extracted($user);
-        $adjustments = $query->WhereIn('status', [Adjustment::PENDING, Adjustment::SUBMITTED])->get();
+        $adjustments = $query->WhereIn('status', [Adjustment::PENDING, Adjustment::SUBMITTED,Status::RETURN_BACK])->get();
 
         return view('admin.stock.adjustment.index', compact('adjustments'));
     }
 
     public function store(StoreAdjustmentRequest $request)
     {
-        dd($request->all());
         $adjustmentId = \request('adjustment_id');
         $adjustment = Adjustment::query()->find($adjustmentId);
         if ($adjustment) {
@@ -213,13 +213,18 @@ class AdjustmentController extends Controller
     {
         $data = $request->validated();
 
-        DB::transaction(function () use ($data, $adjustment) {
+        DB::transaction(function () use ($data, $adjustment, $request) {
             $status = $data['status'];
-            $this->saveFlowHistory($adjustment, $data['comment'], $status, true);
+            $fileName = null;
+            if ($request->hasFile('attachment')) {
+                $fileName = $request->file('attachment')->store(AdjustmentController::ADJUSTMENT_ATTACHMENT_PATH);
+            }
+            $this->saveFlowHistory($adjustment, $data['comment'], $status, true,$fileName);
 
             $adjustment->update([
                 'status' => $status,
                 'approved_by' => auth()->id(),
+                'return_back_status' => $status == Status::RETURN_BACK ? Status::RETURN_BACK : null,
             ]);
             $this->saveFlowHistory($adjustment, "Adjustment {$status}", $status);
 
