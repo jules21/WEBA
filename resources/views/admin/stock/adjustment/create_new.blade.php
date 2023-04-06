@@ -112,13 +112,13 @@
                                     <td colspan="4" class="text-right font-weight-bold">Total:</td>
                                     <td class="font-weight-bolder">
                                         RWF
-                                        <span id="total">{{ number_format($adjustment->items->sum('total')) }}</span>
+                                        <span id="total">{{ $adjustment ? number_format($adjustment->items->sum('total')):0 }}</span>
                                     </td>
                                     <td></td>
                                 </tfoot>
                                 <tbody>
 
-                                @forelse($adjustment->items as $item)
+                                @forelse(($adjustment ? $adjustment->items : []) as $item)
                                     <tr>
                                         <td>{{ $item->item->name }}</td>
                                         <td>
@@ -175,33 +175,25 @@
                     </div>
                 </div>
 
-                <div class="card card-body mb-3 d-none" id="attachment-container">
-                    <form id="saveNewForm1" action="{{route('admin.stock.adjustments.store')}}" enctype="multipart/form-data">
+                @if($adjustment)
+                    <form method="post" action="{{ route("admin.stock.stock-adjustments.submit",encryptId($adjustment->id)) }}" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="adjustment_id" id="adjustment_id" value="{{$adjustment->id ?? null}}">
-                        <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
-                        <input type="hidden" name="operation_area_id" value="{{auth()->user()->operation_area}}">
-                        <input type="hidden" name="created_by" value="{{auth()->user()->id}}">
-                        <input type="hidden" name="status" value="Pending">
-                        <div class="row">
-                            <input type="hidden" name="description" id="_description" value="{{ $adjustment->description ?? '' }}">
-                            <div class="col-12">
-                                <label class="d-block">Attachment <small>(optional)</small></label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile" name="attachment" required>
-                                    <label class="custom-file-label" for="customFile">Choose file</label>
-                                </div>
-                            </div>
+                        <div class="card card-body mb-3 d-none" id="attachment-container">
+                                    <div class="col-12">
+                                        <label class="d-block">Attachment <small>(optional)</small></label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="customFile" name="attachment">
+                                            <label class="custom-file-label" for="customFile">Choose file</label>
+                                        </div>
+                                    </div>
+                        </div>
+                        <div class="row justify-content-end mr-1 d-none" id="submit-container">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-check-circle"></i>
+                                Submit</button>
                         </div>
                     </form>
-
-                </div>
-
-                    <div class="row justify-content-end mr-1 d-none" id="submit-container">
-                        <a class="btn btn-primary btn-lg submitBtn" href="{{ route("admin.stock.stock-adjustments.submit",encryptId($adjustment->id)) }}">
-                            <i class="fas fa-check-circle"></i>
-                            Submit</a>
-                    </div>
+                @endif
             </div>
         </div>
     </div>
