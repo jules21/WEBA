@@ -7,7 +7,7 @@
             <div class="d-flex align-items-center flex-wrap mr-2">
                 <!--begin::Page Title-->
                 <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">
-                    Details
+                    Create Adjustment
                 </h5>
 
                 <!--end::Page Title-->
@@ -52,7 +52,7 @@
                    aria-controls="home"
                    aria-selected="true">
                     <i class="flaticon2-layers mr-2"></i>
-                    New Adjustment
+                    New Adjustment Form
                 </a>
             </li>
         </ul>
@@ -77,34 +77,6 @@
                                     Save & continue
                                 </button>
                                 <button type="button" class="btn btn-sm btn-light-primary font-weight-bold" id="editText" style="display: none">
-                                    Edit
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-                <div class="card card-body mb-3">
-                    <form id="saveNewForm" action="{{route('admin.stock.adjustments.store')}}">
-                        @csrf
-                        <input type="hidden" name="adjustment_id" id="adjustment_id" value="{{$adjustment->id ?? null}}">
-                        <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
-                        <input type="hidden" name="operation_area_id" value="{{auth()->user()->operation_area}}">
-                        <input type="hidden" name="created_by" value="{{auth()->user()->id}}">
-                        <input type="hidden" name="status" value="Pending">
-                        <div class="row">
-                            <div class="col-12">
-                                <label class="d-block">Attachment <small>(optional)</small></label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile" name="attachment" required>
-                                    <label class="custom-file-label" for="customFile">Choose file</label>
-                                </div>
-                            </div>
-                            <div class="col-12 mt-5">
-                                <button type="submit" class="btn btn-sm btn-light-primary font-weight-bold" id="">
-                                    Upload
-                                </button>
-                                <button type="button" class="btn btn-sm btn-light-primary font-weight-bold" id="editAttachment" style="display: none">
                                     Edit
                                 </button>
                             </div>
@@ -203,7 +175,37 @@
                     </div>
                 </div>
 
-                    <div class="row justify-content-end mr-1">
+                <div class="card card-body mb-3 d-none" id="attachment-container">
+                    <form id="saveNewForm1" action="{{route('admin.stock.adjustments.store')}}" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="adjustment_id" id="adjustment_id" value="{{$adjustment->id ?? null}}">
+                        <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
+                        <input type="hidden" name="operation_area_id" value="{{auth()->user()->operation_area}}">
+                        <input type="hidden" name="created_by" value="{{auth()->user()->id}}">
+                        <input type="hidden" name="status" value="Pending">
+                        <div class="row">
+                            <input type="hidden" name="description" id="_description" value="{{ $adjustment->description ?? '' }}">
+                            <div class="col-12">
+                                <label class="d-block">Attachment <small>(optional)</small></label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="customFile" name="attachment" required>
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-5">
+                                <button type="submit" class="btn btn-sm btn-light-primary font-weight-bold" id="uploadAttachment">
+                                    Upload
+                                </button>
+                                <button type="button" class="btn btn-sm btn-light-primary font-weight-bold" id="editAttachment" style="display: none">
+                                    Edit
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                    <div class="row justify-content-end mr-1 d-none" id="submit-container">
                         <a class="btn btn-primary btn-lg submitBtn" href="{{ route("admin.stock.stock-adjustments.submit",encryptId($adjustment->id)) }}">
                             <i class="fas fa-check-circle"></i>
                             Submit</a>
@@ -226,6 +228,7 @@
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" id="item_adjustment_id" name="adjustment_id" value="{{$adjustment->id ?? null}}">
+                        <input type="hidden" id="_item_id" name="id" value="">
                         <div class="form-group">
                             <label for="type">Adjustment Type</label>
                             <select name="adjustment_type" id="adjustment-type" class="form-control select2"
@@ -235,20 +238,21 @@
                                 <option value="decrease">Out</option>
                             </select>
                         </div>
+                        <input type="hidden" name="available_quantity" id="available-quantity">
                         <div class="form-group">
                             <label for="item_id">Item</label>
-                            <select name="item_id" id="item_id" class="form-control select2"
+                            <select name="item_id" id="item_id" class="form-control"
                                     style="width: 100% !important;">
                                 <option value="">Select Item</option>
                                 @foreach($stock ?? [] as $record)
-                                    <option value="{{$record->item_id}}">{{optional($record->item)->name}}
+                                    <option data-quantity="{{$record->quantity}}" value="{{$record->id}}">{{optional($record)->name}}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
-                            <input type="number" name="quantity" id="quantity" class="form-control" min="1" max="10"/>
+                            <input type="number" name="quantity" id="quantity" class="form-control" min="1" />
                         </div>
                         <div class="form-group">
                             <label for="unit_price">Unit Price</label>
@@ -298,9 +302,59 @@
                         success: function (response) {
                             $('#adjustment_id').val(response.id);
                             $('#item_adjustment_id').val(response.id);
+                            $('#reason').val(response.reason);
+                            $('#_description').val(response.reason);
                             $('#items_container').removeClass('d-none');
                             $('#reason').prop('disabled', true);
-                            btn.text('edit');
+                            $('#editText').css('display', 'inline-block');
+                            $('#saveNew').css('display', 'none');
+
+                            $("#attachment-container").removeClass('d-none');
+                            $("#submit-container").removeClass('d-none');
+
+                            console.log(response);
+                            // location.reload();
+                        },
+                        error: function (xhr) {
+                            console.log(xhr);
+                            // Swal.fire(
+                            //     'Error!',
+                            //     "Unable to save item, please try again later",
+                            //     'error'
+                            // );
+                        }
+                    });
+                }
+            })
+            $('#saveNewForm1').submit(function (e) {
+                e.preventDefault();
+                const form = $('#saveNewForm1');
+                const btn = $('#uploadAttachment');
+                if (form.valid()) {
+                    btn.addClass('spinner spinner-white spinner-right')
+                        .prop('disabled', true);
+                    //make ajax call
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: 'POST',
+                        data: form.serialize(),
+                        complete: function () {
+                            btn.removeClass('spinner spinner-white spinner-right')
+                                .prop('disabled', false);
+                        },
+                        success: function (response) {
+                            $('#adjustment_id').val(response.id);
+                            $('#item_adjustment_id').val(response.id);
+                            $('#items_container').removeClass('d-none');
+                            $('#reason').prop('disabled', true);
+                            $('#editText').css('display', 'inline-block');
+                            $('#saveNew').css('display', 'none');
+                            btn.css('display', 'none');
+                            $('#uploadAttachment').css('display', 'none');
+                            $('#editAttachment').css('display', 'inline-block');
+
+                            $("#attachment-container").removeClass('d-none');
+                            $("#submit-container").removeClass('d-none');
 
                             console.log(response);
                             // location.reload();
@@ -322,6 +376,7 @@
             $(document).on('click', '.js-edit', function () {
                 let $itemId = $('#item_id');
                 $itemId.val($(this).data('item_id'));
+                $('#_item_id').val($(this).data('id'));
                 $('#quantity').val($(this).data('quantity'));
                 $('#unit_price').val($(this).data('unit_price'));
                 $('#description').val($(this).data('description'));
@@ -377,6 +432,25 @@
             });
         });
 
+        $('#adjustment-type').change(function (){
+            $('#item_id').val('');
+            $('#quantity').val('');
+        })
+
+        $('#item_id').change(function (){
+            $('#quantity').val('');
+            const adjustmenTtype = $('#adjustment-type').val();
+            if (adjustmenTtype === 'increase') {
+                const quantity = $(this).find(':selected').data('quantity');
+                $('#available-quantity').val(9999999999999)
+            } else {
+                const quantity = $(this).find(':selected').data('quantity');
+                $('#available-quantity').val(quantity);
+            }
+
+
+        })
+
         const initData = function (){
             const adjustment_id = $('#adjustment_id').val();
             if (adjustment_id) {
@@ -385,6 +459,8 @@
                 $('#editText').css('display', 'inline-block');
                 $('#saveNew').css('display', 'none');
 
+                $("#attachment-container").removeClass('d-none');
+                $("#submit-container").removeClass('d-none');
             }
         }
     </script>

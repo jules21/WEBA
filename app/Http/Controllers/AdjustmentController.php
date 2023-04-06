@@ -19,10 +19,12 @@ use ReflectionClass;
 class AdjustmentController extends Controller
 {
     use GetClassName;
+
+    const ADJUSTMENT_ATTACHMENT_PATH = 'public/adjustment/attachments';
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -55,6 +57,7 @@ class AdjustmentController extends Controller
     }
     public function store(StoreAdjustmentRequest $request)
     {
+        dd($request->all());
         $adjustmentId = \request('adjustment_id');
         $adjustment = Adjustment::query()->find($adjustmentId);
         if ($adjustment) {
@@ -65,6 +68,14 @@ class AdjustmentController extends Controller
             session()->forget('adjustment_id');
             session()->put('adjustment_id', $adjustment->id);
             $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
+        }
+        if ($request->has('attachment') && $request->file('attachment')->isValid()) {
+                $file = $request->file('attachment');
+                $destinationPath = self::ADJUSTMENT_ATTACHMENT_PATH;
+                $path = $file->store($destinationPath);
+                $attachment = str_replace($destinationPath, '', $path);
+                $adjustment->attachment = $attachment;
+                $adjustment->save();
         }
         return $adjustment;
 
@@ -294,6 +305,9 @@ class AdjustmentController extends Controller
 
     public function createNewAdjustment()
     {
+        $user = auth()->user();
+
+
         $adjustmentId = \request('adjustment_id');
         if ($adjustmentId) {
             $adjustment = Adjustment::find($adjustmentId);
@@ -301,6 +315,9 @@ class AdjustmentController extends Controller
             $adjustment = Adjustment::find(session()->get('adjustment_id'));
         } else {
             $adjustment = new Adjustment();
+        }
+        if ($adjustment) {
+            $adjustment->load(['items.item', 'flowHistories.user']);
         }
 //        //
 //        if ($adjustment) {
@@ -313,15 +330,24 @@ class AdjustmentController extends Controller
 //                ->where('is_comment', '=', false);
 //            $stock = Stock::query()->where('operation_area_id', $adjustment->operation_area_id)->get();
 //        }
-        $stock = Stock::query()->where('operation_area_id', auth()->user()->operation_area)->get();
 
+        $items = Item::query()->with('category')->where('operator_id', $user->operator_id)->get();
+        $stock = Stock::with('operationArea','item','item.category')
+            ->where('operation_area_id', $user->operation_area)->get();
+        $stock_data = $items->map(function ($item)use($user,$stock){
+            $item->quantity = collect($stock)
+                ->where('item_id', $item->id)
+                ->where('operation_area_id', $user->operation_area)
+                ->sum('quantity');
+            return $item;
+        });
 
         return view('admin.stock.adjustment.create_new', [
 //            'adjustment_id' => $adjustmentId,
             'adjustment' => $adjustment,
 //            'reviews' => $reviews ?? null,
 //            'flowHistories' => $flowHistories ?? null,
-            'stock' => $stock ?? null
+            'stock' => $stock_data ?? null
         ]);
 }
 }

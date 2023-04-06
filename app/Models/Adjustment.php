@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use OwenIt\Auditing\Contracts\Auditable;
+use Storage;
 
 /**
  * App\Models\Adjustment
@@ -57,6 +58,7 @@ class Adjustment extends Model implements Auditable
     const APPROVED = "Approved";
 
     const REJECTED = "Rejected";
+    const RETURN_BACK = "Return Back";
 
     protected $appends = ['status_color'];
 
@@ -86,7 +88,7 @@ class Adjustment extends Model implements Auditable
     {
         return [
             self::APPROVED,
-            self::REJECTED
+            self::RETURN_BACK
         ];
     }
 
@@ -99,7 +101,7 @@ class Adjustment extends Model implements Auditable
 
     public function canBeSubmitted(): bool
     {
-        return $this->status === self::PENDING
+        return in_array($this->status,[self::PENDING,self::RETURN_BACK])
             && auth()->user()->operation_area
             && auth()->user()->can(Permission::CreateAdjustment);
     }
@@ -113,4 +115,14 @@ class Adjustment extends Model implements Auditable
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function movementDetails(): MorphMany
+    {
+        return $this->morphMany(StockMovementDetail::class, 'model');
+    }
+    public function getAttachment(): ?string
+    {
+        return $this->attachment ? Storage::url('public/adjustment/attachments/'.$this->attachment) : null;
+    }
+
 }
