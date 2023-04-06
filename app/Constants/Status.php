@@ -33,4 +33,6 @@ class Status
     const PARTIALLY_DELIVERED = 'Partially Delivered';
 
     const DELIVERED = 'Delivered';
+
+    const RE_SUBMITTED = 'Re-Submitted';
 }
