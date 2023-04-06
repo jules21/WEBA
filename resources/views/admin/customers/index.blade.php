@@ -28,41 +28,41 @@
     </div>
 @endsection
 @section('content')
-        <div class="card shadow-none border">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h4>
-                        Customers
-                    </h4>
+    <div class="card shadow-none border">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4>
+                    Customers
+                </h4>
 
-                    <buttont type="button" class="btn btn-light-primary rounded font-weight-bolder" id="addButton">
-                        <i class="flaticon2-plus"></i>
-                        Add New Customer
-                    </buttont>
-                </div>
+                <buttont type="button" class="btn btn-light-primary rounded font-weight-bolder" id="addButton">
+                    <i class="flaticon2-plus"></i>
+                    Add New Customer
+                </buttont>
+            </div>
 
 
-                <div class="table-responsive my-3">
-                    <table class="table table-head-custom border table-head-solid table-hover dataTable">
-                        {{--                    <table class="table table-head-custom border rounded-lg table-hover dataTable">--}}
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Doc Number</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                            <th>Connections</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
+            <div class="table-responsive my-3">
+                <table class="table table-head-custom border table-head-solid table-hover dataTable">
+                    {{--                    <table class="table table-head-custom border rounded-lg table-hover dataTable">--}}
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Doc Number</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Connections</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-                        </tbody>
-                    </table>
+                    </tbody>
+                </table>
 
-                </div>
             </div>
         </div>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
          aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -619,6 +619,22 @@
                             },
                             success: function (data) {
                                 dataTable.ajax.reload();
+                            },
+                            error: function (response) {
+                                let status = response.status;
+                                if (status === 400) {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: response.responseJSON.message,
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: 'Something went wrong!, please try again later',
+                                    });
+                                }
                             }
                         })
                     }
