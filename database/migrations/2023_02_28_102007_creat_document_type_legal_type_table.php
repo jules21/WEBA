@@ -13,7 +13,7 @@ class CreatDocumentTypeLegalTypeTable extends Migration
      */
     public function up()
     {
-        Schema::create("document_mapping", function (Blueprint $table) {
+        Schema::create('document_mapping', function (Blueprint $table) {
             $table->foreignId('legal_type_id')->constrained();
             $table->foreignId('document_type_id')->constrained();
             $table->unique(['legal_type_id', 'document_type_id']);
@@ -27,6 +27,6 @@ class CreatDocumentTypeLegalTypeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists("document_mapping");
+        Schema::dropIfExists('document_mapping');
     }
 }

@@ -31,7 +31,6 @@ class CurrencyOperatorController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCurrencyOperatorRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCurrencyOperatorRequest $request)
@@ -42,7 +41,6 @@ class CurrencyOperatorController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\CurrencyOperator  $currencyOperator
      * @return \Illuminate\Http\Response
      */
     public function show(CurrencyOperator $currencyOperator)
@@ -53,7 +51,6 @@ class CurrencyOperatorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\CurrencyOperator  $currencyOperator
      * @return \Illuminate\Http\Response
      */
     public function edit(CurrencyOperator $currencyOperator)
@@ -64,8 +61,6 @@ class CurrencyOperatorController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateCurrencyOperatorRequest  $request
-     * @param  \App\Models\CurrencyOperator  $currencyOperator
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateCurrencyOperatorRequest $request, CurrencyOperator $currencyOperator)
@@ -76,7 +71,6 @@ class CurrencyOperatorController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CurrencyOperator  $currencyOperator
      * @return \Illuminate\Http\Response
      */
     public function destroy(CurrencyOperator $currencyOperator)

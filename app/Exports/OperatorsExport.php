@@ -4,15 +4,12 @@ namespace App\Exports;
 
 use App\Models\Operator;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class OperatorsExport implements FromQuery, ShouldAutoSize, WithMapping, WithTitle, WithHeadings, WithStyles
@@ -20,8 +17,11 @@ class OperatorsExport implements FromQuery, ShouldAutoSize, WithMapping, WithTit
     use Exportable;
 
     private ?string $startDate;
+
     private ?string $endDate;
+
     private ?string $districtId;
+
     private ?int $operationAreaId;
 
     public function __construct(?string $startDate, ?string $endDate, ?int $districtId, ?int $operationAreaId)
@@ -41,7 +41,6 @@ class OperatorsExport implements FromQuery, ShouldAutoSize, WithMapping, WithTit
     {
         return 'Operators';
     }
-
 
     public function query()
     {
@@ -97,7 +96,6 @@ class OperatorsExport implements FromQuery, ShouldAutoSize, WithMapping, WithTit
         ];
     }
 
-
     public function styles(Worksheet $sheet): array
     {
         return [
@@ -105,6 +103,4 @@ class OperatorsExport implements FromQuery, ShouldAutoSize, WithMapping, WithTit
             1 => ['font' => ['bold' => true]],
         ];
     }
-
-
 }

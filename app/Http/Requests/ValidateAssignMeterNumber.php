@@ -9,8 +9,6 @@ class ValidateAssignMeterNumber extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -19,8 +17,6 @@ class ValidateAssignMeterNumber extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -29,13 +25,13 @@ class ValidateAssignMeterNumber extends FormRequest
             'item_id' => ['required', 'exists:items,id',
                 Rule::unique('meter_requests')->where(function ($query) {
                     return $query->where('request_id', request('request_id'));
-                })->ignore(request('id'))
+                })->ignore(request('id')),
             ],
             'meter_number' => [
                 'required',
-//                Rule::unique("meter_requests")->ignore(request('id'))
+                //                Rule::unique("meter_requests")->ignore(request('id'))
             ],
-            'last_index' => ['required', 'numeric', 'integer']
+            'last_index' => ['required', 'numeric', 'integer'],
         ];
     }
 
@@ -49,8 +45,8 @@ class ValidateAssignMeterNumber extends FormRequest
             'meter_number.required' => 'Please enter a meter number',
             'last_index.required' => 'Please enter a last index',
             'last_index.numeric' => 'Last index must be a number',
-            'meter_number.unique' => "Meter number already exists",
-            'item_id.unique' => "Item already exists",
+            'meter_number.unique' => 'Meter number already exists',
+            'item_id.unique' => 'Item already exists',
         ];
     }
 }

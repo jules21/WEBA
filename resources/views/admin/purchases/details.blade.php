@@ -13,6 +13,7 @@
 
                 <!--end::Page Title-->
                 <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-4 bg-gray-200"></div>
+
                 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                     <li class="breadcrumb-item">
                         <a href="{{ route('admin.dashboard') }}" class="text-muted">
@@ -46,30 +47,43 @@
     </div>
 
     <div class="card card-body tw-shadow-sm border tw-border-gray-300">
-        <ul class="nav nav-light-primary nav-pills" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link font-weight-bolder active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                   aria-controls="home"
-                   aria-selected="true">
-                    <i class="flaticon2-layers mr-2"></i>
-                    Details
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center">
+            <ul class="nav nav-light-primary nav-pills mb-3 mb-lg-0" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bolder active" id="home-tab" data-toggle="tab" href="#home"
+                       role="tab"
+                       aria-controls="home"
+                       aria-selected="true">
+                        <i class="flaticon2-layers mr-2"></i>
+                        Details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bolder" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                       aria-controls="profile" aria-selected="false">
+                        <i class="flaticon2-heart-rate-monitor mr-2"></i>
+                        Reviews
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bolder" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                       aria-controls="contact" aria-selected="false">
+                        <i class="flaticon2-time mr-2"></i>
+                        Flow History
+                    </a>
+                </li>
+            </ul>
+            @if($purchase->return_back_status==\App\Constants\Status::RE_SUBMITTED)
+                <span class="badge badge-warning rounded-pill align-self-start">Re-Submitted</span>
+            @endif
+            @if($purchase->return_back_status==\App\Constants\Status::RETURN_BACK && auth()->user()->can(\App\Constants\Permission::StockInItems))
+                <a href="{{ route('admin.purchases.edit', encryptId($purchase->id)) }}"
+                   class="btn btn-sm bg-accent font-weight-bolder align-self-start text-primary">
+                    <i class="flaticon2-edit text-primary"></i>
+                    Edit Stock In
                 </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link font-weight-bolder" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                   aria-controls="profile" aria-selected="false">
-                    <i class="flaticon2-heart-rate-monitor mr-2"></i>
-                    Reviews
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link font-weight-bolder" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
-                   aria-controls="contact" aria-selected="false">
-                    <i class="flaticon2-time mr-2"></i>
-                    Flow History
-                </a>
-            </li>
-        </ul>
+            @endif
+        </div>
         <div class="tab-content  mt-5" id="myTabContent">
 
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -92,12 +106,13 @@
 
                     <div class="col-lg-4">
                         <strong class="d-block">VAT Amount:</strong>
-                        <input readonly value=" {{ number_format($purchase->tax_amount) }}"
+                        <input readonly value="RWF {{ number_format($purchase->tax_amount) }}"
                                class="form-control-plaintext"/>
                     </div>
                     <div class="col-lg-4">
                         <strong class="d-block">Total:</strong>
-                        <input readonly value=" {{ number_format($purchase->total) }}" class="form-control-plaintext"/>
+                        <input readonly value="RWF {{ number_format($purchase->total) }}"
+                               class="form-control-plaintext"/>
                     </div>
                 </div>
 
@@ -127,10 +142,10 @@
                         <tr>
                             <th colspan="3" class=" font-weight-bolder"></th>
                             <th class="font-weight-bolder text-left">
-                                {{ number_format($purchase->movementDetails->sum('total_vat_amount')) }}
+                                RWF {{ number_format($purchase->movementDetails->sum('total_vat_amount')) }}
                             </th>
                             <th class="font-weight-bolder text-left">
-                                {{ number_format($purchase->movementDetails->sum('total')) }}
+                                RWF {{ number_format($purchase->movementDetails->sum('total')) }}
                             </th>
                         </tr>
                         </tfoot>
@@ -160,6 +175,7 @@
                             </h4>
 
                             <form action="{{ route("admin.purchases.submit-review",encryptId($purchase->id)) }}"
+                                  enctype="multipart/form-data"
                                   method="post" id="formSaveReview">
                                 @csrf
                                 <div class="form-group">
@@ -170,6 +186,14 @@
                                             <option value="{{ $item }}">{{ $item }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+
+                                <div class=" form-group">
+                                    <label for="attachment">Attachment:</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="attachment" name="attachment">
+                                        <label class="custom-file-label" for="attachment">Choose file</label>
+                                    </div>
                                 </div>
 
                                 <div class=" form-group">
@@ -235,7 +259,15 @@
                                     </div>
 
                                     <div class="timeline-content">
-                                        {{ $item->comment }}
+                                        <p class="mb-0">
+                                            {{ $item->comment }}
+                                        </p>
+                                        @if($item->attachment_url)
+                                            <a href="{{ $item->attachment_url }}" target="_blank"
+                                               class="btn btn-light-primary rounded-lg mt-2">
+                                                Download Attachment
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach

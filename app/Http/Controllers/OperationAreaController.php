@@ -3,19 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOperationAreaRequest;
-use App\Http\Requests\UpdateOperationAreaRequest;
 use App\Models\ChartAccount;
 use App\Models\ChartAccountTemplate;
-use App\Models\OperationArea;
 use App\Models\District;
+use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\Request;
 use App\Models\User;
 use DB;
 use Exception;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
@@ -23,7 +20,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 class OperationAreaController extends Controller
 {
-
     /**
      * @throws Exception
      */
@@ -43,16 +39,16 @@ class OperationAreaController extends Controller
                                                     Options
                                                  </button>
                                                  <div class="dropdown-menu border">
-                                                 <a class="dropdown-item" href="' . route('admin.operator.operator-area-users', encryptId($row->id)) . '">
+                                                 <a class="dropdown-item" href="'.route('admin.operator.operator-area-users', encryptId($row->id)).'">
                                                          <i class="fas fa-users"></i>
                                                          <span class="ml-2">Users</span>
                                                       </a>
                                                       <div class="dropdown-divider"></div>
-                                                     <a class="dropdown-item js-edit" href="' . route('admin.operator.area-of-operation.show', encryptId($row->id)) . '">
+                                                     <a class="dropdown-item js-edit" href="'.route('admin.operator.area-of-operation.show', encryptId($row->id)).'">
                                                          <i class="fas fa-edit"></i>
                                                          <span class="ml-2">Edit</span>
                                                      </a>
-                                                     <a class="dropdown-item js-delete" href="' . route('admin.operator.area-of-operation.destroy', encryptId($row->id)) . '">
+                                                     <a class="dropdown-item js-delete" href="'.route('admin.operator.area-of-operation.destroy', encryptId($row->id)).'">
                                                          <i class="fas fa-trash"></i>
                                                          <span class="ml-2">Delete</span>
                                                      </a>
@@ -67,10 +63,9 @@ class OperationAreaController extends Controller
 
         return view('admin.area-of-operation.index', [
             'operator' => $operator,
-            'districts' => $districts
+            'districts' => $districts,
         ]);
     }
-
 
     /**
      * @throws Throwable
@@ -82,7 +77,7 @@ class OperationAreaController extends Controller
         $areaOfOperation = $operator->operationAreas()
             ->where([
                 ['district_id', '=', $data['district_id'] ?? 0],
-                ['id', '!=', $data['id'] ?? 0]
+                ['id', '!=', $data['id'] ?? 0],
             ])
             ->first();
 
@@ -90,10 +85,9 @@ class OperationAreaController extends Controller
             return response()->json([
                 'message' => 'Area of operation already exists',
                 'success' => false,
-                'data' => $areaOfOperation
+                'data' => $areaOfOperation,
             ], ResponseAlias::HTTP_BAD_REQUEST);
         }
-
 
         $id = $request->input('id');
         DB::beginTransaction();
@@ -116,27 +110,27 @@ class OperationAreaController extends Controller
                 ->json([
                     'message' => 'Area of operation created successfully',
                     'success' => true,
-                    'data' => $opArea
+                    'data' => $opArea,
                 ], ResponseAlias::HTTP_CREATED);
         }
 
         return back();
     }
 
-
     public function show(OperationArea $operationArea)
     {
         $operationArea->load('operator');
+
         return $operationArea;
     }
-
 
     public function destroy(OperationArea $operationArea)
     {
         $operationArea->delete();
 
-        if (request()->ajax())
+        if (request()->ajax()) {
             return response()->noContent();
+        }
 
         return back();
     }
@@ -145,17 +139,17 @@ class OperationAreaController extends Controller
     {
         $headers = [
             'CMS-RWSS-Key' => config('app.CMS-RWSS-Key'),
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ];
 
         $clmsOpId = decryptId($id);
         $operatorId = decryptId(\request('op_id'));
         $body = [
-            "operatorId" => $clmsOpId
+            'operatorId' => $clmsOpId,
         ];
 
         $response = Http::withHeaders($headers)
-            ->post(config('app.CLMS_URL') . '/api/v1/cms-rwss/get-operator/operation-area', $body);
+            ->post(config('app.CLMS_URL').'/api/v1/cms-rwss/get-operator/operation-area', $body);
 
         if ($response->status() == 200) {
             return $this->getOperationAreasResponse($response, $operatorId);
@@ -164,7 +158,7 @@ class OperationAreaController extends Controller
         return response()
             ->json([
                 'message' => 'Unable to fetch area of operations, please try again later',
-                'data' => $response->json()
+                'data' => $response->json(),
             ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
 
     }
@@ -179,6 +173,7 @@ class OperationAreaController extends Controller
         $operators = Operator::query()->whereIn('id', $operatorIds)
             ->with('operationAreas')
             ->get();
+
         return $operators->map(function ($operator) {
             return $operator->operationAreas;
         });
@@ -187,15 +182,12 @@ class OperationAreaController extends Controller
     public function getOperationAreasByOperator()
     {
         $operatorId = request()->input('operator_id');
+
         return OperationArea::query()
             ->where('operator_id', $operatorId)
             ->get();
     }
 
-    /**
-     * @param $opArea
-     * @return void
-     */
     public function saveChartOfAccounts($opArea): void
     {
         ChartAccountTemplate::query()
@@ -210,7 +202,7 @@ class OperationAreaController extends Controller
                     $toArray + [
                         'operation_area_id' => $opArea->id,
                         'created_at' => now(),
-                        'updated_at' => now()
+                        'updated_at' => now(),
                     ]
                 );
 
@@ -218,8 +210,6 @@ class OperationAreaController extends Controller
     }
 
     /**
-     * @param $response
-     * @param int $operatorId
      * @return array|JsonResponse
      */
     public function getOperationAreasResponse($response, int $operatorId)
@@ -238,7 +228,7 @@ class OperationAreaController extends Controller
         $existingOperationAreasIds = $operationAreas->pluck('district_id');
         if ($areaIds->diff($existingOperationAreasIds)->isEmpty()) {
             return \response()->json([
-                'message' => "No new area of operations found for this operator"
+                'message' => 'No new area of operations found for this operator',
             ], ResponseAlias::HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -247,16 +237,18 @@ class OperationAreaController extends Controller
             ->map(function ($item) use ($existingOperationAreasIds) {
                 $item['area_of_operations'] = collect($item['area_of_operations'])
                     ->filter(function ($area) use ($existingOperationAreasIds) {
-                        return !$existingOperationAreasIds->contains($area['district_id']);
+                        return ! $existingOperationAreasIds->contains($area['district_id']);
                     })->toArray();
+
                 return $item;
             })->toArray();
     }
 
     public function getOfficersByOperationArea()
     {
-        if (\request()->operation_area_id == null)
+        if (\request()->operation_area_id == null) {
             return [];
+        }
 
         $customerFieldOfficers = User::with('bills', 'bills.meterRequest', 'bills.meterRequest.request')
             ->whereHas('bills', function ($query) {
@@ -274,10 +266,9 @@ class OperationAreaController extends Controller
     public function getAreasByDistrict()
     {
         $districtId = request()->input('district_id');
+
         return OperationArea::query()
             ->where('district_id', $districtId)
             ->get();
     }
-
-
 }

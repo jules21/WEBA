@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,6 +21,7 @@ use Illuminate\Support\Carbon;
  * @property string|null $delivery_date
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|RequestDelivery newModelQuery()
  * @method static Builder|RequestDelivery newQuery()
  * @method static Builder|RequestDelivery query()
@@ -34,9 +34,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|RequestDelivery whereId($value)
  * @method static Builder|RequestDelivery whereRequestId($value)
  * @method static Builder|RequestDelivery whereUpdatedAt($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $details
  * @property-read int|null $details_count
  * @property-read \App\Models\Request $request
+ *
  * @mixin Eloquent
  */
 class RequestDelivery extends Model

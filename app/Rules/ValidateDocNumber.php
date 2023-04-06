@@ -21,27 +21,27 @@ class ValidateDocNumber implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param string $attribute
-     * @param mixed $value
-     * @return bool
+     * @param  string  $attribute
+     * @param  mixed  $value
      */
     public function passes($attribute, $value): bool
     {
         $id = request('document_type_id');
-        if ($id == config("app.NATIONAL_ID")) {
+        if ($id == config('app.NATIONAL_ID')) {
             $this->len = 16;
+
             return $this->validateNationalId($value);
-        } else if ($id == 4) {
+        } elseif ($id == 4) {
             $this->len = 9;
+
             return strlen($value) == 9;
         }
+
         return true;
     }
 
     /**
      * Get the validation error message.
-     *
-     * @return string
      */
     public function message(): string
     {
@@ -50,6 +50,6 @@ class ValidateDocNumber implements Rule
 
     private function validateNationalId($value): bool
     {
-        return !(strlen($value) != 16);
+        return ! (strlen($value) != 16);
     }
 }

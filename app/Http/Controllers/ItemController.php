@@ -22,23 +22,23 @@ class ItemController extends Controller
      */
     public function index()
     {
-        if (!\Helper::isOperator())
+        if (! \Helper::isOperator()) {
             abort(403);
+        }
         $items = Item::query()
             ->where('operator_id', auth()->user()->operator_id)
             ->select('items.*')->with('category', 'packagingUnit');
         $dataTable = new ItemsDataTable($items);
+
         return $dataTable->render('admin.stock.items', [
             'categories' => ItemCategory::query()->where('operator_id', auth()->user()->operator_id)->get(),
-            'units' => PackagingUnit::query()->get()
+            'units' => PackagingUnit::query()->get(),
         ]);
     }
-
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreItemRequest $request
      * @return RedirectResponse
      */
     public function store(StoreItemRequest $request)
@@ -49,14 +49,13 @@ class ItemController extends Controller
 //            $validated['vat_rate'] = 0;
 
         Item::query()->create($validated);
+
         return redirect()->back()->with('success', 'Item created successfully');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateItemRequest $request
-     * @param Item $item
      * @return RedirectResponse
      */
     public function update(UpdateItemRequest $request, Item $item)
@@ -74,19 +73,20 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Item $item
      * @return RedirectResponse
      */
     public function destroy(Item $item)
     {
         try {
             $item->delete();
+
             return redirect()->back()->with('success', 'Item deleted successfully');
         } catch (Exception $exception) {
             info('Item cannot be deleted', [
                 'item' => $item->toArray(),
-                'exception' => $exception->getMessage()
+                'exception' => $exception->getMessage(),
             ]);
+
             return redirect()->back()->with('error', 'Item cannot be deleted');
         }
     }
@@ -95,7 +95,7 @@ class ItemController extends Controller
     {
         return view('admin.stock.stock', [
             'operator' => $operator,
-            'items' => Item::query()->select('items.*')->with('category', 'packagingUnit')->get()
+            'items' => Item::query()->select('items.*')->with('category', 'packagingUnit')->get(),
         ]);
     }
 
@@ -106,15 +106,18 @@ class ItemController extends Controller
             ->where('item_category_id', $categoryId)
             ->get();
     }
+
     public function getItemsByCategories()
     {
 
         $categoryyIds = request()->input('item_category_id');
-        if (empty($categoryyIds))
+        if (empty($categoryyIds)) {
             return [];
+        }
         $items = Item::query()->whereIn('item_category_id', $categoryyIds)
             ->with('category')
             ->get();
+
         return $items;
     }
 }

@@ -33,6 +33,7 @@ class StoreSupplierRequest extends FormRequest
             'contact_email' => 'nullable|string|max:255',
         ];
     }
+
     public function messages()
     {
         return [

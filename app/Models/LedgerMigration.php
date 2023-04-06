@@ -4,10 +4,8 @@ namespace App\Models;
 
 use App\Constants\BalanceType;
 use App\Traits\HasEncryptId;
-use App\Traits\HasStatusColor;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -26,6 +24,7 @@ use Illuminate\Support\Carbon;
  * @property int $user_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|LedgerMigration newModelQuery()
  * @method static Builder|LedgerMigration newQuery()
  * @method static Builder|LedgerMigration query()
@@ -40,12 +39,15 @@ use Illuminate\Support\Carbon;
  * @method static Builder|LedgerMigration whereOperationAreaId($value)
  * @method static Builder|LedgerMigration whereUpdatedAt($value)
  * @method static Builder|LedgerMigration whereUserId($value)
+ *
  * @property int|null $ledger_id
  * @property-read string $balance_color
  * @property-read \App\Models\ChartAccount|null $ledger
  * @property-read \App\Models\ChartAccount $ledgerCategory
  * @property-read \App\Models\ChartAccount $ledgerGroup
+ *
  * @method static Builder|LedgerMigration whereLedgerId($value)
+ *
  * @mixin Eloquent
  */
 class LedgerMigration extends Model

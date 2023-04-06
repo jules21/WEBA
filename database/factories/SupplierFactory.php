@@ -9,8 +9,6 @@ class SupplierFactory extends Factory
 {
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
     public function definition(): array
     {
@@ -21,8 +19,8 @@ class SupplierFactory extends Factory
             'address' => $this->faker->address,
             'contact_name' => $this->faker->name,
             'contact_email' => $this->faker->unique()->safeEmail,
-//            'operator_id' => Operator::query()->inRandomOrder()->first()->id
-        'operator_id' => \Helper::getRandomModelId(Operator::class)
+            //            'operator_id' => Operator::query()->inRandomOrder()->first()->id
+            'operator_id' => \Helper::getRandomModelId(Operator::class),
         ];
     }
 }

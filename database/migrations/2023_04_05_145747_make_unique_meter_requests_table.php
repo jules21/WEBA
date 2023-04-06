@@ -17,7 +17,7 @@ class MakeUniqueMeterRequestsTable extends Migration
         MeterRequest::query()
             ->each(function ($query) {
                 $query->update([
-                    'meter_number' => strtoupper(uniqid("MT"))
+                    'meter_number' => strtoupper(uniqid('MT')),
                 ]);
             });
 

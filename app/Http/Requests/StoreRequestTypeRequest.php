@@ -24,9 +24,9 @@ class StoreRequestTypeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'name_kin'=>'required',
-            'is_active'=>'required',
+            'name' => 'required',
+            'name_kin' => 'required',
+            'is_active' => 'required',
         ];
     }
 }

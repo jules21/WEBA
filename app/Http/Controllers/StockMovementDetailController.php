@@ -30,7 +30,6 @@ class StockMovementDetailController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -41,7 +40,6 @@ class StockMovementDetailController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\StockMovementDetail  $stockMovementDetail
      * @return \Illuminate\Http\Response
      */
     public function show(StockMovementDetail $stockMovementDetail)
@@ -52,7 +50,6 @@ class StockMovementDetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\StockMovementDetail  $stockMovementDetail
      * @return \Illuminate\Http\Response
      */
     public function edit(StockMovementDetail $stockMovementDetail)
@@ -63,8 +60,6 @@ class StockMovementDetailController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\StockMovementDetail  $stockMovementDetail
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, StockMovementDetail $stockMovementDetail)
@@ -75,7 +70,6 @@ class StockMovementDetailController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\StockMovementDetail  $stockMovementDetail
      * @return \Illuminate\Http\Response
      */
     public function destroy(StockMovementDetail $stockMovementDetail)

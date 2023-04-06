@@ -7,13 +7,10 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Events\AfterSheet;
-use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize, WithStyles, WithTitle
@@ -21,9 +18,13 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
     use Exportable;
 
     private ?string $startDate = null;
+
     private ?string $endDate;
+
     private ?int $districtId;
+
     private ?string $operatorId;
+
     private ?string $operationAreaId;
 
     public function __construct(?string $startDate, ?string $endDate, ?int $districtId, ?string $operatorId, ?string $operationAreaId)
@@ -77,7 +78,7 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
             'Meter Qty',
             'Water Usage',
             'UPI',
-            'Status'
+            'Status',
         ];
     }
 
@@ -91,10 +92,9 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
             $row->meter_qty,
             $row->waterUsage->name,
             $row->upi,
-            $row->status
+            $row->status,
         ];
     }
-
 
     public function columnFormats(): array
     {
@@ -106,10 +106,7 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
     public function styles(Worksheet $sheet): array
     {
 
-
         return [];
 
     }
-
-
 }

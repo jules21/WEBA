@@ -15,8 +15,9 @@ class PaymentServiceProviderController extends Controller
     public function index()
     {
         //
-        if (auth()->user()->can("Manage banks")) {
+        if (auth()->user()->can('Manage banks')) {
             $banks = PaymentServiceProvider::query()->orderBy('created_at', 'desc')->get();
+
             return view('admin.settings.payment_service_provider', compact('banks'));
         }
         abort(403, 'Unauthorized action.');
@@ -28,13 +29,13 @@ class PaymentServiceProviderController extends Controller
             $response = \Http::withHeaders([
                 'Accept' => 'application/json',
                 'CMS-RWSS-Key' => config('app.CMS-RWSS-Key'),
-            ])->get(config('app.CLMS_URL') . '/api/v1/cms-rwss/get-payment-service-providers');
+            ])->get(config('app.CLMS_URL').'/api/v1/cms-rwss/get-payment-service-providers');
             if ($response->failed()) {
                 return redirect()->back()->with('error', 'Something went wrong');
             }
             $banks = json_decode($response->body());
             foreach ($banks as $bank) {
-                $array = array();
+                $array = [];
                 $array['name'] = $bank->name;
                 $array['client_id'] = $bank->client_id;
                 $array['client_secret'] = $bank->client_secret;
@@ -42,13 +43,14 @@ class PaymentServiceProviderController extends Controller
                 $array['is_active'] = true;
                 PaymentServiceProvider::query()->updateOrCreate(['clms_id' => $bank->id], $array);
             }
+
             return redirect()->back()->with('success', 'Banks synced successfully');
         } catch (\Exception $exception) {
             info($exception->getMessage());
+
             return redirect()->back()->with('error', 'Something went wrong');
         }
     }
-
 
     public function addBank(Request $request)
     {
@@ -56,6 +58,7 @@ class PaymentServiceProviderController extends Controller
         $bank->name = $request->name;
         $bank->is_active = true;
         $bank->save();
+
         return redirect()->back()->with('success', 'Bank added successfully');
     }
 
@@ -64,6 +67,7 @@ class PaymentServiceProviderController extends Controller
         try {
             $bank = PaymentServiceProvider::find($bankId);
             $bank->delete();
+
             return redirect()->back()->with('success', 'Bank deleted successfully');
         } catch (\Exception $exception) {
             return redirect()->back()->with('error', 'Bank cannot be deleted it has been used');
@@ -77,7 +81,7 @@ class PaymentServiceProviderController extends Controller
         $bank->name = $request->name;
         $bank->is_active = $request->is_active;
         $bank->save();
+
         return redirect()->back()->with('success', 'Bank updated successfully');
     }
-
 }

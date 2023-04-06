@@ -10,6 +10,7 @@ use Illuminate\Database\Seeder;
 class LegalTypeSeeder extends Seeder
 {
     use TruncateTable;
+
     /**
      * Run the database seeds.
      *
@@ -32,7 +33,7 @@ class LegalTypeSeeder extends Seeder
 
         $this->truncate('legal_types');
         collect($legalTypes)->each(function ($legalType) {
-           $created =  LegalType::query()->updateOrCreate($legalType);
+           $created = LegalType::query()->updateOrCreate($legalType);
            $created->documentTypes()->sync(\Helper::getRandomModelId(DocumentType::class));
         });
     }

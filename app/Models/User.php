@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -38,6 +37,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
+ *
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -59,10 +59,14 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ *
  * @property int|null $institution_id
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|User whereInstitutionId($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Billing> $bills
  * @property-read int|null $bills_count
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements Auditable
@@ -95,11 +99,14 @@ class User extends Authenticatable implements Auditable
         'email_verified_at' => 'datetime',
     ];
 
-    public function operator(){
+    public function operator()
+    {
         return $this->belongsTo(Operator::class);
     }
-    public function operationArea(){
-        return $this->belongsTo(OperationArea::class,'operation_area','id');
+
+    public function operationArea()
+    {
+        return $this->belongsTo(OperationArea::class, 'operation_area', 'id');
     }
 
     public function bills(): \Illuminate\Database\Eloquent\Relations\HasMany
@@ -107,7 +114,8 @@ class User extends Authenticatable implements Auditable
         return $this->hasMany(Billing::class, 'user_id', 'id');
     }
 
-    public function institution(){
+    public function institution()
+    {
         return $this->belongsTo(Institution::class);
     }
 }

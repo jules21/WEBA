@@ -10,7 +10,6 @@ use Exception;
 
 class LedgerMigrationController extends Controller
 {
-
     /**
      * @throws Exception
      */
@@ -27,6 +26,7 @@ class LedgerMigrationController extends Controller
         $totalBalance = $totalDebits - $totalCredits;
 
         $ledgerGroups = ChartAccount::query()->where('level', '=', 1)->get();
+
         return view('admin.accounting.ledger-migration.index', [
             'ledgerMigrations' => $ledgerMigrations,
             'ledgerGroups' => $ledgerGroups,
@@ -53,11 +53,13 @@ class LedgerMigrationController extends Controller
 
         if ($request->ajax()) {
             session()->flash('success', 'Ledger Migration saved successfully.');
+
             return response()->json([
                 'message' => 'Ledger Migration saved successfully.',
-                'data' => $model
+                'data' => $model,
             ]);
         }
+
         return back()
             ->with('success', 'Ledger Migration saved successfully.');
     }
@@ -65,7 +67,6 @@ class LedgerMigrationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param LedgerMigration $ledgerMigration
      * @return LedgerMigration
      */
     public function show(LedgerMigration $ledgerMigration)
@@ -73,18 +74,19 @@ class LedgerMigrationController extends Controller
         return $ledgerMigration;
     }
 
-
     public function destroy(LedgerMigration $ledgerMigration)
     {
         $ledgerMigration->delete();
+
         return response()->json([
-            'message' => 'Ledger Migration deleted successfully.'
+            'message' => 'Ledger Migration deleted successfully.',
         ]);
     }
 
     public function validateData()
     {
         session()->flash('success', 'Ledger Migration validated successfully.');
+
         return back();
     }
 }

@@ -15,12 +15,12 @@ class InstitutionSeeder extends Seeder
     public function run()
     {
         $institutions = [
-            ['id'=>1, 'name'=>'rura'],
-            ['id'=>2, 'name'=>'district'],
+            ['id' => 1, 'name' => 'rura'],
+            ['id' => 2, 'name' => 'district'],
         ];
 
-        if (!Institution::query()->exists()){
-            foreach ($institutions as $institution){
+        if (! Institution::query()->exists()) {
+            foreach ($institutions as $institution) {
                 Institution::query()->create($institution);
             }
         }

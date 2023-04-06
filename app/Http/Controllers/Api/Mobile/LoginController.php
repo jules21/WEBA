@@ -14,14 +14,15 @@ class LoginController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
         $credentials = request(['email', 'password']);
-        if (!Auth::attempt($credentials))
+        if (! Auth::attempt($credentials)) {
             return response()->json([
                 'action' => 0,
-                'message' => 'Invalid Credentials'
+                'message' => 'Invalid Credentials',
             ]);
+        }
         $user = $request->user();
 //        if ($user->can('Make Billing')) {
             return response()->json([
@@ -36,7 +37,7 @@ class LoginController extends Controller
                 'operator_id' => $user->operator->id ?? null,
                 'operating_area_name' => $user->operationArea->name ?? null,
                 'operating_area_id' => $user->operationArea->id ?? null,
-                'id' => $user->id
+                'id' => $user->id,
             ]);
 //        } else {
 //            return response()->json([
@@ -50,9 +51,10 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
+
         return response()->json([
             'action' => 1,
-            'message' => 'Logout Successful'
+            'message' => 'Logout Successful',
         ]);
     }
 
@@ -63,17 +65,18 @@ class LoginController extends Controller
             'new_password' => 'required',
         ]);
         $user = $request->user();
-        if (!\Hash::check($request->old_password, $user->password)) {
+        if (! \Hash::check($request->old_password, $user->password)) {
             return response()->json([
                 'action' => 0,
-                'message' => 'Old password does not match'
+                'message' => 'Old password does not match',
             ]);
         }
         $user->password = \Hash::make($request->new_password);
         $user->save();
+
         return response()->json([
             'action' => 1,
-            'message' => 'Password changed successfully'
+            'message' => 'Password changed successfully',
         ]);
     }
 }

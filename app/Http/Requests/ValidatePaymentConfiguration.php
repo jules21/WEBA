@@ -24,11 +24,11 @@ class ValidatePaymentConfiguration extends FormRequest
     public function rules()
     {
         return [
-            'payment_type_id'=>'required',
-            'request_type_id'=>'required',
-            'operator_id'=>'required',
-            'operation_area_id'=>'required',
-            'amount'=>'required',
+            'payment_type_id' => 'required',
+            'request_type_id' => 'required',
+            'operator_id' => 'required',
+            'operation_area_id' => 'required',
+            'amount' => 'required',
         ];
     }
 }

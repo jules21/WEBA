@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Sector> $sectors
  * @property-read int|null $sectors_count
+ *
  * @method static \Database\Factories\DistrictFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|District newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|District newQuery()
@@ -25,8 +26,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|District whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District whereProvinceId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|District whereUpdatedAt($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Sector> $sectors
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Sector> $sectors
+ *
  * @mixin \Eloquent
  */
 class District extends Model

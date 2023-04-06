@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCellRequest;
-use App\Http\Requests\UpdateCellRequest;
 use App\Models\Cell;
 use App\Models\Sector;
 

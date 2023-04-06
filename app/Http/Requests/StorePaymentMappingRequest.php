@@ -24,15 +24,15 @@ class StorePaymentMappingRequest extends FormRequest
     public function rules()
     {
         return [
-            'psp_account_id'=>'required',
-            'account_number'=>'required',
+            'psp_account_id' => 'required',
+            'account_number' => 'required',
         ];
     }
 
-    function messages()
+    public function messages()
     {
         return [
-            'account_number.required'=>'Account Name and Account Number is required'
+            'account_number.required' => 'Account Name and Account Number is required',
         ];
     }
 }

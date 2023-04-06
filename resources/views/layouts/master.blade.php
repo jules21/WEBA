@@ -156,7 +156,8 @@
                                                     </svg>
                                                 </span>
                                                 <small
-                                                    class="text-white rounded-pill rounded-sm font-size-xs badge bg-accent">{{auth()->user()->operationArea->name ?? ""}}</small>
+                                                    class="text-white p-2 rounded-sm font-size-xs badge bg-accent">
+                                                    {{auth()->user()->operationArea->name ?? ""}}</small>
                                             @endif
                                         </span>
                                         <i class="menu-arrow"></i>

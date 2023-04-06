@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Database\Factories\CurrencyOperatorFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyOperator newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyOperator newQuery()
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyOperator whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyOperator whereSymbol($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CurrencyOperator whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class CurrencyOperator extends Model

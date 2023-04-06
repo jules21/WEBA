@@ -13,11 +13,11 @@ trait UploadFileTrait
         $uuid = Str::slug(Str::uuid(), '');
         $extension = $file->extension();
         $name = "$uuid.$extension";
+
         return Storage::putFileAS($path, $file, $name);
     }
 
     /**
-     * @param $path
      * @return StreamedResponse
      */
     public function downloadFile($path)

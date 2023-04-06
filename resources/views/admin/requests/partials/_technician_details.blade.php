@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        @if($request->status == \App\Models\Request::ASSIGNED)
+        @if($request->status == \App\Constants\Status::ASSIGNED)
             <div class="d-flex">
                 <button
                     data-id="{{ $technician->id }}"

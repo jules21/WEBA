@@ -10,15 +10,14 @@ use App\Http\Requests\ValidateReviewRequest;
 use App\Models\Adjustment;
 use App\Models\Item;
 use App\Models\Stock;
-use App\Models\StockMovementDetail;
 use App\Traits\GetClassName;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use ReflectionClass;
 
 class AdjustmentController extends Controller
 {
     use GetClassName;
+
     /**
      * Display a listing of the resource.
      *
@@ -29,34 +28,41 @@ class AdjustmentController extends Controller
         $user = auth()->user();
         $query = $this->extracted($user);
         $adjustments = $query->get();
+
         return view('admin.stock.adjustment.index', compact('adjustments'));
     }
 
     public function myTasks()
     {
         $user = auth()->user();
-        if (!$user->can(Permission::ApproveAdjustment))
+        if (! $user->can(Permission::ApproveAdjustment)) {
             return redirect()->back()->with('error', 'You are not a reviewer');
+        }
 
         $query = $this->extracted($user);
         $adjustments = $query->where('status', Adjustment::SUBMITTED)->get();
+
         return view('admin.stock.adjustment.index', compact('adjustments'));
     }
 
     public function create()
     {
         $user = auth()->user();
-        if (!$user->can(Permission::CreateAdjustment))
+        if (! $user->can(Permission::CreateAdjustment)) {
             return redirect()->back()->with('error', 'You are not allowed to create adjustment');
+        }
 
         $query = $this->extracted($user);
         $adjustments = $query->WhereIn('status', [Adjustment::PENDING, Adjustment::SUBMITTED])->get();
+
         return view('admin.stock.adjustment.index', compact('adjustments'));
     }
+
     public function store(StoreAdjustmentRequest $request)
     {
-        $adjustment =  Adjustment::query()->create($request->validated());
+        $adjustment = Adjustment::query()->create($request->validated());
         $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
+
         return back()->with('success', 'Adjustment created successfully');
     }
 
@@ -64,7 +70,6 @@ class AdjustmentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Adjustment  $adjustment
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateAdjustmentRequest $request, Adjustment $adjustment)
@@ -73,13 +78,13 @@ class AdjustmentController extends Controller
         if ($updated) {
             return back()->with('success', 'Adjustment updated successfully');
         }
+
         return back()->with('error', 'Adjustment update failed');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Adjustment  $adjustment
      * @return \Illuminate\Http\Response
      */
     public function destroy(Adjustment $adjustment)
@@ -87,17 +92,21 @@ class AdjustmentController extends Controller
         try {
             $adjustment->items()->delete();
             $adjustment->delete();
+
             return back()->with('success', 'Adjustment deleted successfully');
         } catch (\Exception $e) {
             return back()->with('error', 'Adjustment delete failed');
         }
     }
+
     public function items(Adjustment $adjustment)
     {
         $items = $adjustment->items;
         $stock = Stock::query()->where('operation_area_id', $adjustment->operation_area_id)->get();
+
         return view('admin.stock.adjustment.items', compact('stock', 'items', 'adjustment'));
     }
+
     public function addItem(ValidateAdjustmentItemRequest $request, Adjustment $adjustment)
     {
         $data = $request->validated();
@@ -110,16 +119,15 @@ class AdjustmentController extends Controller
                     'type' => (new ReflectionClass(Adjustment::class))->getShortName(),
                     'unit_price' => $data['unit_price'],
                     'adjustment_type' => $data['adjustment_type'],
-                    'status' => Adjustment::PENDING
+                    'status' => Adjustment::PENDING,
                 ]
             );
-
 
         if ($request->ajax()) {
             return response()->json([
                 'message' => 'Item saved successfully',
                 'status' => 'success',
-                'data' => $item
+                'data' => $item,
             ], 200);
         }
 
@@ -127,6 +135,7 @@ class AdjustmentController extends Controller
             ->with('success', 'Item saved successfully');
 
     }
+
     public function removeItem(Adjustment $adjustment, $id)
     {
         $id = decryptId($id);
@@ -135,7 +144,7 @@ class AdjustmentController extends Controller
         if (\request()->ajax()) {
             return response()->json([
                 'message' => 'Item deleted successfully',
-                'status' => 'success'
+                'status' => 'success',
             ], 200);
         }
 
@@ -144,13 +153,17 @@ class AdjustmentController extends Controller
             ->with('success', 'Item deleted successfully');
 
     }
+
     public function submit(Adjustment $adjustment)
     {
-        if (!$adjustment->items()->exists())
+        if (! $adjustment->items()->exists()) {
             return redirect()->back()->with('error', 'Adjustment has no items');
+        }
         $adjustment->update(['status' => 'Submitted']);
+
         return redirect()->route('admin.stock.adjustments.index')->with('success', 'Adjustment submitted successfully');
     }
+
     public function show(Adjustment $adjustment)
     {
         $adjustment->load(['items.item', 'flowHistories.user']);
@@ -167,7 +180,7 @@ class AdjustmentController extends Controller
             'adjustment' => $adjustment,
             'reviews' => $reviews,
             'flowHistories' => $flowHistories,
-            'stock' => $stock
+            'stock' => $stock,
         ]);
     }
 
@@ -181,7 +194,7 @@ class AdjustmentController extends Controller
 
             $adjustment->update([
                 'status' => $status,
-                'approved_by' => auth()->id()
+                'approved_by' => auth()->id(),
             ]);
             $this->saveFlowHistory($adjustment, "Adjustment {$status}", $status);
 
@@ -190,14 +203,14 @@ class AdjustmentController extends Controller
             }
 
             $adjustment->items()->update([
-                'status' => $status
+                'status' => $status,
             ]);
         });
 
         if (\request()->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Adjustment reviewed successfully'
+                'message' => 'Adjustment reviewed successfully',
             ]);
         }
 
@@ -215,9 +228,10 @@ class AdjustmentController extends Controller
                 'user_id' => auth()->id(),
                 'comment' => $message,
                 'type' => (new ReflectionClass(Adjustment::class))->getShortName(),
-                'is_comment' => $isComment
+                'is_comment' => $isComment,
             ]);
     }
+
     public function updateStockItems(Adjustment $adjustment): void
     {
         foreach ($adjustment->items()->get() as $movement) {
@@ -229,7 +243,7 @@ class AdjustmentController extends Controller
 
             $quantity = $movement->adjustment_type == 'increase' ? $movement->quantity : -$movement->quantity;
             $stockItem->update([
-                'quantity' => $stockItem->quantity + $quantity
+                'quantity' => $stockItem->quantity + $quantity,
             ]);
         }
     }
@@ -257,7 +271,6 @@ class AdjustmentController extends Controller
     }
 
     /**
-     * @param $user
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function extracted($user)
@@ -271,6 +284,7 @@ class AdjustmentController extends Controller
         $query->when($user->operation_area, function ($query) use ($user) {
             $query->where('operation_area_id', $user->operation_area);
         });
+
         return $query;
     }
 }

@@ -11,7 +11,6 @@ function getPaymentConfiguration($paymentTypeId, $requestTypeId, $operationAreaI
         ->first();
 }
 
-
 function accountingPermissions(): array
 {
     return [
@@ -28,7 +27,7 @@ function accountingSettingsPermissions(): array
     return [
         Permission::AssignChartOfAccounts,
         Permission::ManageLedgerMigration,
-        Permission::ManageChartOfAccounts
+        Permission::ManageChartOfAccounts,
     ];
 }
 

@@ -4,10 +4,10 @@ namespace App\Jobs;
 
 use App\Mail\RegisterUser;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 
 class MailRegisteredUser implements ShouldQueue
@@ -19,7 +19,13 @@ class MailRegisteredUser implements ShouldQueue
      *
      * @return void
      */
-    private $email, $password, $name,$phone;
+    private $email;
+
+    private $password;
+
+    private $name;
+
+    private $phone;
 
     public function __construct($email, $password, $name, $phone)
     {
@@ -27,7 +33,7 @@ class MailRegisteredUser implements ShouldQueue
         $this->email = $email;
         $this->password = $password;
         $this->name = $name;
-        $this->phone=$phone;
+        $this->phone = $phone;
     }
 
     /**
@@ -47,10 +53,10 @@ class MailRegisteredUser implements ShouldQueue
 
     public function sendEmail()
     {
-        $data = array('name' => $this->name, 'password' => $this->password);
+        $data = ['name' => $this->name, 'password' => $this->password];
         try {
             Mail::to($this->email)->send(new RegisterUser($data));
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             info($exception);
         }
     }

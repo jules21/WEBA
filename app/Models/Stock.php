@@ -15,6 +15,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property int $quantity
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Stock newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Stock newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Stock query()
@@ -24,9 +25,11 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereUpdatedAt($value)
+ *
  * @property-read mixed $operator
  * @property-read \App\Models\Item $item
  * @property-read \App\Models\OperationArea $operationArea
+ *
  * @mixin \Eloquent
  */
 class Stock extends Model implements Auditable
@@ -42,6 +45,7 @@ class Stock extends Model implements Auditable
     public function resolveRouteBinding($value, $field = null)
     {
         $id = decryptId($value);
+
         return $this->where('id', $id)->firstOrFail();
     }
 

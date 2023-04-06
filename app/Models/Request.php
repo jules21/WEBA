@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Constants\Permission;
+use App\Constants\Status;
 use App\Traits\GetClassName;
 use App\Traits\HasAddress;
 use App\Traits\HasEncryptId;
@@ -19,7 +20,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
 use OwenIt\Auditing\Contracts\Auditable;
-use ReflectionClass;
 use Storage;
 
 /**
@@ -63,6 +63,7 @@ use Storage;
  * @property-read Sector|null $sector
  * @property-read Village|null $village
  * @property-read WaterUsage $waterUsage
+ *
  * @method static Builder|Request newModelQuery()
  * @method static Builder|Request newQuery()
  * @method static Builder|Request query()
@@ -91,6 +92,7 @@ use Storage;
  * @method static Builder|Request whereUpi($value)
  * @method static Builder|Request whereVillageId($value)
  * @method static Builder|Request whereWaterUsageId($value)
+ *
  * @property string|null $upi_attachment
  * @property int|null $water_network_id
  * @property int|null $operation_area_id
@@ -108,24 +110,25 @@ use Storage;
  * @property-read int|null $request_assignments_count
  * @property-read RequestTechnician|null $technician
  * @property-read WaterNetwork|null $waterNetwork
+ *
  * @method static Builder|Request whereConnectionFee($value)
  * @method static Builder|Request whereOperationAreaId($value)
  * @method static Builder|Request whereUpiAttachment($value)
  * @method static Builder|Request whereWaterNetworkId($value)
+ *
  * @property-read Collection<int, RequestDelivery> $deliveries
  * @property-read int|null $deliveries_count
  * @property-read Collection<int, RequestDeliveryDetail> $deliveryDetails
  * @property-read int|null $delivery_details_count
  * @property-read mixed $total_delivered
  * @property-read mixed $total_qty
- *
- *
  * s
  * @mixin Eloquent
  */
 class Request extends Model implements Auditable
 {
     protected $appends = ['status_color', 'upi_attachment_url', 'total_qty', 'total_delivered'];
+
     use HasAddress;
     use HasStatusColor;
     use GetClassName;
@@ -133,26 +136,17 @@ class Request extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
 
 
-    const PENDING = 'Pending';
-    const ASSIGNED = 'Assigned';
-    const PROPOSE_TO_APPROVE = 'Propose to approve';
-    const REJECTED = 'Rejected';
-    const APPROVED = 'Approved';
-    const METER_ASSIGNED = "Meter Assigned";
-    const PARTIALLY_DELIVERED = "Partially Delivered";
-    const DELIVERED = "Delivered";
-    const CANCELLED = "Cancelled";
-
     const UPI_ATTACHMENT_PATH = 'requests/upi/';
 
     public function getUpiAttachmentUrlAttribute(): ?string
     {
         $upi_attachment = optional($this->attributes)['upi_attachment'];
-        if ($upi_attachment)
+        if ($upi_attachment) {
             return Storage::url(self::UPI_ATTACHMENT_PATH . $upi_attachment);
+        }
+
         return null;
     }
-
 
     public function requestType(): BelongsTo
     {
@@ -204,7 +198,6 @@ class Request extends Model implements Auditable
         return $this->belongsTo(Operator::class);
     }
 
-
     // create a polymorphic relationship
     public function flowHistories(): MorphMany
     {
@@ -221,25 +214,28 @@ class Request extends Model implements Auditable
         return $this->hasOne(RequestAssignment::class);
     }
 
-
     public function getApprovalStatuses(): array
     {
-        if ($this->status == self::ASSIGNED) {
+        if ($this->status == Status::ASSIGNED) {
             return [
-                self::PROPOSE_TO_APPROVE,
-                self::REJECTED
+                Status::PROPOSE_TO_APPROVE,
+                Status::RETURN_BACK,
+                Status::REJECTED,
             ];
-        } elseif ($this->status == self::PROPOSE_TO_APPROVE) {
+        } elseif ($this->status == Status::PROPOSE_TO_APPROVE) {
             return [
-                self::APPROVED,
-                self::REJECTED
+                Status::APPROVED,
+                Status::RETURN_BACK,
+                Status::REJECTED,
             ];
-        } elseif ($this->status == self::APPROVED) {
+        } elseif ($this->status == Status::APPROVED) {
             return [
-                self::METER_ASSIGNED,
-                self::REJECTED
+                Status::METER_ASSIGNED,
+                Status::RETURN_BACK,
+                Status::REJECTED,
             ];
         }
+
         return [];
     }
 
@@ -260,27 +256,27 @@ class Request extends Model implements Auditable
 
     public function canBeReviewed(): bool
     {
-        return $this->status != self::PENDING && !is_null($this->water_network_id) && auth()->user()->operation_area;
+        return $this->status != Status::PENDING && !is_null($this->water_network_id) && auth()->user()->operation_area;
     }
-
 
     public function canBeApprovedByMe(): bool
     {
         $user = auth()->user();
 
-        if ($user->can(Permission::ReviewRequest) && $this->status == self::ASSIGNED) {
+        if ($user->can(Permission::ReviewRequest) && $this->status == Status::ASSIGNED) {
             return true;
-        } elseif ($user->can(Permission::ApproveRequest) && $this->status == self::PROPOSE_TO_APPROVE) {
+        } elseif ($user->can(Permission::ApproveRequest) && $this->status == Status::PROPOSE_TO_APPROVE) {
             return true;
-        } elseif ($user->can(Permission::AssignMeterNumber) && $this->status == self::APPROVED && $this->meterNumbers->count() > 0) {
+        } elseif ($user->can(Permission::AssignMeterNumber) && $this->status == Status::APPROVED && $this->meterNumbers->count() > 0) {
             return true;
         }
+
         return false;
     }
 
     public function canEditMeterNumber(): bool
     {
-        return $this->status == Request::APPROVED
+        return $this->status == Status::APPROVED
             && auth()->user()->can(Permission::AssignMeterNumber)
             && !$this->pendingPayments(PaymentType::METERS_FEE);
     }
@@ -288,7 +284,7 @@ class Request extends Model implements Auditable
     public function canAssignMeterNumber(): bool
     {
         return $this->meterNumbers->count() < $this->meter_qty
-            && $this->status == Request::APPROVED
+            && $this->status == Status::APPROVED
             && auth()->user()->can(Permission::AssignMeterNumber)
             && !$this->pendingPayments(PaymentType::METERS_FEE);
     }
@@ -306,7 +302,7 @@ class Request extends Model implements Auditable
     public function pendingPayments($withoutPaymentTypeId = null): bool
     {
         return $this->paymentDeclarations()
-            ->where(DB::raw("lower(status)"), PaymentDeclaration::ACTIVE)
+            ->where(DB::raw('lower(status)'), PaymentDeclaration::ACTIVE)
             ->when($withoutPaymentTypeId, function ($query) use ($withoutPaymentTypeId) {
                 $query->whereHas('paymentConfig', function ($query) use ($withoutPaymentTypeId) {
                     $query->where('payment_type_id', '!=', $withoutPaymentTypeId);
@@ -315,10 +311,9 @@ class Request extends Model implements Auditable
             ->exists();
     }
 
-
     public function canAddMaterials(): bool
     {
-        return $this->status == Request::ASSIGNED &&
+        return $this->status == Status::ASSIGNED &&
             auth()->user()->can(Permission::ReviewRequest) &&
             !$this->equipment_payment;
     }
@@ -332,7 +327,6 @@ class Request extends Model implements Auditable
     {
         return $this->hasManyThrough(RequestDeliveryDetail::class, RequestDelivery::class, 'request_id', 'request_delivery_id');
     }
-
 
     public function getTotalQtyAttribute()
     {
@@ -351,25 +345,34 @@ class Request extends Model implements Auditable
 
     public function canAddConnectionFee(): bool
     {
-        return $this->status == Request::ASSIGNED
+        return $this->status == Status::ASSIGNED
             && auth()->user()->can(Permission::ReviewRequest)
             && auth()->user()->operation_area;
     }
 
     public function operatingArea(): BelongsTo
     {
-        return $this->belongsTo(OperationArea::class, "operation_area_id");
+        return $this->belongsTo(OperationArea::class, 'operation_area_id');
     }
 
     public function operationArea(): BelongsTo
     {
-        return $this->belongsTo(OperationArea::class, "operation_area_id");
+        return $this->belongsTo(OperationArea::class, 'operation_area_id');
     }
 
     public function canMeterNumberBeShown(): bool
     {
-        return !in_array($this->status, [self::PENDING, self::ASSIGNED, self::PROPOSE_TO_APPROVE]);
+        return !in_array($this->status, [Status::PENDING, Status::ASSIGNED, Status::PROPOSE_TO_APPROVE]);
     }
 
-
+    public function getPreviousStatus(): ?string
+    {
+        $currentStatus = $this->status;
+        if ($currentStatus == Status::APPROVED)
+            return Status::PROPOSE_TO_APPROVE;
+        else if ($currentStatus == Status::PROPOSE_TO_APPROVE) {
+            return Status::ASSIGNED;
+        }
+        return null;
+    }
 }

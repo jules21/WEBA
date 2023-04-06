@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Database\Factories\ChartAccountTemplateFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|ChartAccountTemplate newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ChartAccountTemplate newQuery()
@@ -30,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ChartAccountTemplate whereLevel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChartAccountTemplate whereParentLedgerNo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ChartAccountTemplate whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class ChartAccountTemplate extends Model

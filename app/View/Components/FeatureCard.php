@@ -7,8 +7,8 @@ use Illuminate\View\Component;
 
 class FeatureCard extends Component
 {
-
     public string $title;
+
     public string $description;
 
     /**
@@ -24,8 +24,6 @@ class FeatureCard extends Component
 
     /**
      * Get the view / contents that represent the component.
-     *
-     * @return View
      */
     public function render(): View
     {

@@ -15,13 +15,14 @@ class DocumentTypeSeeder extends Seeder
      */
     public function run()
     {
-        if (DocumentType::query()->exists())
+        if (DocumentType::query()->exists()) {
             return;
+        }
 
         foreach (IdType::get() as $item) {
             DocumentType::query()
                 ->create([
-                    'name' => $item
+                    'name' => $item,
                 ]);
         }
     }

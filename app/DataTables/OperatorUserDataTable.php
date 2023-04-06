@@ -3,57 +3,57 @@
 namespace App\DataTables;
 
 use App\Models\User;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class OperatorUserDataTable extends DataTable
 {
-
     public $query;
+
     public function __construct($query)
     {
         $this->query = $query;
     }
+
     /**
      * Build DataTables class.
      *
-     * @param mixed $query Results from query() method.
+     * @param  mixed  $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
     public function dataTable($query)
     {
         return datatables($query)
             ->editColumn('operation_area', function ($item) {
-                return $item->operationArea ? $item->operationArea->name : "-";
+                return $item->operationArea ? $item->operationArea->name : '-';
             })
             ->editColumn('phone', function ($item) {
-                return $item->phone ? $item->phone : "-";
+                return $item->phone ? $item->phone : '-';
             })
             ->editColumn('roles', function ($item) {
-                if(count($item->roles)>0){
-                    $roles="";
-                    foreach($item->roles as $key => $role){
-                        if ($key == 0)
+                if (count($item->roles) > 0) {
+                    $roles = '';
+                    foreach ($item->roles as $key => $role) {
+                        if ($key == 0) {
                             $roles .= \Str::slug($role->name);
-                        else
-                            $roles .= ",".\Str::slug($role->name);
+                        } else {
+                        $roles .= ','.\Str::slug($role->name);
+                        }
                     }
-                    return '<a href="#" class="label label-info label-inline" data-toggle="tooltip" data-trigger="focus" data-html="true" title='. $roles.'>
+
+                    return '<a href="#" class="label label-info label-inline" data-toggle="tooltip" data-trigger="focus" data-html="true" title='.$roles.'>
                                     '.count($item->roles).'
                                 </a>';
-                }else{
-                    return "-";
+                } else {
+                    return '-';
                 }
 
             })
             ->editColumn('status', function ($item) {
-                if($item->status == 'active'){
+                if ($item->status == 'active') {
                     return '
                     <span class="badge badge-success">Active</span>';
-                }else{
+                } else {
                     return '
                  <span class="badge badge-danger">Inactive</span>
                     ';
@@ -66,7 +66,7 @@ class OperatorUserDataTable extends DataTable
                                         aria-haspopup="true" aria-expanded="false">Actions
                                 </button>
                                 <div class="dropdown-menu" style="">
-                                    <a class="dropdown-item" href="'.route("admin.user.add.roles",$item->id).'">Manage Roles</a>
+                                    <a class="dropdown-item" href="'.route('admin.user.add.roles', $item->id).'">Manage Roles</a>
                                     </a>
                                     <div class="dropdown-divider"></div>
                                     <a href="#" class="edit-btn dropdown-item "
@@ -81,31 +81,26 @@ class OperatorUserDataTable extends DataTable
                                        data-national_id="'.$item->national_id.'"
                                        data-status="'.$item->status.'"
                                        data-operation_area="'.$item->operation_area.'"
-                                       data-url="'.route("admin.users.update",$item->id).'"> Edit</a>
+                                       data-url="'.route('admin.users.update', $item->id).'"> Edit</a>
 
                                     <a href="#" class="dropdown-item delete-btn" data-toggle="modal"
                                        data-target="#delete-user-model"
                                        data-id="'.$item->id.'"
-                                       data-url="'.route("admin.users.delete",encryptId($item->id)).'"> Delete</a>';
-                                '</div>
-                            </div>';
-            })
-            ->rawColumns(['action','roles','status','phone','operator']);
-    }
+                                       data-url="'.route('admin.users.delete', encryptId($item->id)).'"> Delete</a>';
 
+            })
+            ->rawColumns(['action', 'roles', 'status', 'phone', 'operator']);
+    }
 
     /**
      * Get query source of dataTable.
      *
-     * @param user $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(User $model)
     {
         return $this->query;
     }
-
-
 
     /**
      * Optional method if you want to use html builder.
@@ -129,11 +124,11 @@ class OperatorUserDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id' => ['title' => '#', 'searchable' => false, 'render' => function() {
+            'id' => ['title' => '#', 'searchable' => false, 'render' => function () {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
             Column::make('operation_area')
-                ->title("Operation Area")
+                ->title('Operation Area')
                 ->addClass('text-center'),
             Column::make('name'),
             Column::make('email')
@@ -142,11 +137,11 @@ class OperatorUserDataTable extends DataTable
             ->addClass('text-center'),
             Column::make('status')
                 ->name('status')
-                ->title("Status")
+                ->title('Status')
                 ->addClass('text-center'),
             Column::make('roles')
-                ->title("Roles")
-                ->name("roles.name")
+                ->title('Roles')
+                ->name('roles.name')
                 ->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)
@@ -156,5 +151,4 @@ class OperatorUserDataTable extends DataTable
                 ->addClass('text-center'),
         ];
     }
-
 }

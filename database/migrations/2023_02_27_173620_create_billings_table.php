@@ -15,10 +15,10 @@ class CreateBillingsTable extends Migration
     {
         Schema::create('billings', function (Blueprint $table) {
             $table->id();
-            $table->decimal('starting_index',20);
-            $table->decimal('last_index',20);
+            $table->decimal('starting_index', 20);
+            $table->decimal('last_index', 20);
             $table->foreignId('user_id')->constrained();
-            $table->decimal('unit_price',18);
+            $table->decimal('unit_price', 18);
             $table->string('meter_number');
             $table->string('subscription_number');
             $table->decimal('amount');
