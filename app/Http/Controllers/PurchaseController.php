@@ -177,7 +177,7 @@ class PurchaseController extends Controller
 
     public function edit(Purchase $purchase)
     {
-        if ($purchase->status != Status::PENDING) {
+        if ($purchase->status != Status::RETURN_BACK) {
             return redirect()
                 ->back()
                 ->with('error', 'Purchase cannot be edited');
@@ -208,7 +208,7 @@ class PurchaseController extends Controller
     {
         $data = $request->validated();
 
-        if ($purchase->status != Status::SUBMITTED) {
+        if ($purchase->status != Status::RETURN_BACK) {
             return redirect()
                 ->back()
                 ->with('error', 'Purchase cannot be edited');
@@ -216,7 +216,9 @@ class PurchaseController extends Controller
 
         DB::beginTransaction();
 
-        $purchase->update($this->getPurchaseData($data));
+        $purchaseData = $this->getPurchaseData($data);
+        $purchaseData['return_back_status'] = Status::RE_SUBMITTED;
+        $purchase->update($purchaseData);
 
         $purchase->movementDetails()->delete();
 
@@ -303,6 +305,7 @@ class PurchaseController extends Controller
         $purchase->update([
             'status' => $status,
             'approved_by' => auth()->id(),
+            'return_back_status' => $status == Status::RETURN_BACK ? Status::RETURN_BACK : null
         ]);
         $this->saveFlowHistory($purchase, "Purchase $status", $status);
 
@@ -311,6 +314,7 @@ class PurchaseController extends Controller
         if ($status == Status::APPROVED) {
             $this->updateStockItems($purchase);
         }
+
 
         $purchase->movementDetails()->update([
             'status' => $status,

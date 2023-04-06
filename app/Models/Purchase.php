@@ -68,12 +68,9 @@ class Purchase extends Model implements Auditable
     use GetClassName, HasStatusColor, \OwenIt\Auditing\Auditable;
 
 
-
     protected $appends = ['status_color'];
 
     const ATTACHMENT_PATH = 'attachments/purchases/';
-
-
 
 
     public function resolveRouteBinding($value, $field = null)
@@ -107,6 +104,7 @@ class Purchase extends Model implements Auditable
     {
         return [
             Status::APPROVED,
+            Status::RETURN_BACK,
             Status::REJECTED,
         ];
     }

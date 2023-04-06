@@ -60,23 +60,27 @@ class CustomerController extends Controller
                                 Options
                             </button>
                             <div class="dropdown-menu border">
-                                <a class="dropdown-item" href="'.route('admin.requests.index', ['cus_id' => encryptId($row->id)]).'">
+                                <a class="dropdown-item" href="' . route('admin.requests.create', ['c_id' => encryptId($row->id)]) . '">
+                                    <i class="fas fa-plus mr-1"></i>
+                                    <span class="ml-2">New Connection</span>
+                                </a>
+                                <a class="dropdown-item" href="' . route('admin.requests.index', ['cus_id' => encryptId($row->id)]) . '">
                                     <i class="fas fa-list mr-1"></i>
                                     <span class="ml-2">Requests</span>
                                 </a>
-                                <a class="dropdown-item" href="'.route('admin.customers.connections', encryptId($row->id)).'">
+                                <a class="dropdown-item" href="' . route('admin.customers.connections', encryptId($row->id)) . '">
                                     <i class="fas fa-link mr-1"></i>
                                     <span class="ml-2">Connections</span>
                                 </a>
-                                <a class="dropdown-item" href="'.route('admin.billings.customer', encryptId($row->id)).'">
+                                <a class="dropdown-item" href="' . route('admin.billings.customer', encryptId($row->id)) . '">
                                     <i class="fas fa-file-invoice  mr-1"></i>
                                     <span class="ml-2">Bills</span>
                                 </a>
-                                <a class="dropdown-item js-edit" href="'.route('admin.customers.show', encryptId($row->id)).'">
+                                <a class="dropdown-item js-edit" href="' . route('admin.customers.show', encryptId($row->id)) . '">
                                     <i class="fas fa-edit mr-1"></i>
                                     <span class="ml-2">Edit</span>
                                 </a>
-                                <a class="dropdown-item js-delete" href="'.route('admin.customers.delete', encryptId($row->id)).'">
+                                <a class="dropdown-item js-delete" href="' . route('admin.customers.delete', encryptId($row->id)) . '">
                                     <i class="fas fa-trash mr-1"></i>
                                     <span class="ml-2">Delete</span>
                                 </a>
