@@ -31,7 +31,14 @@
             <!--begin::Toolbar-->
 
             <div class="d-flex align-items-center">
-              <span class="badge badge-{{$request->status_color}} rounded-pill">
+                @if($request->return_back_status==\App\Constants\Status::RE_SUBMITTED)
+                    <span class="badge badge-warning rounded-pill align-self-start">Re-Submitted</span>
+                @elseif($request->return_back_status==\App\Constants\Status::RETURN_BACK)
+                    <span class="badge badge-warning rounded-pill align-self-start">
+                    Returned Back
+                </span>
+                @endif
+                <span class="badge badge-{{$request->status_color}} rounded-pill ml-2">
                   {{ $request->status }}
               </span>
             </div>
@@ -41,11 +48,13 @@
     </div>
 
     <div class="card card-body tw-shadow-sm border tw-border-gray-300">
-        <ul class="nav nav-light-primary nav-pills" id="myTab" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link font-weight-bolder active" id="home-tab" data-toggle="tab" href="#home" role="tab"
-                   aria-controls="home"
-                   aria-selected="true">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center">
+            <ul class="nav nav-light-primary nav-pills" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bolder active" id="home-tab" data-toggle="tab" href="#home"
+                       role="tab"
+                       aria-controls="home"
+                       aria-selected="true">
                       <span>
                           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layers-intersect"
                                width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
@@ -58,12 +67,12 @@
                                d="M4 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path>
                         </svg>
                       </span>
-                    Details
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link font-weight-bolder" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
-                   aria-controls="profile" aria-selected="false">
+                        Details
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bolder" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                       aria-controls="profile" aria-selected="false">
                     <span>
                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message" width="24"
                            height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
@@ -75,12 +84,12 @@
                                d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"></path>
                         </svg>
                     </span>
-                    Reviews
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link font-weight-bolder" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
-                   aria-controls="contact" aria-selected="false">
+                        Reviews
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bolder" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                       aria-controls="contact" aria-selected="false">
                     <span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history" width="24"
                              height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
@@ -90,11 +99,11 @@
                            <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path>
                         </svg>
                     </span>
-                    Flow History
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link font-weight-bolder" id="payments-tab" data-toggle="tab" href="#payments">
+                        Flow History
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link font-weight-bolder" id="payments-tab" data-toggle="tab" href="#payments">
                     <span class="svg-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt" width="24"
                              height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
@@ -104,10 +113,19 @@
                                d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2"></path>
                         </svg>
                     </span>
-                    Payments
+                        Payments
+                    </a>
+                </li>
+            </ul>
+
+            @if($request->status==\App\Constants\Status::PENDING && auth()->user()->can(\App\Constants\Permission::CreateRequest))
+                <a href="{{ route('admin.requests.edit', encryptId($request->id)) }}"
+                   class="btn btn-sm bg-accent font-weight-bolder align-self-start text-primary">
+                    <i class="flaticon2-edit text-primary"></i>
+                    Edit Request
                 </a>
-            </li>
-        </ul>
+            @endif
+        </div>
         <div class="tab-content  mt-5" id="myTabContent">
 
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">

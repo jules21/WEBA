@@ -60,7 +60,7 @@
                                 <option value="">Select Customer</option>
                                 @foreach($customers as $customer)
                                     <option
-                                        {{ isset($request) && $request->customer_id == $customer->id ? 'selected' : (request()->has('c_id')&& decryptId(request('c_id'))==$customer->id?'selected':'') }}
+                                        {{ (isset($request) && $request->customer_id == $customer->id) || request()->has('c_id')&& decryptId(request('c_id'))==$customer->id ? 'selected' : '' }}
                                         value="{{ $customer->id }}">{{ $customer->name }}</option>
                                 @endforeach
                             </select>
@@ -314,7 +314,7 @@
                             </svg>
 
                             </span>
-                        {{ isset($request)?'Update':'Submit' }}
+                        {{ isset($request)?($request->return_back_status==\App\Constants\Status::RETURN_BACK?'Re-Submit':'Update'):'Submit' }}
                         Request
                     </button>
                 </div>
