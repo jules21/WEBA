@@ -192,14 +192,6 @@
                                     <label class="custom-file-label" for="customFile">Choose file</label>
                                 </div>
                             </div>
-                            <div class="col-12 mt-5">
-                                <button type="submit" class="btn btn-sm btn-light-primary font-weight-bold" id="uploadAttachment">
-                                    Upload
-                                </button>
-                                <button type="button" class="btn btn-sm btn-light-primary font-weight-bold" id="editAttachment" style="display: none">
-                                    Edit
-                                </button>
-                            </div>
                         </div>
                     </form>
 
@@ -241,11 +233,12 @@
                         <input type="hidden" name="available_quantity" id="available-quantity">
                         <div class="form-group">
                             <label for="item_id">Item</label>
-                            <select name="item_id" id="item_id" class="form-control"
+                            <select name="item_id" id="item_id" class="form-control select2"
                                     style="width: 100% !important;">
                                 <option value="">Select Item</option>
                                 @foreach($stock ?? [] as $record)
-                                    <option data-quantity="{{$record->quantity}}" value="{{$record->id}}">{{optional($record)->name}}
+                                    <option data-quantity="{{$record->quantity}}" value="{{$record->id}}">
+                                        {{optional($record)->name}} - qty({{optional($record)->quantity}})
                                     </option>
                                 @endforeach
                             </select>
@@ -450,6 +443,11 @@
 
         })
 
+        $('#editText').on('click', function (){
+            $('#reason').prop('disabled', false);
+            $('#editText').css('display', 'none');
+            $('#saveNew').css('display', 'inline-block');
+        })
         const initData = function (){
             const adjustment_id = $('#adjustment_id').val();
             if (adjustment_id) {
