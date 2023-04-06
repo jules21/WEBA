@@ -56,7 +56,7 @@
                     Request Items Deliver for {{ $request->customer->name}}
                 </h4>
             </div>
-            @if($request->status != \App\Models\Request::DELIVERED)
+            @if($request->status != \App\Constants\Status::DELIVERED)
                 <button type="button" class="btn btn-light-primary btn-sm font-weight-bolder" id="addDelivery">
                     <i class="flaticon2-plus"></i>
                     New Delivery
