@@ -12,6 +12,7 @@ use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\OperationArea;
 use App\Models\PaymentDeclaration;
+use App\Models\PaymentType;
 use App\Models\Request;
 use App\Models\Request as AppRequest;
 use App\Models\RequestType;
@@ -261,7 +262,7 @@ class RequestsController extends Controller
                 ['operator_id', '=', auth()->user()->operator_id],
             ])
             ->get();
-
+         $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, RequestType::NEW_CONNECTION);
         return view('admin.requests.show', [
             'request' => $request,
             'reviews' => $reviews,
@@ -270,6 +271,7 @@ class RequestsController extends Controller
             'requestItems' => $requestItems,
             'waterNetworks' => $waterNetworks,
             'itemCategories' => $itemCategories,
+            'paymentConfig' => $paymentConfig,
         ]);
     }
 

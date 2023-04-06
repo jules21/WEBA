@@ -150,6 +150,17 @@
                               method="post" id="saveWaterNetworkForm">
                             @csrf
                             <div class="row">
+                                <div class="col-md-4 my-2">
+                                    <div class="form-group">
+                                        <label for="water_network_id">
+                                            <span class="font-weight-bold">
+                                                Connection Fee
+                                            </span>
+                                        </label>
+                                        <input type="text" name="connection_fee" id="connection_fee" disabled
+                                               class="form-control-plaintext" value="RWF {{ number_format($paymentConfig->amount) }}">
+                                    </div>
+                                </div>
 
                                 <div class="col-md-4 my-2">
                                     <div class="form-group">
