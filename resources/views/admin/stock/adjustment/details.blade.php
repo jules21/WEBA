@@ -165,7 +165,7 @@
                             </h4>
 
                             <form action="{{ route("admin.stock.stock-adjustments.review",encryptId($adjustment->id)) }}"
-                                  method="post" id="formSaveReview">
+                                  method="post" id="formSaveReview" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group">
                                     <label for="status">Status:</label>

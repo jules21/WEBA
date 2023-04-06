@@ -55,6 +55,20 @@
                     New Adjustment Form
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link font-weight-bolder" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
+                   aria-controls="profile" aria-selected="false">
+                    <i class="flaticon2-heart-rate-monitor mr-2"></i>
+                    Reviews
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link font-weight-bolder" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
+                   aria-controls="contact" aria-selected="false">
+                    <i class="flaticon2-time mr-2"></i>
+                    Flow History
+                </a>
+            </li>
         </ul>
         <div class="tab-content  mt-5" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -112,13 +126,13 @@
                                     <td colspan="4" class="text-right font-weight-bold">Total:</td>
                                     <td class="font-weight-bolder">
                                         RWF
-                                        <span id="total">{{ number_format($adjustment->items->sum('total')) }}</span>
+                                        <span id="total">{{ $adjustment ? number_format($adjustment->items->sum('total')):0 }}</span>
                                     </td>
                                     <td></td>
                                 </tfoot>
                                 <tbody>
 
-                                @forelse($adjustment->items as $item)
+                                @forelse(($adjustment ? $adjustment->items : []) as $item)
                                     <tr>
                                         <td>{{ $item->item->name }}</td>
                                         <td>
@@ -175,33 +189,111 @@
                     </div>
                 </div>
 
-                <div class="card card-body mb-3 d-none" id="attachment-container">
-                    <form id="saveNewForm1" action="{{route('admin.stock.adjustments.store')}}" enctype="multipart/form-data">
+                @if($adjustment)
+                    <form method="post" action="{{ route("admin.stock.stock-adjustments.submit",encryptId($adjustment->id)) }}" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="adjustment_id" id="adjustment_id" value="{{$adjustment->id ?? null}}">
-                        <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
-                        <input type="hidden" name="operation_area_id" value="{{auth()->user()->operation_area}}">
-                        <input type="hidden" name="created_by" value="{{auth()->user()->id}}">
-                        <input type="hidden" name="status" value="Pending">
-                        <div class="row">
-                            <input type="hidden" name="description" id="_description" value="{{ $adjustment->description ?? '' }}">
-                            <div class="col-12">
-                                <label class="d-block">Attachment <small>(optional)</small></label>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="customFile" name="attachment" required>
-                                    <label class="custom-file-label" for="customFile">Choose file</label>
-                                </div>
-                            </div>
+                        <div class="card card-body mb-3 d-none" id="attachment-container">
+                                    <div class="col-12">
+                                        <label class="d-block">Attachment <small>(optional)</small></label>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="customFile" name="attachment">
+                                            <label class="custom-file-label" for="customFile">Choose file</label>
+                                        </div>
+                                    </div>
+                        </div>
+                        <div class="row justify-content-end mr-1 d-none" id="submit-container">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="la la-check-circle"></i>
+                                Submit</button>
                         </div>
                     </form>
+                @endif
+            </div>
+            <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="home-tab">
+                @if($reviews->count() == 0)
+                    <div class="alert alert-light-info alert-custom ">
+                        <div class="alert-icon text-info">
+                            <i class="flaticon2-exclamation"></i>
+                        </div>
+                        <div class="alert-text">
+                            No reviews yet for this Stock Adjustment
+                        </div>
+                    </div>
+
+                @else
+                    <div class="timeline timeline-justified timeline-4">
+                        <div class="timeline-bar"></div>
+                        <div class="timeline-items">
+                            @foreach($reviews as $item)
+                                <div class="timeline-item">
+                                    <div class="timeline-badge">
+                                        <div class="bg-{{$item->status_color}}"></div>
+                                    </div>
+
+                                    <div class="timeline-label">
+                                        <span class="text-primary font-weight-bold">
+                                            {{ $item->user->name }}
+                                        </span>
+                                        <span class="ml-2">
+                                            {{ $item->created_at->diffForHumans() }}
+                                        </span>
+                                    </div>
+
+                                    <div class="timeline-content">
+                                        {{ $item->comment }}
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+            </div>
+            <div class="tab-pane fade  " id="contact" role="tabpanel" aria-labelledby="home-tab">
+                <div class="card card-body">
+                    @if($flowHistories->count()==0)
+                        <div class="alert alert-light-info alert-custom ">
+                            <div class="alert-icon text-info">
+                                <i class="flaticon2-exclamation"></i>
+                            </div>
+                            <div class="alert-text">
+                                No flow history yet for this Stock Adjustment
+                            </div>
+                        </div>
+                    @else
+                        <div class="timeline timeline-6 mt-3">
+                            @foreach($flowHistories as $item)
+                                <!--begin::Item-->
+                                <div class="timeline-item align-items-start">
+                                    <!--begin::Label-->
+                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg">
+                                        {{ $item->created_at->format('h:i A') }}
+                                    </div>
+                                    <!--end::Label-->
+
+                                    <!--begin::Badge-->
+                                    <div class="timeline-badge">
+                                        <i class="fa fa-genderless text-{{ $item->status_color }} icon-xl"></i>
+                                    </div>
+                                    <!--end::Badge-->
+
+                                    <!--begin::Text-->
+                                    <div class="font-weight-mormal font-size-lg timeline-content pl-3">
+                                    <span class="text-muted font-weight-bolder">
+                                        {{ $item->created_at->format('d M Y') }}
+                                    </span>
+                                        <p>
+                                            {{ $item->comment }}
+                                        </p>
+                                    </div>
+                                    <!--end::Text-->
+                                </div>
+                                <!--end::Item-->
+                            @endforeach
+                        </div>
+                    @endif
 
                 </div>
-
-                    <div class="row justify-content-end mr-1 d-none" id="submit-container">
-                        <a class="btn btn-primary btn-lg submitBtn" href="{{ route("admin.stock.stock-adjustments.submit",encryptId($adjustment->id)) }}">
-                            <i class="fas fa-check-circle"></i>
-                            Submit</a>
-                    </div>
             </div>
         </div>
     </div>
@@ -460,5 +552,21 @@
                 $("#submit-container").removeClass('d-none');
             }
         }
+        {{--const getUnitPrice = function (item_id) {--}}
+        {{--    const url = "{{ route('admin.items.get-unit-price', ':id') }}";--}}
+        {{--    return $.ajax({--}}
+        {{--        url: url.replace(':id', item_id),--}}
+        {{--        type: 'GET',--}}
+        {{--        data: {--}}
+        {{--            _token: $('meta[name="csrf-token"]').attr('content')--}}
+        {{--        },--}}
+        {{--        success: function (response) {--}}
+        {{--            $('#unit_price').val(response.unit_price);--}}
+        {{--        },--}}
+        {{--        error: function (xhr) {--}}
+        {{--            console.log(xhr);--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--}--}}
     </script>
 @endsection

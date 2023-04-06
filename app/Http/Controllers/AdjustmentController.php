@@ -10,6 +10,7 @@ use App\Http\Requests\ValidateAdjustmentItemRequest;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Models\Adjustment;
 use App\Models\Item;
+use App\Models\Request;
 use App\Models\Stock;
 use App\Traits\GetClassName;
 use Illuminate\Support\Facades\DB;
@@ -74,14 +75,6 @@ class AdjustmentController extends Controller
             session()->put('adjustment_id', $adjustment->id);
             $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
         }
-        if ($request->has('attachment') && $request->file('attachment')->isValid()) {
-                $file = $request->file('attachment');
-                $destinationPath = self::ADJUSTMENT_ATTACHMENT_PATH;
-                $path = $file->store($destinationPath);
-                $attachment = str_replace($destinationPath, '', $path);
-                $adjustment->attachment = $attachment;
-                $adjustment->save();
-        }
         return $adjustment;
 
 //        $adjustment =  Adjustment::query()->create($request->validated());
@@ -101,7 +94,6 @@ class AdjustmentController extends Controller
         if ($updated) {
             return back()->with('success', 'Adjustment updated successfully');
         }
-
         return back()->with('error', 'Adjustment update failed');
     }
 
@@ -180,8 +172,17 @@ class AdjustmentController extends Controller
 
     }
 
-    public function submit(Adjustment $adjustment)
+    public function submit(\Illuminate\Http\Request $request, Adjustment $adjustment)
     {
+        if ($request->has('attachment') && $request->file('attachment')->isValid()) {
+            $file = $request->file('attachment');
+            $destinationPath = self::ADJUSTMENT_ATTACHMENT_PATH;
+            $path = $file->store($destinationPath);
+            $attachment = str_replace($destinationPath, '', $path);
+            $adjustment->attachment = $attachment;
+            $adjustment->save();
+        }
+
         if (!$adjustment->items()->exists())
             return redirect()->back()->with('error', 'Adjustment has no items');
         $adjustment->update(['status' => 'Submitted']);
@@ -217,7 +218,8 @@ class AdjustmentController extends Controller
             $status = $data['status'];
             $fileName = null;
             if ($request->hasFile('attachment')) {
-                $fileName = $request->file('attachment')->store(AdjustmentController::ADJUSTMENT_ATTACHMENT_PATH);
+                $fileName =
+                    $request->file('attachment')->store(AdjustmentController::ADJUSTMENT_ATTACHMENT_PATH);
             }
             $this->saveFlowHistory($adjustment, $data['comment'], $status, true,$fileName);
 
@@ -334,18 +336,13 @@ class AdjustmentController extends Controller
         }
         if ($adjustment) {
             $adjustment->load(['items.item', 'flowHistories.user']);
+                        $reviews = $adjustment->flowHistories
+                ->where('is_comment', '=', true);
+
+            $flowHistories = $adjustment->flowHistories
+                ->where('is_comment', '=', false);
         }
-//        //
-//        if ($adjustment) {
-//            $adjustment->load(['items.item', 'flowHistories.user']);
-//
-//            $reviews = $adjustment->flowHistories
-//                ->where('is_comment', '=', true);
-//
-//            $flowHistories = $adjustment->flowHistories
-//                ->where('is_comment', '=', false);
-//            $stock = Stock::query()->where('operation_area_id', $adjustment->operation_area_id)->get();
-//        }
+
 
         $items = Item::query()->with('category')->where('operator_id', $user->operator_id)->get();
         $stock = Stock::with('operationArea','item','item.category')
@@ -361,8 +358,8 @@ class AdjustmentController extends Controller
         return view('admin.stock.adjustment.create_new', [
 //            'adjustment_id' => $adjustmentId,
             'adjustment' => $adjustment,
-//            'reviews' => $reviews ?? null,
-//            'flowHistories' => $flowHistories ?? null,
+            'reviews' => $reviews ?? null,
+            'flowHistories' => $flowHistories ?? null,
             'stock' => $stock_data ?? null
         ]);
 }

@@ -339,7 +339,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/adjustment/my-tasks', [App\Http\Controllers\AdjustmentController::class, 'myTasks'])->name('stock-adjustments.tasks');
         //submit adjustment
-        Route::get('/adjustments/{adjustment}/submit', [App\Http\Controllers\AdjustmentController::class, 'submit'])->name('stock-adjustments.submit');
+        Route::post('/adjustments/{adjustment}/submit', [App\Http\Controllers\AdjustmentController::class, 'submit'])->name('stock-adjustments.submit');
         //submit review
         Route::post('/adjustments/{adjustment}/review', [App\Http\Controllers\AdjustmentController::class, 'review'])->name('stock-adjustments.review');
         //adjustment new
@@ -385,3 +385,4 @@ Route::get('/operation-area-officers', [OperationAreaController::class, 'getOffi
 Route::get('/operation-areas-by-district', [OperationAreaController::class, 'getAreasByDistrict'])->name('get-operation-areas-by-district');
 //get items by categories
 Route::get('/items-by-categories', [ItemController::class, 'getItemsByCategories'])->name('get-items-by-categories');
+//get items by categories

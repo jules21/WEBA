@@ -128,7 +128,7 @@ class Adjustment extends Model implements Auditable
     }
     public function getAttachment(): ?string
     {
-        return $this->attachment ? Storage::url('public/adjustment/attachments/'.$this->attachment) : null;
+        return $this->attachment ? Storage::url('public/adjustment/attachments'.$this->attachment) : null;
     }
 
 }
