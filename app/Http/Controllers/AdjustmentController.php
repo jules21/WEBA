@@ -55,9 +55,22 @@ class AdjustmentController extends Controller
     }
     public function store(StoreAdjustmentRequest $request)
     {
-        $adjustment =  Adjustment::query()->create($request->validated());
-        $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
-        return back()->with('success', 'Adjustment created successfully');
+        $adjustmentId = \request('adjustment_id');
+        $adjustment = Adjustment::query()->find($adjustmentId);
+        if ($adjustment) {
+            $adjustment->update($request->validated());
+            $this->saveFlowHistory($adjustment, 'Adjustment updated', Adjustment::PENDING);
+        }else{
+            $adjustment =  Adjustment::query()->create($request->validated());
+            session()->forget('adjustment_id');
+            session()->put('adjustment_id', $adjustment->id);
+            $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
+        }
+        return $adjustment;
+
+//        $adjustment =  Adjustment::query()->create($request->validated());
+//        $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
+//        return back()->with('success', 'Adjustment created successfully');
     }
 
     /**
@@ -80,7 +93,7 @@ class AdjustmentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Adjustment  $adjustment
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Adjustment $adjustment)
     {
@@ -98,8 +111,10 @@ class AdjustmentController extends Controller
         $stock = Stock::query()->where('operation_area_id', $adjustment->operation_area_id)->get();
         return view('admin.stock.adjustment.items', compact('stock', 'items', 'adjustment'));
     }
-    public function addItem(ValidateAdjustmentItemRequest $request, Adjustment $adjustment)
+    public function addItem(ValidateAdjustmentItemRequest $request)
     {
+        $adjustment = Adjustment::query()->find($request->adjustment_id);
+        session()->put('adjustment_id', $adjustment->id);
         $data = $request->validated();
 
         $item = $adjustment->items()
@@ -110,7 +125,8 @@ class AdjustmentController extends Controller
                     'type' => (new ReflectionClass(Adjustment::class))->getShortName(),
                     'unit_price' => $data['unit_price'],
                     'adjustment_type' => $data['adjustment_type'],
-                    'status' => Adjustment::PENDING
+                    'status' => Adjustment::PENDING,
+                    'description' => $data['description']
                 ]
             );
 
@@ -149,7 +165,8 @@ class AdjustmentController extends Controller
         if (!$adjustment->items()->exists())
             return redirect()->back()->with('error', 'Adjustment has no items');
         $adjustment->update(['status' => 'Submitted']);
-        return redirect()->route('admin.stock.adjustments.index')->with('success', 'Adjustment submitted successfully');
+        session()->forget('adjustment_id');
+        return redirect()->route('admin.stock.adjustments.create')->with('success', 'Adjustment submitted successfully');
     }
     public function show(Adjustment $adjustment)
     {
@@ -273,4 +290,38 @@ class AdjustmentController extends Controller
         });
         return $query;
     }
+
+
+    public function createNewAdjustment()
+    {
+        $adjustmentId = \request('adjustment_id');
+        if ($adjustmentId) {
+            $adjustment = Adjustment::find($adjustmentId);
+        }elseif (session()->has('adjustment_id')) {
+            $adjustment = Adjustment::find(session()->get('adjustment_id'));
+        } else {
+            $adjustment = new Adjustment();
+        }
+//        //
+//        if ($adjustment) {
+//            $adjustment->load(['items.item', 'flowHistories.user']);
+//
+//            $reviews = $adjustment->flowHistories
+//                ->where('is_comment', '=', true);
+//
+//            $flowHistories = $adjustment->flowHistories
+//                ->where('is_comment', '=', false);
+//            $stock = Stock::query()->where('operation_area_id', $adjustment->operation_area_id)->get();
+//        }
+        $stock = Stock::query()->where('operation_area_id', auth()->user()->operation_area)->get();
+
+
+        return view('admin.stock.adjustment.create_new', [
+//            'adjustment_id' => $adjustmentId,
+            'adjustment' => $adjustment,
+//            'reviews' => $reviews ?? null,
+//            'flowHistories' => $flowHistories ?? null,
+            'stock' => $stock ?? null
+        ]);
+}
 }

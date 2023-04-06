@@ -2,6 +2,7 @@
 @section('title',"Stock Adjustment details")
 
 @section('content')
+    {{$adjustment}}
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
@@ -36,8 +37,8 @@
             <!--begin::Toolbar-->
 
             <div class="d-flex align-items-center">
-              <span class="badge badge-{{$adjustment->status_color}} rounded-pill">
-                  {{ $adjustment->status }}
+              <span class="badge badge-{{$adjustment->status_color ?? ''}} rounded-pill">
+                  {{ $adjustment->status ?? "new" }}
               </span>
             </div>
 
@@ -74,17 +75,34 @@
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
                 <div class="card card-body mb-3">
-                    <div class="row">
-                        <div class="col-12">
-                            <strong class="d-block">Description:</strong>
-                            <p readonly class="form-control-plaintext">{{ $adjustment->description }}</p>
+                    <form id="saveNewForm" action="{{route('admin.stock.adjustments.store')}}">
+                        @csrf
+                        <input type="hidden" name="adjustment_id" id="adjustment_id">
+                        <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
+                        <input type="hidden" name="operation_area_id" value="{{auth()->user()->operation_area}}">
+                        <input type="hidden" name="created_by" value="{{auth()->user()->id}}">
+                        <input type="hidden" name="status" value="Pending">
+                        <div class="row">
+                            <div class="col-12">
+                                <label class="d-block">Description:</label>
+                                <textarea name="description" class="form-control" rows="3" required>{{ $adjustment->description ?? '' }}</textarea>
+                            </div>
+                            <div class="col-12 mt-5">
+                                <button type="submit" class="btn btn-sm btn-light-primary font-weight-bold" id="saveNew">
+                                    Save & continue
+                                </button>
+                                <button type="button" class="btn btn-sm btn-light-primary font-weight-bold" id="editText" style="display: none">
+                                    Edit
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
+
                 </div>
 
-                <div class="card card-body mb-3">
+                <div class="card card-body mb-3 {{$adjustment ? "d-none":"d-block"}} " id="items-container">
                     <div class="p-3 mb-3">
-                        @if($adjustment->status == App\models\Adjustment::PENDING)
+{{--                        @if($adjustment && ($adjustment->status == App\models\Adjustment::PENDING))--}}
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="mb-0">Items</h5>
                                 <button type="button" class="btn btn-sm rounded btn-primary" id="addBtn">
@@ -92,7 +110,7 @@
                                     Add Item
                                 </button>
                             </div>
-                        @endif
+{{--                        @endif--}}
                         <div class="table-responsive">
                             <table class="table border dataTable rounded table-head-solid table-head-custom" id="">
                                 <thead>
@@ -101,68 +119,68 @@
                                     <th>Qty</th>
                                     <th>Unit Price</th>
                                     <th>Total</th>
-                                    <th>Narration</th>
                                     <th></th>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <td colspan="4" class="text-right font-weight-bold">Total:</td>
+                                    <td colspan="3" class="text-right font-weight-bold">Total:</td>
                                     <td class="font-weight-bolder">
                                         RWF
-                                        <span id="total">{{ number_format($adjustment->items->sum('total')) }}</span>
+                                        <span id="total">{{ $adjustment ? number_format($adjustment->items->sum('total')):0 }}</span>
                                     </td>
                                     <td></td>
                                 </tfoot>
                                 <tbody>
 
-                                @forelse($adjustment->items as $item)
-                                    <tr>
-                                        <td>{{ $item->item->name }}</td>
-                                        <td>
-                                            @if($item->adjustment_type == 'decrease')
-                                                <span class="text-danger">-{{ $item->quantity }}</span>
-                                            @else
-                                                <span class="text-success">+{{ $item->quantity }}</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ number_format($item->unit_price) }}</td>
-                                        <td>RWF {{ number_format($item->total) }}</td>
-                                        <td>RWF {{ $item->description }}</td>
-                                        <td>
-                                            @if($adjustment->status == \App\Models\Adjustment::PENDING)
-                                                <button
-                                                    data-id="{{ $item->id }}"
-                                                    data-quantity="{{ $item->quantity }}"
-                                                    data-unit_price="{{ $item->unit_price }}"
-                                                    data-item_id="{{ $item->item_id }}"
-                                                    data-adjustment_type="{{ $item->adjustment_type }}"
-                                                    class="btn btn-sm btn-light-primary btn-icon rounded-circle js-edit">
-                                                    <i class="flaticon2-edit"></i>
-                                                </button>
-                                                <button type="button"
-                                                        data-href="{{ route('admin.stock.stock-adjustments.items.remove',[encryptId($adjustment->id),encryptId($item->id)]) }}"
-                                                        class="btn btn-sm btn-light-danger btn-icon rounded-circle js-delete">
-                                                    <i class="flaticon2-trash"></i>
-                                                </button>
-                                            @endif
-                                        </td>
-                                    </tr>
-
-                                @empty
+                                @if($adjustment)
+                                    @forelse($adjustment->items as $item)
                                         <tr>
-                                             <td colspan="5">
-                                                 <div class="alert alert-light-info alert-custom py-1">
-                                                     <div class="alert-icon">
-                                                         <i class="flaticon2-exclamation"></i>
-                                                     </div>
-                                                     <div class="alert-text">
-                                                         No items found, please add some items.
-                                                     </div>
-                                                 </div>
-                                             </td>
-                                         </tr>
-                                @endforelse
+                                            <td>{{ $item->item->name }}</td>
+                                            <td>
+                                                @if($item->adjustment_type == 'decrease')
+                                                    <span class="text-danger">-{{ $item->quantity }}</span>
+                                                @else
+                                                    <span class="text-success">+{{ $item->quantity }}</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ number_format($item->unit_price) }}</td>
+                                            <td>RWF {{ number_format($item->total) }}</td>
+                                            <td>
+                                                @if($adjustment->status == \App\Models\Adjustment::PENDING)
+                                                    <button
+                                                        data-id="{{ $item->id }}"
+                                                        data-quantity="{{ $item->quantity }}"
+                                                        data-unit_price="{{ $item->unit_price }}"
+                                                        data-item_id="{{ $item->item_id }}"
+                                                        data-adjustment_type="{{ $item->adjustment_type }}"
+                                                        class="btn btn-sm btn-light-primary btn-icon rounded-circle js-edit">
+                                                        <i class="flaticon2-edit"></i>
+                                                    </button>
+                                                    <button type="button"
+                                                            data-href="{{ route('admin.stock.stock-adjustments.items.remove',[encryptId($adjustment->id),encryptId($item->id)]) }}"
+                                                            class="btn btn-sm btn-light-danger btn-icon rounded-circle js-delete">
+                                                        <i class="flaticon2-trash"></i>
+                                                    </button>
+                                                @endif
+                                            </td>
+                                        </tr>
+
+                                    @empty
+                                        <tr>
+                                            <td colspan="5">
+                                                <div class="alert alert-light-info alert-custom py-1">
+                                                    <div class="alert-icon">
+                                                        <i class="flaticon2-exclamation"></i>
+                                                    </div>
+                                                    <div class="alert-text">
+                                                        No items found, please add some items.
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                @endif
 
                                 </tbody>
                             </table>
@@ -172,7 +190,7 @@
                 </div>
 
 {{--                submit--}}
-                @if($adjustment->canBeSubmitted())
+                @if($adjustment && $adjustment->canBeSubmitted())
                     <div class="row justify-content-end mr-1">
                         <a class="btn btn-primary btn-lg submitBtn" href="{{ route("admin.stock.stock-adjustments.submit",encryptId($adjustment->id)) }}">
                             <i class="fas fa-check-circle"></i>
@@ -182,7 +200,7 @@
 
                 {{--                review form--}}
 
-                @if( $adjustment->canBeReviewed())
+                @if($adjustment && $adjustment->canBeReviewed())
                     <div class="row justify-content-center">
                         <div class="col-lg-8">
                             <h4 class="text-center my-4">
@@ -234,7 +252,7 @@
             </div>
 
             <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="home-tab">
-                @if($reviews->count() == 0)
+                @if($reviews && $reviews->count() == 0)
                     <div class="alert alert-light-info alert-custom ">
                         <div class="alert-icon text-info">
                             <i class="flaticon2-exclamation"></i>
@@ -248,26 +266,26 @@
                     <div class="timeline timeline-justified timeline-4">
                         <div class="timeline-bar"></div>
                         <div class="timeline-items">
-                            @foreach($reviews as $item)
-                                <div class="timeline-item">
-                                    <div class="timeline-badge">
-                                        <div class="bg-{{$item->status_color}}"></div>
-                                    </div>
+                                @foreach($reviews ?? [] as $item)
+                                    <div class="timeline-item">
+                                        <div class="timeline-badge">
+                                            <div class="bg-{{$item->status_color}}"></div>
+                                        </div>
 
-                                    <div class="timeline-label">
+                                        <div class="timeline-label">
                                         <span class="text-primary font-weight-bold">
                                             {{ $item->user->name }}
                                         </span>
-                                        <span class="ml-2">
+                                            <span class="ml-2">
                                             {{ $item->created_at->diffForHumans() }}
                                         </span>
-                                    </div>
+                                        </div>
 
-                                    <div class="timeline-content">
-                                        {{ $item->comment }}
+                                        <div class="timeline-content">
+                                            {{ $item->comment }}
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
                         </div>
                     </div>
                 @endif
@@ -275,7 +293,7 @@
             </div>
             <div class="tab-pane fade  " id="contact" role="tabpanel" aria-labelledby="home-tab">
                 <div class="card card-body">
-                    @if($flowHistories->count()==0)
+                    @if($flowHistories && $flowHistories->count()==0)
                         <div class="alert alert-light-info alert-custom ">
                             <div class="alert-icon text-info">
                                 <i class="flaticon2-exclamation"></i>
@@ -286,34 +304,34 @@
                         </div>
                     @else
                         <div class="timeline timeline-6 mt-3">
-                            @foreach($flowHistories as $item)
-                                <!--begin::Item-->
-                                <div class="timeline-item align-items-start">
-                                    <!--begin::Label-->
-                                    <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg">
-                                        {{ $item->created_at->format('h:i A') }}
-                                    </div>
-                                    <!--end::Label-->
+                                @foreach($flowHistories ?? [] as $item)
+                                    <!--begin::Item-->
+                                    <div class="timeline-item align-items-start">
+                                        <!--begin::Label-->
+                                        <div class="timeline-label font-weight-bolder text-dark-75 font-size-lg">
+                                            {{ $item->created_at->format('h:i A') }}
+                                        </div>
+                                        <!--end::Label-->
 
-                                    <!--begin::Badge-->
-                                    <div class="timeline-badge">
-                                        <i class="fa fa-genderless text-{{ $item->status_color }} icon-xl"></i>
-                                    </div>
-                                    <!--end::Badge-->
+                                        <!--begin::Badge-->
+                                        <div class="timeline-badge">
+                                            <i class="fa fa-genderless text-{{ $item->status_color }} icon-xl"></i>
+                                        </div>
+                                        <!--end::Badge-->
 
-                                    <!--begin::Text-->
-                                    <div class="font-weight-mormal font-size-lg timeline-content pl-3">
+                                        <!--begin::Text-->
+                                        <div class="font-weight-mormal font-size-lg timeline-content pl-3">
                                     <span class="text-muted font-weight-bolder">
                                         {{ $item->created_at->format('d M Y') }}
                                     </span>
-                                        <p>
-                                            {{ $item->comment }}
-                                        </p>
+                                            <p>
+                                                {{ $item->comment }}
+                                            </p>
+                                        </div>
+                                        <!--end::Text-->
                                     </div>
-                                    <!--end::Text-->
-                                </div>
-                                <!--end::Item-->
-                            @endforeach
+                                    <!--end::Item-->
+                                @endforeach
                         </div>
                     @endif
 
@@ -331,11 +349,12 @@
                         &times;
                     </button>
                 </div>
-                <form action="{{ route('admin.stock.stock-adjustments.items.add',encryptId($adjustment->id)) }}" method="post"
+                <form action="{{ route('admin.stock.stock-adjustments.items.add') }}" method="post"
                       id="saveItemForm">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
+                            <input type="hidden" id="item_adjustment_id">
                             <label for="type">Adjustment Type</label>
                             <select name="adjustment_type" id="adjustment-type" class="form-control select2"
                                     style="width: 100% !important;">
@@ -349,7 +368,7 @@
                             <select name="item_id" id="item_id" class="form-control select2"
                                     style="width: 100% !important;">
                                 <option value="">Select Item</option>
-                                @foreach($stock as $record)
+                                @foreach($stock ?? [] as $record)
                                     <option value="{{$record->item_id}}">{{optional($record->item)->name}}
                                     </option>
                                 @endforeach
@@ -357,7 +376,7 @@
                         </div>
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
-                            <input type="number" name="quantity" id="quantity" class="form-control" min="1" max="{{$record->quantity}}"/>
+                            <input type="number" name="quantity" id="quantity" class="form-control" min="1" max="10"/>
                         </div>
                         <div class="form-group">
                             <label for="unit_price">Unit Price</label>
@@ -367,7 +386,6 @@
                             <label for="description">Description</label>
                             <textarea name="description" id="description" class="form-control"></textarea>
                         </div>
-
 
                     </div>
                     <div class="modal-footer bg-light">
@@ -388,8 +406,6 @@
 
     <script>
         $(document).ready(function () {
-
-
             $('#formSaveReview').on('submit', function (e) {
                 e.preventDefault();
 
@@ -407,8 +423,6 @@
                 e.target.submit();
 
             });
-
-
             $('#datatable').DataTable();
         })
         $('#addBtn').on('click', function () {
@@ -488,5 +502,42 @@
             });
 
         });
+
+        $(document).on('click','#saveNew', function (e){
+            e.preventDefault();
+            const btn = $(this);
+            const form =  $('#saveNewForm');
+            if(form.valid()){
+                btn.addClass('spinner spinner-white spinner-right')
+                    .prop('disabled', true);
+               //make ajax call
+                $.ajax({
+                    url: form.attr('action'),
+                    type: 'POST',
+                    data: form.serialize(),
+                    complete: function () {
+                        btn.removeClass('spinner spinner-white spinner-right')
+                            .prop('disabled', false);
+                    },
+                    success: function (response) {
+                        $('#adjustment_id').val(response.id);
+                        $('#item_adjustment_id').val(response.id);
+                        $('#items-container').css('display', 'block');
+                        console.log(response);
+                        // location.reload();
+                    },
+                    error: function (xhr) {
+                        console.log(xhr);
+                        // Swal.fire(
+                        //     'Error!',
+                        //     "Unable to save item, please try again later",
+                        //     'error'
+                        // );
+                    }
+                });
+            }
+
+
+        })
     </script>
 @endsection

@@ -38,9 +38,7 @@
                 @can('Create Adjustment')
                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
                         <div class="card-toolbar">
-                            <a href="javascript:void(0)" class="btn btn-light-primary"
-                               data-toggle="modal"
-                               data-target="#addModal" >
+                            <a href="{{route('admin.stock.stock-adjustments.new')}}" class="btn btn-light-primary">
                                 <i class="la la-plus"></i>
                                 New Adjustment
                             </a>
@@ -82,10 +80,17 @@
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-light-primary btn-sm  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
                                         <div class="dropdown-menu" style="">
-                                            <a href="{{route('admin.stock.adjustments.show', encryptId($adjustment->id))}}"
-                                               class="dropdown-item">
-                                                Details
-                                            </a>
+                                            @if($adjustment->status == \App\Models\Adjustment::PENDING)
+                                                <a href="{{route('admin.stock.stock-adjustments.new')}}"
+                                                   class="dropdown-item">
+                                                    Details
+                                                </a>
+                                            @else
+                                                <a href="{{route('admin.stock.adjustments.show', encryptId($adjustment->id))}}"
+                                                   class="dropdown-item">
+                                                    Details
+                                                </a>
+                                            @endif
                                             @can(\App\Constants\Permission::CreateAdjustment)
                                                 @if($adjustment->status == \App\Models\Adjustment::PENDING)
                                                     <div class="dropdown-divider"></div>
@@ -111,77 +116,6 @@
                         @endforeach
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
-        {{--user adjustment modal--}}
-        <div class="modal fade" id="addModal" tabindex="-1"
-             aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form class="kt-form" id="add-adjustment-form" action="{{route('admin.stock.adjustments.store')}} "
-                          method="POST">
-                        {{csrf_field()}}
-
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Reason</label>
-                                <textarea name="description" class="form-control" rows="3"></textarea>
-                            </div>
-                            <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
-                            <input type="hidden" name="operation_area_id" value="{{auth()->user()->operation_area}}">
-                            <input type="hidden" name="created_by" value="{{auth()->user()->id}}">
-                            <input type="hidden" name="status" value="Pending">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><span
-                                    class="la la-close"></span> Close
-                            </button>
-                            <button type="submit" class="btn btn-primary"><span class="la la-check-circle-o"></span>
-                                Save Adjustment
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        {{--user update modal--}}
-        <div class="modal fade" id="user_adjustment_edit_modal" tabindex="-1"
-             aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit adjustment</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        </button>
-                    </div>
-                    <form class="kt-form" id="edit-adjustment-form"
-                          method="POST">
-                        @method('PUT')
-                        {{csrf_field()}}
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label>Reason</label>
-                                <textarea name="description" id="_description" class="form-control" rows="3"></textarea>
-                            </div>
-                            <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
-                            <input type="hidden" name="operation_area_id" value="{{auth()->user()->operation_area}}">
-                            <input type="hidden" name="created_by" value="{{auth()->user()->id}}">
-                            <input type="hidden" name="status" value="Pending">
-                        </div>
-
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><span
-                                    class="la la-close"></span> Close
-                            </button>
-                            <button type="submit" class="btn btn-primary"><span class="la la-check-circle-o"></span>
-                                Edit Adjustment
-                            </button>
-                        </div>
-                    </form>
                 </div>
             </div>
         </div>
