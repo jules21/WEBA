@@ -35,4 +35,5 @@ class Status
     const DELIVERED = 'Delivered';
 
     const RE_SUBMITTED = 'Re-Submitted';
+    const PAID = "Paid";
 }

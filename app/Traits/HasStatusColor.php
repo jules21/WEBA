@@ -11,23 +11,25 @@ trait HasStatusColor
     public function getStatusColorAttribute(): string
     {
         switch (strtolower($this->status)) {
-            case 'pending':
-            case 'active':
+            case strtolower(Status::PENDING):
+            case strtolower(Status::ACTIVE):
             case strtolower(Status::PARTIALLY_DELIVERED):
                 return 'primary';
-            case 'submitted':
-            case 'assigned':
+            case strtolower(Status::SUBMITTED):
+            case strtolower(Status::ASSIGNED):
                 return 'info';
-            case 'approved':
-            case 'paid':
-            case 'delivered':
+            case strtolower(Status::APPROVED):
+            case strtolower(Status::PAID):
+            case strtolower(Status::DELIVERED):
             case strtolower(BalanceType::CREDIT):
                 return 'success';
-            case 'rejected':
-            case 'cancelled':
+            case strtolower(Status::RETURN_BACK):
+                return 'warning';
+            case strtolower(Status::REJECTED):
+            case strtolower(Status::CANCELLED):
             case strtolower(BalanceType::DEBIT):
                 return 'danger';
-            case 'meter assigned':
+            case strtolower(Status::METER_ASSIGNED):
                 return 'green';
             default:
                 return 'secondary';
