@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Constants\Permission;
+use App\Constants\Status;
 use App\Exports\RequestsExport;
 use App\Http\Requests\ValidateAppRequest;
 use App\Models\Customer;
@@ -82,7 +83,7 @@ class RequestsController extends Controller
                 ->addColumn('action', function (AppRequest $row) {
                     $buttons = '';
 
-                    if ($row->status == AppRequest::PENDING && auth()->user()->can(Permission::CreateRequest) && isForOperationArea()) {
+                    if ($row->status == Status::PENDING && auth()->user()->can(Permission::CreateRequest) && isForOperationArea()) {
                         $buttons = '<a class="dropdown-item js-edit" href="'.route('admin.requests.edit', encryptId($row->id)).'">
                                         <i class="fas fa-edit"></i>
                                         <span class="ml-2">Edit</span>
@@ -160,7 +161,7 @@ class RequestsController extends Controller
                 ->with(['customer', 'requestType', 'requestAssignment.user'])
                 ->where([
                     ['operation_area_id', '=', auth()->user()->operation_area],
-                    ['status', '=', AppRequest::ASSIGNED],
+                    ['status', '=', Status::ASSIGNED],
                 ])
                 ->whereHas('requestAssignment')
                 ->select('requests.*');
@@ -322,7 +323,7 @@ class RequestsController extends Controller
 
     public function edit(AppRequest $request)
     {
-        if ($request->status != AppRequest::PENDING) {
+        if ($request->status != Status::PENDING) {
             return redirect()->back()->with('error', 'Request cannot be edited');
         }
 
@@ -394,18 +395,18 @@ class RequestsController extends Controller
                     if ($user->can(Permission::ReviewRequest)) {
                         $hasPermission = true;
                         $builder
-                            ->where('status', '=', AppRequest::ASSIGNED)
+                            ->where('status', '=', Status::ASSIGNED)
                             ->whereHas('requestAssignment', fn (Builder $builder) => $builder->where('user_id', '=', auth()->id()));
                     }
 
                     if ($user->can(Permission::ApproveRequest)) {
                         $hasPermission = true;
-                        $builder->orWhere('status', '=', AppRequest::PROPOSE_TO_APPROVE);
+                        $builder->orWhere('status', '=', Status::PROPOSE_TO_APPROVE);
                     }
 
                     if ($user->can(Permission::AssignMeterNumber)) {
                         $hasPermission = true;
-                        $builder->orWhere('status', '=', AppRequest::APPROVED);
+                        $builder->orWhere('status', '=', Status::APPROVED);
                     }
 
                     if ($hasPermission === false) {
@@ -454,14 +455,14 @@ class RequestsController extends Controller
                 ->whereDoesntHave('paymentDeclarations', function (Builder $builder) {
                     $builder->whereIn(DB::raw('lower(status)'), [PaymentDeclaration::ACTIVE]);
                 })
-                ->whereIn('status', [AppRequest::METER_ASSIGNED, AppRequest::PARTIALLY_DELIVERED, AppRequest::DELIVERED])
+                ->whereIn('status', [Status::METER_ASSIGNED, Status::PARTIALLY_DELIVERED, Status::DELIVERED])
                 ->select('requests.*');
 
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (AppRequest $row) {
                     $print = '';
-                    if ($row->status == AppRequest::DELIVERED) {
+                    if ($row->status == Status::DELIVERED) {
                         $print = '<a class="dropdown-item" target="_blank" href="'.route('admin.requests.print-receipt', encryptId($row->id)).'">Print</a>';
                     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Status;
 use App\Models\Billing;
 use App\Models\Customer;
 use App\Models\MeterRequest;
@@ -24,6 +25,7 @@ class DashboardController extends Controller
         } elseif (auth()->user()->operation_area != null) {
             return $this->level3Dashboard();
         }
+        return back()->with('error', 'You are not authorized to access this page');
     }
 
     /**
@@ -62,14 +64,14 @@ class DashboardController extends Controller
         $requests = Request::query()
             ->where('operator_id', auth()->user()->operator_id)->get(['id', 'status']);
         $allRequests = $requests->count();
-        $rejectRequests = $requests->whereIn('status', [Request::REJECTED,
-            Request::CANCELLED])->count();
-        $approveRequests = $requests->whereIn('status', [
-            Request::APPROVED,
-            Request::DELIVERED,
-            Request::PARTIALLY_DELIVERED,
-            Request::METER_ASSIGNED, ])->count();
-        $pendingRequests = $requests->whereIn('status', [Request::PENDING])->count();
+        $rejectRequests = $requests->whereIn('status', [Status::REJECTED,
+            Status::CANCELLED])->count();
+        $approveRequests = Request::query()->whereIn('status', [
+            Status::APPROVED,
+            Status::DELIVERED,
+            Status::PARTIALLY_DELIVERED,
+            Status::METER_ASSIGNED,])->count();
+        $pendingRequests = $requests->whereIn('status', [Status::PENDING])->count();
 
         $consumptionPerMonth = $this->getConsumedWater();
         $topOperators = $this->getTopWaterNetWorks();
@@ -112,14 +114,14 @@ class DashboardController extends Controller
             ->where('operation_area_id', auth()->user()->operation_area)->get(['id', 'status']);
 
         $allRequests = $requests->count();
-        $rejectRequests = $requests->whereIn('status', [Request::REJECTED,
-            Request::CANCELLED])->count();
+        $rejectRequests = $requests->whereIn('status', [Status::REJECTED,
+            Status::CANCELLED])->count();
         $approveRequests = $requests->whereIn('status', [
-            Request::APPROVED,
-            Request::DELIVERED,
-            Request::PARTIALLY_DELIVERED,
-            Request::METER_ASSIGNED, ])->count();
-        $pendingRequests = $requests->whereIn('status', [Request::PENDING])->count();
+            Status::APPROVED,
+            Status::DELIVERED,
+            Status::PARTIALLY_DELIVERED,
+            Status::METER_ASSIGNED,])->count();
+        $pendingRequests = $requests->whereIn('status', [Status::PENDING])->count();
 
         $consumptionPerMonth = $this->getConsumedWater();
         $topOperators = $this->getTopWaterNetWorks();
@@ -229,7 +231,7 @@ class DashboardController extends Controller
         $operatorId = auth()->user()->operator_id;
         $operationAreaId = auth()->user()->operation_area;
         $waterNetworks = WaterNetwork::query()
-        ->join('requests', 'requests.water_network_id', '=', 'water_networks.id')
+            ->join('requests', 'requests.water_network_id', '=', 'water_networks.id')
             ->join('meter_requests', 'meter_requests.request_id', '=', 'requests.id')
             ->join('billings', 'billings.subscription_number', '=', 'meter_requests.subscription_number')
             ->join('operation_areas', 'operation_areas.id', '=', 'requests.operation_area_id')

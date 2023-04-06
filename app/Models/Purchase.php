@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Constants\Permission;
+use App\Constants\Status;
 use App\Traits\GetClassName;
 use App\Traits\HasStatusColor;
 use Eloquent;
@@ -105,14 +106,14 @@ class Purchase extends Model implements Auditable
     public function getApprovalStatuses(): array
     {
         return [
-            self::APPROVED,
-            self::REJECTED,
+            Status::APPROVED,
+            Status::REJECTED,
         ];
     }
 
     public function canBeReviewed(): bool
     {
-        return $this->status === self::SUBMITTED
+        return $this->status === Status::SUBMITTED
             && auth()->user()->operation_area
             && auth()->user()->can(Permission::ApproveStockIn);
     }

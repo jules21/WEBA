@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Constants\BalanceType;
+use App\Constants\Status;
 use App\Models\Request;
 
 trait HasStatusColor
@@ -12,7 +13,7 @@ trait HasStatusColor
         switch (strtolower($this->status)) {
             case 'pending':
             case 'active':
-            case strtolower(Request::PARTIALLY_DELIVERED):
+            case strtolower(Status::PARTIALLY_DELIVERED):
                 return 'primary';
             case 'submitted':
             case 'assigned':
