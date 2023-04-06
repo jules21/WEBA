@@ -372,6 +372,8 @@ class Request extends Model implements Auditable
             return Status::PROPOSE_TO_APPROVE;
         else if ($currentStatus == Status::PROPOSE_TO_APPROVE) {
             return Status::ASSIGNED;
+        } else if ($currentStatus == Status::ASSIGNED) {
+            return Status::PENDING;
         }
         return null;
     }
