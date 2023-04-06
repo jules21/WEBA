@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreChartAccountRequest;
-use App\Http\Requests\UpdateChartAccountRequest;
 use App\Models\ChartAccount;
 
 class ChartAccountController extends Controller
@@ -16,7 +14,7 @@ class ChartAccountController extends Controller
             ->with('children.children.children')
 //            ->orderBy('code')
             ->get();
+
         return view('admin.accounting.chart_of_accounts', compact('chartAccounts'));
     }
-
 }

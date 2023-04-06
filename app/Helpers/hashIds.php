@@ -1,36 +1,30 @@
 <?php
 
-
-if (!function_exists('encryptId')) {
+if (! function_exists('encryptId')) {
     /**
      * function to encrypt id
-     * @param $id
-     * @return string
      */
-    function encryptId($id): String
+    function encryptId($id): string
     {
         $hashids = new Hashids\Hashids('', 32, 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+
        return $hashids->encode($id);
     }
 }
 
-if (!function_exists('decryptId')) {
+if (! function_exists('decryptId')) {
     /**
      * function to decrypt id
-     * @param $id
-     * @return integer
      */
     function decryptId($id): int
     {
-        try{
+        try {
             $hashids = new Hashids\Hashids('', 32, 'abcdefghijklmnopqrstuvwxyz-ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890');
+
             return $hashids->decode($id)[0];
-        }catch (Exception $exception){
+        } catch (Exception $exception) {
          return -1;
         }
 
     }
 }
-
-
-

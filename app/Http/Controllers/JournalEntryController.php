@@ -19,6 +19,7 @@ class JournalEntryController extends Controller
             $data = JournalEntry::query()
                 ->with(['debitLedger', 'creditLedger'])
                 ->select('journal_entries.*');
+
             return datatables()->of($data)
                 ->addColumn('action', function ($row) {
                     if (auth()->user()->operation_area) {
@@ -27,12 +28,13 @@ class JournalEntryController extends Controller
                             Options
                           </button>
                           <div class="dropdown-menu">
-                            <a class="dropdown-item js-edit" href="' . route('admin.accounting.journal-entries.show', encryptId($row->id)) . '"> <i class="fa fa-edit mr-2"></i> Edit</a>
-                            <a class="dropdown-item js-delete" href="' . route('admin.accounting.journal-entries.delete', encryptId($row->id)) . '"> <i class="fa fa-trash  mr-2"></i> Delete</a>
+                            <a class="dropdown-item js-edit" href="'.route('admin.accounting.journal-entries.show', encryptId($row->id)).'"> <i class="fa fa-edit mr-2"></i> Edit</a>
+                            <a class="dropdown-item js-delete" href="'.route('admin.accounting.journal-entries.delete', encryptId($row->id)).'"> <i class="fa fa-trash  mr-2"></i> Delete</a>
                           </div>
                         </div>';
                     }
-                    return "";
+
+                    return '';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -44,21 +46,19 @@ class JournalEntryController extends Controller
             ])
             ->get();
         $creditLedgers = $debitLedgers;
+
         return view('admin.accounting.journal-entries', [
             'debitLedgers' => $debitLedgers,
-            'creditLedgers' => $creditLedgers
+            'creditLedgers' => $creditLedgers,
         ]);
     }
-
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param ValidateJournalEntryRequest $request
      * @return JsonResponse
      */
-    public
-    function store(ValidateJournalEntryRequest $request)
+    public function store(ValidateJournalEntryRequest $request)
     {
         $data = $request->validated();
         $data['operation_area_id'] = auth()->user()->operation_area;
@@ -76,27 +76,24 @@ class JournalEntryController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Journal Entry saved successfully',
-                'data' => $journalEntry
+                'data' => $journalEntry,
             ]);
         }
 
         return response()->json([
             'success' => false,
             'message' => 'Journal Entry could not be saved',
-            'data' => $journalEntry
+            'data' => $journalEntry,
         ]);
-
 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param JournalEntry $journalEntry
      * @return JournalEntry
      */
-    public
-    function show(JournalEntry $journalEntry)
+    public function show(JournalEntry $journalEntry)
     {
         return $journalEntry;
     }
@@ -104,17 +101,16 @@ class JournalEntryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param JournalEntry $journalEntry
      * @return JsonResponse
      */
-    public
-    function destroy(JournalEntry $journalEntry)
+    public function destroy(JournalEntry $journalEntry)
     {
         $journalEntry->delete();
+
         return response()->json([
             'success' => true,
             'message' => 'Journal Entry deleted successfully',
-            'data' => $journalEntry
+            'data' => $journalEntry,
         ]);
     }
 }

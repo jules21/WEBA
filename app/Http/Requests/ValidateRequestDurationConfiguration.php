@@ -24,11 +24,11 @@ class ValidateRequestDurationConfiguration extends FormRequest
     public function rules()
     {
         return [
-            'request_type_id'=>'required',
-            'operator_id'=>'required',
-            'operation_area_id'=>'required',
-            'processing_days'=>'required',
-            'is_active'=>'required',
+            'request_type_id' => 'required',
+            'operator_id' => 'required',
+            'operation_area_id' => 'required',
+            'processing_days' => 'required',
+            'is_active' => 'required',
         ];
     }
 }

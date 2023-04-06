@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 
 class DropMetersTable extends Migration
 {
@@ -13,7 +11,7 @@ class DropMetersTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\DB::select("DROP table meters CASCADE");
+        \Illuminate\Support\Facades\DB::select('DROP table meters CASCADE');
     }
 
     /**

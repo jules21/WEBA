@@ -31,7 +31,6 @@ class VillageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreVillageRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreVillageRequest $request)
@@ -42,7 +41,6 @@ class VillageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Village  $village
      * @return \Illuminate\Http\Response
      */
     public function show(Village $village)
@@ -53,7 +51,6 @@ class VillageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Village  $village
      * @return \Illuminate\Http\Response
      */
     public function edit(Village $village)
@@ -64,8 +61,6 @@ class VillageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateVillageRequest  $request
-     * @param  \App\Models\Village  $village
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateVillageRequest $request, Village $village)
@@ -76,7 +71,6 @@ class VillageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Village  $village
      * @return \Illuminate\Http\Response
      */
     public function destroy(Village $village)

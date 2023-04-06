@@ -25,8 +25,7 @@ class Controller extends BaseController
             $psp = $mapping->account->paymentServiceProvider;
             $pspNames[] = $psp->name;
         }
+
         return implode(', ', $pspNames);
     }
-
-
 }

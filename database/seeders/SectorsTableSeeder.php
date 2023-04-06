@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class SectorsTableSeeder extends Seeder
 {
-
     /**
      * Auto generated seed file
      *
@@ -16,3340 +15,2922 @@ class SectorsTableSeeder extends Seeder
     public function run()
     {
 
-
         DB::table('sectors')->delete();
 
-        DB::table('sectors')->insert(array (
-            0 =>
-            array (
+        DB::table('sectors')->insert([
+            0 => [
                 'id' => 1,
                 'district_id' => 1,
                 'name' => 'Gitega',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            1 =>
-            array (
+            ],
+            1 => [
                 'id' => 2,
                 'district_id' => 1,
                 'name' => 'Kanyinya',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            2 =>
-            array (
+            ],
+            2 => [
                 'id' => 3,
                 'district_id' => 1,
                 'name' => 'Kigali',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            3 =>
-            array (
+            ],
+            3 => [
                 'id' => 4,
                 'district_id' => 1,
                 'name' => 'Kimisagara',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            4 =>
-            array (
+            ],
+            4 => [
                 'id' => 5,
                 'district_id' => 1,
                 'name' => 'Mageregere',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            5 =>
-            array (
+            ],
+            5 => [
                 'id' => 6,
                 'district_id' => 1,
                 'name' => 'Muhima',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            6 =>
-            array (
+            ],
+            6 => [
                 'id' => 7,
                 'district_id' => 1,
                 'name' => 'Nyakabanda',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            7 =>
-            array (
+            ],
+            7 => [
                 'id' => 8,
                 'district_id' => 1,
                 'name' => 'Nyamirambo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            8 =>
-            array (
+            ],
+            8 => [
                 'id' => 9,
                 'district_id' => 1,
                 'name' => 'Nyarugenge',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            9 =>
-            array (
+            ],
+            9 => [
                 'id' => 10,
                 'district_id' => 1,
                 'name' => 'Rwezamenyo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            10 =>
-            array (
+            ],
+            10 => [
                 'id' => 11,
                 'district_id' => 2,
                 'name' => 'Bumbogo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            11 =>
-            array (
+            ],
+            11 => [
                 'id' => 12,
                 'district_id' => 2,
                 'name' => 'Gatsata',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            12 =>
-            array (
+            ],
+            12 => [
                 'id' => 13,
                 'district_id' => 2,
                 'name' => 'Gikomero',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            13 =>
-            array (
+            ],
+            13 => [
                 'id' => 14,
                 'district_id' => 2,
                 'name' => 'Gisozi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            14 =>
-            array (
+            ],
+            14 => [
                 'id' => 15,
                 'district_id' => 2,
                 'name' => 'Jabana',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            15 =>
-            array (
+            ],
+            15 => [
                 'id' => 16,
                 'district_id' => 2,
                 'name' => 'Jali',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            16 =>
-            array (
+            ],
+            16 => [
                 'id' => 17,
                 'district_id' => 2,
                 'name' => 'Kacyiru',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            17 =>
-            array (
+            ],
+            17 => [
                 'id' => 18,
                 'district_id' => 2,
                 'name' => 'Kimihurura',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            18 =>
-            array (
+            ],
+            18 => [
                 'id' => 19,
                 'district_id' => 2,
                 'name' => 'Kimironko',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            19 =>
-            array (
+            ],
+            19 => [
                 'id' => 20,
                 'district_id' => 2,
                 'name' => 'Kinyinya',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            20 =>
-            array (
+            ],
+            20 => [
                 'id' => 21,
                 'district_id' => 2,
                 'name' => 'Ndera',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            21 =>
-            array (
+            ],
+            21 => [
                 'id' => 22,
                 'district_id' => 2,
                 'name' => 'Nduba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            22 =>
-            array (
+            ],
+            22 => [
                 'id' => 23,
                 'district_id' => 2,
                 'name' => 'Remera',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            23 =>
-            array (
+            ],
+            23 => [
                 'id' => 24,
                 'district_id' => 2,
                 'name' => 'Rusororo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            24 =>
-            array (
+            ],
+            24 => [
                 'id' => 25,
                 'district_id' => 2,
                 'name' => 'Rutunga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            25 =>
-            array (
+            ],
+            25 => [
                 'id' => 26,
                 'district_id' => 3,
                 'name' => 'Gahanga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            26 =>
-            array (
+            ],
+            26 => [
                 'id' => 27,
                 'district_id' => 3,
                 'name' => 'Gatenga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            27 =>
-            array (
+            ],
+            27 => [
                 'id' => 28,
                 'district_id' => 3,
                 'name' => 'Gikondo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            28 =>
-            array (
+            ],
+            28 => [
                 'id' => 29,
                 'district_id' => 3,
                 'name' => 'Kagarama',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            29 =>
-            array (
+            ],
+            29 => [
                 'id' => 30,
                 'district_id' => 3,
                 'name' => 'Kanombe',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            30 =>
-            array (
+            ],
+            30 => [
                 'id' => 31,
                 'district_id' => 3,
                 'name' => 'Kicukiro',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            31 =>
-            array (
+            ],
+            31 => [
                 'id' => 32,
                 'district_id' => 3,
                 'name' => 'Kigarama',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            32 =>
-            array (
+            ],
+            32 => [
                 'id' => 33,
                 'district_id' => 3,
                 'name' => 'Masaka',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            33 =>
-            array (
+            ],
+            33 => [
                 'id' => 34,
                 'district_id' => 3,
                 'name' => 'Niboye',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            34 =>
-            array (
+            ],
+            34 => [
                 'id' => 35,
                 'district_id' => 3,
                 'name' => 'Nyarugunga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            35 =>
-            array (
+            ],
+            35 => [
                 'id' => 36,
                 'district_id' => 4,
                 'name' => 'Busasamana',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            36 =>
-            array (
+            ],
+            36 => [
                 'id' => 37,
                 'district_id' => 4,
                 'name' => 'Busoro',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            37 =>
-            array (
+            ],
+            37 => [
                 'id' => 38,
                 'district_id' => 4,
                 'name' => 'Cyabakamyi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            38 =>
-            array (
+            ],
+            38 => [
                 'id' => 39,
                 'district_id' => 4,
                 'name' => 'Kibilizi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            39 =>
-            array (
+            ],
+            39 => [
                 'id' => 40,
                 'district_id' => 4,
                 'name' => 'Kigoma',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            40 =>
-            array (
+            ],
+            40 => [
                 'id' => 41,
                 'district_id' => 4,
                 'name' => 'Mukingo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            41 =>
-            array (
+            ],
+            41 => [
                 'id' => 42,
                 'district_id' => 4,
                 'name' => 'Muyira',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            42 =>
-            array (
+            ],
+            42 => [
                 'id' => 43,
                 'district_id' => 4,
                 'name' => 'Ntyazo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            43 =>
-            array (
+            ],
+            43 => [
                 'id' => 44,
                 'district_id' => 4,
                 'name' => 'Nyagisozi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            44 =>
-            array (
+            ],
+            44 => [
                 'id' => 45,
                 'district_id' => 4,
                 'name' => 'Rwabicuma',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            45 =>
-            array (
+            ],
+            45 => [
                 'id' => 46,
                 'district_id' => 5,
                 'name' => 'Gikonko',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            46 =>
-            array (
+            ],
+            46 => [
                 'id' => 47,
                 'district_id' => 5,
                 'name' => 'Gishubi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            47 =>
-            array (
+            ],
+            47 => [
                 'id' => 48,
                 'district_id' => 5,
                 'name' => 'Kansi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            48 =>
-            array (
+            ],
+            48 => [
                 'id' => 49,
                 'district_id' => 5,
                 'name' => 'Kibirizi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            49 =>
-            array (
+            ],
+            49 => [
                 'id' => 50,
                 'district_id' => 5,
                 'name' => 'Kigembe',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            50 =>
-            array (
+            ],
+            50 => [
                 'id' => 51,
                 'district_id' => 5,
                 'name' => 'Mamba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            51 =>
-            array (
+            ],
+            51 => [
                 'id' => 52,
                 'district_id' => 5,
                 'name' => 'Muganza',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            52 =>
-            array (
+            ],
+            52 => [
                 'id' => 53,
                 'district_id' => 5,
                 'name' => 'Mugombwa',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            53 =>
-            array (
+            ],
+            53 => [
                 'id' => 54,
                 'district_id' => 5,
                 'name' => 'Mukindo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            54 =>
-            array (
+            ],
+            54 => [
                 'id' => 55,
                 'district_id' => 5,
                 'name' => 'Musha',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            55 =>
-            array (
+            ],
+            55 => [
                 'id' => 56,
                 'district_id' => 5,
                 'name' => 'Ndora',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            56 =>
-            array (
+            ],
+            56 => [
                 'id' => 57,
                 'district_id' => 5,
                 'name' => 'Nyanza',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            57 =>
-            array (
+            ],
+            57 => [
                 'id' => 58,
                 'district_id' => 5,
                 'name' => 'Save',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            58 =>
-            array (
+            ],
+            58 => [
                 'id' => 59,
                 'district_id' => 6,
                 'name' => 'Busanze',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            59 =>
-            array (
+            ],
+            59 => [
                 'id' => 60,
                 'district_id' => 6,
                 'name' => 'Cyahinda',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            60 =>
-            array (
+            ],
+            60 => [
                 'id' => 61,
                 'district_id' => 6,
                 'name' => 'Kibeho',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            61 =>
-            array (
+            ],
+            61 => [
                 'id' => 62,
                 'district_id' => 6,
                 'name' => 'Kivu',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            62 =>
-            array (
+            ],
+            62 => [
                 'id' => 63,
                 'district_id' => 6,
                 'name' => 'Mata',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            63 =>
-            array (
+            ],
+            63 => [
                 'id' => 64,
                 'district_id' => 6,
                 'name' => 'Muganza',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            64 =>
-            array (
+            ],
+            64 => [
                 'id' => 65,
                 'district_id' => 6,
                 'name' => 'Munini',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            65 =>
-            array (
+            ],
+            65 => [
                 'id' => 66,
                 'district_id' => 6,
                 'name' => 'Ngera',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            66 =>
-            array (
+            ],
+            66 => [
                 'id' => 67,
                 'district_id' => 6,
                 'name' => 'Ngoma',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            67 =>
-            array (
+            ],
+            67 => [
                 'id' => 68,
                 'district_id' => 6,
                 'name' => 'Nyabimata',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            68 =>
-            array (
+            ],
+            68 => [
                 'id' => 69,
                 'district_id' => 6,
                 'name' => 'Nyagisozi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            69 =>
-            array (
+            ],
+            69 => [
                 'id' => 70,
                 'district_id' => 6,
                 'name' => 'Ruheru',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            70 =>
-            array (
+            ],
+            70 => [
                 'id' => 71,
                 'district_id' => 6,
                 'name' => 'Ruramba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            71 =>
-            array (
+            ],
+            71 => [
                 'id' => 72,
                 'district_id' => 6,
                 'name' => 'Rusenge',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            72 =>
-            array (
+            ],
+            72 => [
                 'id' => 73,
                 'district_id' => 7,
                 'name' => 'Gishamvu',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            73 =>
-            array (
+            ],
+            73 => [
                 'id' => 74,
                 'district_id' => 7,
                 'name' => 'Huye',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            74 =>
-            array (
+            ],
+            74 => [
                 'id' => 75,
                 'district_id' => 7,
                 'name' => 'Karama',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            75 =>
-            array (
+            ],
+            75 => [
                 'id' => 76,
                 'district_id' => 7,
                 'name' => 'Kigoma',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            76 =>
-            array (
+            ],
+            76 => [
                 'id' => 77,
                 'district_id' => 7,
                 'name' => 'Kinazi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            77 =>
-            array (
+            ],
+            77 => [
                 'id' => 78,
                 'district_id' => 7,
                 'name' => 'Maraba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            78 =>
-            array (
+            ],
+            78 => [
                 'id' => 79,
                 'district_id' => 7,
                 'name' => 'Mbazi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            79 =>
-            array (
+            ],
+            79 => [
                 'id' => 80,
                 'district_id' => 7,
                 'name' => 'Mukura',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            80 =>
-            array (
+            ],
+            80 => [
                 'id' => 81,
                 'district_id' => 7,
                 'name' => 'Ngoma',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            81 =>
-            array (
+            ],
+            81 => [
                 'id' => 82,
                 'district_id' => 7,
                 'name' => 'Ruhashya',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            82 =>
-            array (
+            ],
+            82 => [
                 'id' => 83,
                 'district_id' => 7,
                 'name' => 'Rusatira',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            83 =>
-            array (
+            ],
+            83 => [
                 'id' => 84,
                 'district_id' => 7,
                 'name' => 'Rwaniro',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            84 =>
-            array (
+            ],
+            84 => [
                 'id' => 85,
                 'district_id' => 7,
                 'name' => 'Simbi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            85 =>
-            array (
+            ],
+            85 => [
                 'id' => 86,
                 'district_id' => 7,
                 'name' => 'Tumba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            86 =>
-            array (
+            ],
+            86 => [
                 'id' => 87,
                 'district_id' => 8,
                 'name' => 'Buruhukiro',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            87 =>
-            array (
+            ],
+            87 => [
                 'id' => 88,
                 'district_id' => 8,
                 'name' => 'Cyanika',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            88 =>
-            array (
+            ],
+            88 => [
                 'id' => 89,
                 'district_id' => 8,
                 'name' => 'Gasaka',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            89 =>
-            array (
+            ],
+            89 => [
                 'id' => 90,
                 'district_id' => 8,
                 'name' => 'Gatare',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            90 =>
-            array (
+            ],
+            90 => [
                 'id' => 91,
                 'district_id' => 8,
                 'name' => 'Kaduha',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            91 =>
-            array (
+            ],
+            91 => [
                 'id' => 92,
                 'district_id' => 8,
                 'name' => 'Kamegeri',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            92 =>
-            array (
+            ],
+            92 => [
                 'id' => 93,
                 'district_id' => 8,
                 'name' => 'Kibirizi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            93 =>
-            array (
+            ],
+            93 => [
                 'id' => 94,
                 'district_id' => 8,
                 'name' => 'Kibumbwe',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            94 =>
-            array (
+            ],
+            94 => [
                 'id' => 95,
                 'district_id' => 8,
                 'name' => 'Kitabi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            95 =>
-            array (
+            ],
+            95 => [
                 'id' => 96,
                 'district_id' => 8,
                 'name' => 'Mbazi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            96 =>
-            array (
+            ],
+            96 => [
                 'id' => 97,
                 'district_id' => 8,
                 'name' => 'Mugano',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            97 =>
-            array (
+            ],
+            97 => [
                 'id' => 98,
                 'district_id' => 8,
                 'name' => 'Musange',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            98 =>
-            array (
+            ],
+            98 => [
                 'id' => 99,
                 'district_id' => 8,
                 'name' => 'Musebeya',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            99 =>
-            array (
+            ],
+            99 => [
                 'id' => 100,
                 'district_id' => 8,
                 'name' => 'Mushubi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            100 =>
-            array (
+            ],
+            100 => [
                 'id' => 101,
                 'district_id' => 8,
                 'name' => 'Nkomane',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            101 =>
-            array (
+            ],
+            101 => [
                 'id' => 102,
                 'district_id' => 8,
                 'name' => 'Tare',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            102 =>
-            array (
+            ],
+            102 => [
                 'id' => 103,
                 'district_id' => 8,
                 'name' => 'Uwinkingi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            103 =>
-            array (
+            ],
+            103 => [
                 'id' => 104,
                 'district_id' => 9,
                 'name' => 'Bweramana',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            104 =>
-            array (
+            ],
+            104 => [
                 'id' => 105,
                 'district_id' => 9,
                 'name' => 'Byimana',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            105 =>
-            array (
+            ],
+            105 => [
                 'id' => 106,
                 'district_id' => 9,
                 'name' => 'Kabagali',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            106 =>
-            array (
+            ],
+            106 => [
                 'id' => 107,
                 'district_id' => 9,
                 'name' => 'Kinazi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            107 =>
-            array (
+            ],
+            107 => [
                 'id' => 108,
                 'district_id' => 9,
                 'name' => 'Kinihira',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            108 =>
-            array (
+            ],
+            108 => [
                 'id' => 109,
                 'district_id' => 9,
                 'name' => 'Mbuye',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            109 =>
-            array (
+            ],
+            109 => [
                 'id' => 110,
                 'district_id' => 9,
                 'name' => 'Mwendo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            110 =>
-            array (
+            ],
+            110 => [
                 'id' => 111,
                 'district_id' => 9,
                 'name' => 'Ntongwe',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            111 =>
-            array (
+            ],
+            111 => [
                 'id' => 112,
                 'district_id' => 9,
                 'name' => 'Ruhango',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            112 =>
-            array (
+            ],
+            112 => [
                 'id' => 113,
                 'district_id' => 10,
                 'name' => 'Cyeza',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            113 =>
-            array (
+            ],
+            113 => [
                 'id' => 114,
                 'district_id' => 10,
                 'name' => 'Kabacuzi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            114 =>
-            array (
+            ],
+            114 => [
                 'id' => 115,
                 'district_id' => 10,
                 'name' => 'Kibangu',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            115 =>
-            array (
+            ],
+            115 => [
                 'id' => 116,
                 'district_id' => 10,
                 'name' => 'Kiyumba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            116 =>
-            array (
+            ],
+            116 => [
                 'id' => 117,
                 'district_id' => 10,
                 'name' => 'Muhanga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            117 =>
-            array (
+            ],
+            117 => [
                 'id' => 118,
                 'district_id' => 10,
                 'name' => 'Mushishiro',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            118 =>
-            array (
+            ],
+            118 => [
                 'id' => 119,
                 'district_id' => 10,
                 'name' => 'Nyabinoni',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            119 =>
-            array (
+            ],
+            119 => [
                 'id' => 120,
                 'district_id' => 10,
                 'name' => 'Nyamabuye',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            120 =>
-            array (
+            ],
+            120 => [
                 'id' => 121,
                 'district_id' => 10,
                 'name' => 'Nyarusange',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            121 =>
-            array (
+            ],
+            121 => [
                 'id' => 122,
                 'district_id' => 10,
                 'name' => 'Rongi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            122 =>
-            array (
+            ],
+            122 => [
                 'id' => 123,
                 'district_id' => 10,
                 'name' => 'Rugendabari',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            123 =>
-            array (
+            ],
+            123 => [
                 'id' => 124,
                 'district_id' => 10,
                 'name' => 'Shyogwe',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            124 =>
-            array (
+            ],
+            124 => [
                 'id' => 125,
                 'district_id' => 11,
                 'name' => 'Gacurabwenge',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            125 =>
-            array (
+            ],
+            125 => [
                 'id' => 126,
                 'district_id' => 11,
                 'name' => 'Karama',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            126 =>
-            array (
+            ],
+            126 => [
                 'id' => 127,
                 'district_id' => 11,
                 'name' => 'Kayenzi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            127 =>
-            array (
+            ],
+            127 => [
                 'id' => 128,
                 'district_id' => 11,
                 'name' => 'Kayumbu',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            128 =>
-            array (
+            ],
+            128 => [
                 'id' => 129,
                 'district_id' => 11,
                 'name' => 'Mugina',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            129 =>
-            array (
+            ],
+            129 => [
                 'id' => 130,
                 'district_id' => 11,
                 'name' => 'Musambira',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            130 =>
-            array (
+            ],
+            130 => [
                 'id' => 131,
                 'district_id' => 11,
                 'name' => 'Ngamba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            131 =>
-            array (
+            ],
+            131 => [
                 'id' => 132,
                 'district_id' => 11,
                 'name' => 'Nyamiyaga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            132 =>
-            array (
+            ],
+            132 => [
                 'id' => 133,
                 'district_id' => 11,
                 'name' => 'Nyarubaka',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            133 =>
-            array (
+            ],
+            133 => [
                 'id' => 134,
                 'district_id' => 11,
                 'name' => 'Rugarika',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            134 =>
-            array (
+            ],
+            134 => [
                 'id' => 135,
                 'district_id' => 11,
                 'name' => 'Rukoma',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            135 =>
-            array (
+            ],
+            135 => [
                 'id' => 136,
                 'district_id' => 11,
                 'name' => 'Runda',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            136 =>
-            array (
+            ],
+            136 => [
                 'id' => 137,
                 'district_id' => 12,
                 'name' => 'Bwishyura',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            137 =>
-            array (
+            ],
+            137 => [
                 'id' => 138,
                 'district_id' => 12,
                 'name' => 'Gashari',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            138 =>
-            array (
+            ],
+            138 => [
                 'id' => 139,
                 'district_id' => 12,
                 'name' => 'Gishyita',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            139 =>
-            array (
+            ],
+            139 => [
                 'id' => 140,
                 'district_id' => 12,
                 'name' => 'Gitesi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            140 =>
-            array (
+            ],
+            140 => [
                 'id' => 141,
                 'district_id' => 12,
                 'name' => 'Mubuga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            141 =>
-            array (
+            ],
+            141 => [
                 'id' => 142,
                 'district_id' => 12,
                 'name' => 'Murambi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            142 =>
-            array (
+            ],
+            142 => [
                 'id' => 143,
                 'district_id' => 12,
                 'name' => 'Murundi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            143 =>
-            array (
+            ],
+            143 => [
                 'id' => 144,
                 'district_id' => 12,
                 'name' => 'Mutuntu',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            144 =>
-            array (
+            ],
+            144 => [
                 'id' => 145,
                 'district_id' => 12,
                 'name' => 'Rubengera',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            145 =>
-            array (
+            ],
+            145 => [
                 'id' => 146,
                 'district_id' => 12,
                 'name' => 'Rugabano',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            146 =>
-            array (
+            ],
+            146 => [
                 'id' => 147,
                 'district_id' => 12,
                 'name' => 'Ruganda',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            147 =>
-            array (
+            ],
+            147 => [
                 'id' => 148,
                 'district_id' => 12,
                 'name' => 'Rwankuba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            148 =>
-            array (
+            ],
+            148 => [
                 'id' => 149,
                 'district_id' => 12,
                 'name' => 'Twumba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            149 =>
-            array (
+            ],
+            149 => [
                 'id' => 150,
                 'district_id' => 13,
                 'name' => 'Boneza',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            150 =>
-            array (
+            ],
+            150 => [
                 'id' => 151,
                 'district_id' => 13,
                 'name' => 'Gihango',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            151 =>
-            array (
+            ],
+            151 => [
                 'id' => 152,
                 'district_id' => 13,
                 'name' => 'Kigeyo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            152 =>
-            array (
+            ],
+            152 => [
                 'id' => 153,
                 'district_id' => 13,
                 'name' => 'Kivumu',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            153 =>
-            array (
+            ],
+            153 => [
                 'id' => 154,
                 'district_id' => 13,
                 'name' => 'Manihira',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            154 =>
-            array (
+            ],
+            154 => [
                 'id' => 155,
                 'district_id' => 13,
                 'name' => 'Mukura',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            155 =>
-            array (
+            ],
+            155 => [
                 'id' => 156,
                 'district_id' => 13,
                 'name' => 'Murunda',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            156 =>
-            array (
+            ],
+            156 => [
                 'id' => 157,
                 'district_id' => 13,
                 'name' => 'Musasa',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            157 =>
-            array (
+            ],
+            157 => [
                 'id' => 158,
                 'district_id' => 13,
                 'name' => 'Mushonyi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            158 =>
-            array (
+            ],
+            158 => [
                 'id' => 159,
                 'district_id' => 13,
                 'name' => 'Mushubati',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            159 =>
-            array (
+            ],
+            159 => [
                 'id' => 160,
                 'district_id' => 13,
                 'name' => 'Nyabirasi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            160 =>
-            array (
+            ],
+            160 => [
                 'id' => 161,
                 'district_id' => 13,
                 'name' => 'Ruhango',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            161 =>
-            array (
+            ],
+            161 => [
                 'id' => 162,
                 'district_id' => 13,
                 'name' => 'Rusebeya',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            162 =>
-            array (
+            ],
+            162 => [
                 'id' => 163,
                 'district_id' => 14,
                 'name' => 'Bugeshi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            163 =>
-            array (
+            ],
+            163 => [
                 'id' => 164,
                 'district_id' => 14,
                 'name' => 'Busasamana',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            164 =>
-            array (
+            ],
+            164 => [
                 'id' => 165,
                 'district_id' => 14,
                 'name' => 'Cyanzarwe',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            165 =>
-            array (
+            ],
+            165 => [
                 'id' => 166,
                 'district_id' => 14,
                 'name' => 'Gisenyi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            166 =>
-            array (
+            ],
+            166 => [
                 'id' => 167,
                 'district_id' => 14,
                 'name' => 'Kanama',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            167 =>
-            array (
+            ],
+            167 => [
                 'id' => 168,
                 'district_id' => 14,
                 'name' => 'Kanzenze',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            168 =>
-            array (
+            ],
+            168 => [
                 'id' => 169,
                 'district_id' => 14,
                 'name' => 'Mudende',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            169 =>
-            array (
+            ],
+            169 => [
                 'id' => 170,
                 'district_id' => 14,
                 'name' => 'Nyakiriba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            170 =>
-            array (
+            ],
+            170 => [
                 'id' => 171,
                 'district_id' => 14,
                 'name' => 'Nyamyumba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            171 =>
-            array (
+            ],
+            171 => [
                 'id' => 172,
                 'district_id' => 14,
                 'name' => 'Nyundo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            172 =>
-            array (
+            ],
+            172 => [
                 'id' => 173,
                 'district_id' => 14,
                 'name' => 'Rubavu',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            173 =>
-            array (
+            ],
+            173 => [
                 'id' => 174,
                 'district_id' => 14,
                 'name' => 'Rugerero',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            174 =>
-            array (
+            ],
+            174 => [
                 'id' => 175,
                 'district_id' => 15,
                 'name' => 'Bigogwe',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            175 =>
-            array (
+            ],
+            175 => [
                 'id' => 176,
                 'district_id' => 15,
                 'name' => 'Jenda',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            176 =>
-            array (
+            ],
+            176 => [
                 'id' => 177,
                 'district_id' => 15,
                 'name' => 'Jomba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            177 =>
-            array (
+            ],
+            177 => [
                 'id' => 178,
                 'district_id' => 15,
                 'name' => 'Kabatwa',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            178 =>
-            array (
+            ],
+            178 => [
                 'id' => 179,
                 'district_id' => 15,
                 'name' => 'Karago',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            179 =>
-            array (
+            ],
+            179 => [
                 'id' => 180,
                 'district_id' => 15,
                 'name' => 'Kintobo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            180 =>
-            array (
+            ],
+            180 => [
                 'id' => 181,
                 'district_id' => 15,
                 'name' => 'Mukamira',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            181 =>
-            array (
+            ],
+            181 => [
                 'id' => 182,
                 'district_id' => 15,
                 'name' => 'Muringa',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            182 =>
-            array (
+            ],
+            182 => [
                 'id' => 183,
                 'district_id' => 15,
                 'name' => 'Rambura',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            183 =>
-            array (
+            ],
+            183 => [
                 'id' => 184,
                 'district_id' => 15,
                 'name' => 'Rugera',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            184 =>
-            array (
+            ],
+            184 => [
                 'id' => 185,
                 'district_id' => 15,
                 'name' => 'Rurembo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            185 =>
-            array (
+            ],
+            185 => [
                 'id' => 186,
                 'district_id' => 15,
                 'name' => 'Shyira',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            186 =>
-            array (
+            ],
+            186 => [
                 'id' => 187,
                 'district_id' => 16,
                 'name' => 'BWIRA',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            187 =>
-            array (
+            ],
+            187 => [
                 'id' => 188,
                 'district_id' => 16,
                 'name' => 'GATUMBA',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            188 =>
-            array (
+            ],
+            188 => [
                 'id' => 189,
                 'district_id' => 16,
                 'name' => 'HINDIRO',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            189 =>
-            array (
+            ],
+            189 => [
                 'id' => 190,
                 'district_id' => 16,
                 'name' => 'KABAYA',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            190 =>
-            array (
+            ],
+            190 => [
                 'id' => 191,
                 'district_id' => 16,
                 'name' => 'KAGEYO',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            191 =>
-            array (
+            ],
+            191 => [
                 'id' => 192,
                 'district_id' => 16,
                 'name' => 'KAVUMU',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            192 =>
-            array (
+            ],
+            192 => [
                 'id' => 193,
                 'district_id' => 16,
                 'name' => 'MATYAZO',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            193 =>
-            array (
+            ],
+            193 => [
                 'id' => 194,
                 'district_id' => 16,
                 'name' => 'MUHANDA',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            194 =>
-            array (
+            ],
+            194 => [
                 'id' => 195,
                 'district_id' => 16,
                 'name' => 'MUHORORO',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            195 =>
-            array (
+            ],
+            195 => [
                 'id' => 196,
                 'district_id' => 16,
                 'name' => 'NDARO',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            196 =>
-            array (
+            ],
+            196 => [
                 'id' => 197,
                 'district_id' => 16,
                 'name' => 'NGORORERO',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            197 =>
-            array (
+            ],
+            197 => [
                 'id' => 198,
                 'district_id' => 16,
                 'name' => 'NYANGE',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            198 =>
-            array (
+            ],
+            198 => [
                 'id' => 199,
                 'district_id' => 16,
                 'name' => 'SOVU',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            199 =>
-            array (
+            ],
+            199 => [
                 'id' => 200,
                 'district_id' => 17,
                 'name' => 'Bugarama',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            200 =>
-            array (
+            ],
+            200 => [
                 'id' => 201,
                 'district_id' => 17,
                 'name' => 'Butare',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            201 =>
-            array (
+            ],
+            201 => [
                 'id' => 202,
                 'district_id' => 17,
                 'name' => 'Bweyeye',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            202 =>
-            array (
+            ],
+            202 => [
                 'id' => 203,
                 'district_id' => 17,
                 'name' => 'Gashonga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            203 =>
-            array (
+            ],
+            203 => [
                 'id' => 204,
                 'district_id' => 17,
                 'name' => 'Giheke',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            204 =>
-            array (
+            ],
+            204 => [
                 'id' => 205,
                 'district_id' => 17,
                 'name' => 'Gihundwe',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            205 =>
-            array (
+            ],
+            205 => [
                 'id' => 206,
                 'district_id' => 17,
                 'name' => 'Gikundamvura',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            206 =>
-            array (
+            ],
+            206 => [
                 'id' => 207,
                 'district_id' => 17,
                 'name' => 'Gitambi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            207 =>
-            array (
+            ],
+            207 => [
                 'id' => 208,
                 'district_id' => 17,
                 'name' => 'Kamembe',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            208 =>
-            array (
+            ],
+            208 => [
                 'id' => 209,
                 'district_id' => 17,
                 'name' => 'Muganza',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            209 =>
-            array (
+            ],
+            209 => [
                 'id' => 210,
                 'district_id' => 17,
                 'name' => 'Mururu',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            210 =>
-            array (
+            ],
+            210 => [
                 'id' => 211,
                 'district_id' => 17,
                 'name' => 'Nkanka',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            211 =>
-            array (
+            ],
+            211 => [
                 'id' => 212,
                 'district_id' => 17,
                 'name' => 'Nkombo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            212 =>
-            array (
+            ],
+            212 => [
                 'id' => 213,
                 'district_id' => 17,
                 'name' => 'Nkungu',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            213 =>
-            array (
+            ],
+            213 => [
                 'id' => 214,
                 'district_id' => 17,
                 'name' => 'Nyakabuye',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            214 =>
-            array (
+            ],
+            214 => [
                 'id' => 215,
                 'district_id' => 17,
                 'name' => 'Nyakarenzo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            215 =>
-            array (
+            ],
+            215 => [
                 'id' => 216,
                 'district_id' => 17,
                 'name' => 'Nzahaha',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            216 =>
-            array (
+            ],
+            216 => [
                 'id' => 217,
                 'district_id' => 17,
                 'name' => 'Rwimbogo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            217 =>
-            array (
+            ],
+            217 => [
                 'id' => 218,
                 'district_id' => 18,
                 'name' => 'Bushekeri',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            218 =>
-            array (
+            ],
+            218 => [
                 'id' => 219,
                 'district_id' => 18,
                 'name' => 'Bushenge',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            219 =>
-            array (
+            ],
+            219 => [
                 'id' => 220,
                 'district_id' => 18,
                 'name' => 'Cyato',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            220 =>
-            array (
+            ],
+            220 => [
                 'id' => 221,
                 'district_id' => 18,
                 'name' => 'Gihombo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            221 =>
-            array (
+            ],
+            221 => [
                 'id' => 222,
                 'district_id' => 18,
                 'name' => 'Kagano',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            222 =>
-            array (
+            ],
+            222 => [
                 'id' => 223,
                 'district_id' => 18,
                 'name' => 'Kanjongo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            223 =>
-            array (
+            ],
+            223 => [
                 'id' => 224,
                 'district_id' => 18,
                 'name' => 'Karambi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            224 =>
-            array (
+            ],
+            224 => [
                 'id' => 225,
                 'district_id' => 18,
                 'name' => 'Karengera',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            225 =>
-            array (
+            ],
+            225 => [
                 'id' => 226,
                 'district_id' => 18,
                 'name' => 'Kirimbi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            226 =>
-            array (
+            ],
+            226 => [
                 'id' => 227,
                 'district_id' => 18,
                 'name' => 'Macuba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            227 =>
-            array (
+            ],
+            227 => [
                 'id' => 228,
                 'district_id' => 18,
                 'name' => 'Mahembe',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            228 =>
-            array (
+            ],
+            228 => [
                 'id' => 229,
                 'district_id' => 18,
                 'name' => 'Nyabitekeri',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            229 =>
-            array (
+            ],
+            229 => [
                 'id' => 230,
                 'district_id' => 18,
                 'name' => 'Rangiro',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            230 =>
-            array (
+            ],
+            230 => [
                 'id' => 231,
                 'district_id' => 18,
                 'name' => 'Ruharambuga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            231 =>
-            array (
+            ],
+            231 => [
                 'id' => 232,
                 'district_id' => 18,
                 'name' => 'Shangi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            232 =>
-            array (
+            ],
+            232 => [
                 'id' => 233,
                 'district_id' => 19,
                 'name' => 'BASE',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            233 =>
-            array (
+            ],
+            233 => [
                 'id' => 234,
                 'district_id' => 19,
                 'name' => 'BUREGA',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            234 =>
-            array (
+            ],
+            234 => [
                 'id' => 235,
                 'district_id' => 19,
                 'name' => 'BUSHOKI',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            235 =>
-            array (
+            ],
+            235 => [
                 'id' => 236,
                 'district_id' => 19,
                 'name' => 'BUYOGA',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            236 =>
-            array (
+            ],
+            236 => [
                 'id' => 237,
                 'district_id' => 19,
                 'name' => 'CYINZUZI',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            237 =>
-            array (
+            ],
+            237 => [
                 'id' => 238,
                 'district_id' => 19,
                 'name' => 'CYUNGO',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            238 =>
-            array (
+            ],
+            238 => [
                 'id' => 239,
                 'district_id' => 19,
                 'name' => 'KINIHIRA',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            239 =>
-            array (
+            ],
+            239 => [
                 'id' => 240,
                 'district_id' => 19,
                 'name' => 'KISARO',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            240 =>
-            array (
+            ],
+            240 => [
                 'id' => 241,
                 'district_id' => 19,
                 'name' => 'MASORO',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            241 =>
-            array (
+            ],
+            241 => [
                 'id' => 242,
                 'district_id' => 19,
                 'name' => 'MBOGO',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            242 =>
-            array (
+            ],
+            242 => [
                 'id' => 243,
                 'district_id' => 19,
                 'name' => 'MURAMBI',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            243 =>
-            array (
+            ],
+            243 => [
                 'id' => 244,
                 'district_id' => 19,
                 'name' => 'NGOMA',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            244 =>
-            array (
+            ],
+            244 => [
                 'id' => 245,
                 'district_id' => 19,
                 'name' => 'NTARABANA',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            245 =>
-            array (
+            ],
+            245 => [
                 'id' => 246,
                 'district_id' => 19,
                 'name' => 'RUKOZO',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            246 =>
-            array (
+            ],
+            246 => [
                 'id' => 247,
                 'district_id' => 19,
                 'name' => 'RUSIGA',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            247 =>
-            array (
+            ],
+            247 => [
                 'id' => 248,
                 'district_id' => 19,
                 'name' => 'SHYORONGI',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            248 =>
-            array (
+            ],
+            248 => [
                 'id' => 249,
                 'district_id' => 19,
                 'name' => 'TUMBA',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            249 =>
-            array (
+            ],
+            249 => [
                 'id' => 250,
                 'district_id' => 20,
                 'name' => 'Busengo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            250 =>
-            array (
+            ],
+            250 => [
                 'id' => 251,
                 'district_id' => 20,
                 'name' => 'Coko',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            251 =>
-            array (
+            ],
+            251 => [
                 'id' => 252,
                 'district_id' => 20,
                 'name' => 'Cyabingo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            252 =>
-            array (
+            ],
+            252 => [
                 'id' => 253,
                 'district_id' => 20,
                 'name' => 'Gakenke',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            253 =>
-            array (
+            ],
+            253 => [
                 'id' => 254,
                 'district_id' => 20,
                 'name' => 'Gashenyi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            254 =>
-            array (
+            ],
+            254 => [
                 'id' => 255,
                 'district_id' => 20,
                 'name' => 'Janja',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            255 =>
-            array (
+            ],
+            255 => [
                 'id' => 256,
                 'district_id' => 20,
                 'name' => 'Kamubuga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            256 =>
-            array (
+            ],
+            256 => [
                 'id' => 257,
                 'district_id' => 20,
                 'name' => 'Karambo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            257 =>
-            array (
+            ],
+            257 => [
                 'id' => 258,
                 'district_id' => 20,
                 'name' => 'Kivuruga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            258 =>
-            array (
+            ],
+            258 => [
                 'id' => 259,
                 'district_id' => 20,
                 'name' => 'Mataba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            259 =>
-            array (
+            ],
+            259 => [
                 'id' => 260,
                 'district_id' => 20,
                 'name' => 'Minazi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            260 =>
-            array (
+            ],
+            260 => [
                 'id' => 261,
                 'district_id' => 20,
                 'name' => 'Mugunga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            261 =>
-            array (
+            ],
+            261 => [
                 'id' => 262,
                 'district_id' => 20,
                 'name' => 'Muhondo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            262 =>
-            array (
+            ],
+            262 => [
                 'id' => 263,
                 'district_id' => 20,
                 'name' => 'Muyongwe',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            263 =>
-            array (
+            ],
+            263 => [
                 'id' => 264,
                 'district_id' => 20,
                 'name' => 'Muzo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            264 =>
-            array (
+            ],
+            264 => [
                 'id' => 265,
                 'district_id' => 20,
                 'name' => 'Nemba',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            265 =>
-            array (
+            ],
+            265 => [
                 'id' => 266,
                 'district_id' => 20,
                 'name' => 'Ruli',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            266 =>
-            array (
+            ],
+            266 => [
                 'id' => 267,
                 'district_id' => 20,
                 'name' => 'Rusasa',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            267 =>
-            array (
+            ],
+            267 => [
                 'id' => 268,
                 'district_id' => 20,
                 'name' => 'Rushashi',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            268 =>
-            array (
+            ],
+            268 => [
                 'id' => 269,
                 'district_id' => 21,
                 'name' => 'Busogo',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            269 =>
-            array (
+            ],
+            269 => [
                 'id' => 270,
                 'district_id' => 21,
                 'name' => 'Cyuve',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            270 =>
-            array (
+            ],
+            270 => [
                 'id' => 271,
                 'district_id' => 21,
                 'name' => 'Gacaca',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            271 =>
-            array (
+            ],
+            271 => [
                 'id' => 272,
                 'district_id' => 21,
                 'name' => 'Gashaki',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            272 =>
-            array (
+            ],
+            272 => [
                 'id' => 273,
                 'district_id' => 21,
                 'name' => 'Gataraga',
                 'created_at' => '2021-06-23 15:28:57',
                 'updated_at' => '2021-06-23 15:28:57',
-            ),
-            273 =>
-            array (
+            ],
+            273 => [
                 'id' => 274,
                 'district_id' => 21,
                 'name' => 'Kimonyi',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            274 =>
-            array (
+            ],
+            274 => [
                 'id' => 275,
                 'district_id' => 21,
                 'name' => 'Kinigi',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            275 =>
-            array (
+            ],
+            275 => [
                 'id' => 276,
                 'district_id' => 21,
                 'name' => 'Muhoza',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            276 =>
-            array (
+            ],
+            276 => [
                 'id' => 277,
                 'district_id' => 21,
                 'name' => 'Muko',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            277 =>
-            array (
+            ],
+            277 => [
                 'id' => 278,
                 'district_id' => 21,
                 'name' => 'Musanze',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            278 =>
-            array (
+            ],
+            278 => [
                 'id' => 279,
                 'district_id' => 21,
                 'name' => 'Nkotsi',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            279 =>
-            array (
+            ],
+            279 => [
                 'id' => 280,
                 'district_id' => 21,
                 'name' => 'Nyange',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            280 =>
-            array (
+            ],
+            280 => [
                 'id' => 281,
                 'district_id' => 21,
                 'name' => 'Remera',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            281 =>
-            array (
+            ],
+            281 => [
                 'id' => 282,
                 'district_id' => 21,
                 'name' => 'Rwaza',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            282 =>
-            array (
+            ],
+            282 => [
                 'id' => 283,
                 'district_id' => 21,
                 'name' => 'Shingiro',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            283 =>
-            array (
+            ],
+            283 => [
                 'id' => 284,
                 'district_id' => 22,
                 'name' => 'Bungwe',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            284 =>
-            array (
+            ],
+            284 => [
                 'id' => 285,
                 'district_id' => 22,
                 'name' => 'Butaro',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            285 =>
-            array (
+            ],
+            285 => [
                 'id' => 286,
                 'district_id' => 22,
                 'name' => 'Cyanika',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            286 =>
-            array (
+            ],
+            286 => [
                 'id' => 287,
                 'district_id' => 22,
                 'name' => 'Cyeru',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            287 =>
-            array (
+            ],
+            287 => [
                 'id' => 288,
                 'district_id' => 22,
                 'name' => 'Gahunga',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            288 =>
-            array (
+            ],
+            288 => [
                 'id' => 289,
                 'district_id' => 22,
                 'name' => 'Gatebe',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            289 =>
-            array (
+            ],
+            289 => [
                 'id' => 290,
                 'district_id' => 22,
                 'name' => 'Gitovu',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            290 =>
-            array (
+            ],
+            290 => [
                 'id' => 291,
                 'district_id' => 22,
                 'name' => 'Kagogo',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            291 =>
-            array (
+            ],
+            291 => [
                 'id' => 292,
                 'district_id' => 22,
                 'name' => 'Kinoni',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            292 =>
-            array (
+            ],
+            292 => [
                 'id' => 293,
                 'district_id' => 22,
                 'name' => 'Kinyababa',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            293 =>
-            array (
+            ],
+            293 => [
                 'id' => 294,
                 'district_id' => 22,
                 'name' => 'Kivuye',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            294 =>
-            array (
+            ],
+            294 => [
                 'id' => 295,
                 'district_id' => 22,
                 'name' => 'Nemba',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            295 =>
-            array (
+            ],
+            295 => [
                 'id' => 296,
                 'district_id' => 22,
                 'name' => 'Rugarama',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            296 =>
-            array (
+            ],
+            296 => [
                 'id' => 297,
                 'district_id' => 22,
                 'name' => 'Rugengabari',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            297 =>
-            array (
+            ],
+            297 => [
                 'id' => 298,
                 'district_id' => 22,
                 'name' => 'Ruhunde',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            298 =>
-            array (
+            ],
+            298 => [
                 'id' => 299,
                 'district_id' => 22,
                 'name' => 'Rusarabuye',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            299 =>
-            array (
+            ],
+            299 => [
                 'id' => 300,
                 'district_id' => 22,
                 'name' => 'Rwerere',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            300 =>
-            array (
+            ],
+            300 => [
                 'id' => 301,
                 'district_id' => 23,
                 'name' => 'Bukure',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            301 =>
-            array (
+            ],
+            301 => [
                 'id' => 302,
                 'district_id' => 23,
                 'name' => 'Bwisige',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            302 =>
-            array (
+            ],
+            302 => [
                 'id' => 303,
                 'district_id' => 23,
                 'name' => 'Byumba',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            303 =>
-            array (
+            ],
+            303 => [
                 'id' => 304,
                 'district_id' => 23,
                 'name' => 'Cyumba',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            304 =>
-            array (
+            ],
+            304 => [
                 'id' => 305,
                 'district_id' => 23,
                 'name' => 'Giti',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            305 =>
-            array (
+            ],
+            305 => [
                 'id' => 306,
                 'district_id' => 23,
                 'name' => 'Kageyo',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            306 =>
-            array (
+            ],
+            306 => [
                 'id' => 307,
                 'district_id' => 23,
                 'name' => 'Kaniga',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            307 =>
-            array (
+            ],
+            307 => [
                 'id' => 308,
                 'district_id' => 23,
                 'name' => 'Manyagiro',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            308 =>
-            array (
+            ],
+            308 => [
                 'id' => 309,
                 'district_id' => 23,
                 'name' => 'Miyove',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            309 =>
-            array (
+            ],
+            309 => [
                 'id' => 310,
                 'district_id' => 23,
                 'name' => 'Mukarange',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            310 =>
-            array (
+            ],
+            310 => [
                 'id' => 311,
                 'district_id' => 23,
                 'name' => 'Muko',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            311 =>
-            array (
+            ],
+            311 => [
                 'id' => 312,
                 'district_id' => 23,
                 'name' => 'Mutete',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            312 =>
-            array (
+            ],
+            312 => [
                 'id' => 313,
                 'district_id' => 23,
                 'name' => 'Nyamiyaga',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            313 =>
-            array (
+            ],
+            313 => [
                 'id' => 314,
                 'district_id' => 23,
                 'name' => 'Nyankenke',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            314 =>
-            array (
+            ],
+            314 => [
                 'id' => 315,
                 'district_id' => 23,
                 'name' => 'Rubaya',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            315 =>
-            array (
+            ],
+            315 => [
                 'id' => 316,
                 'district_id' => 23,
                 'name' => 'Rukomo',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            316 =>
-            array (
+            ],
+            316 => [
                 'id' => 317,
                 'district_id' => 23,
                 'name' => 'Rushaki',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            317 =>
-            array (
+            ],
+            317 => [
                 'id' => 318,
                 'district_id' => 23,
                 'name' => 'Rutare',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            318 =>
-            array (
+            ],
+            318 => [
                 'id' => 319,
                 'district_id' => 23,
                 'name' => 'Ruvune',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            319 =>
-            array (
+            ],
+            319 => [
                 'id' => 320,
                 'district_id' => 23,
                 'name' => 'Rwamiko',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            320 =>
-            array (
+            ],
+            320 => [
                 'id' => 321,
                 'district_id' => 23,
                 'name' => 'Shangasha',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            321 =>
-            array (
+            ],
+            321 => [
                 'id' => 322,
                 'district_id' => 24,
                 'name' => 'Fumbwe',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            322 =>
-            array (
+            ],
+            322 => [
                 'id' => 323,
                 'district_id' => 24,
                 'name' => 'Gahengeri',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            323 =>
-            array (
+            ],
+            323 => [
                 'id' => 324,
                 'district_id' => 24,
                 'name' => 'Gishali',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            324 =>
-            array (
+            ],
+            324 => [
                 'id' => 325,
                 'district_id' => 24,
                 'name' => 'Karenge',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            325 =>
-            array (
+            ],
+            325 => [
                 'id' => 326,
                 'district_id' => 24,
                 'name' => 'Kigabiro',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            326 =>
-            array (
+            ],
+            326 => [
                 'id' => 327,
                 'district_id' => 24,
                 'name' => 'Muhazi',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            327 =>
-            array (
+            ],
+            327 => [
                 'id' => 328,
                 'district_id' => 24,
                 'name' => 'Munyaga',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            328 =>
-            array (
+            ],
+            328 => [
                 'id' => 329,
                 'district_id' => 24,
                 'name' => 'Munyiginya',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            329 =>
-            array (
+            ],
+            329 => [
                 'id' => 330,
                 'district_id' => 24,
                 'name' => 'Musha',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            330 =>
-            array (
+            ],
+            330 => [
                 'id' => 331,
                 'district_id' => 24,
                 'name' => 'Muyumbu',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            331 =>
-            array (
+            ],
+            331 => [
                 'id' => 332,
                 'district_id' => 24,
                 'name' => 'Mwulire',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            332 =>
-            array (
+            ],
+            332 => [
                 'id' => 333,
                 'district_id' => 24,
                 'name' => 'Nyakaliro',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            333 =>
-            array (
+            ],
+            333 => [
                 'id' => 334,
                 'district_id' => 24,
                 'name' => 'Nzige',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            334 =>
-            array (
+            ],
+            334 => [
                 'id' => 335,
                 'district_id' => 24,
                 'name' => 'Rubona',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            335 =>
-            array (
+            ],
+            335 => [
                 'id' => 336,
                 'district_id' => 25,
                 'name' => 'GATUNDA',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            336 =>
-            array (
+            ],
+            336 => [
                 'id' => 337,
                 'district_id' => 25,
                 'name' => 'KARAMA',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            337 =>
-            array (
+            ],
+            337 => [
                 'id' => 338,
                 'district_id' => 25,
                 'name' => 'KARANGAZI',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            338 =>
-            array (
+            ],
+            338 => [
                 'id' => 339,
                 'district_id' => 25,
                 'name' => 'KATABAGEMU',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            339 =>
-            array (
+            ],
+            339 => [
                 'id' => 340,
                 'district_id' => 25,
                 'name' => 'KIYOMBE',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            340 =>
-            array (
+            ],
+            340 => [
                 'id' => 341,
                 'district_id' => 25,
                 'name' => 'MATIMBA',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            341 =>
-            array (
+            ],
+            341 => [
                 'id' => 342,
                 'district_id' => 25,
                 'name' => 'MIMURI',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            342 =>
-            array (
+            ],
+            342 => [
                 'id' => 343,
                 'district_id' => 25,
                 'name' => 'MUKAMA',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            343 =>
-            array (
+            ],
+            343 => [
                 'id' => 344,
                 'district_id' => 25,
                 'name' => 'MUSHERI',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            344 =>
-            array (
+            ],
+            344 => [
                 'id' => 345,
                 'district_id' => 25,
                 'name' => 'NYAGATARE',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            345 =>
-            array (
+            ],
+            345 => [
                 'id' => 346,
                 'district_id' => 25,
                 'name' => 'RUKOMO',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            346 =>
-            array (
+            ],
+            346 => [
                 'id' => 347,
                 'district_id' => 25,
                 'name' => 'RWEMPASHA',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            347 =>
-            array (
+            ],
+            347 => [
                 'id' => 348,
                 'district_id' => 25,
                 'name' => 'RWIMIYAGA',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            348 =>
-            array (
+            ],
+            348 => [
                 'id' => 349,
                 'district_id' => 25,
                 'name' => 'TABAGWE',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            349 =>
-            array (
+            ],
+            349 => [
                 'id' => 350,
                 'district_id' => 26,
                 'name' => 'Gasange',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            350 =>
-            array (
+            ],
+            350 => [
                 'id' => 351,
                 'district_id' => 26,
                 'name' => 'Gatsibo',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            351 =>
-            array (
+            ],
+            351 => [
                 'id' => 352,
                 'district_id' => 26,
                 'name' => 'Gitoki',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            352 =>
-            array (
+            ],
+            352 => [
                 'id' => 353,
                 'district_id' => 26,
                 'name' => 'Kabarore',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            353 =>
-            array (
+            ],
+            353 => [
                 'id' => 354,
                 'district_id' => 26,
                 'name' => 'Kageyo',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            354 =>
-            array (
+            ],
+            354 => [
                 'id' => 355,
                 'district_id' => 26,
                 'name' => 'Kiramuruzi',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            355 =>
-            array (
+            ],
+            355 => [
                 'id' => 356,
                 'district_id' => 26,
                 'name' => 'Kiziguro',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            356 =>
-            array (
+            ],
+            356 => [
                 'id' => 357,
                 'district_id' => 26,
                 'name' => 'Muhura',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            357 =>
-            array (
+            ],
+            357 => [
                 'id' => 358,
                 'district_id' => 26,
                 'name' => 'Murambi',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            358 =>
-            array (
+            ],
+            358 => [
                 'id' => 359,
                 'district_id' => 26,
                 'name' => 'Ngarama',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            359 =>
-            array (
+            ],
+            359 => [
                 'id' => 360,
                 'district_id' => 26,
                 'name' => 'Nyagihanga',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            360 =>
-            array (
+            ],
+            360 => [
                 'id' => 361,
                 'district_id' => 26,
                 'name' => 'Remera',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            361 =>
-            array (
+            ],
+            361 => [
                 'id' => 362,
                 'district_id' => 26,
                 'name' => 'Rugarama',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            362 =>
-            array (
+            ],
+            362 => [
                 'id' => 363,
                 'district_id' => 26,
                 'name' => 'Rwimbogo',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            363 =>
-            array (
+            ],
+            363 => [
                 'id' => 364,
                 'district_id' => 27,
                 'name' => 'Gahini',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            364 =>
-            array (
+            ],
+            364 => [
                 'id' => 365,
                 'district_id' => 27,
                 'name' => 'Kabare',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            365 =>
-            array (
+            ],
+            365 => [
                 'id' => 366,
                 'district_id' => 27,
                 'name' => 'Kabarondo',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            366 =>
-            array (
+            ],
+            366 => [
                 'id' => 367,
                 'district_id' => 27,
                 'name' => 'Mukarange',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            367 =>
-            array (
+            ],
+            367 => [
                 'id' => 368,
                 'district_id' => 27,
                 'name' => 'Murama',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            368 =>
-            array (
+            ],
+            368 => [
                 'id' => 369,
                 'district_id' => 27,
                 'name' => 'Murundi',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            369 =>
-            array (
+            ],
+            369 => [
                 'id' => 370,
                 'district_id' => 27,
                 'name' => 'Mwiri',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            370 =>
-            array (
+            ],
+            370 => [
                 'id' => 371,
                 'district_id' => 27,
                 'name' => 'Ndego',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            371 =>
-            array (
+            ],
+            371 => [
                 'id' => 372,
                 'district_id' => 27,
                 'name' => 'Nyamirama',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            372 =>
-            array (
+            ],
+            372 => [
                 'id' => 373,
                 'district_id' => 27,
                 'name' => 'Rukara',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            373 =>
-            array (
+            ],
+            373 => [
                 'id' => 374,
                 'district_id' => 27,
                 'name' => 'Ruramira',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            374 =>
-            array (
+            ],
+            374 => [
                 'id' => 375,
                 'district_id' => 27,
                 'name' => 'Rwinkwavu',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            375 =>
-            array (
+            ],
+            375 => [
                 'id' => 376,
                 'district_id' => 28,
                 'name' => 'Gahara',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            376 =>
-            array (
+            ],
+            376 => [
                 'id' => 377,
                 'district_id' => 28,
                 'name' => 'Gatore',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            377 =>
-            array (
+            ],
+            377 => [
                 'id' => 378,
                 'district_id' => 28,
                 'name' => 'Kigarama',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            378 =>
-            array (
+            ],
+            378 => [
                 'id' => 379,
                 'district_id' => 28,
                 'name' => 'Kigina',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            379 =>
-            array (
+            ],
+            379 => [
                 'id' => 380,
                 'district_id' => 28,
                 'name' => 'Kirehe',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            380 =>
-            array (
+            ],
+            380 => [
                 'id' => 381,
                 'district_id' => 28,
                 'name' => 'Mahama',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            381 =>
-            array (
+            ],
+            381 => [
                 'id' => 382,
                 'district_id' => 28,
                 'name' => 'Mpanga',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            382 =>
-            array (
+            ],
+            382 => [
                 'id' => 383,
                 'district_id' => 28,
                 'name' => 'Musaza',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            383 =>
-            array (
+            ],
+            383 => [
                 'id' => 384,
                 'district_id' => 28,
                 'name' => 'Mushikiri',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            384 =>
-            array (
+            ],
+            384 => [
                 'id' => 385,
                 'district_id' => 28,
                 'name' => 'Nasho',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            385 =>
-            array (
+            ],
+            385 => [
                 'id' => 386,
                 'district_id' => 28,
                 'name' => 'Nyamugari',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            386 =>
-            array (
+            ],
+            386 => [
                 'id' => 387,
                 'district_id' => 28,
                 'name' => 'Nyarubuye',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            387 =>
-            array (
+            ],
+            387 => [
                 'id' => 388,
                 'district_id' => 29,
                 'name' => 'Gashanda',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            388 =>
-            array (
+            ],
+            388 => [
                 'id' => 389,
                 'district_id' => 29,
                 'name' => 'Jarama',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            389 =>
-            array (
+            ],
+            389 => [
                 'id' => 390,
                 'district_id' => 29,
                 'name' => 'Karembo',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            390 =>
-            array (
+            ],
+            390 => [
                 'id' => 391,
                 'district_id' => 29,
                 'name' => 'Kazo',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            391 =>
-            array (
+            ],
+            391 => [
                 'id' => 392,
                 'district_id' => 29,
                 'name' => 'Kibungo',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            392 =>
-            array (
+            ],
+            392 => [
                 'id' => 393,
                 'district_id' => 29,
                 'name' => 'Mugesera',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            393 =>
-            array (
+            ],
+            393 => [
                 'id' => 394,
                 'district_id' => 29,
                 'name' => 'Murama',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            394 =>
-            array (
+            ],
+            394 => [
                 'id' => 395,
                 'district_id' => 29,
                 'name' => 'Mutenderi',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            395 =>
-            array (
+            ],
+            395 => [
                 'id' => 396,
                 'district_id' => 29,
                 'name' => 'Remera',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            396 =>
-            array (
+            ],
+            396 => [
                 'id' => 397,
                 'district_id' => 29,
                 'name' => 'Rukira',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            397 =>
-            array (
+            ],
+            397 => [
                 'id' => 398,
                 'district_id' => 29,
                 'name' => 'Rukumberi',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            398 =>
-            array (
+            ],
+            398 => [
                 'id' => 399,
                 'district_id' => 29,
                 'name' => 'Rurenge',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            399 =>
-            array (
+            ],
+            399 => [
                 'id' => 400,
                 'district_id' => 29,
                 'name' => 'Sake',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            400 =>
-            array (
+            ],
+            400 => [
                 'id' => 401,
                 'district_id' => 29,
                 'name' => 'Zaza',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            401 =>
-            array (
+            ],
+            401 => [
                 'id' => 402,
                 'district_id' => 30,
                 'name' => 'Gashora',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            402 =>
-            array (
+            ],
+            402 => [
                 'id' => 403,
                 'district_id' => 30,
                 'name' => 'Juru',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            403 =>
-            array (
+            ],
+            403 => [
                 'id' => 404,
                 'district_id' => 30,
                 'name' => 'Kamabuye',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            404 =>
-            array (
+            ],
+            404 => [
                 'id' => 405,
                 'district_id' => 30,
                 'name' => 'Mareba',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            405 =>
-            array (
+            ],
+            405 => [
                 'id' => 406,
                 'district_id' => 30,
                 'name' => 'Mayange',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            406 =>
-            array (
+            ],
+            406 => [
                 'id' => 407,
                 'district_id' => 30,
                 'name' => 'Musenyi',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            407 =>
-            array (
+            ],
+            407 => [
                 'id' => 408,
                 'district_id' => 30,
                 'name' => 'Mwogo',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            408 =>
-            array (
+            ],
+            408 => [
                 'id' => 409,
                 'district_id' => 30,
                 'name' => 'Ngeruka',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            409 =>
-            array (
+            ],
+            409 => [
                 'id' => 410,
                 'district_id' => 30,
                 'name' => 'Ntarama',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            410 =>
-            array (
+            ],
+            410 => [
                 'id' => 411,
                 'district_id' => 30,
                 'name' => 'Nyamata',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            411 =>
-            array (
+            ],
+            411 => [
                 'id' => 412,
                 'district_id' => 30,
                 'name' => 'Nyarugenge',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            412 =>
-            array (
+            ],
+            412 => [
                 'id' => 413,
                 'district_id' => 30,
                 'name' => 'Rilima',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            413 =>
-            array (
+            ],
+            413 => [
                 'id' => 414,
                 'district_id' => 30,
                 'name' => 'Ruhuha',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            414 =>
-            array (
+            ],
+            414 => [
                 'id' => 415,
                 'district_id' => 30,
                 'name' => 'Rweru',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-            415 =>
-            array (
+            ],
+            415 => [
                 'id' => 416,
                 'district_id' => 30,
                 'name' => 'Shyara',
                 'created_at' => '2021-06-23 15:28:58',
                 'updated_at' => '2021-06-23 15:28:58',
-            ),
-        ));
-
+            ],
+        ]);
 
     }
 }

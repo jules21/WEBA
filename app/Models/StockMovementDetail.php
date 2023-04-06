@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -24,6 +23,7 @@ use Illuminate\Support\Carbon;
  * @property string $model_type
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|StockMovementDetail newModelQuery()
  * @method static Builder|StockMovementDetail newQuery()
  * @method static Builder|StockMovementDetail query()
@@ -37,22 +37,26 @@ use Illuminate\Support\Carbon;
  * @method static Builder|StockMovementDetail whereType($value)
  * @method static Builder|StockMovementDetail whereUnitPrice($value)
  * @method static Builder|StockMovementDetail whereUpdatedAt($value)
+ *
  * @property string|null $vat
  * @property-read mixed $total
  * @property-read \App\Models\Item $item
  * @property-read Model|\Eloquent $model
+ *
  * @method static Builder|StockMovementDetail whereVat($value)
+ *
  * @property string|null $adjustment_type increase or decrease
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $deliveryItems
  * @property-read int|null $delivery_items_count
  * @property-read mixed $delivered_items
  * @property-read mixed $remaining_items
+ *
  * @method static Builder|StockMovementDetail whereAdjustmentType($value)
+ *
  * @mixin Eloquent
  */
 class StockMovementDetail extends Model
 {
-
     protected $appends = ['total', 'delivered_items'];
 
     public function model(): MorphTo
@@ -88,12 +92,10 @@ class StockMovementDetail extends Model
     public function getVatAmountAttribute()
     {
         $basePrice = $this->basePrice();
+
         return $this->unit_price - $basePrice;
     }
 
-    /**
-     * @return float
-     */
     public function basePrice(): float
     {
         return $this->unit_price / (1 + ($this->vat / 100));

@@ -160,6 +160,7 @@
                             </h4>
 
                             <form action="{{ route("admin.purchases.submit-review",encryptId($purchase->id)) }}"
+                                  enctype="multipart/form-data"
                                   method="post" id="formSaveReview">
                                 @csrf
                                 <div class="form-group">
@@ -170,6 +171,14 @@
                                             <option value="{{ $item }}">{{ $item }}</option>
                                         @endforeach
                                     </select>
+                                </div>
+
+                                <div class=" form-group">
+                                    <label for="attachment">Attachment:</label>
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="attachment" name="attachment">
+                                        <label class="custom-file-label" for="attachment">Choose file</label>
+                                    </div>
                                 </div>
 
                                 <div class=" form-group">
@@ -235,7 +244,15 @@
                                     </div>
 
                                     <div class="timeline-content">
-                                        {{ $item->comment }}
+                                        <p class="mb-0">
+                                            {{ $item->comment }}
+                                        </p>
+                                        @if($item->attachment_url)
+                                            <a href="{{ $item->attachment_url }}" target="_blank"
+                                               class="btn btn-light-primary rounded-lg mt-2">
+                                                Download Attachment
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach

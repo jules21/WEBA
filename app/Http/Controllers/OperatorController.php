@@ -16,7 +16,6 @@ use Yajra\DataTables\DataTables;
 
 class OperatorController extends Controller
 {
-
     /**
      * @throws Exception
      */
@@ -53,7 +52,7 @@ class OperatorController extends Controller
 
                     $deleteBtn = '';
                     if ($row->operation_areas_count == 0) {
-                        $deleteBtn = '  <a class="dropdown-item js-delete" href="' . route('admin.operator.delete', encryptId($row->id)) . '">
+                        $deleteBtn = '  <a class="dropdown-item js-delete" href="'.route('admin.operator.delete', encryptId($row->id)).'">
                                                          <i class="fas fa-trash"></i>
                                                          <span class="ml-2">Delete</span>
                                         </a>';
@@ -61,38 +60,37 @@ class OperatorController extends Controller
                     $opAreaBtn = '';
 
                     if (auth()->user()->can(Permission::ManageOperationAreas)) {
-                        $opAreaBtn = '<a class="dropdown-item" href="' . route('admin.operator.area-of-operation.index', encryptId($row->id)) . '">
+                        $opAreaBtn = '<a class="dropdown-item" href="'.route('admin.operator.area-of-operation.index', encryptId($row->id)).'">
                                          <i class="fas fa-map"></i>
                                          <span class="ml-2">Area of Operations</span>
                                       </a>';
                     }
 
                     if (auth()->user()->can(Permission::ManageOperatorUsers)) {
-                        $opAreaBtn .= '<a class="dropdown-item" href="' . route('admin.operator.users', encryptId($row->id)) . '">
+                        $opAreaBtn .= '<a class="dropdown-item" href="'.route('admin.operator.users', encryptId($row->id)).'">
                                          <i class="fas fa-users"></i>
                                          <span class="ml-2">Users</span>
                                       </a>';
                     }
-
 
                     return '<div class="dropdown">
                                  <button class="btn btn-light-primary rounded-sm btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                     Options
                                  </button>
                                  <div class="dropdown-menu border">
-                                        ' . $opAreaBtn . '
-                                        <a class="dropdown-item" href="' . route('admin.operator.details-page', encryptId($row->id)) . '">
+                                        '.$opAreaBtn.'
+                                        <a class="dropdown-item" href="'.route('admin.operator.details-page', encryptId($row->id)).'">
                                          <i class="fas fa-info-circle "></i>
                                          <span class="ml-2">Details</span>
                                      </a>
                                      <a class="dropdown-item js-edit"
-                                      data-address="' . $row->address . '"
-                                      data-logo="' . $row->logo_url . '"
-                                      href="' . route('admin.operator.update', encryptId($row->id)) . '">
+                                      data-address="'.$row->address.'"
+                                      data-logo="'.$row->logo_url.'"
+                                      href="'.route('admin.operator.update', encryptId($row->id)).'">
                                          <i class="fas fa-edit"></i>
                                          <span class="ml-2">Edit</span>
                                      </a>
-                                        ' . $deleteBtn . '
+                                        '.$deleteBtn.'
 
                                  </div>
                             </div>';
@@ -106,10 +104,9 @@ class OperatorController extends Controller
 
         return view('admin.operator.index', [
             'legalTypes' => $legalTypes,
-            'provinces' => $provinces
+            'provinces' => $provinces,
         ]);
     }
-
 
     public function store(StoreOperatorRequest $request)
     {
@@ -129,10 +126,9 @@ class OperatorController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Operator with this ID type and Document Number already exists',
-                'data' => $operator
+                'data' => $operator,
             ], 400);
         }
-
 
         $operator = Operator::query()->create([
             'clms_id' => $details['id'],
@@ -145,14 +141,14 @@ class OperatorController extends Controller
             'sector_id' => $details['sector_id'],
             'cell_id' => $data['cell_id'],
             'village_id' => $data['village_id'],
-            'address' => $details['address']
+            'address' => $details['address'],
         ]);
 
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
                 'data' => $operator,
-                'message' => 'Operator created successfully'
+                'message' => 'Operator created successfully',
             ]);
         }
 
@@ -163,7 +159,7 @@ class OperatorController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data' => $operator
+            'data' => $operator,
         ]);
     }
 
@@ -173,8 +169,8 @@ class OperatorController extends Controller
 
         if ($request->file('logo')) {
 
-            if (!is_null($operator->logo)) {
-                Storage::delete(Operator::LOGO_PATH . $operator->logo);
+            if (! is_null($operator->logo)) {
+                Storage::delete(Operator::LOGO_PATH.$operator->logo);
             }
             $path = $request->file('logo')->store(Operator::LOGO_PATH);
             $data['logo'] = basename($path);
@@ -184,7 +180,7 @@ class OperatorController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $operator,
-                'message' => 'Operator updated successfully'
+                'message' => 'Operator updated successfully',
             ]);
         }
 
@@ -199,7 +195,7 @@ class OperatorController extends Controller
         if (request()->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Operator deleted successfully'
+                'message' => 'Operator deleted successfully',
             ]);
         }
 
@@ -212,20 +208,22 @@ class OperatorController extends Controller
         $idNumber = request('identification_number');
         $headers = [
             'CMS-RWSS-Key' => config('app.CMS-RWSS-Key'),
-            'Content-Type' => 'application/json'
+            'Content-Type' => 'application/json',
         ];
         $body = [
-            "identificationType" => $idType/*"document_number"*/,
-            "identificationNumber" => $idNumber/*"103058183"*/
+            'identificationType' => $idType/*"document_number"*/,
+            'identificationNumber' => $idNumber, /*"103058183"*/
         ];
 
         $response = Http::withHeaders($headers)
-            ->post(config('app.CLMS_URL') . '/api/v1/cms-rwss/get-operator-details', $body);
-        if ($response->status() == 200)
+            ->post(config('app.CLMS_URL').'/api/v1/cms-rwss/get-operator-details', $body);
+        if ($response->status() == 200) {
             return $response->json();
+        }
+
         return response()
             ->json([
-                'message' => "Operator with the provided information does not exist"
+                'message' => 'Operator with the provided information does not exist',
             ], 400);
     }
 
@@ -237,17 +235,16 @@ class OperatorController extends Controller
         $districtId = request('district_id');
         $operationAreaId = request('operation_area_id');
 
-
         return (new OperatorsExport($startDate, $endDate, $districtId, $operationAreaId))
-            ->download('operators-' . $now . '.xlsx');
+            ->download('operators-'.$now.'.xlsx');
     }
 
     public function details(Operator $operator)
     {
         $operator->load('province', 'district', 'sector', 'cell', 'village', 'legalType', 'operationAreas.district');
+
         return view('admin.operator.details', [
-            'operator' => $operator
+            'operator' => $operator,
         ]);
     }
-
 }

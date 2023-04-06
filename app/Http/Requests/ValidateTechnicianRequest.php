@@ -18,8 +18,6 @@ class ValidateTechnicianRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -27,7 +25,7 @@ class ValidateTechnicianRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:30'],
             'email' => ['nullable', 'string', 'email', 'max:255'],
-            'address' => ['nullable', 'string', 'max:255']
+            'address' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

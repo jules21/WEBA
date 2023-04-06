@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Traits\ForOperator;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -28,6 +27,7 @@ use Illuminate\Support\Carbon;
  * @property int $user_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|CashMovement newModelQuery()
  * @method static Builder|CashMovement newQuery()
  * @method static Builder|CashMovement query()
@@ -46,8 +46,10 @@ use Illuminate\Support\Carbon;
  * @method static Builder|CashMovement whereTransactionType($value)
  * @method static Builder|CashMovement whereUpdatedAt($value)
  * @method static Builder|CashMovement whereUserId($value)
+ *
  * @property-read \App\Models\PaymentServiceProvider|null $paymentServiceProvider
  * @property-read \App\Models\PaymentServiceProviderAccount|null $paymentServiceProviderAccount
+ *
  * @mixin Eloquent
  */
 class CashMovement extends Model

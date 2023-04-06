@@ -28,7 +28,7 @@ class AddWaterNetworkStatusIdToWaterNetworksTable extends Migration
     public function down()
     {
         Schema::table('water_networks', function (Blueprint $table) {
-            $table->dropForeign("water_networks_water_network_status_id_foreign");
+            $table->dropForeign('water_networks_water_network_status_id_foreign');
             $table->dropColumn('water_network_status_id');
         });
     }

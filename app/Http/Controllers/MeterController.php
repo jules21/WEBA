@@ -31,7 +31,6 @@ class MeterController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreMeterRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreMeterRequest $request)
@@ -42,7 +41,6 @@ class MeterController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Meter  $meter
      * @return \Illuminate\Http\Response
      */
     public function show(Meter $meter)
@@ -53,7 +51,6 @@ class MeterController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Meter  $meter
      * @return \Illuminate\Http\Response
      */
     public function edit(Meter $meter)
@@ -64,8 +61,6 @@ class MeterController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateMeterRequest  $request
-     * @param  \App\Models\Meter  $meter
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateMeterRequest $request, Meter $meter)
@@ -76,7 +71,6 @@ class MeterController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Meter  $meter
      * @return \Illuminate\Http\Response
      */
     public function destroy(Meter $meter)

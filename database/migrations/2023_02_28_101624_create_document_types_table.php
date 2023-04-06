@@ -19,7 +19,6 @@ class CreateDocumentTypesTable extends Migration
             $table->timestamps();
         });
 
-
     }
 
     /**

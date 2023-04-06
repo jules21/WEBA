@@ -24,8 +24,8 @@ class UpdatePackagingUnitRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'is_active'=>'required',
+            'name' => 'required',
+            'is_active' => 'required',
         ];
     }
 }

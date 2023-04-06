@@ -19,40 +19,34 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Collection;
-use LaravelIdea\Helper\App\Models\_IH_Item_C;
-use LaravelIdea\Helper\App\Models\_IH_Item_QB;
-use LaravelIdea\Helper\App\Models\_IH_Supplier_C;
-use LaravelIdea\Helper\App\Models\_IH_Supplier_QB;
+use Illuminate\Http\UploadedFile;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
+use function request;
 
 class PurchaseController extends Controller
 {
-
     /**
      * @throws Exception
      */
     public function index()
     {
 
-        if (\request()->ajax()) {
+        if (request()->ajax()) {
             $data = Purchase::query()
                 ->with(['supplier'])
                 ->where('operation_area_id', '=', auth()->user()->operation_area)
                 ->withCount('movementDetails')
                 ->where(function (Builder $builder) {
-                    if (\request('type') == 'all') {
+                    if (request('type') == 'all') {
                         return;
                     }
                     $statuses = [];
                     if (auth()->user()->can(Permission::StockInItems)) {
-                        $statuses[] = Purchase::PENDING;
+                        $statuses[] = Status::PENDING;
                     }
                     if (auth()->user()->can(Permission::ApproveStockIn)) {
-                        $statuses[] = Purchase::SUBMITTED;
+                        $statuses[] = Status::SUBMITTED;
                     }
 
                     $builder->whereIn('status', $statuses);
@@ -71,6 +65,7 @@ class PurchaseController extends Controller
                         $editBtn = '<a href="' . route('admin.purchases.edit', encryptId($row->id)) . '" class="dropdown-item"><i class="fa fa-edit mr-2"></i> Edit</a>';
                         $deleteBtn = '<a href="' . route('admin.purchases.destroy', encryptId($row->id)) . '" class="dropdown-item js-delete"><i class="fa fa-trash mr-2"></i> Delete</a>';
                     }
+
                     return '<div class="dropdown">
                                 <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Action
@@ -99,21 +94,20 @@ class PurchaseController extends Controller
     public function submit(Purchase $purchase)
     {
         DB::beginTransaction();
-        if ($purchase->status == Purchase::PENDING) {
+        if ($purchase->status == Status::PENDING) {
             $purchase->update([
-                'status' => Purchase::SUBMITTED
+                'status' => Status::SUBMITTED,
             ]);
         }
 
-        $this->saveFlowHistory($purchase, 'Purchase submitted', Purchase::SUBMITTED);
+        $this->saveFlowHistory($purchase, 'Purchase submitted', Status::SUBMITTED);
 
         DB::commit();
 
-
-        if (\request()->ajax()) {
+        if (request()->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Purchase submitted successfully'
+                'message' => 'Purchase submitted successfully',
             ]);
         }
 
@@ -122,7 +116,6 @@ class PurchaseController extends Controller
             ->with('success', 'Purchase submitted successfully');
 
     }
-
 
     public function create()
     {
@@ -136,9 +129,7 @@ class PurchaseController extends Controller
             'items' => $this->getitems(),
         ]);
 
-
     }
-
 
     /**
      * @throws Throwable
@@ -153,7 +144,7 @@ class PurchaseController extends Controller
 
         $this->saveItems($data, $purchase);
 
-        $this->saveFlowHistory($purchase, 'Purchase created', Purchase::PENDING);
+        $this->saveFlowHistory($purchase, 'Purchase created', Status::PENDING);
 
         DB::commit();
 
@@ -165,7 +156,6 @@ class PurchaseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Purchase $purchase
      * @return Application|Factory|View
      */
     public function show(Purchase $purchase)
@@ -181,13 +171,13 @@ class PurchaseController extends Controller
         return view('admin.purchases.details', [
             'purchase' => $purchase,
             'reviews' => $reviews,
-            'flowHistories' => $flowHistories
+            'flowHistories' => $flowHistories,
         ]);
     }
 
     public function edit(Purchase $purchase)
     {
-        if ($purchase->status != Purchase::PENDING) {
+        if ($purchase->status != Status::PENDING) {
             return redirect()
                 ->back()
                 ->with('error', 'Purchase cannot be edited');
@@ -199,28 +189,26 @@ class PurchaseController extends Controller
 
         $purchase->load(['movementDetails.item']);
 
-
         return view('admin.purchases.create', [
             'purchase' => $purchase,
             'suppliers' => $suppliers,
             'items' => $this->getItems(),
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param ValidatePurchaseRequest $request
-     * @param Purchase $purchase
      * @return RedirectResponse
+     *
      * @throws Throwable
      */
     public function update(ValidatePurchaseRequest $request, Purchase $purchase)
     {
         $data = $request->validated();
 
-        if ($purchase->status != Purchase::PENDING) {
+        if ($purchase->status != Status::SUBMITTED) {
             return redirect()
                 ->back()
                 ->with('error', 'Purchase cannot be edited');
@@ -234,7 +222,7 @@ class PurchaseController extends Controller
 
         $this->saveItems($data, $purchase);
 
-        $this->saveFlowHistory($purchase, 'Purchase updated', Purchase::PENDING);
+        $this->saveFlowHistory($purchase, 'Purchase updated', Status::SUBMITTED);
 
         DB::commit();
 
@@ -243,16 +231,15 @@ class PurchaseController extends Controller
             ->with('success', 'Purchase updated successfully');
     }
 
-
     /**
      * @throws Throwable
      */
     public function destroy(Purchase $purchase)
     {
-        if ($purchase->status != Purchase::PENDING) {
+        if ($purchase->status != Status::PENDING) {
             return response()->json([
                 'success' => false,
-                'message' => 'Purchase cannot be deleted'
+                'message' => 'Purchase cannot be deleted',
             ], ResponseAlias::HTTP_BAD_REQUEST);
         }
 
@@ -264,10 +251,10 @@ class PurchaseController extends Controller
         $purchase->delete();
 
         DB::commit();
-        if (\request()->ajax()) {
+        if (request()->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Purchase deleted successfully'
+                'message' => 'Purchase deleted successfully',
             ]);
         }
 
@@ -281,9 +268,9 @@ class PurchaseController extends Controller
      * @param $message
      * @param $status
      * @param bool $isComment
-     * @return void
+     * @param string|null $fileName
      */
-    public function saveFlowHistory($purchase, $message, $status, $isComment = false): void
+    public function saveFlowHistory($purchase, $message, $status, bool $isComment = false, string $fileName = null): void
     {
         $purchase->flowHistories()
             ->create([
@@ -291,7 +278,8 @@ class PurchaseController extends Controller
                 'user_id' => auth()->id(),
                 'comment' => $message,
                 'type' => $purchase->getClassName(),
-                'is_comment' => $isComment
+                'is_comment' => $isComment,
+                'attachment' => $fileName,
             ]);
     }
 
@@ -305,32 +293,35 @@ class PurchaseController extends Controller
         DB::beginTransaction();
 
         $status = $data['status'];
-        $this->saveFlowHistory($purchase, $data['comment'], $status, true);
+        $fileName = null;
+        if ($request->hasFile('attachment')) {
+            $fileName = $request->file('attachment')->store(Purchase::ATTACHMENT_PATH);
+        }
+
+        $this->saveFlowHistory($purchase, $data['comment'], $status, true, $fileName);
 
         $purchase->update([
             'status' => $status,
-            'approved_by' => auth()->id()
+            'approved_by' => auth()->id(),
         ]);
-        $this->saveFlowHistory($purchase, "Purchase {$status}", $status);
-
+        $this->saveFlowHistory($purchase, "Purchase $status", $status);
 
         // if purchase is approved, update stock items quantity if not exist create new
 
-        if ($status == Purchase::APPROVED) {
+        if ($status == Status::APPROVED) {
             $this->updateStockItems($purchase);
         }
 
         $purchase->movementDetails()->update([
-            'status' => $status
+            'status' => $status,
         ]);
-
 
         DB::commit();
 
-        if (\request()->ajax()) {
+        if (request()->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Purchase reviewed successfully'
+                'message' => 'Purchase reviewed successfully',
             ]);
         }
 
@@ -340,10 +331,6 @@ class PurchaseController extends Controller
 
     }
 
-    /**
-     * @param Purchase $purchase
-     * @return void
-     */
     public function updateStockItems(Purchase $purchase): void
     {
         foreach ($purchase->movementDetails()->get() as $movement) {
@@ -357,16 +344,15 @@ class PurchaseController extends Controller
                 $stockItem = Stock::create([
                     'item_id' => $movement->item_id,
                     'operation_area_id' => auth()->user()->operation_area,
-                    'quantity' => 0
+                    'quantity' => 0,
                 ]);
             }
 
             $stockItem->update([
-                'quantity' => $stockItem->quantity + $movement->quantity
+                'quantity' => $stockItem->quantity + $movement->quantity,
             ]);
         }
     }
-
 
     public function getSuppliers()
     {
@@ -375,7 +361,6 @@ class PurchaseController extends Controller
             ->orderBy('name')
             ->get();
     }
-
 
     public function getCategories()
     {
@@ -402,11 +387,6 @@ class PurchaseController extends Controller
             ->get();
     }
 
-    /**
-     * @param array $data
-     * @param $purchase
-     * @return void
-     */
     public function saveItems(array $data, $purchase): void
     {
         foreach ($data['items'] as $key => $item) {
@@ -419,33 +399,24 @@ class PurchaseController extends Controller
                 'unit_price' => $price,
                 'type' => StockMovement::StockIn,
                 'vat' => $vat,
-                'status' => Purchase::PENDING,
+                'status' => Status::PENDING,
             ]);
         }
     }
 
-    /**
-     * @param array $data
-     * @return array
-     */
     public function getPurchaseData(array $data): array
     {
         return [
             'supplier_id' => $data['supplier_id'],
             'description' => $data['description'],
             'created_by' => auth()->id(),
-            'status' => Purchase::SUBMITTED,
+            'status' => Status::SUBMITTED,
             'tax_amount' => $data['tax_amount'],
             'total' => $data['grand_total'],
-            'operation_area_id' => auth()->user()->operation_area
+            'operation_area_id' => auth()->user()->operation_area,
         ];
     }
 
-    /**
-     * @param $movement
-     * @param Purchase $purchase
-     * @return void
-     */
     public function updateStockMovement($movement, Purchase $purchase): void
     {
         $item_id = $movement->item_id;
@@ -462,7 +433,7 @@ class PurchaseController extends Controller
             'type' => StockMovement::StockIn,
             'unit_price' => $movement->unit_price,
             'vat' => $movement->vat,
-            'description' => "Purchase of {$item->name} from {$purchase->supplier->name}  ",
+            'description' => "Purchase of $item->name from {$purchase->supplier->name}  ",
         ]);
     }
 }

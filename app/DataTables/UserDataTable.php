@@ -3,24 +3,22 @@
 namespace App\DataTables;
 
 use App\Models\User;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class UserDataTable extends DataTable
 {
-
     public $query;
+
     public function __construct($query)
     {
         $this->query = $query;
     }
+
     /**
      * Build DataTables class.
      *
-     * @param mixed $query Results from query() method.
+     * @param  mixed  $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
     public function dataTable($query)
@@ -37,36 +35,38 @@ class UserDataTable extends DataTable
                             <div class="font-weight-bold">'.$item->name.'</div>
                             <div class="text-muted mt-1">'.
                                     ($item->institution ? optional($item->institution)->name :
-                                    (!$item->operator ?  "-": (optional($item->operator)->name .
-                                        ( $item->operationArea ? '/ '.optional($item->operationArea)->name:'') ) ))
+                                    (! $item->operator ? '-' : (optional($item->operator)->name.
+                                        ($item->operationArea ? '/ '.optional($item->operationArea)->name : ''))))
                                     .'</div>
                         </div>';
             })
             ->editColumn('phone', function ($item) {
-                return $item->phone ? $item->phone : "-";
+                return $item->phone ? $item->phone : '-';
             })
             ->editColumn('roles', function ($item) {
-                if(count($item->roles)>0){
-                    $roles="";
-                    foreach($item->roles as $key => $role){
-                        if ($key == 0)
+                if (count($item->roles) > 0) {
+                    $roles = '';
+                    foreach ($item->roles as $key => $role) {
+                        if ($key == 0) {
                             $roles .= \Str::slug($role->name);
-                        else
-                            $roles .= ",".\Str::slug($role->name);
+                        } else {
+                        $roles .= ','.\Str::slug($role->name);
+                        }
                     }
-                    return '<a href="#" class="label label-info label-inline" data-toggle="tooltip" data-trigger="focus" data-html="true" title='. $roles.'>
+
+                    return '<a href="#" class="label label-info label-inline" data-toggle="tooltip" data-trigger="focus" data-html="true" title='.$roles.'>
                                     '.count($item->roles).'
                                 </a>';
-                }else{
-                    return "-";
+                } else {
+                    return '-';
                 }
 
             })
             ->editColumn('status', function ($item) {
-                if($item->status == 'active'){
+                if ($item->status == 'active') {
                     return '
                     <span class="badge badge-success">Active</span>';
-                }else{
+                } else {
                     return '
                  <span class="badge badge-danger">Inactive</span>
                     ';
@@ -79,7 +79,7 @@ class UserDataTable extends DataTable
                                         aria-haspopup="true" aria-expanded="false">Actions
                                 </button>
                                 <div class="dropdown-menu" style="">
-                                    <a class="dropdown-item" href="'.route("admin.user.add.roles",$item->id).'">Manage Roles</a>
+                                    <a class="dropdown-item" href="'.route('admin.user.add.roles', $item->id).'">Manage Roles</a>
                                     </a>
                                     <div class="dropdown-divider"></div>
                                     <a href="#" class="edit-btn dropdown-item "
@@ -94,26 +94,21 @@ class UserDataTable extends DataTable
                                        data-national_id="'.$item->national_id.'"
                                        data-institution="'.$item->institution_id.'"
                                        data-status="'.$item->status.'"
-                                       data-url="'.route("admin.users.update",$item->id).'"> Edit</a>';
-                                '</div>
-                            </div>';
-            })
-            ->rawColumns(['action','roles','status','phone','operator','name']);
-    }
+                                       data-url="'.route('admin.users.update', $item->id).'"> Edit</a>';
 
+            })
+            ->rawColumns(['action', 'roles', 'status', 'phone', 'operator', 'name']);
+    }
 
     /**
      * Get query source of dataTable.
      *
-     * @param user $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(User $model)
     {
         return $this->query;
     }
-
-
 
     /**
      * Optional method if you want to use html builder.
@@ -137,16 +132,16 @@ class UserDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id' => ['title' => '#', 'searchable' => false, 'render' => function() {
+            'id' => ['title' => '#', 'searchable' => false, 'render' => function () {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
-//            Column::make('institution_id')//must be column name in database
-//                ->title("Institution")
-//                ->name("institution.name") //must be relation name in model
-//                ->addClass('text-center'),
-//            Column::make('operator')
-//                ->title("Operator")
-//                ->addClass('text-center'),
+            //            Column::make('institution_id')//must be column name in database
+            //                ->title("Institution")
+            //                ->name("institution.name") //must be relation name in model
+            //                ->addClass('text-center'),
+            //            Column::make('operator')
+            //                ->title("Operator")
+            //                ->addClass('text-center'),
             Column::make('name'),
             Column::make('email')
                 ->addClass('text-center'),
@@ -154,11 +149,11 @@ class UserDataTable extends DataTable
             ->addClass('text-center'),
             Column::make('status')
                 ->name('status')
-                ->title("Status")
+                ->title('Status')
                 ->addClass('text-center'),
             Column::make('roles')
-                ->title("Roles")
-                ->name("roles.name")
+                ->title('Roles')
+                ->name('roles.name')
                 ->addClass('text-center'),
             Column::computed('action')
                 ->exportable(false)
@@ -168,5 +163,4 @@ class UserDataTable extends DataTable
                 ->addClass('text-center'),
         ];
     }
-
 }

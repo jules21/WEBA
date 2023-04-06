@@ -15,8 +15,9 @@ class WaterUsageController extends Controller
      */
     public function index()
     {
-        $waterUsages = WaterUsage::query()->orderBy('id','DESC')->get();
-        return view('admin.settings.water_usages',compact('waterUsages'));
+        $waterUsages = WaterUsage::query()->orderBy('id', 'DESC')->get();
+
+        return view('admin.settings.water_usages', compact('waterUsages'));
     }
 
     /**
@@ -32,7 +33,6 @@ class WaterUsageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreWaterUsageRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreWaterUsageRequest $request)
@@ -43,7 +43,6 @@ class WaterUsageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\WaterUsage  $waterUsage
      * @return \Illuminate\Http\Response
      */
     public function show(WaterUsage $waterUsage)
@@ -54,7 +53,6 @@ class WaterUsageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\WaterUsage  $waterUsage
      * @return \Illuminate\Http\Response
      */
     public function edit(WaterUsage $waterUsage)
@@ -65,8 +63,6 @@ class WaterUsageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateWaterUsageRequest  $request
-     * @param  \App\Models\WaterUsage  $waterUsage
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateWaterUsageRequest $request, WaterUsage $waterUsage)
@@ -77,7 +73,6 @@ class WaterUsageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\WaterUsage  $waterUsage
      * @return \Illuminate\Http\Response
      */
     public function destroy(WaterUsage $waterUsage)

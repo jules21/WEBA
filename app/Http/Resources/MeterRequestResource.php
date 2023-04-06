@@ -15,13 +15,13 @@ class MeterRequestResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'=>$this->id,
-            'subscription_number'=>$this->subscription_number,
-            'meter_number'=>$this->meter_number,
-            'status'=>$this->status,
-            'last_index'=>$this->last_index,
-            'balance'=>$this->balance,
-            'customer'=>$this->request->customer,
+            'id' => $this->id,
+            'subscription_number' => $this->subscription_number,
+            'meter_number' => $this->meter_number,
+            'status' => $this->status,
+            'last_index' => $this->last_index,
+            'balance' => $this->balance,
+            'customer' => $this->request->customer,
         ];
     }
 }

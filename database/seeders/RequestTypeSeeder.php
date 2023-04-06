@@ -15,18 +15,19 @@ class RequestTypeSeeder extends Seeder
     public function run()
     {
         $types = [
-          'New Connection',
-          'Repairing',
-          'Relocation'
+            'New Connection',
+            'Repairing',
+            'Relocation',
         ];
 
-        if (RequestType::query()->exists())
+        if (RequestType::query()->exists()) {
             return;
+        }
 
         foreach ($types as $type) {
             RequestType::query()
                 ->create([
-                    'name' => $type
+                    'name' => $type,
                 ]);
         }
     }

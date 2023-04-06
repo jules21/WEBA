@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Channels\SmsChannel;
 use App\Services\BesoftSmsService;
-use App\Services\RURASmsService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -29,8 +28,7 @@ class PaymentNotification extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     * @param mixed $notifiable
-     * @return array
+     * @param  mixed  $notifiable
      */
     public function via($notifiable): array
     {
@@ -40,8 +38,7 @@ class PaymentNotification extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param mixed $notifiable
-     * @return MailMessage
+     * @param  mixed  $notifiable
      */
     public function toMail($notifiable): MailMessage
     {
@@ -55,8 +52,7 @@ class PaymentNotification extends Notification implements ShouldQueue
     /**
      * Get the array representation of the notification.
      *
-     * @param mixed $notifiable
-     * @return array
+     * @param  mixed  $notifiable
      */
     public function toArray($notifiable): array
     {
@@ -74,7 +70,7 @@ class PaymentNotification extends Notification implements ShouldQueue
     {
         $message = $this->message;
         $phone = $notifiable->phone;
-        return (new BesoftSmsService($phone, $message));
-    }
 
+        return new BesoftSmsService($phone, $message);
+    }
 }

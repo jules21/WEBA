@@ -8,7 +8,6 @@ use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\PaymentConfiguration;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 
 class PaymentConfigurationController extends Controller
 {
@@ -22,16 +21,16 @@ class PaymentConfigurationController extends Controller
             $payment_type_id = request('payment_type_id');
 
             $payments = PaymentConfiguration::query()->with('paymentType', 'requestType', 'operator', 'operationArea')
-                ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
+                ->when(! empty($startDate), function (Builder $builder) use ($startDate) {
                     $builder->whereDate('created_at', '>=', $startDate);
                 })
-                ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
+                ->when(! empty($endDate), function (Builder $builder) use ($endDate) {
                     $builder->whereDate('created_at', '<=', $endDate);
                 })
-                ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
+                ->when(! empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
                     $builder->whereIn('operation_area_id', $operation_area_id);
                 })
-                ->when(!empty($payment_type_id), function (Builder $builder) use ($payment_type_id) {
+                ->when(! empty($payment_type_id), function (Builder $builder) use ($payment_type_id) {
                     $builder->where('payment_type_id', $payment_type_id);
                 })
                 ->orderBy('id', 'DESC')
@@ -39,6 +38,7 @@ class PaymentConfigurationController extends Controller
             $operators = Operator::all();
             $operationAreas = OperationArea::query()
                 ->findMany($operation_area_id);
+
             return view('admin.settings.payment_configurations', compact('payments', 'operators', 'operationAreas'));
         } else {
             $startDate = request('start_date');
@@ -46,18 +46,18 @@ class PaymentConfigurationController extends Controller
             $payment_type_id = request('payment_type_id');
 
             $payments = PaymentConfiguration::query()
-                ->where('operator_id','=',auth()->user()->operator_id)
+                ->where('operator_id', '=', auth()->user()->operator_id)
                 ->with('paymentType', 'requestType', 'operator', 'operationArea')
-                ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
+                ->when(! empty($startDate), function (Builder $builder) use ($startDate) {
                     $builder->whereDate('created_at', '>=', $startDate);
                 })
-                ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
+                ->when(! empty($endDate), function (Builder $builder) use ($endDate) {
                     $builder->whereDate('created_at', '<=', $endDate);
                 })
-                ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
+                ->when(! empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
                     $builder->whereIn('operation_area_id', $operation_area_id);
                 })
-                ->when(!empty($payment_type_id), function (Builder $builder) use ($payment_type_id) {
+                ->when(! empty($payment_type_id), function (Builder $builder) use ($payment_type_id) {
                     $builder->where('payment_type_id', $payment_type_id);
                 })
                 ->orderBy('id', 'DESC')
@@ -65,10 +65,9 @@ class PaymentConfigurationController extends Controller
             $operators = Operator::all();
             $operationAreas = OperationArea::query()
                 ->findMany($operation_area_id);
+
             return view('admin.settings.payment_configurations', compact('payments', 'operators', 'operationAreas'));
         }
-
-
 
     }
 
@@ -84,6 +83,7 @@ class PaymentConfigurationController extends Controller
         $payment->amount = $request->amount;
 //        return $payment;
         $payment->save();
+
         return redirect()->back()->with('success', 'Payment Configuration created successfully');
     }
 
@@ -97,6 +97,7 @@ class PaymentConfigurationController extends Controller
         $payment->operation_area_id = $request->operation_area_id;
         $payment->amount = $request->amount;
         $payment->save();
+
         return redirect()->back()->with('success', 'Payment Configuration updated successfully');
     }
 
@@ -106,9 +107,11 @@ class PaymentConfigurationController extends Controller
         try {
             $payment = PaymentConfiguration::find($id);
             $payment->delete();
+
             return redirect()->back()->with('success', 'Payment Configuration deleted successfully');
         } catch (\Exception $exception) {
             info($exception);
+
             return redirect()->back()->with('success', 'Payment Configuration can not be deleted');
         }
     }
@@ -116,6 +119,7 @@ class PaymentConfigurationController extends Controller
     public function loadAreaOperation($id)
     {
         $areas = OperationArea::where('operator_id', $id)->get();
+
         return response()->json($areas);
     }
 

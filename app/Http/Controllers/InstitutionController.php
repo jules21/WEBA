@@ -15,8 +15,9 @@ class InstitutionController extends Controller
      */
     public function index()
     {
-        $institutions = Institution::query()->orderBy('id','DESC')->get();
-        return view('admin.settings.institutions',compact('institutions'));
+        $institutions = Institution::query()->orderBy('id', 'DESC')->get();
+
+        return view('admin.settings.institutions', compact('institutions'));
     }
 
     /**
@@ -32,21 +33,20 @@ class InstitutionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreInstitutionRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreInstitutionRequest $request)
     {
         $document = new Institution();
-        $document->name=$request->name;
+        $document->name = $request->name;
         $document->save();
-        return redirect()->back()->with('success','Institution created Successfully');
+
+        return redirect()->back()->with('success', 'Institution created Successfully');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Institution  $institution
      * @return \Illuminate\Http\Response
      */
     public function show(Institution $institution)
@@ -57,7 +57,6 @@ class InstitutionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Institution  $institution
      * @return \Illuminate\Http\Response
      */
     public function edit(Institution $institution)
@@ -68,34 +67,33 @@ class InstitutionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateInstitutionRequest  $request
-     * @param  \App\Models\Institution  $institution
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateInstitutionRequest $request, Institution $institution)
     {
-        $document= Institution::find($request->input('InstitutionId'));
-        $document->name=$request->name;
+        $document = Institution::find($request->input('InstitutionId'));
+        $document->name = $request->name;
         $document->save();
-        return redirect()->back()->with('success','Institution updated Successfully');
+
+        return redirect()->back()->with('success', 'Institution updated Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Institution  $institution
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Institution $institution,$id)
+    public function destroy(Institution $institution, $id)
     {
         try {
             $document = Institution::find($id);
             $document->delete();
-            return redirect()->back()->with('success','Institution deleted Successfully');
-        }catch (\Exception $exception){
+
+            return redirect()->back()->with('success', 'Institution deleted Successfully');
+        } catch (\Exception $exception) {
             info($exception);
-            return redirect()->back()->with('error','Institution can not be deleted');
+
+            return redirect()->back()->with('error', 'Institution can not be deleted');
         }
     }
-
 }

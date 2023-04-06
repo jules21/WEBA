@@ -18,16 +18,17 @@ class WaterUsageSeeder extends Seeder
             'Institution',
             'Residential',
             'Hospital',
-            'Breeding'
+            'Breeding',
         ];
 
-        if (WaterUsage::query()->exists())
+        if (WaterUsage::query()->exists()) {
             return;
+        }
 
         foreach ($waterUsage as $usage) {
             WaterUsage::query()
                 ->create([
-                    'name' => $usage
+                    'name' => $usage,
                 ]);
         }
     }

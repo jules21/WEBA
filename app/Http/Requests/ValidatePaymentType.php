@@ -24,8 +24,8 @@ class ValidatePaymentType extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'name_kin'=>'required',
+            'name' => 'required',
+            'name_kin' => 'required',
         ];
     }
 }

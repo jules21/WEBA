@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Database\Factories\InstitutionFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Institution newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Institution newQuery()
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Institution whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Institution whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Institution whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Institution extends Model

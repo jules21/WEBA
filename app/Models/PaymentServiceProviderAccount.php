@@ -5,10 +5,8 @@ namespace App\Models;
 use App\Traits\ForOperator;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 
 /**
@@ -23,6 +21,7 @@ use Illuminate\Support\Carbon;
  * @property bool $is_active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|PaymentServiceProviderAccount newModelQuery()
  * @method static Builder|PaymentServiceProviderAccount newQuery()
  * @method static Builder|PaymentServiceProviderAccount query()
@@ -35,21 +34,28 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PaymentServiceProviderAccount whereOperationAreaId($value)
  * @method static Builder|PaymentServiceProviderAccount wherePaymentServiceProviderId($value)
  * @method static Builder|PaymentServiceProviderAccount whereUpdatedAt($value)
+ *
  * @property int|null $ledger_no
+ *
  * @method static Builder|PaymentServiceProviderAccount whereLedgerNo($value)
+ *
  * @property string|null $opening_date
  * @property string|null $closing_date
  * @property-read \App\Models\PaymentServiceProvider $paymentServiceProvider
+ *
  * @method static Builder|PaymentServiceProviderAccount whereClosingDate($value)
  * @method static Builder|PaymentServiceProviderAccount whereOpeningDate($value)
+ *
  * @mixin Eloquent
  */
 class PaymentServiceProviderAccount extends Model
 {
     use ForOperator;
+
     public function resolveRouteBinding($value, $field = null)
     {
         $id = decryptId($value);
+
         return $this->where('id', '=', $id)->firstOrFail();
     }
 

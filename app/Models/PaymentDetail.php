@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $amount
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentDetail newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentDetail newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentDetail query()
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentDetail whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentDetail wherePaymentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentDetail whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class PaymentDetail extends Model

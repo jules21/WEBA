@@ -11,7 +11,6 @@ use App\Models\MeterRequest;
 use App\Notifications\PaymentNotification;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
-use function GuzzleHttp\Promise\iter_for;
 
 class BillingController extends Controller
 {
@@ -26,10 +25,11 @@ class BillingController extends Controller
             ->where('user_id', $user->id)
             ->orderBy('id', 'desc')
             ->get();
+
         return response()->json([
             'action' => 1,
             'message' => 'Billing Records',
-            'data' => BillingResource::collection($billings)
+            'data' => BillingResource::collection($billings),
         ]);
     }
 
@@ -37,11 +37,11 @@ class BillingController extends Controller
     {
         $meterRequest = MeterRequest::where('subscription_number', $request->subscriptionNumber)
             ->first();
-        if (!$meterRequest) {
+        if (! $meterRequest) {
             return response()->json([
                 'action' => 0,
                 'message' => 'Subscription Number not found',
-                'data' => null
+                'data' => null,
             ]);
         } else {
             $requestRecord = $meterRequest->request;
@@ -49,15 +49,16 @@ class BillingController extends Controller
                 return response()->json([
                     'action' => 0,
                     'message' => 'Your are not authorized to view this record',
-                    'data' => null
+                    'data' => null,
                 ]);
             }
 
             $meterRequest->load('request.customer');
+
             return response()->json([
                 'action' => 1,
                 'message' => 'Subscription Number found',
-                'data' => new MeterRequestResource($meterRequest)
+                'data' => new MeterRequestResource($meterRequest),
             ]);
         }
     }
@@ -68,11 +69,11 @@ class BillingController extends Controller
         if ($user->can('Make Billing')) {
             $meterRequest = MeterRequest::where('subscription_number', $request->subscriptionNumber)
                 ->first();
-            if (!$meterRequest) {
+            if (! $meterRequest) {
                 return response()->json([
                     'action' => 0,
                     'message' => 'Subscription Number not found',
-                    'data' => null
+                    'data' => null,
                 ]);
             }
             $exist = Billing::where('subscription_number', $request->subscription_number)
@@ -84,13 +85,13 @@ class BillingController extends Controller
                 $starting_index = $meterRequest->last_index;
             }
             $charge = BillCharge::query()->where('operation_area_id', $meterRequest->request->operation_area_id)
-                ->where("water_network_type_id", $meterRequest->request->waterNetwork->water_network_type_id)
+                ->where('water_network_type_id', $meterRequest->request->waterNetwork->water_network_type_id)
                 ->first();
-            if (!$charge) {
+            if (! $charge) {
                 return response()->json([
                     'action' => 0,
                     'message' => 'No charge found,Please contact admin',
-                    'data' => null
+                    'data' => null,
                 ]);
             }
             $bill = new Billing();
@@ -113,19 +114,19 @@ class BillingController extends Controller
                 'last_index' => $request->indexNumber,
                 'balance' => $meterRequest->balance - $bill->amount,
             ]);
-            $message = "Dear " . $meterRequest->request->customer->name . ", Your bill for the month of " . date('F') . " is " . $bill->amount . " RWF. Please pay before " . date('d-m-Y', strtotime('+30 days')) . " to avoid disconnection. Thank you.";
+            $message = 'Dear '.$meterRequest->request->customer->name.', Your bill for the month of '.date('F').' is '.$bill->amount.' RWF. Please pay before '.date('d-m-Y', strtotime('+30 days')).' to avoid disconnection. Thank you.';
             $meterRequest->request->customer->notify(new PaymentNotification($message));
 
             return response()->json([
                 'action' => 1,
                 'message' => 'Bill created successfully',
-                'data' => $bill
+                'data' => $bill,
             ]);
         } else {
             return response()->json([
                 'action' => 0,
                 'message' => 'You are not authorized to make billing',
-                'data' => null
+                'data' => null,
             ]);
         }
     }
@@ -138,10 +139,11 @@ class BillingController extends Controller
             ->where('balance', '>', 0)
             ->orderBy('id')
             ->get();
+
         return response()->json([
             'action' => 1,
             'message' => 'Billing Records',
-            'data' => BillingResource::collection($billings)
+            'data' => BillingResource::collection($billings),
         ]);
     }
 }
