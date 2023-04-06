@@ -28,16 +28,16 @@ class StockMovementsDataTable extends DataTable
             ->editColumn('type', function ($item) {
                 if (in_array($item->type, ['AdjustmentController', StockMovement::Adjustment])) {
                     return '
-                    <span class="label label-light-success label-inline"> Adjustment </span>';
+                    <span class="badge bg-light-success text-success"> Adjustment </span>';
                 } elseif (in_array($item->type, ['Purchase', StockMovement::StockIn])) {
                     return '
-                    <span class="label label-light-primary label-inline"> Stock In </span>';
+                    <span class="badge bg-light-primary text-primary"> Stock In </span>';
                 } elseif (in_array($item->type, ['Sale', 'Sales', StockMovement::StockOut])) {
                     return '
-                    <span class="label label-light-danger label-inline"> Stock Out </span>';
+                    <span class="badge bg-light-danger text-danger"> Stock Out </span>';
                 } else {
                     return '
-                 <span class="label label-primary label-inline font-weight-lighter">'.$item->type.'</span>';
+                 <span class="badge bg-light-warning text-warning font-weight-lighter">'.$item->type.'</span>';
                 }
             })
             ->editColumn('item_id', function ($item) {
