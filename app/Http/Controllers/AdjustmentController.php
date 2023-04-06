@@ -336,18 +336,13 @@ class AdjustmentController extends Controller
         }
         if ($adjustment) {
             $adjustment->load(['items.item', 'flowHistories.user']);
+                        $reviews = $adjustment->flowHistories
+                ->where('is_comment', '=', true);
+
+            $flowHistories = $adjustment->flowHistories
+                ->where('is_comment', '=', false);
         }
-//        //
-//        if ($adjustment) {
-//            $adjustment->load(['items.item', 'flowHistories.user']);
-//
-//            $reviews = $adjustment->flowHistories
-//                ->where('is_comment', '=', true);
-//
-//            $flowHistories = $adjustment->flowHistories
-//                ->where('is_comment', '=', false);
-//            $stock = Stock::query()->where('operation_area_id', $adjustment->operation_area_id)->get();
-//        }
+
 
         $items = Item::query()->with('category')->where('operator_id', $user->operator_id)->get();
         $stock = Stock::with('operationArea','item','item.category')
@@ -363,8 +358,8 @@ class AdjustmentController extends Controller
         return view('admin.stock.adjustment.create_new', [
 //            'adjustment_id' => $adjustmentId,
             'adjustment' => $adjustment,
-//            'reviews' => $reviews ?? null,
-//            'flowHistories' => $flowHistories ?? null,
+            'reviews' => $reviews ?? null,
+            'flowHistories' => $flowHistories ?? null,
             'stock' => $stock_data ?? null
         ]);
 }
