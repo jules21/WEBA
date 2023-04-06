@@ -24,8 +24,8 @@ class MeterRequestController extends Controller
         $id = $validateAssignMeterNumber->input('id');
         DB::beginTransaction();
         if ($id > 0) {
-            $results = $request->meterNumbers()
-                ->update($data);
+            $meterRequest = MeterRequest::query()->find($id);
+            $results = $meterRequest->update($data);
         } else {
             $data['balance'] = 0;
             $data['status'] = Status::ACTIVE;

@@ -2,7 +2,7 @@
 @section('title',"Request details")
 
 @section('content')
-    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none mb-4" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-2">
@@ -40,31 +40,56 @@
         </div>
     </div>
 
-
-
-
-
-    <div class="card card-body">
+    <div class="card card-body tw-shadow-sm border tw-border-gray-300">
         <ul class="nav nav-light-primary nav-pills" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link font-weight-bolder active" id="home-tab" data-toggle="tab" href="#home" role="tab"
                    aria-controls="home"
                    aria-selected="true">
-                    <i class="flaticon2-layers mr-2"></i>
+                      <span>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-layers-intersect"
+                               width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
+                               fill="none"
+                               stroke-linecap="round" stroke-linejoin="round">
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                           <path
+                               d="M8 4m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path>
+                           <path
+                               d="M4 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"></path>
+                        </svg>
+                      </span>
                     Details
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link font-weight-bolder" id="profile-tab" data-toggle="tab" href="#profile" role="tab"
                    aria-controls="profile" aria-selected="false">
-                    <i class="flaticon2-heart-rate-monitor mr-2"></i>
+                    <span>
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message" width="24"
+                           height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                           stroke-linecap="round" stroke-linejoin="round">
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                           <path d="M8 9h8"></path>
+                           <path d="M8 13h6"></path>
+                           <path
+                               d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"></path>
+                        </svg>
+                    </span>
                     Reviews
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link font-weight-bolder" id="contact-tab" data-toggle="tab" href="#contact" role="tab"
                    aria-controls="contact" aria-selected="false">
-                    <i class="flaticon2-time mr-2"></i>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history" width="24"
+                             height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
+                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                           <path d="M12 8l0 4l2 2"></path>
+                           <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path>
+                        </svg>
+                    </span>
                     Flow History
                 </a>
             </li>
@@ -119,7 +144,9 @@
                             </div>
                         </div>
                     @endif
-                    @include('admin.requests.partials._assign_meter_numbers')
+                    @if($request->canMeterNumberBeShown())
+                        @include('admin.requests.partials._assign_meter_numbers')
+                    @endif
 
                     @if( $request->canBeApprovedByMe() && auth()->user()->operation_area)
                         @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
@@ -199,7 +226,7 @@
                                     <!--end::Badge-->
 
                                     <!--begin::Text-->
-                                    <div class="font-weight-mormal font-size-lg timeline-content pl-3">
+                                    <div class="font-weight-normal font-size-lg timeline-content pl-3">
                                     <span class="text-muted font-weight-bolder">
                                         {{ $item->created_at->format('d M Y') }}
                                     </span>
@@ -659,6 +686,7 @@
 
             $('#addMeterBtn').on('click', function () {
                 $('#addMeterModal').modal('show');
+                $('#meter_id').val(0);
             });
 
             $saveMeterForm.on('submit', function (e) {
@@ -709,7 +737,7 @@
                 $('#meter_number').val($(this).data('meter_number'));
                 $('#last_index').val($(this).data('last_index'));
                 $('#addMeterModal').modal('show');
-
+                $('#meter_id').val($(this).data('id'));
                 $categoryId.trigger('change');
             });
 

@@ -187,7 +187,8 @@ class RequestReviewController extends Controller
         $ref = $dec->generateReferenceNumber();
         $formatted = number_format($sum);
         $psp = $this->getPsp($metersConfig);
-        $message = "You have to pay the meters fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp";
+        $subscriptionNumbers = $request->meterNumbers->pluck('subscription_number')->implode(', ');
+        $message = "You have to pay the meters fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp. Subscription numbers of your meters are $subscriptionNumbers ";
         $request->customer->notify(new PaymentNotification($message));
     }
 
@@ -262,8 +263,9 @@ class RequestReviewController extends Controller
                     $request->customer_id
                 ]);
         } else if ($status == AppRequest::METER_ASSIGNED) {
+            $request->load('meterNumbers.item');
             $this->declareMetersFee($request);
-            $meters = $request->meterNumbers()->with('item')->get();
+            $meters = $request->meterNumbers;
             // update stock movement details
             $meters->each(function ($meter) use ($request) {
                 $request->items()
