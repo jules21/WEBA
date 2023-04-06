@@ -18,9 +18,8 @@
 @stop
 @section("content")
     <!--begin::Entry-->
-    <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
-        <div class="container">
+        <div >
             <!--begin::Dashboard-->
             <div class="row">
                 <div class="col-md-6">
