@@ -24,9 +24,9 @@ class ValidateRole extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'description'=>'required',
-            'operator_id'=>'nullable|exists:operators,id'
+            'name' => 'required',
+            'description' => 'required',
+            'operator_id' => 'nullable|exists:operators,id',
         ];
     }
 }

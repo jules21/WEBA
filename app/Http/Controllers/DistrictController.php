@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreDistrictRequest;
-use App\Http\Requests\UpdateDistrictRequest;
 use App\Models\District;
 use App\Models\Province;
 

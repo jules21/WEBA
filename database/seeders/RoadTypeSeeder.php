@@ -15,23 +15,23 @@ class RoadTypeSeeder extends Seeder
     public function run()
     {
         $roadTypes = [
-            "Concreted",
-            "Gravelled",
-            "Dirt",
-            "Paved",
-            "Unpaved"
+            'Concreted',
+            'Gravelled',
+            'Dirt',
+            'Paved',
+            'Unpaved',
         ];
 
-        if (RoadType::query()->exists())
+        if (RoadType::query()->exists()) {
             return;
+        }
 
         foreach ($roadTypes as $roadType) {
             RoadType::query()
                 ->create([
-                    'name' => $roadType
+                    'name' => $roadType,
                 ]);
         }
 
     }
-
 }

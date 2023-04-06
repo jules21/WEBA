@@ -6,7 +6,6 @@ use App\Http\Requests\ValidateAddWaterNetwork;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Http\Requests\ValidateStoreItemRequest;
 use App\Models\Item;
-use App\Models\MeterRequest;
 use App\Models\PaymentDeclaration;
 use App\Models\PaymentType;
 use App\Models\Request as AppRequest;
@@ -38,19 +37,13 @@ class RequestReviewController extends Controller
         $this->saveHistory($request, "Request status marked as '$status'", $status, false);
         $this->takeDecision($status, $request);
         DB::commit();
+
         return redirect()
             ->back()
             ->with('success', 'Review saved successfully');
 
     }
 
-    /**
-     * @param AppRequest $request
-     * @param $comment
-     * @param $status
-     * @param bool $is_comment
-     * @return void
-     */
     public function saveHistory(AppRequest $request, $comment, $status, bool $is_comment = true): void
     {
         $request->flowHistories()->create([
@@ -58,15 +51,10 @@ class RequestReviewController extends Controller
             'user_id' => auth()->id(),
             'is_comment' => $is_comment,
             'status' => $status,
-            'type' => $request->getClassName()
+            'type' => $request->getClassName(),
         ]);
     }
 
-    /**
-     * @param AppRequest $request
-     * @param $status
-     * @return void
-     */
     public function updateRequest(AppRequest $request, $status): void
     {
         $request->update([
@@ -86,12 +74,12 @@ class RequestReviewController extends Controller
         if ($id > 0) {
             $moveMovement = StockMovementDetail::query()->find($id);
             $model = $moveMovement->update([
-                    'item_id' => $item_id,
-                    'quantity' => $data['quantity'],
-                    'unit_price' => $item->selling_price,
-                    'type' => $request->getClassName(),
-                    'status' => 'pending'
-                ]
+                'item_id' => $item_id,
+                'quantity' => $data['quantity'],
+                'unit_price' => $item->selling_price,
+                'type' => $request->getClassName(),
+                'status' => 'pending',
+            ]
             );
         } else {
             $model = $request->items()
@@ -100,16 +88,15 @@ class RequestReviewController extends Controller
                     'quantity' => $data['quantity'],
                     'unit_price' => $item->selling_price,
                     'type' => $request->getClassName(),
-                    'status' => 'pending'
+                    'status' => 'pending',
                 ]);
         }
-
 
         if ($itemRequest->ajax()) {
             return response()->json([
                 'message' => 'Item saved successfully',
                 'status' => 'success',
-                'data' => $model
+                'data' => $model,
             ], ResponseAlias::HTTP_OK);
         }
 
@@ -129,7 +116,7 @@ class RequestReviewController extends Controller
         if (\request()->ajax()) {
             return response()->json([
                 'message' => 'Item deleted successfully',
-                'status' => 'success'
+                'status' => 'success',
             ], ResponseAlias::HTTP_OK);
         }
 
@@ -138,7 +125,6 @@ class RequestReviewController extends Controller
             ->with('success', 'Item deleted successfully');
 
     }
-
 
     /**
      * @throws Throwable
@@ -157,7 +143,7 @@ class RequestReviewController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'message' => 'Water network added successfully',
-                'status' => 'success'
+                'status' => 'success',
             ], ResponseAlias::HTTP_OK);
         }
 
@@ -166,10 +152,6 @@ class RequestReviewController extends Controller
             ->with('success', 'Water network added successfully');
     }
 
-    /**
-     * @param AppRequest $request
-     * @return void
-     */
     public function declareMetersFee(AppRequest $request): void
     {
         $meters = $request->meterNumbers()->with('item')->get();
@@ -180,9 +162,9 @@ class RequestReviewController extends Controller
                 'amount' => $sum,
                 'status' => PaymentDeclaration::ACTIVE,
                 'payment_configuration_id' => $metersConfig->id,
-                'type' => "Meters Fee",
+                'type' => 'Meters Fee',
                 'balance' => $sum,
-                'payment_reference' => 'N/A'
+                'payment_reference' => 'N/A',
             ]);
         $ref = $dec->generateReferenceNumber();
         $formatted = number_format($sum);
@@ -192,11 +174,6 @@ class RequestReviewController extends Controller
         $request->customer->notify(new PaymentNotification($message));
     }
 
-    /**
-     * @param Collection $requestItems
-     * @param AppRequest $request
-     * @return void
-     */
     public function declareMaterialsFee(Collection $requestItems, AppRequest $request): void
     {
         $sum = $requestItems->sum('total');
@@ -207,9 +184,9 @@ class RequestReviewController extends Controller
                 'amount' => $sum,
                 'status' => PaymentDeclaration::ACTIVE,
                 'payment_configuration_id' => $materialsConfig->id,
-                'type' => "Materials Fee",
+                'type' => 'Materials Fee',
                 'balance' => $sum,
-                'payment_reference' => 'N/A'
+                'payment_reference' => 'N/A',
             ]);
         $ref = $dec->generateReferenceNumber();
         $formatted = number_format($sum);
@@ -218,10 +195,6 @@ class RequestReviewController extends Controller
         $request->customer->notify(new PaymentNotification($message));
     }
 
-    /**
-     * @param AppRequest $request
-     * @return void
-     */
     public function declareConnectionFee(AppRequest $request): void
     {
         $connectionConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, $request->request_type_id);
@@ -230,9 +203,9 @@ class RequestReviewController extends Controller
                 'amount' => $request->connection_fee,
                 'status' => PaymentDeclaration::ACTIVE,
                 'payment_configuration_id' => $connectionConfig->id,
-                'type' => "Connection Fee",
+                'type' => 'Connection Fee',
                 'balance' => $request->connection_fee,
-                'payment_reference' => 'N/A'
+                'payment_reference' => 'N/A',
             ]);
         $ref = $dec->generateReferenceNumber();
         $formatted = number_format($request->connection_fee);
@@ -241,11 +214,6 @@ class RequestReviewController extends Controller
         $request->customer->notify(new PaymentNotification($message));
     }
 
-    /**
-     * @param $status
-     * @param AppRequest $request
-     * @return void
-     */
     public function takeDecision($status, AppRequest $request): void
     {
         if ($status == AppRequest::APPROVED) {
@@ -260,9 +228,9 @@ class RequestReviewController extends Controller
             $request->operator
                 ->customers()
                 ->syncWithoutDetaching([
-                    $request->customer_id
+                    $request->customer_id,
                 ]);
-        } else if ($status == AppRequest::METER_ASSIGNED) {
+        } elseif ($status == AppRequest::METER_ASSIGNED) {
             $request->load('meterNumbers.item');
             $this->declareMetersFee($request);
             $meters = $request->meterNumbers;
@@ -274,10 +242,9 @@ class RequestReviewController extends Controller
                         'type' => $request->getClassName(),
                         'status' => 'pending',
                         'item_id' => $meter->item_id,
-                        'unit_price' => $meter->item->selling_price
+                        'unit_price' => $meter->item->selling_price,
                     ]);
             });
-
 
         }
     }

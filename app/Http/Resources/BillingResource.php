@@ -10,7 +10,7 @@ class BillingResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -27,6 +27,7 @@ class BillingResource extends JsonResource
         $totalAmount = Billing::query()
         ->where('subscription_number', $this->subscription_number)->sum('balance');
         $this->load('user.permissions');
+
         return [
             'id' => $this->id,
             'subscription_number' => $this->subscription_number,

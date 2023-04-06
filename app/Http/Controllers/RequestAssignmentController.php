@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ValidateAssignRequest;
-use App\Models\FlowHistory;
 use App\Models\Request as AppRequest;
 use App\Models\RequestAssignment;
 use DB;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 
@@ -75,7 +72,7 @@ class RequestAssignmentController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-            $this->saveFlowHistory($appReq, 'Assigned', "Request reassigned");
+            $this->saveFlowHistory($appReq, 'Assigned', 'Request reassigned');
         }
 
         RequestAssignment::insert($requestAssignments);
@@ -92,11 +89,6 @@ class RequestAssignmentController extends Controller
 
     }
 
-
-    /**
-     * @param $requestId
-     * @return void
-     */
     public function updateRequest($requestId): void
     {
         $appRequest = AppRequest::find($requestId);
@@ -105,12 +97,6 @@ class RequestAssignmentController extends Controller
         $this->saveFlowHistory($appRequest, 'Assigned', 'Request assigned');
     }
 
-    /**
-     * @param AppRequest $appRequest
-     * @param $status
-     * @param $message
-     * @return void
-     */
     public function saveFlowHistory(AppRequest $appRequest, $status, $message): void
     {
         // get class name without namespace

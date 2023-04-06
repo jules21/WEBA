@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $operator_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Database\Factories\WaterNetworkFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork newQuery()
@@ -26,32 +27,40 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereOperatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork wherePopulationCovered($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereUpdatedAt($value)
+ *
  * @property int|null $water_network_type_id
  * @property int|null $operation_area_id
  * @property-read \App\Models\Operator $operator
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereWaterNetworkTypeId($value)
+ *
  * @property-read \App\Models\OperationArea|null $operationArea
  * @property-read \App\Models\WaterNetworkType|null $waterNetworkType
+ *
  * @mixin \Eloquent
  */
 class WaterNetwork extends Model
 {
     use HasFactory;
 
-    public function operator(){
-        return $this->belongsTo(Operator::class,'operator_id');
+    public function operator()
+    {
+        return $this->belongsTo(Operator::class, 'operator_id');
     }
 
-    public function waterNetworkType(){
-        return $this->belongsTo(WaterNetworkType::class,'water_network_type_id');
+    public function waterNetworkType()
+    {
+        return $this->belongsTo(WaterNetworkType::class, 'water_network_type_id');
     }
 
-    public function operationArea(){
-        return $this->belongsTo(OperationArea::class,'operation_area_id');
+    public function operationArea()
+    {
+        return $this->belongsTo(OperationArea::class, 'operation_area_id');
     }
 
-    public function waterNetworkStatus(){
-        return $this->belongsTo(WaterNetworkStatus::class,'water_network_status_id');
+    public function waterNetworkStatus()
+    {
+        return $this->belongsTo(WaterNetworkStatus::class, 'water_network_status_id');
     }
 }

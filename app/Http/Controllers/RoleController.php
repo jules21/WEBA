@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Http\Requests\ValidateRole;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -11,69 +10,81 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-
     public function index()
     {
-        $user=auth()->user();
+        $user = auth()->user();
         $roles = Role::with('permissions');
-        if($user->operator_id != null){
-            $roles = $roles->where('operator_id',$user->operator_id);
-        }else{
-            $roles = $roles->where('operator_id',null);
+        if ($user->operator_id != null) {
+            $roles = $roles->where('operator_id', $user->operator_id);
+        } else {
+            $roles = $roles->where('operator_id', null);
         }
         $roles = $roles->get();
+
         return view('admin.user_management.roles', compact('roles'));
     }
-
 
     public function store(ValidateRole $request)
     {
 
         Role::create($request->validated());
-        return redirect()->back()->with("success","Role created successfully");
+
+        return redirect()->back()->with('success', 'Role created successfully');
     }
-    public function update(ValidateRole $request, Role $role){
+
+    public function update(ValidateRole $request, Role $role)
+    {
         $role->update($request->validated());
-        return redirect()->back()->with("success","role updated successfully");
+
+        return redirect()->back()->with('success', 'role updated successfully');
     }
-    public function addPermissionToRole($role_id){
-        $role=Role::findorFail($role_id);
-        $permissions =Permission::query();
-        if($role->operator_id != null){
-            $permissions = $permissions->whereIn('level',['both','operator']);
+
+    public function addPermissionToRole($role_id)
+    {
+        $role = Role::findorFail($role_id);
+        $permissions = Permission::query();
+        if ($role->operator_id != null) {
+            $permissions = $permissions->whereIn('level', ['both', 'operator']);
         }
-        $permissions = $permissions->get()->groupBy('category',"desc");
-        return view('admin.user_management.permissions_to_roles',compact('permissions','role'));
+        $permissions = $permissions->get()->groupBy('category', 'desc');
+
+        return view('admin.user_management.permissions_to_roles', compact('permissions', 'role'));
     }
-    public function addRoleToUser($user_id){
-        $user=User::findorFail($user_id);
-        $roles = Role::query()->get();;
-        return view('admin.user_management.roles_to_users',compact('roles','user'));
+
+    public function addRoleToUser($user_id)
+    {
+        $user = User::findorFail($user_id);
+        $roles = Role::query()->get();
+
+        return view('admin.user_management.roles_to_users', compact('roles', 'user'));
     }
-    public function storeRoleToUser(Request $request){
-        $user=User::findorFail($request->user_id);
+
+    public function storeRoleToUser(Request $request)
+    {
+        $user = User::findorFail($request->user_id);
         $user->syncRoles($request->roles);
-        return redirect()->back()->with("success","roles for $user->name updated successfully");
 
-
+        return redirect()->back()->with('success', "roles for $user->name updated successfully");
 
     }
-    public function storePermissionToRole(Request $request){
-        $role=Role::findorFail($request->role_id);
+
+    public function storePermissionToRole(Request $request)
+    {
+        $role = Role::findorFail($request->role_id);
         $role->syncPermissions($request->permissions);
-        return redirect()->back()->with("success","permissions for $role->name updated successfully");
-    }
 
+        return redirect()->back()->with('success', "permissions for $role->name updated successfully");
+    }
 
     public function show(Role $role)
     {
         return $role;
     }
 
-
     public function destroy(Role $role)
     {
         $role->delete();
-        return back()->with("success","Role deleted successfully");
+
+        return back()->with('success', 'Role deleted successfully');
     }
 }

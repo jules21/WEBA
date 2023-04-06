@@ -10,7 +10,6 @@ use function request;
 
 class ExpenseController extends Controller
 {
-
     /**
      * @throws Exception
      */
@@ -20,6 +19,7 @@ class ExpenseController extends Controller
             $data = Expense::query()
                 ->with(['expenseLedger', 'paymentLedger'])
                 ->select('expenses.*');
+
             return datatables()->of($data)
                 ->addColumn('action', function ($row) {
                     if (auth()->user()->operation_area) {
@@ -28,17 +28,17 @@ class ExpenseController extends Controller
                             Options
                           </button>
                           <div class="dropdown-menu">
-                            <a class="dropdown-item js-edit" href="' . route('admin.accounting.expenses.show', encryptId($row->id)) . '"> <i class="fa fa-edit mr-2"></i> Edit</a>
-                            <a class="dropdown-item js-delete" href="' . route('admin.accounting.expenses.delete', encryptId($row->id)) . '"> <i class="fa fa-trash  mr-2"></i> Delete</a>
+                            <a class="dropdown-item js-edit" href="'.route('admin.accounting.expenses.show', encryptId($row->id)).'"> <i class="fa fa-edit mr-2"></i> Edit</a>
+                            <a class="dropdown-item js-delete" href="'.route('admin.accounting.expenses.delete', encryptId($row->id)).'"> <i class="fa fa-trash  mr-2"></i> Delete</a>
                           </div>
                         </div>';
                     }
-                    return "";
+
+                    return '';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
-
 
         $expenseCategories = ChartAccount::query()
             ->where([
@@ -51,13 +51,13 @@ class ExpenseController extends Controller
             ->where([
                 ['operation_area_id', '=', auth()->user()->operation_area],
                 ['level', '=', 3],
-                ['ledger_no', '<', 10300]
+                ['ledger_no', '<', 10300],
             ])
             ->get();
 
         return view('admin.accounting.expenses', [
             'expenseCategories' => $expenseCategories,
-            'paymentLedgers' => $paymentLedgers
+            'paymentLedgers' => $paymentLedgers,
         ]);
     }
 
@@ -78,7 +78,7 @@ class ExpenseController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Expense saved successfully',
-                'data' => $expense
+                'data' => $expense,
             ]);
         }
 
@@ -86,16 +86,15 @@ class ExpenseController extends Controller
             ->with('success', 'Expense saved successfully');
     }
 
-
     public function show(Expense $expense)
     {
         return $expense;
     }
 
-
     public function destroy(Expense $expense)
     {
         $expense->delete();
+
         return response()->json([
             'status' => 'success',
             'message' => 'Expense deleted successfully',
@@ -106,6 +105,7 @@ class ExpenseController extends Controller
     {
         $account = ChartAccount::query()
             ->findOrFail($id);
+
         return $account->children()->get();
 
     }

@@ -15,8 +15,9 @@ class RoadCrossTypeController extends Controller
      */
     public function index()
     {
-        $roads = RoadCrossType::query()->orderBy('id','DESC')->get();
-        return view('admin.settings.road_cross_types',compact('roads'));
+        $roads = RoadCrossType::query()->orderBy('id', 'DESC')->get();
+
+        return view('admin.settings.road_cross_types', compact('roads'));
     }
 
     /**
@@ -32,7 +33,6 @@ class RoadCrossTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreRoadCrossTypeRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreRoadCrossTypeRequest $request)
@@ -43,7 +43,6 @@ class RoadCrossTypeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\RoadCrossType  $roadCrossType
      * @return \Illuminate\Http\Response
      */
     public function show(RoadCrossType $roadCrossType)
@@ -54,7 +53,6 @@ class RoadCrossTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\RoadCrossType  $roadCrossType
      * @return \Illuminate\Http\Response
      */
     public function edit(RoadCrossType $roadCrossType)
@@ -65,8 +63,6 @@ class RoadCrossTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateRoadCrossTypeRequest  $request
-     * @param  \App\Models\RoadCrossType  $roadCrossType
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateRoadCrossTypeRequest $request, RoadCrossType $roadCrossType)
@@ -77,7 +73,6 @@ class RoadCrossTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\RoadCrossType  $roadCrossType
      * @return \Illuminate\Http\Response
      */
     public function destroy(RoadCrossType $roadCrossType)

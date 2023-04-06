@@ -20,7 +20,7 @@ class PackagingUnitSeeder extends Seeder
         }
         foreach ($units as $unit) {
             PackagingUnit::create([
-                'name' => $unit
+                'name' => $unit,
             ]);
         }
 

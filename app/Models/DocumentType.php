@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Database\Factories\DocumentTypeFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentType newQuery()
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|DocumentType whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class DocumentType extends Model
@@ -27,8 +29,6 @@ class DocumentType extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
     ];
-
-
 }

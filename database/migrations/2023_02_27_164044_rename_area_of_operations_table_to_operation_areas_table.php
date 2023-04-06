@@ -14,7 +14,7 @@ class RenameAreaOfOperationsTableToOperationAreasTable extends Migration
     public function up()
     {
         Schema::table('area_of_operations', function (Blueprint $table) {
-            $table->rename("operation_areas");
+            $table->rename('operation_areas');
         });
     }
 
@@ -26,7 +26,7 @@ class RenameAreaOfOperationsTableToOperationAreasTable extends Migration
     public function down()
     {
         Schema::table('operation_areas', function (Blueprint $table) {
-            $table->rename("area_of_operations");
+            $table->rename('area_of_operations');
         });
     }
 }

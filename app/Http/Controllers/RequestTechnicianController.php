@@ -6,7 +6,6 @@ use App\Http\Requests\ValidateTechnicianRequest;
 use App\Models\Request as AppRequest;
 use App\Models\RequestTechnician;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class RequestTechnicianController extends Controller
@@ -34,8 +33,6 @@ class RequestTechnicianController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param ValidateTechnicianRequest $technicianRequest
-     * @param AppRequest $request
      * @return RedirectResponse
      */
     public function store(ValidateTechnicianRequest $technicianRequest, AppRequest $request)
@@ -64,7 +61,6 @@ class RequestTechnicianController extends Controller
     {
         return $requestTechnician;
     }
-
 
     public function destroy($id)
     {

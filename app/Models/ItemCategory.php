@@ -20,6 +20,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property bool $is_active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static ItemCategoryFactory factory(...$parameters)
  * @method static Builder|ItemCategory newModelQuery()
  * @method static Builder|ItemCategory newQuery()
@@ -30,10 +31,13 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|ItemCategory whereIsMeter($value)
  * @method static Builder|ItemCategory whereName($value)
  * @method static Builder|ItemCategory whereUpdatedAt($value)
+ *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Item> $items
  * @property-read int|null $items_count
  * @property int|null $operator_id
+ *
  * @method static Builder|ItemCategory whereOperatorId($value)
+ *
  * @mixin Eloquent
  */
 class ItemCategory extends Model implements Auditable
@@ -41,9 +45,9 @@ class ItemCategory extends Model implements Auditable
     use HasFactory, \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
-        "name",
-        "is_meter",
-        "is_active",
+        'name',
+        'is_meter',
+        'is_active',
     ];
 
     public function items(): HasMany
@@ -54,6 +58,7 @@ class ItemCategory extends Model implements Auditable
     public function resolveRouteBinding($value, $field = null)
     {
         $id = decryptId($value);
+
         return $this->where('id', $id)->first() ?? abort(404);
     }
 }

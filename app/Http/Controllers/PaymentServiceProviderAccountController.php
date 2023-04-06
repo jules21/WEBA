@@ -13,7 +13,6 @@ use Throwable;
 
 class PaymentServiceProviderAccountController extends Controller
 {
-
     /**
      * @throws Exception
      */
@@ -23,6 +22,7 @@ class PaymentServiceProviderAccountController extends Controller
             $data = PaymentServiceProviderAccount::query()
                 ->with(['paymentServiceProvider'])
                 ->select('payment_service_provider_accounts.*');
+
             return datatables()->of($data)
                 ->addColumn('action', function ($row) {
                     if (auth()->user()->operation_area) {
@@ -31,12 +31,13 @@ class PaymentServiceProviderAccountController extends Controller
                             Options
                           </button>
                           <div class="dropdown-menu">
-                            <a class="dropdown-item js-edit" href="' . route('admin.accounting.bank-accounts.show', encryptId($row->id)) . '"> <i class="fa fa-edit mr-2"></i> Edit</a>
-                            <a class="dropdown-item js-delete" href="' . route('admin.accounting.bank-accounts.delete', encryptId($row->id)) . '"> <i class="fa fa-trash mr-2"></i> Delete</a>
+                            <a class="dropdown-item js-edit" href="'.route('admin.accounting.bank-accounts.show', encryptId($row->id)).'"> <i class="fa fa-edit mr-2"></i> Edit</a>
+                            <a class="dropdown-item js-delete" href="'.route('admin.accounting.bank-accounts.delete', encryptId($row->id)).'"> <i class="fa fa-trash mr-2"></i> Delete</a>
                           </div>
                         </div>';
                     }
-                    return "";
+
+                    return '';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -44,12 +45,12 @@ class PaymentServiceProviderAccountController extends Controller
         $serviceProviders = PaymentServiceProvider::all();
         $currencies = Currency::query()
             ->get();
+
         return view('admin.accounting.bank_accounts', [
             'serviceProviders' => $serviceProviders,
-            'currencies' => $currencies
+            'currencies' => $currencies,
         ]);
     }
-
 
     /**
      * @throws Throwable
@@ -68,7 +69,7 @@ class PaymentServiceProviderAccountController extends Controller
                 ->orderByDesc('ledger_no')
                 ->first();
             if (is_null($gl)) {
-                $ledgerNo = $bankLedgerGroupNo . '01';
+                $ledgerNo = $bankLedgerGroupNo.'01';
             } else {
                 $ledgerNo = $gl->ledger_no + 1;
             }
@@ -81,10 +82,10 @@ class PaymentServiceProviderAccountController extends Controller
                     'parent_ledger_no' => $bankLedgerGroupNo,
                     'ledger_type' => 'D',
                     'is_active' => true,
-                    'ledger_description' => $data['account_name'] . "-Account No: " . $data['account_number'],
+                    'ledger_description' => $data['account_name'].'-Account No: '.$data['account_number'],
                 ]);
         }
-        $data['currency'] = "RWF";
+        $data['currency'] = 'RWF';
         if ($id == 0) {
             $paymentServiceProviderAccount = PaymentServiceProviderAccount::query()
                 ->create($data);
@@ -98,9 +99,10 @@ class PaymentServiceProviderAccountController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Payment Service Provider Account saved successfully.',
-                'data' => $paymentServiceProviderAccount
+                'data' => $paymentServiceProviderAccount,
             ]);
         }
+
         return redirect()->route('payment_service_provider_accounts.index')
             ->with('success', 'Payment Service Provider Account saved successfully.');
     }
@@ -109,7 +111,6 @@ class PaymentServiceProviderAccountController extends Controller
     {
         return response()->json($paymentServiceProviderAccount);
     }
-
 
     /**
      * @throws Throwable
@@ -125,6 +126,7 @@ class PaymentServiceProviderAccountController extends Controller
             ->delete();
         $paymentServiceProviderAccount->delete();
         DB::commit();
+
         return response()->json([
             'success' => true,
             'message' => 'Payment Service Provider Account deleted successfully.',
@@ -136,6 +138,7 @@ class PaymentServiceProviderAccountController extends Controller
         $paymentServiceProvider = PaymentServiceProvider::query()
             ->findOrFail($id);
         $accounts = $paymentServiceProvider->accounts()->get();
+
         return response()->json($accounts);
     }
 }

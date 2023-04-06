@@ -15,7 +15,6 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Throwable;
@@ -26,6 +25,7 @@ class RequestDeliveryController extends Controller
      * Display a listing of the resource.
      *
      * @return Application|Factory|View|Response
+     *
      * @throws Exception
      */
     public function index(AppRequest $request)
@@ -36,15 +36,17 @@ class RequestDeliveryController extends Controller
                 ->withCount(['details' => function (Builder $query) {
                     $query->where('quantity', '>', 0);
                 }]);
+
             return datatables()->of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (RequestDelivery $row) {
                     $count = $row->details_count;
-                    $btn = '<a href="' . route('admin.requests.print-delivery', encryptId($row->id)) . '"  data-toggle="tooltip" target="_blank"  data-id="' . $row->id . '"
+                    $btn = '<a href="'.route('admin.requests.print-delivery', encryptId($row->id)).'"  data-toggle="tooltip" target="_blank"  data-id="'.$row->id.'"
                     data-original-title="Print" class="edit btn btn-light-danger btn-sm editProduct"><i class="flaticon2-print"></i> Print</a>';
-                    return $btn . ' <a href="' . route('admin.requests.delivery.items', encryptId($row->id)) . '" data-toggle="tooltip"  data-id="' . $row->id . '"
+
+                    return $btn.' <a href="'.route('admin.requests.delivery.items', encryptId($row->id)).'" data-toggle="tooltip"  data-id="'.$row->id.'"
                 data-original-title="Items" class="btn btn-light-primary btn-sm deleteProduct">
-                   ' . $count . '
+                   '.$count.'
                     Items
                     </a>';
                 })
@@ -68,10 +70,9 @@ class RequestDeliveryController extends Controller
         return view('admin.requests.delivery.deliveries', [
             'request' => $request,
             'items' => $items,
-//            'meterNumbers' => $meterNumbers
+            //            'meterNumbers' => $meterNumbers
         ]);
     }
-
 
     /**
      * @throws Throwable
@@ -87,7 +88,7 @@ class RequestDeliveryController extends Controller
                 'done_by' => auth()->id(),
                 'delivered_by_name' => $data['delivered_by_name'],
                 'delivered_by_phone' => $data['delivered_by_phone'],
-                'delivery_date' => now()
+                'delivery_date' => now(),
             ]);
         $items = $data['items'];
 //        $meters = $data['meters'] ?? [];
@@ -126,31 +127,20 @@ class RequestDeliveryController extends Controller
             $request->update(['status' => AppRequest::DELIVERED]);
         }
         DB::commit();
+
         return redirect()->back()->with('success', 'Delivery created successfully');
     }
 
-
-    /**
-     * @param $item_id
-     * @param $quantity
-     * @return void
-     */
     public function updateStock($item_id, $quantity): void
     {
         Stock::query()
             ->where([
                 ['item_id', $item_id],
-                ['operation_area_id', auth()->user()->operation_area]
+                ['operation_area_id', auth()->user()->operation_area],
             ])
             ->decrement('quantity', $quantity);
     }
 
-    /**
-     * @param $requestItem
-     * @param AppRequest $request
-     * @param $quantity
-     * @return void
-     */
     public function updateStockMovement($requestItem, AppRequest $request, $quantity): void
     {
         $item = $requestItem->item;
@@ -161,7 +151,7 @@ class RequestDeliveryController extends Controller
                 'opening_qty' => $stockItem->quantity ?? 0,
                 'qty_in' => 0,
                 'qty_out' => $quantity,
-                'description' => 'Request approved, stock decreased by ' . $requestItem->quantity,
+                'description' => 'Request approved, stock decreased by '.$requestItem->quantity,
                 'type' => StockMovement::StockIn,
                 'request_id' => $request->id,
             ]);
@@ -170,7 +160,7 @@ class RequestDeliveryController extends Controller
     private function generateBatchNumber()
     {
         // unique batch number for each delivery request
-        return 'DEL' . now()->format('Ymd') . rand(1000, 9999);
+        return 'DEL'.now()->format('Ymd').rand(1000, 9999);
     }
 
     public function items($deliveryId)
@@ -178,9 +168,10 @@ class RequestDeliveryController extends Controller
         $delivery = RequestDelivery::findOrFail(decryptId($deliveryId));
         $delivery->load(['details.requestItem.item', 'request']);
         $request = $delivery->request;
+
         return view('admin.requests.delivery.delivery_items', [
             'delivery' => $delivery,
-            'request' => $request
+            'request' => $request,
         ]);
     }
 
@@ -189,9 +180,10 @@ class RequestDeliveryController extends Controller
         $delivery = RequestDelivery::findOrFail(decryptId($deliveryId));
         $delivery->load(['details.requestItem.item', 'request']);
         $request = $delivery->request;
+
         return view('admin.requests.delivery.item_delivery_note', [
             'delivery' => $delivery,
-            'request' => $request
+            'request' => $request,
         ]);
     }
 
@@ -200,9 +192,10 @@ class RequestDeliveryController extends Controller
         $delivery = $request->deliveries()->latest()->first();
         $delivery->load(['details.requestItem.item', 'request']);
         $request = $delivery->request;
+
         return view('admin.requests.delivery.print_delivery', [
             'delivery' => $delivery,
-            'request' => $request
+            'request' => $request,
         ]);
     }
 }

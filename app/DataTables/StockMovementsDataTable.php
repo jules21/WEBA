@@ -2,17 +2,14 @@
 
 namespace App\DataTables;
 
-use App\Models\Adjustment;
 use App\Models\StockMovement;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class StockMovementsDataTable extends DataTable
 {
     public $query;
+
     public function __construct($query)
     {
         $this->query = $query;
@@ -21,7 +18,7 @@ class StockMovementsDataTable extends DataTable
     /**
      * Build DataTable class.
      *
-     * @param mixed $query Results from query() method.
+     * @param  mixed  $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
     public function dataTable($query)
@@ -29,32 +26,32 @@ class StockMovementsDataTable extends DataTable
         return datatables()
             ->eloquent($query)
             ->editColumn('type', function ($item) {
-                if(in_array($item->type,['AdjustmentController', StockMovement::Adjustment])) {
+                if (in_array($item->type, ['AdjustmentController', StockMovement::Adjustment])) {
                     return '
                     <span class="label label-light-success label-inline"> Adjustment </span>';
-                }else if(in_array($item->type,['Purchase', StockMovement::StockIn])) {
+                } elseif (in_array($item->type, ['Purchase', StockMovement::StockIn])) {
                     return '
                     <span class="label label-light-primary label-inline"> Stock In </span>';
-                }else if(in_array($item->type, ['Sale','Sales',StockMovement::StockOut])) {
+                } elseif (in_array($item->type, ['Sale', 'Sales', StockMovement::StockOut])) {
                     return '
                     <span class="label label-light-danger label-inline"> Stock Out </span>';
-                }else{
+                } else {
                     return '
                  <span class="label label-primary label-inline font-weight-lighter">'.$item->type.'</span>';
                 }
             })
             ->editColumn('item_id', function ($item) {
-                return $item->item ? $item->item->name : "-";
+                return $item->item ? $item->item->name : '-';
             })
             ->editColumn('quantity', function ($item) {
                 return $item->quantity ?
-                    $item->quantity . ' ' . $item->item->packagingUnit->name
-                    : "-";
+                    $item->quantity.' '.$item->item->packagingUnit->name
+                    : '-';
             })
             ->editColumn('created_at', function ($item) {
-                return $item->created_at ? $item->created_at->format('d-m-Y H:i') : "-";
+                return $item->created_at ? $item->created_at->format('d-m-Y H:i') : '-';
             })
-            ->editColumn("description", function ($item) {
+            ->editColumn('description', function ($item) {
 
                 return strlen($item->description) > 50 ?
                    '<a href="#" class="text-dark" data-toggle="tooltip" data-trigger="focus" data-html="true"title="'.$item->description.'">
@@ -71,9 +68,9 @@ class StockMovementsDataTable extends DataTable
             })
             ->addColumn('qty_change', function ($item) {
                 if ($item->qty_in > 0) {
-                    return '<span class="text-success  font-weight-lighter">+'.$item->qty_in . ' ' . $item->item->packagingUnit->name.'</span>';
+                    return '<span class="text-success  font-weight-lighter">+'.$item->qty_in.' '.$item->item->packagingUnit->name.'</span>';
                 } else {
-                    return '<span class="text-danger font-weight-lighter">-'.$item->qty_out . ' ' . $item->item->packagingUnit->name.'</span>';
+                    return '<span class="text-danger font-weight-lighter">-'.$item->qty_out.' '.$item->item->packagingUnit->name.'</span>';
                 }
             })
             ->rawColumns(['type', 'item_id', 'quantity', 'created_at', 'qty_change', 'description']);
@@ -82,7 +79,6 @@ class StockMovementsDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\StockMovement $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(StockMovement $model)
@@ -114,23 +110,23 @@ class StockMovementsDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id' => ['title' => '#', 'searchable' => false, 'render' => function() {
+            'id' => ['title' => '#', 'searchable' => false, 'render' => function () {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
             Column::make('type')
-                ->title("Type"),
+                ->title('Type'),
             Column::make('item_id')
-                ->title("Item"),
+                ->title('Item'),
             Column::make('opening_qty')
-                ->title("Opening Qty"),
+                ->title('Opening Qty'),
             Column::make('qty_change')
-                ->title("Qty In/Out"),
+                ->title('Qty In/Out'),
             Column::make('closing_qty')
-                ->title("Closing Qty"),
+                ->title('Closing Qty'),
             Column::make('description')
-                ->title("Description"),
+                ->title('Description'),
             Column::make('created_at')
-                ->title("Created At"),
+                ->title('Created At'),
         ];
     }
 
@@ -141,6 +137,6 @@ class StockMovementsDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'StockMovements_' . date('YmdHis');
+        return 'StockMovements_'.date('YmdHis');
     }
 }

@@ -8,8 +8,6 @@ class ValidateAddWaterNetwork extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -18,13 +16,11 @@ class ValidateAddWaterNetwork extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         return [
-            'water_network_id' => ['required', 'exists:water_networks,id']
+            'water_network_id' => ['required', 'exists:water_networks,id'],
         ];
     }
 
@@ -32,8 +28,7 @@ class ValidateAddWaterNetwork extends FormRequest
     {
         return [
             'water_network_id.required' => 'Please select a water network',
-            'water_network_id.exists' => 'Please select a valid water network'
+            'water_network_id.exists' => 'Please select a valid water network',
         ];
     }
-
 }

@@ -2,23 +2,23 @@
 
 namespace App\View\Components;
 
-use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class MenuItem extends Component
 {
-
     public string $title;
+
     public string $route;
-    public string $itemClass='';
+
+    public string $itemClass = '';
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(string $title, string $route, string $itemClass='')
+    public function __construct(string $title, string $route, string $itemClass = '')
     {
         $this->title = $title;
         $this->route = $route;
@@ -27,8 +27,6 @@ class MenuItem extends Component
 
     /**
      * Get the view / contents that represent the component.
-     *
-     * @return View
      */
     public function render(): View
     {

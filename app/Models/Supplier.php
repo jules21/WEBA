@@ -7,7 +7,6 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use OwenIt\Auditing\Contracts\Auditable;
 
@@ -24,6 +23,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int|null $operator_id
+ *
  * @method static SupplierFactory factory(...$parameters)
  * @method static Builder|Supplier newModelQuery()
  * @method static Builder|Supplier newQuery()
@@ -38,13 +38,14 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|Supplier whereOperatorId($value)
  * @method static Builder|Supplier wherePhoneNumber($value)
  * @method static Builder|Supplier whereUpdatedAt($value)
+ *
  * @property-read \App\Models\Operator|null $operator
+ *
  * @mixin Eloquent
  */
 class Supplier extends Model implements Auditable
 {
     use HasFactory, \OwenIt\Auditing\Auditable;
-
 
     public function operator()
     {

@@ -24,12 +24,12 @@ class StoreWaterNetworkRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required',
-            'distance_covered'=>'required',
-            'population_covered'=>'required',
-            'operator_id'=>'required',
-            'water_network_type_id'=>'required',
-            'operation_area_id'=>'required',
+            'name' => 'required',
+            'distance_covered' => 'required',
+            'population_covered' => 'required',
+            'operator_id' => 'required',
+            'water_network_type_id' => 'required',
+            'operation_area_id' => 'required',
         ];
     }
 }

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
@@ -26,6 +25,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property int|null $request_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|StockMovement newModelQuery()
  * @method static Builder|StockMovement newQuery()
  * @method static Builder|StockMovement query()
@@ -42,6 +42,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|StockMovement whereRequestId($value)
  * @method static Builder|StockMovement whereType($value)
  * @method static Builder|StockMovement whereUpdatedAt($value)
+ *
  * @property float|null $unit_price
  * @property float $vat
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $details
@@ -50,15 +51,20 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read \App\Models\Item $item
  * @property-read \App\Models\OperationArea $operationArea
  * @property-read \App\Models\Purchase|null $purchase
+ *
  * @method static Builder|StockMovement whereUnitPrice($value)
  * @method static Builder|StockMovement whereVat($value)
+ *
  * @mixin Eloquent
  */
 class StockMovement extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
+
     const StockOut = 'Stock Out';
+
     const StockIn = 'Stock In';
+
     const Adjustment = 'Adjustment';
 
     public function item(): BelongsTo

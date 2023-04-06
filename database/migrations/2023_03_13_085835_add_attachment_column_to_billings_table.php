@@ -13,9 +13,9 @@ class AddAttachmentColumnToBillingsTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasColumn('billings', "attachment")) {
+        if (! Schema::hasColumn('billings', 'attachment')) {
             Schema::table('billings', function (Blueprint $table) {
-                $table->string("attachment")->nullable();
+                $table->string('attachment')->nullable();
             });
         }
     }

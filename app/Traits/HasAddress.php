@@ -10,7 +10,6 @@ use App\Models\Village;
 
 trait HasAddress
 {
-
     public function province()
     {
         return $this->belongsTo(Province::class);
@@ -38,6 +37,6 @@ trait HasAddress
 
     public function getAddressAttribute(): string
     {
-        return $this->province->name . '-' . $this->district->name . '-' . $this->sector->name . '-' . $this->cell->name ?? '' . '-' . $this->village->name ?? '';
+        return $this->province->name.'-'.$this->district->name.'-'.$this->sector->name.'-'.$this->cell->name ?? ''.'-'.$this->village->name ?? '';
     }
 }

@@ -16,6 +16,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class BillingController extends Controller
 {
     use UploadFileTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +32,7 @@ class BillingController extends Controller
         //filter data based on user role
         $user = auth()->user();
         $query = Billing::query()->with(['meterRequest', 'meterRequest.request', 'meterRequest.request.operator',
-             'user', 'meterRequest.request.customer']);
+            'user', 'meterRequest.request.customer']);
         $query->when($user->operation_area, function ($query) use ($user) {
             $query->whereHas('meterRequest', function ($query) use ($user) {
                 $query->whereHas('request', function ($query) use ($user) {
@@ -73,8 +74,7 @@ class BillingController extends Controller
         //filter data based on request
 
         //operator_id
-        $query->when((request()->has('operator_id') && request()->filled('operator_id'))
-            , function ($query) {
+        $query->when((request()->has('operator_id') && request()->filled('operator_id')), function ($query) {
             $query->whereHas('meterRequest', function ($query) {
                 $query->whereHas('request', function ($query) {
                     $query->where('operator_id', request()->operator_id);
@@ -82,8 +82,7 @@ class BillingController extends Controller
             });
         });
         //operation_area_id
-        $query->when((request()->has('operation_area_id') && request()->filled('operation_area_id'))
-            , function ($query) {
+        $query->when((request()->has('operation_area_id') && request()->filled('operation_area_id')), function ($query) {
             $query->whereHas('meterRequest', function ($query) {
                 $query->whereHas('request', function ($query) {
                     $query->whereIn('operation_area_id', request()->operation_area_id);
@@ -91,19 +90,16 @@ class BillingController extends Controller
             });
         });
         //customer_field_officer_id
-        $query->when((request()->has('customer_field_officer_id') && request()->filled('customer_field_officer_id'))
-            , function ($query) {
+        $query->when((request()->has('customer_field_officer_id') && request()->filled('customer_field_officer_id')), function ($query) {
             $query->whereIn('user_id', request()->customer_field_officer_id);
         });
         //meter_number
-        $query->when((request()->has('meter_number') && request()->filled('meter_number'))
-            , function ($query) {
-            $query->where('meter_number', 'like', '%' . request()->meter_number . '%');
+        $query->when((request()->has('meter_number') && request()->filled('meter_number')), function ($query) {
+            $query->where('meter_number', 'like', '%'.request()->meter_number.'%');
         });
         //subscription_number
-        $query->when((request()->has('subscription_number') && request()->filled('subscription_number'))
-            , function ($query) {
-            $query->where('subscription_number', 'like', '%' . request()->subscription_number . '%');
+        $query->when((request()->has('subscription_number') && request()->filled('subscription_number')), function ($query) {
+            $query->where('subscription_number', 'like', '%'.request()->subscription_number.'%');
         });
 
         //from date
@@ -116,19 +112,19 @@ class BillingController extends Controller
         });
 
         //export
-        if (request()->is_download == true && !\request()->ajax()) {
+        if (request()->is_download == true && ! \request()->ajax()) {
             return $this->exportBilling($query->get());
         }
 
         $datatable = new BillingDataTable($query);
+
         return $datatable->render('admin.billings.index',
             [
                 'operators' => Operator::query()->get(),
                 'operationAreas' => $user->operator_id ?
                     OperationArea::query()->where('operator_id', $user->operator_id)->get()
                     : [],
-                'customerFieldOfficers' =>
-                    (\request()->operation_area_id ? $customerFieldOfficers->get() : $user->operation_area) ? $operatorOfficer->get() : [],
+                'customerFieldOfficers' => (\request()->operation_area_id ? $customerFieldOfficers->get() : $user->operation_area) ? $operatorOfficer->get() : [],
                 'operator_id' => $operator_id,
                 'operation_area_id' => $operation_area_id,
                 'customer_field_officer_id' => $customer_field_officer_id,
@@ -145,17 +141,17 @@ class BillingController extends Controller
     public function customerBillings(Customer $customer)
     {
 
-
         $billings = Billing::query()->whereHas('meterRequest', function ($query) use ($customer) {
             $query->whereHas('request', function ($query) use ($customer) {
                 $query->where('customer_id', $customer->id);
             });
         });
         //export
-        if (request()->is_download == true && !\request()->ajax()) {
+        if (request()->is_download == true && ! \request()->ajax()) {
             return $this->exportBilling($billings->get());
         }
         $datatable = new BillingDataTable($billings);
+
         return $datatable->render('admin.billings.customer_bills', compact('customer'));
     }
 
@@ -164,13 +160,16 @@ class BillingController extends Controller
     {
         $billings = Billing::query()->where('meter_number', $meter)->where('subscription_number', $subscription);
         $datatable = new BillingDataTable($billings);
+
         return $datatable->render('admin.billings.customer_bills', compact('meter'));
     }
 
     public function download(Billing $billing)
     {
-        if ($billing->attachment)
+        if ($billing->attachment) {
             return $this->downloadFile($billing->attachment);
+        }
+
         return redirect()->back()->with('error', 'No file found');
     }
 
@@ -182,7 +181,7 @@ class BillingController extends Controller
     public function history(Billing $billing)
     {
         $history = $billing->history()->get();
+
         return view('admin.billings.history', compact('history'));
     }
-
 }

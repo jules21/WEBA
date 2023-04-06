@@ -24,7 +24,7 @@ class UpdatePaymentMappingRequest extends FormRequest
     public function rules()
     {
         return [
-            'psp_account_id'=>'required',
+            'psp_account_id' => 'required',
         ];
     }
 }

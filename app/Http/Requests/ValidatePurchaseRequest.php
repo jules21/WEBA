@@ -8,8 +8,6 @@ class ValidatePurchaseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -18,14 +16,12 @@ class ValidatePurchaseRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         return [
             'supplier_id' => ['required', 'exists:suppliers,id'],
-            'description' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
             'items.*' => ['required', 'numeric'],
             'quantities.*' => ['required', 'numeric'],
             'prices.*' => ['required', 'numeric'],

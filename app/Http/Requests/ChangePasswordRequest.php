@@ -19,24 +19,23 @@ class ChangePasswordRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         return [
             'current_password' => ['required', new MatchOldPassword],
-//            'new_password' => ['required', 'min:6'],
-            'new_password' => ['required', 'min:6'
-//                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'
+            //            'new_password' => ['required', 'min:6'],
+            'new_password' => ['required', 'min:6',
+                //                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'
             ],
             'new_confirm_password' => ['same:new_password'],
         ];
     }
+
     public function messages(): array
     {
         return [
-            'new_password.regex' => "Your password must be more than 6 characters long",
+            'new_password.regex' => 'Your password must be more than 6 characters long',
         ];
     }
 }

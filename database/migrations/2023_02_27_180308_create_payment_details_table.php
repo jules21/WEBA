@@ -17,7 +17,7 @@ class CreatePaymentDetailsTable extends Migration
             $table->id();
             $table->foreignId('payment_id')->constrained();
             $table->foreignId('billing_id')->constrained();
-            $table->decimal('amount',18);
+            $table->decimal('amount', 18);
             $table->timestamps();
         });
     }

@@ -3,10 +3,7 @@
 namespace App\DataTables;
 
 use App\Models\Billing;
-use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class BillingDataTable extends DataTable
@@ -21,7 +18,7 @@ class BillingDataTable extends DataTable
     /**
      * Build DataTable class.
      *
-     * @param mixed $query Results from query() method.
+     * @param  mixed  $query Results from query() method.
      * @return \Yajra\DataTables\DataTableAbstract
      */
     public function dataTable($query)
@@ -41,19 +38,19 @@ class BillingDataTable extends DataTable
                 return $model->created_at->format('d/m/Y H:i:s');
             })
             ->editColumn('amount', function ($model) {
-                return $model->amount . ' ' . 'RWF';
+                return $model->amount.' '.'RWF';
             })
             ->editColumn('balance', function ($model) {
-                return $model->balance . ' ' . 'RWF';
+                return $model->balance.' '.'RWF';
             })
             ->editColumn('unit_price', function ($model) {
-                return $model->unit_price . ' ' . 'RWF';
+                return $model->unit_price.' '.'RWF';
             })
             ->addColumn('customer_name', function ($model) {
                 return $model->meterRequest->request->customer->name ?? '-';
             })
             ->editColumn('starting_index', function ($model) {
-                return '<span class="label label-sm label-light-primary label-inline">' . $model->starting_index . '</span>' . ' ' . 'to' . ' ' . '<span class="label label-sm label-light-primary label-inline py-0">' . $model->last_index . '</span>';
+                return '<span class="label label-sm label-light-primary label-inline">'.$model->starting_index.'</span>'.' '.'to'.' '.'<span class="label label-sm label-light-primary label-inline py-0">'.$model->last_index.'</span>';
             })
             ->addColumn('action', function ($model) {
 //                return '<a href="' . route('admin.billings.show', encryptId($model->id)) . '" class="btn btn-sm btn-clean btn-icon btn-details" title="View details">
@@ -64,25 +61,23 @@ class BillingDataTable extends DataTable
                                 Options
                             </button>
                             <div class="dropdown-menu border">
-                                <a class="dropdown-item btn-details"" href="' . route('admin.billings.show', encryptId($model->id)) . '">
+                                <a class="dropdown-item btn-details"" href="'.route('admin.billings.show', encryptId($model->id)).'">
                                     <i class="fas fa-info"></i>
                                     <span class="ml-2">Details</span>
                                 </a>
-                                <a class="dropdown-item" href="' . route('admin.billings.history', encryptId($model->id)) . '">
+                                <a class="dropdown-item" href="'.route('admin.billings.history', encryptId($model->id)).'">
                                     <i class="fas fa-history"></i>
                                     <span class="ml-2">History</span>
                                 </a>
                             </div>
                         </div>';
             })
-            ->rawColumns(['starting_index', 'action', 'unit_price', 'amount', 'balance'])
-            ;
+            ->rawColumns(['starting_index', 'action', 'unit_price', 'amount', 'balance']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Billing $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(Billing $model)
@@ -113,32 +108,28 @@ class BillingDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id' => ['title' => '#', 'searchable' => false, 'render' => function() {
+            'id' => ['title' => '#', 'searchable' => false, 'render' => function () {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
             Column::make('customer_name')
                 ->name('meterRequest.request.customer.name')
-                ->title("Customer Name")
-            ,
+                ->title('Customer Name'),
             Column::make('meter_number')
-                ->title("Meter Number")
-            ,
+                ->title('Meter Number'),
             Column::make('subscription_number')
-                ->title("Subscription Number")
-            ,
-        Column::make('starting_index')
-            ->title("Indexes"),
-        Column::make('unit_price')
-            ->title("Unit Price"),
-        Column::make('amount')
-            ->title("Amount"),
-        Column::make('balance')
-            ->title("Balance"),
+                ->title('Subscription Number'),
+            Column::make('starting_index')
+                ->title('Indexes'),
+            Column::make('unit_price')
+                ->title('Unit Price'),
+            Column::make('amount')
+                ->title('Amount'),
+            Column::make('balance')
+                ->title('Balance'),
             Column::make('user_id')
-                ->title("Officer")
-            ,
-        Column::make('created_at')
-            ->title("Creation Date"),
+                ->title('Officer'),
+            Column::make('created_at')
+                ->title('Creation Date'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -156,6 +147,6 @@ class BillingDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Billing_' . date('YmdHis');
+        return 'Billing_'.date('YmdHis');
     }
 }

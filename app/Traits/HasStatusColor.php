@@ -32,6 +32,4 @@ trait HasStatusColor
                 return 'secondary';
         }
     }
-
-
 }

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreSectorRequest;
-use App\Http\Requests\UpdateSectorRequest;
 use App\Models\District;
 use App\Models\Sector;
 

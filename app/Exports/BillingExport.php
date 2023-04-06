@@ -19,6 +19,7 @@ class BillingExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     {
         $this->data = $data;
     }
+
     public function headings(): array
     {
         return [
@@ -38,11 +39,12 @@ class BillingExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
 
         ];
     }
+
     public function collection()
     {
         $data = collect();
         foreach ($this->data as $key => $bill) {
-            $arr = array();
+            $arr = [];
             $arr[] = $bill->meterRequest->request->operator->name ?? '-';
             $arr[] = $bill->meterRequest->request->customer->name ?? '-';
             $arr[] = $bill->meterRequest->request->customer->phone ?? '-';
@@ -58,6 +60,7 @@ class BillingExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
             $arr[] = $bill->comment ?? '-';
             $data->push($arr);
         }
+
         return $data;
     }
 
@@ -74,23 +77,23 @@ class BillingExport implements FromCollection, WithHeadings, ShouldAutoSize, Wit
     public function registerEvents(): array
     {
         return [
-            AfterSheet::class => function(AfterSheet $event) {
+            AfterSheet::class => function (AfterSheet $event) {
                 $last_column = Coordinate::stringFromColumnIndex(13);
                 $style_text_center = [
                     'alignment' => [
-                        'horizontal' => Alignment::HORIZONTAL_CENTER
-                    ]
+                        'horizontal' => Alignment::HORIZONTAL_CENTER,
+                    ],
                 ];
                 $event->sheet->insertNewRowBefore(1);
                 // merge cells for full-width
-                $event->sheet->mergeCells(sprintf('A1:%s1',$last_column));
+                $event->sheet->mergeCells(sprintf('A1:%s1', $last_column));
                 // assign cell values
-                $event->sheet->setCellValue('A1','Billing List');
+                $event->sheet->setCellValue('A1', 'Billing List');
                 // assign cell styles
                 $event->sheet->getStyle('A1:A2')->applyFromArray($style_text_center);
-                $cellRange = sprintf('A2:%s2',$last_column); // All headers
+                $cellRange = sprintf('A2:%s2', $last_column); // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(14);
-                $event->sheet->getDelegate()->getStyle(sprintf('A1:%s1',$last_column))->getFont()->setSize(16);
+                $event->sheet->getDelegate()->getStyle(sprintf('A1:%s1', $last_column))->getFont()->setSize(16);
             },
         ];
     }

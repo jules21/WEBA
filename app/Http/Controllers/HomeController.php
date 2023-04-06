@@ -7,19 +7,9 @@ use App\Models\MeterRequest;
 use App\Models\Operator;
 use App\Models\Request;
 use App\Models\WaterNetwork;
-use BaconQrCode\Renderer\ImageRenderer;
-use BaconQrCode\Renderer\Image\ImagickImageBackEnd;
-use BaconQrCode\Renderer\RendererStyle\RendererStyle;
-use BaconQrCode\Writer;
-use Illuminate\Contracts\Support\Renderable;
-use PhpOffice\PhpSpreadsheet\Reader\Exception;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-
 
 class HomeController extends Controller
 {
-
-
     public function welcome()
     {
         $operators = Operator::query()->inRandomOrder()->get();
@@ -29,6 +19,7 @@ class HomeController extends Controller
             })->count();
         $totalWaterConnections = MeterRequest::query()->count();
         $totalWaterNetworks = WaterNetwork::query()->count();
+
         return view('welcome', [
             'operators' => $operators,
             'totalCustomers' => $totalCustomers,
@@ -36,5 +27,4 @@ class HomeController extends Controller
             'totalWaterNetworks' => $totalWaterNetworks,
         ]);
     }
-
 }

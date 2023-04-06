@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Exports\StockCardExport;
 use App\Exports\StockExport;
-use App\Models\Adjustment;
 use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\Stock;
 use App\Models\StockMovement;
-use App\Models\StockMovementDetail;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -25,7 +23,7 @@ class StockController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
-        $stock = Stock::with('operationArea','item','item.category');
+        $stock = Stock::with('operationArea', 'item', 'item.category');
 
         $stock->when($user->operator_id, function ($query) use ($user) {
             $query->whereHas('operationArea', function ($query) use ($user) {
@@ -62,27 +60,28 @@ class StockController extends Controller
             $query->whereIn('id', $request->item_id);
         });
         $items = $items->get();
-        $stock_data = $items->map(function ($item)use($user,$stock){
+        $stock_data = $items->map(function ($item) use ($user, $stock) {
             $item->quantity = collect($stock)
                 ->where('item_id', $item->id)
                 ->where('operation_area_id', $user->operation_area)
                 ->sum('quantity');
+
             return $item;
         });
         //export
-        if (request()->is_download == true && !\request()->ajax()) {
+        if (request()->is_download == true && ! \request()->ajax()) {
             return $this->exportStock($stock_data);
         }
 
-
         return view('admin.stock.stock', [
             'operators' => Operator::query()->get(),
-            'items' =>[],// Item::query()->get(),
+            'items' => [], // Item::query()->get(),
             'categories' => ItemCategory::query()->where('operator_id', $user->operator_id)->get(),
             'stocks' => $stock_data,
             'operationAreas' => $user->operator_id ? OperationArea::query()->where('operator_id', $user->operator_id)->get() : OperationArea::query()->get(),
         ]);
     }
+
     public function show($item)
     {
         $item = Item::query()->find(decryptId($item));
@@ -92,19 +91,20 @@ class StockController extends Controller
                     ->with('item', 'operationArea.operator')
                     ->get();
         //export
-        if (request()->is_download == true && !\request()->ajax()) {
+        if (request()->is_download == true && ! \request()->ajax()) {
             return $this->exportStockCard($movements);
         }
-        return view('admin.stock.stock_details', compact('item','movements'));
+
+        return view('admin.stock.stock_details', compact('item', 'movements'));
     }
 
     public function exportStock($query)
     {
         return Excel::download(new StockExport($query), 'Stock List.xlsx');
     }
+
     public function exportStockCard($query)
     {
         return Excel::download(new StockCardExport($query), 'Stock Card List.xlsx');
     }
-
 }

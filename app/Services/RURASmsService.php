@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 class RURASmsService
 {
     private string $phoneNumber;
+
     private string $message;
 
     public function __construct($phoneNumber, $message)
@@ -21,9 +22,9 @@ class RURASmsService
         return Http::withBasicAuth(config('services.rura.username'), config('services.rura.password'))
             ->asJson()
             ->post(config('services.rura.sms_url'), [
-                "phone" => $this->phoneNumber,
-                "message" => $this->message,
-                "sender" => config('services.rura.sender_name')
+                'phone' => $this->phoneNumber,
+                'message' => $this->message,
+                'sender' => config('services.rura.sender_name'),
             ]);
     }
 }

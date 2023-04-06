@@ -15,8 +15,8 @@ class AddMoreColumnsToPaymentServiceProvidersTable extends Migration
     {
         Schema::table('payment_service_providers', function (Blueprint $table) {
             //
-            $table->integer("clms_id")->nullable();
-            $table->boolean("supports_payment")->default(false);
+            $table->integer('clms_id')->nullable();
+            $table->boolean('supports_payment')->default(false);
         });
     }
 
