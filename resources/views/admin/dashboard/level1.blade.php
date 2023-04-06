@@ -18,9 +18,8 @@
 @stop
 @section("content")
     <!--begin::Entry-->
-    <div class="d-flex flex-column-fluid">
-        <!--begin::Container-->
-        <div class="container">
+    <div>
+
             <!--begin::Dashboard-->
             <div class="row">
                 <div class="col-xl-5">
@@ -177,8 +176,9 @@
                         <!--end::Header-->
 
                         <!--begin::Body-->
-                        <div class="card-body p-0 d-flex flex-column" id="chart">
+                        <div class="card-body px-5 py-0" >
                             <!--begin::Items-->
+                            <div id="chart"></div>
                             <!--end::Items-->
 
                         <!--end::Body-->
@@ -254,6 +254,7 @@
             </div>
         <!--end::Container-->
     </div>
+
     <!--end::Entry-->
 @endsection
 @section("scripts")
@@ -393,6 +394,12 @@
                 },
                 xaxis: {
                     categories: Object.keys(data),
+                    labels: {
+                        style: {
+                            fontSize: '8px',
+                            fontWeight: 500,
+                        },
+                    }
                 },
                 yaxis: {
                     title: {
