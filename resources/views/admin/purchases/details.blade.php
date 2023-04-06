@@ -76,6 +76,13 @@
             @if($purchase->return_back_status==\App\Constants\Status::RE_SUBMITTED)
                 <span class="badge badge-warning rounded-pill align-self-start">Re-Submitted</span>
             @endif
+            @if($purchase->return_back_status==\App\Constants\Status::RETURN_BACK && auth()->user()->can(\App\Constants\Permission::StockInItems))
+                <a href="{{ route('admin.purchases.edit', encryptId($purchase->id)) }}"
+                   class="btn btn-sm bg-accent font-weight-bolder align-self-start text-primary">
+                    <i class="flaticon2-edit text-primary"></i>
+                    Edit Stock In
+                </a>
+            @endif
         </div>
         <div class="tab-content  mt-5" id="myTabContent">
 
