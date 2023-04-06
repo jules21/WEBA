@@ -231,8 +231,8 @@ class Request extends Model implements Auditable
         } elseif ($this->status == Status::APPROVED) {
             return [
                 Status::METER_ASSIGNED,
-                Status::RETURN_BACK,
-                Status::REJECTED,
+             /*   Status::RETURN_BACK,
+                Status::REJECTED,*/
             ];
         }
 
