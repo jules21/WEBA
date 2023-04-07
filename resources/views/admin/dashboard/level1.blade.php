@@ -1,5 +1,15 @@
 @extends("layouts.master")
 @section("title","Dashboard")
+@section('css')
+    <style>
+        .apexcharts-svg {
+            overflow: visible;
+        }
+
+
+    </style>
+    @stop
+
 @section('page-header')
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
@@ -176,10 +186,7 @@
                         <!--end::Header-->
 
                         <!--begin::Body-->
-                        <div class="card-body px-5 py-0" >
-                            <!--begin::Items-->
-                            <div id="chart"></div>
-                            <!--end::Items-->
+                        <div class="card-body" id="chart">
 
                         <!--end::Body-->
                     </div>
@@ -396,8 +403,8 @@
                     categories: Object.keys(data),
                     labels: {
                         style: {
-                            fontSize: '8px',
-                            fontWeight: 500,
+                            fontSize: '10px',
+                            fontWeight: 600,
                         },
                     }
                 },
@@ -447,12 +454,26 @@
                 },
                 grid: {
                     row: {
-                        colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                        colors: ['#f3f3f3', 'transparent'],
                         opacity: 0.5
                     },
                 },
                 xaxis: {
                     categories: Object.keys(data),
+                    labels: {
+                        style: {
+                            fontSize: '11px',
+                            fontWeight: 600,
+                        },
+                    }
+
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return val.toLocaleString() + " RWF"
+                        }
+                    }
                 }
             };
 

@@ -41,7 +41,6 @@ class DashboardController extends Controller
         $topOperators = $this->getTopOperators();
         $consumerPerOperators = $this->getOperatorConsumers();
         $recentPayment = $this->getRecentFiveMothPayment();
-
         return view('admin.dashboard.level1', compact('totalOperators', 'totalOperationAreas',
             'totalMeters', 'totalCustomers', 'consumptionPerMonth',
             'topOperators', 'consumerPerOperators', 'recentPayment'));
