@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PaymentConfiguration;
 use App\Models\PaymentMapping;
+use App\Models\StockMovement;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -27,5 +28,33 @@ class Controller extends BaseController
         }
 
         return implode(', ', $pspNames);
+    }
+
+    /**
+     * @param $item
+     * @param $quantity
+     * @return void
+     */
+    protected function updateMovementFromOldest($item, $quantity): void
+    {
+        $movements = StockMovement::query()
+            ->where([
+                ['qty_available', '>', 0],
+                ['operation_area_id', '=', auth()->user()->operation_area],
+                ['item_id', '=', $item->id],
+            ])
+            ->orderBy('created_at')
+            ->get();
+
+        foreach ($movements as $movement) {
+            $qty = $movement->qty_in;
+
+            $movement->update([
+                'qty_available' => $qty > $quantity ? $qty - $quantity : 0,
+            ]);
+
+            $quantity = $qty > $quantity ? 0 : $quantity - $qty;
+            if ($quantity <= 0) break;
+        }
     }
 }

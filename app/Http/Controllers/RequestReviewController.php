@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Status;
 use App\Http\Requests\ValidateAddWaterNetwork;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Http\Requests\ValidateStoreItemRequest;
@@ -29,13 +30,20 @@ class RequestReviewController extends Controller
         DB::beginTransaction();
 
         $status = $data['status'];
-
+        $previousStatus = $request->getPreviousStatus();
         // update request
         $this->updateRequest($request, $status);
         // save review
         $this->saveHistory($request, $data['comment'], $status);
         $this->saveHistory($request, "Request status marked as '$status'", $status, false);
         $this->takeDecision($status, $request);
+
+        if ($status==Status::RETURN_BACK){
+            $request->update([
+                'status' => $previousStatus,
+            ]);
+        }
+
         DB::commit();
 
         return redirect()
@@ -59,8 +67,9 @@ class RequestReviewController extends Controller
     {
         $request->update([
             'status' => $status,
-            'approval_date' => $status == AppRequest::APPROVED ? now() : null,
-            'approved_by' => $status == AppRequest::APPROVED ? auth()->user()->id : null,
+            'approval_date' => $status == Status::APPROVED ? now() : null,
+            'approved_by' => $status == Status::APPROVED ? auth()->user()->id : null,
+            'return_back_status' => $status == Status::RETURN_BACK ? Status::RETURN_BACK : null,
         ]);
     }
 
@@ -74,12 +83,12 @@ class RequestReviewController extends Controller
         if ($id > 0) {
             $moveMovement = StockMovementDetail::query()->find($id);
             $model = $moveMovement->update([
-                'item_id' => $item_id,
-                'quantity' => $data['quantity'],
-                'unit_price' => $item->selling_price,
-                'type' => $request->getClassName(),
-                'status' => 'pending',
-            ]
+                    'item_id' => $item_id,
+                    'quantity' => $data['quantity'],
+                    'unit_price' => $item->selling_price,
+                    'type' => $request->getClassName(),
+                    'status' => 'pending',
+                ]
             );
         } else {
             $model = $request->items()
@@ -216,7 +225,7 @@ class RequestReviewController extends Controller
 
     public function takeDecision($status, AppRequest $request): void
     {
-        if ($status == AppRequest::APPROVED) {
+        if ($status == Status::APPROVED) {
             if ($request->connection_fee > 0) {
                 $this->declareConnectionFee($request);
             }
@@ -230,7 +239,7 @@ class RequestReviewController extends Controller
                 ->syncWithoutDetaching([
                     $request->customer_id,
                 ]);
-        } elseif ($status == AppRequest::METER_ASSIGNED) {
+        } elseif ($status == Status::METER_ASSIGNED) {
             $request->load('meterNumbers.item');
             $this->declareMetersFee($request);
             $meters = $request->meterNumbers;

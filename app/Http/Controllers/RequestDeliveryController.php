@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Status;
 use App\Http\Requests\ValidateDeliveryRequest;
 use App\Models\MeterRequest;
 use App\Models\Request as AppRequest;
@@ -41,12 +42,12 @@ class RequestDeliveryController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function (RequestDelivery $row) {
                     $count = $row->details_count;
-                    $btn = '<a href="'.route('admin.requests.print-delivery', encryptId($row->id)).'"  data-toggle="tooltip" target="_blank"  data-id="'.$row->id.'"
+                    $btn = '<a href="' . route('admin.requests.print-delivery', encryptId($row->id)) . '"  data-toggle="tooltip" target="_blank"  data-id="' . $row->id . '"
                     data-original-title="Print" class="edit btn btn-light-danger btn-sm editProduct"><i class="flaticon2-print"></i> Print</a>';
 
-                    return $btn.' <a href="'.route('admin.requests.delivery.items', encryptId($row->id)).'" data-toggle="tooltip"  data-id="'.$row->id.'"
+                    return $btn . ' <a href="' . route('admin.requests.delivery.items', encryptId($row->id)) . '" data-toggle="tooltip"  data-id="' . $row->id . '"
                 data-original-title="Items" class="btn btn-light-primary btn-sm deleteProduct">
-                   '.$count.'
+                   ' . $count . '
                     Items
                     </a>';
                 })
@@ -122,9 +123,9 @@ class RequestDeliveryController extends Controller
 
         $exists = $delivery->details()->where('remaining', '>', 0)->exists();
         if ($exists) {
-            $request->update(['status' => AppRequest::PARTIALLY_DELIVERED]);
+            $request->update(['status' => Status::PARTIALLY_DELIVERED]);
         } else {
-            $request->update(['status' => AppRequest::DELIVERED]);
+            $request->update(['status' => Status::DELIVERED]);
         }
         DB::commit();
 
@@ -151,16 +152,21 @@ class RequestDeliveryController extends Controller
                 'opening_qty' => $stockItem->quantity ?? 0,
                 'qty_in' => 0,
                 'qty_out' => $quantity,
-                'description' => 'Request approved, stock decreased by '.$requestItem->quantity,
-                'type' => StockMovement::StockIn,
+                'description' => 'Request approved, stock decreased by ' . $requestItem->quantity,
+                'type' => StockMovement::StockOut,
                 'request_id' => $request->id,
             ]);
+
+
+        $this->updateMovementFromOldest($item, $quantity);
+
+
     }
 
     private function generateBatchNumber()
     {
         // unique batch number for each delivery request
-        return 'DEL'.now()->format('Ymd').rand(1000, 9999);
+        return 'DEL' . now()->format('Ymd') . rand(1000, 9999);
     }
 
     public function items($deliveryId)
@@ -198,4 +204,5 @@ class RequestDeliveryController extends Controller
             'request' => $request,
         ]);
     }
+
 }

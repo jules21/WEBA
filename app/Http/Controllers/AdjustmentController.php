@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Constants\Permission;
+use App\Constants\Status;
 use App\Http\Requests\StoreAdjustmentRequest;
 use App\Http\Requests\UpdateAdjustmentRequest;
 use App\Http\Requests\ValidateAdjustmentItemRequest;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Models\Adjustment;
 use App\Models\Item;
+use App\Models\Request;
 use App\Models\Stock;
 use App\Traits\GetClassName;
 use Illuminate\Support\Facades\DB;
@@ -18,10 +20,12 @@ class AdjustmentController extends Controller
 {
     use GetClassName;
 
+    const ADJUSTMENT_ATTACHMENT_PATH = 'public/adjustment/attachments';
+
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
@@ -53,17 +57,29 @@ class AdjustmentController extends Controller
         }
 
         $query = $this->extracted($user);
-        $adjustments = $query->WhereIn('status', [Adjustment::PENDING, Adjustment::SUBMITTED])->get();
+        $adjustments = $query->WhereIn('status', [Adjustment::PENDING, Adjustment::SUBMITTED,Status::RETURN_BACK])->get();
 
         return view('admin.stock.adjustment.index', compact('adjustments'));
     }
 
     public function store(StoreAdjustmentRequest $request)
     {
-        $adjustment = Adjustment::query()->create($request->validated());
-        $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
+        $adjustmentId = \request('adjustment_id');
+        $adjustment = Adjustment::query()->find($adjustmentId);
+        if ($adjustment) {
+            $adjustment->update($request->validated());
+            $this->saveFlowHistory($adjustment, 'Adjustment updated', Adjustment::PENDING);
+        }else{
+            $adjustment =  Adjustment::query()->create($request->validated());
+            session()->forget('adjustment_id');
+            session()->put('adjustment_id', $adjustment->id);
+            $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
+        }
+        return $adjustment;
 
-        return back()->with('success', 'Adjustment created successfully');
+//        $adjustment =  Adjustment::query()->create($request->validated());
+//        $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
+//        return back()->with('success', 'Adjustment created successfully');
     }
 
     /**
@@ -78,14 +94,14 @@ class AdjustmentController extends Controller
         if ($updated) {
             return back()->with('success', 'Adjustment updated successfully');
         }
-
         return back()->with('error', 'Adjustment update failed');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @param  \App\Models\Adjustment  $adjustment
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Adjustment $adjustment)
     {
@@ -106,9 +122,10 @@ class AdjustmentController extends Controller
 
         return view('admin.stock.adjustment.items', compact('stock', 'items', 'adjustment'));
     }
-
-    public function addItem(ValidateAdjustmentItemRequest $request, Adjustment $adjustment)
+    public function addItem(ValidateAdjustmentItemRequest $request)
     {
+        $adjustment = Adjustment::query()->find($request->adjustment_id);
+        session()->put('adjustment_id', $adjustment->id);
         $data = $request->validated();
 
         $item = $adjustment->items()
@@ -120,6 +137,7 @@ class AdjustmentController extends Controller
                     'unit_price' => $data['unit_price'],
                     'adjustment_type' => $data['adjustment_type'],
                     'status' => Adjustment::PENDING,
+                    'description' => $data['description']
                 ]
             );
 
@@ -154,14 +172,22 @@ class AdjustmentController extends Controller
 
     }
 
-    public function submit(Adjustment $adjustment)
+    public function submit(\Illuminate\Http\Request $request, Adjustment $adjustment)
     {
-        if (! $adjustment->items()->exists()) {
-            return redirect()->back()->with('error', 'Adjustment has no items');
+        if ($request->has('attachment') && $request->file('attachment')->isValid()) {
+            $file = $request->file('attachment');
+            $destinationPath = self::ADJUSTMENT_ATTACHMENT_PATH;
+            $path = $file->store($destinationPath);
+            $attachment = str_replace($destinationPath, '', $path);
+            $adjustment->attachment = $attachment;
+            $adjustment->save();
         }
-        $adjustment->update(['status' => 'Submitted']);
 
-        return redirect()->route('admin.stock.adjustments.index')->with('success', 'Adjustment submitted successfully');
+        if (!$adjustment->items()->exists())
+            return redirect()->back()->with('error', 'Adjustment has no items');
+        $adjustment->update(['status' => 'Submitted']);
+        session()->forget('adjustment_id');
+        return redirect()->route('admin.stock.adjustments.create')->with('success', 'Adjustment submitted successfully');
     }
 
     public function show(Adjustment $adjustment)
@@ -188,13 +214,19 @@ class AdjustmentController extends Controller
     {
         $data = $request->validated();
 
-        DB::transaction(function () use ($data, $adjustment) {
+        DB::transaction(function () use ($data, $adjustment, $request) {
             $status = $data['status'];
-            $this->saveFlowHistory($adjustment, $data['comment'], $status, true);
+            $fileName = null;
+            if ($request->hasFile('attachment')) {
+                $fileName =
+                    $request->file('attachment')->store(AdjustmentController::ADJUSTMENT_ATTACHMENT_PATH);
+            }
+            $this->saveFlowHistory($adjustment, $data['comment'], $status, true,$fileName);
 
             $adjustment->update([
                 'status' => $status,
                 'approved_by' => auth()->id(),
+                'return_back_status' => $status == Status::RETURN_BACK ? Status::RETURN_BACK : null,
             ]);
             $this->saveFlowHistory($adjustment, "Adjustment {$status}", $status);
 
@@ -287,4 +319,48 @@ class AdjustmentController extends Controller
 
         return $query;
     }
+
+
+    public function createNewAdjustment()
+    {
+        $user = auth()->user();
+
+
+        $adjustmentId = \request('adjustment_id');
+        if ($adjustmentId) {
+            $adjustment = Adjustment::find($adjustmentId);
+        }elseif (session()->has('adjustment_id')) {
+            $adjustment = Adjustment::find(session()->get('adjustment_id'));
+        } else {
+            $adjustment = new Adjustment();
+        }
+        if ($adjustment) {
+            $adjustment->load(['items.item', 'flowHistories.user']);
+                        $reviews = $adjustment->flowHistories
+                ->where('is_comment', '=', true);
+
+            $flowHistories = $adjustment->flowHistories
+                ->where('is_comment', '=', false);
+        }
+
+
+        $items = Item::query()->with('category')->where('operator_id', $user->operator_id)->get();
+        $stock = Stock::with('operationArea','item','item.category')
+            ->where('operation_area_id', $user->operation_area)->get();
+        $stock_data = $items->map(function ($item)use($user,$stock){
+            $item->quantity = collect($stock)
+                ->where('item_id', $item->id)
+                ->where('operation_area_id', $user->operation_area)
+                ->sum('quantity');
+            return $item;
+        });
+
+        return view('admin.stock.adjustment.create_new', [
+//            'adjustment_id' => $adjustmentId,
+            'adjustment' => $adjustment,
+            'reviews' => $reviews ?? null,
+            'flowHistories' => $flowHistories ?? null,
+            'stock' => $stock_data ?? null
+        ]);
+}
 }

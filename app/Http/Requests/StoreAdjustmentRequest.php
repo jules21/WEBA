@@ -29,6 +29,7 @@ class StoreAdjustmentRequest extends FormRequest
             'operation_area_id' => 'required|integer',
             'created_by' => 'required|integer',
             'approved_by' => 'nullable|integer',
+            'attachment' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ];
     }
 }

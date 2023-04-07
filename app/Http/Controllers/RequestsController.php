@@ -12,6 +12,7 @@ use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\OperationArea;
 use App\Models\PaymentDeclaration;
+use App\Models\PaymentType;
 use App\Models\Request;
 use App\Models\Request as AppRequest;
 use App\Models\RequestType;
@@ -56,23 +57,23 @@ class RequestsController extends Controller
 
         $data = AppRequest::query()
             ->with(['customer', 'requestType', 'operator'])
-            ->when(! is_null($customerId), function (Builder $query) use ($customerId) {
+            ->when(!is_null($customerId), function (Builder $query) use ($customerId) {
                 return $query->where('customer_id', '=', decryptId($customerId));
             })
             ->when(isForOperationArea(), function (Builder $query) {
                 return $query->where('operation_area_id', '=', auth()->user()->operation_area);
             })
-            ->when(! is_null($startDate) && ! is_null($endDate), function (Builder $query) use ($startDate, $endDate) {
+            ->when(!is_null($startDate) && !is_null($endDate), function (Builder $query) use ($startDate, $endDate) {
                 return $query->whereDate('created_at', '>=', $startDate)
                     ->whereDate('created_at', '<=', $endDate);
             })
-            ->when(! is_null($districtId), function (Builder $query) use ($districtId) {
+            ->when(!is_null($districtId), function (Builder $query) use ($districtId) {
                 return $query->where('district_id', '=', $districtId);
             })
-            ->when(! is_null($operatorId), function (Builder $query) use ($operatorId) {
+            ->when(!is_null($operatorId), function (Builder $query) use ($operatorId) {
                 return $query->where('operator_id', '=', $operatorId);
             })
-            ->when(! is_null($opAreaId), function (Builder $query) use ($opAreaId) {
+            ->when(!is_null($opAreaId), function (Builder $query) use ($opAreaId) {
                 return $query->where('operation_area_id', '=', $opAreaId);
             })
             ->select('requests.*');
@@ -84,11 +85,11 @@ class RequestsController extends Controller
                     $buttons = '';
 
                     if ($row->status == Status::PENDING && auth()->user()->can(Permission::CreateRequest) && isForOperationArea()) {
-                        $buttons = '<a class="dropdown-item js-edit" href="'.route('admin.requests.edit', encryptId($row->id)).'">
+                        $buttons = '<a class="dropdown-item js-edit" href="' . route('admin.requests.edit', encryptId($row->id)) . '">
                                         <i class="fas fa-edit"></i>
                                         <span class="ml-2">Edit</span>
                                     </a>
-                                    <a class="dropdown-item js-delete" href="'.route('admin.requests.delete', encryptId($row->id)).'">
+                                    <a class="dropdown-item js-delete" href="' . route('admin.requests.delete', encryptId($row->id)) . '">
                                         <i class="fas fa-trash"></i>
                                         <span class="ml-2">Delete</span>
                                     </a>';
@@ -99,12 +100,12 @@ class RequestsController extends Controller
                                     Options
                                 </button>
                                 <div class="dropdown-menu border">
-                                    <a class="dropdown-item" href="'.route('admin.requests.show', encryptId($row->id)).'">
+                                    <a class="dropdown-item" href="' . route('admin.requests.show', encryptId($row->id)) . '">
                                         <i class="fas fa-info-circle"></i>
                                         <span class="ml-2">Details</span>
                                     </a>
 
-                                    '.$buttons.'
+                                    ' . $buttons . '
 
                                 </div>
                             </div>';
@@ -112,7 +113,7 @@ class RequestsController extends Controller
                 ->rawColumns(['action', 'name'])
                 ->make(true);
         }
-        $customer = ! empty($customerId) ? Customer::find(decryptId($customerId)) : null;
+        $customer = !empty($customerId) ? Customer::find(decryptId($customerId)) : null;
 
         return view('admin.requests.index', [
             'customer' => $customer,
@@ -136,7 +137,7 @@ class RequestsController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (AppRequest $row) {
-                    return ' <a class="btn btn-sm btn-primary rounded" href="'.route('admin.requests.show', encryptId($row->id)).'">
+                    return ' <a class="btn btn-sm btn-primary rounded" href="' . route('admin.requests.show', encryptId($row->id)) . '">
                                 <span class="">Details</span>
                              </a>';
                 })
@@ -169,7 +170,7 @@ class RequestsController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (AppRequest $row) {
-                    return ' <a class="btn btn-sm btn-primary rounded" href="'.route('admin.requests.show', encryptId($row->id)).'">
+                    return ' <a class="btn btn-sm btn-primary rounded" href="' . route('admin.requests.show', encryptId($row->id)) . '">
                                 <span class="">Details</span>
                              </a>';
                 })
@@ -216,7 +217,7 @@ class RequestsController extends Controller
             ]);
         }
         // save flow history
-        $this->saveFlowHistory($req, 'Request created by '.auth()->user()->name);
+        $this->saveFlowHistory($req, 'Request created by ' . auth()->user()->name);
         DB::commit();
 
         if ($request->ajax()) {
@@ -229,7 +230,7 @@ class RequestsController extends Controller
         $detailsRoute = route('admin.requests.show', encryptId($req->id));
 
         return redirect()->route('admin.requests.create')
-            ->with('success', 'Request saved successfully <a class="btn btn-sm" href="'.$detailsRoute.'">View Details</a>');
+            ->with('success', 'Request saved successfully <a class="btn btn-sm" href="' . $detailsRoute . '">View Details</a>');
 
     }
 
@@ -245,8 +246,8 @@ class RequestsController extends Controller
             ->get();
 
         $items = Item::query()
-            ->whereHas('category', fn (Builder $query) => $query->where('is_meter', '=', false))
-            ->whereHas('stock', fn (Builder $query) => $query->where('quantity', '>', 0))
+            ->whereHas('category', fn(Builder $query) => $query->where('is_meter', '=', false))
+            ->whereHas('stock', fn(Builder $query) => $query->where('quantity', '>', 0))
             ->orderBy('name')
             ->get();
 
@@ -261,7 +262,7 @@ class RequestsController extends Controller
                 ['operator_id', '=', auth()->user()->operator_id],
             ])
             ->get();
-
+         $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, RequestType::NEW_CONNECTION);
         return view('admin.requests.show', [
             'request' => $request,
             'reviews' => $reviews,
@@ -270,6 +271,7 @@ class RequestsController extends Controller
             'requestItems' => $requestItems,
             'waterNetworks' => $waterNetworks,
             'itemCategories' => $itemCategories,
+            'paymentConfig' => $paymentConfig,
         ]);
     }
 
@@ -295,7 +297,7 @@ class RequestsController extends Controller
         if ($request->hasFile('upi_attachment')) {
 
             if ($appRequest->upi_attachment) {
-                Storage::delete(Request::UPI_ATTACHMENT_PATH.'/'.$appRequest->upi_attachment);
+                Storage::delete(Request::UPI_ATTACHMENT_PATH . '/' . $appRequest->upi_attachment);
             }
 
             $dir = $request->file('upi_attachment')->store(Request::UPI_ATTACHMENT_PATH);
@@ -310,7 +312,17 @@ class RequestsController extends Controller
                 'road_cross_type_id' => $road_cross_type,
             ]);
         }
-        $this->saveFlowHistory($appRequest, 'Request updated by '.auth()->user()->name);
+
+        if ($appRequest->return_back_status == Status::RETURN_BACK) {
+            $appRequest->update([
+                'status' => Status::ASSIGNED,
+                'return_back_status' => Status::RE_SUBMITTED,
+            ]);
+            $this->saveFlowHistory($appRequest, 'Request Re-submitted by ' . auth()->user()->name, Status::ASSIGNED);
+        } else {
+            $this->saveFlowHistory($appRequest, 'Request updated by ' . auth()->user()->name);
+        }
+
 
         DB::commit();
 
@@ -367,12 +379,12 @@ class RequestsController extends Controller
         ]);
     }
 
-    public function saveFlowHistory(AppRequest $req, $message): void
+    public function saveFlowHistory(AppRequest $req, $message, $status = Status::PENDING): void
     {
         $req->flowHistories()
             ->create([
                 'type' => $req->getClassName(),
-                'status' => 'Pending',
+                'status' => $status,
                 'user_id' => auth()->id(),
                 'comment' => $message,
             ]);
@@ -396,7 +408,7 @@ class RequestsController extends Controller
                         $hasPermission = true;
                         $builder
                             ->where('status', '=', Status::ASSIGNED)
-                            ->whereHas('requestAssignment', fn (Builder $builder) => $builder->where('user_id', '=', auth()->id()));
+                            ->whereHas('requestAssignment', fn(Builder $builder) => $builder->where('user_id', '=', auth()->id()));
                     }
 
                     if ($user->can(Permission::ApproveRequest)) {
@@ -420,7 +432,7 @@ class RequestsController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function (AppRequest $row) {
-                    return '<a class="btn btn-sm btn-primary rounded" href="'.route('admin.requests.show', encryptId($row->id)).'">
+                    return '<a class="btn btn-sm btn-primary rounded" href="' . route('admin.requests.show', encryptId($row->id)) . '">
                                 <span class="">Details</span>
                              </a>';
                 })
@@ -463,7 +475,7 @@ class RequestsController extends Controller
                 ->addColumn('action', function (AppRequest $row) {
                     $print = '';
                     if ($row->status == Status::DELIVERED) {
-                        $print = '<a class="dropdown-item" target="_blank" href="'.route('admin.requests.print-receipt', encryptId($row->id)).'">Print</a>';
+                        $print = '<a class="dropdown-item" target="_blank" href="' . route('admin.requests.print-receipt', encryptId($row->id)) . '">Print</a>';
                     }
 
                     return '<div class="dropdown">
@@ -471,8 +483,8 @@ class RequestsController extends Controller
                                     Actions
                                 </button>
                                 <div class="dropdown-menu">
-                                    '.$print.'
-                                    <a class="dropdown-item" href="'.route('admin.requests.delivery-request.index', encryptId($row->id)).'">Deliveries</a>
+                                    ' . $print . '
+                                    <a class="dropdown-item" href="' . route('admin.requests.delivery-request.index', encryptId($row->id)) . '">Deliveries</a>
                                 </div>
                             </div>';
                 })

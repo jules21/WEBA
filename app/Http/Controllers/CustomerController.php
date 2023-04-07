@@ -11,6 +11,7 @@ use DataTables;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Http;
 use LaravelIdea\Helper\App\Models\_IH_Customer_QB;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
@@ -24,14 +25,14 @@ class CustomerController extends Controller
 
         $customer = $this->getCustomer($idType, $id);
 
-        if (! is_null($customer)) {
+        if (!is_null($customer)) {
             return \response()->json([
                 'content' => 'Customer with provided ID Number already exists',
                 'status' => 400,
             ]);
         }
 
-        $url = config('services.CLMS_NIDA_URL')."?id=$id";
+        $url = config('services.CLMS_NIDA_URL') . "?id=$id";
         $response = Http::get($url);
         if ($response->status() !== ResponseAlias::HTTP_OK) {
             return response()->json([
@@ -88,9 +89,9 @@ class CustomerController extends Controller
                         </div>';
                 })
                 ->addColumn('connection', function (Customer $row) {
-                    return '<a href="'.route('admin.customers.connections', encryptId($row->id)).'">
+                    return '<a href="' . route('admin.customers.connections', encryptId($row->id)) . '">
 
-                                                    <span class="badge badge-primary">'.$row->connections_count.'</span>
+                                                    <span class="badge badge-primary">' . $row->connections_count . '</span>
                                                 </a>';
                 })
                 ->rawColumns(['action', 'name', 'connection'])
@@ -152,12 +153,26 @@ class CustomerController extends Controller
 
     public function destroy(Customer $customer)
     {
-        $customer->delete();
+        try {
+            $customer->delete();
+            if (request()->ajax()) {
+                return response()->json([
+                    'message' => 'Customer deleted successfully',
+                ], ResponseAlias::HTTP_NO_CONTENT);
+            }
+        } catch (Exception $exception) {
 
-        if (request()->ajax()) {
+            if ($exception instanceof QueryException) {
+                $message = 'Unable to delete customer , possible other records depend on this customer';
+            } else {
+                $message = 'Unable to delete customer, please try again later';
+            }
+
             return response()->json([
-                'message' => 'Customer deleted successfully',
-            ], ResponseAlias::HTTP_NO_CONTENT);
+                'message' => $message,
+                'errors' => $exception->getMessage(),
+            ], ResponseAlias::HTTP_BAD_REQUEST);
+
         }
 
         return back();
