@@ -20,7 +20,7 @@ class AdjustmentController extends Controller
 {
     use GetClassName;
 
-    const ADJUSTMENT_ATTACHMENT_PATH = 'public/adjustment/attachments';
+    const ADJUSTMENT_ATTACHMENT_PATH ='attachments/purchases';
 
     /**
      * Display a listing of the resource.
@@ -252,15 +252,16 @@ class AdjustmentController extends Controller
 
     }
 
-    public function saveFlowHistory($model, $message, $status, $isComment = false): void
+    public function saveFlowHistory($model, $message, $status, $isComment = false, $fileName = null)
     {
-        $model->flowHistories()
+        $test = $model->flowHistories()
             ->create([
                 'status' => $status,
                 'user_id' => auth()->id(),
                 'comment' => $message,
                 'type' => (new ReflectionClass(Adjustment::class))->getShortName(),
                 'is_comment' => $isComment,
+                'attachment' => $fileName,
             ]);
     }
 
@@ -272,6 +273,14 @@ class AdjustmentController extends Controller
             $stockItem = Stock::where('item_id', '=', $movement->item_id)
                 ->where('operation_area_id', '=', $adjustment->operation_area_id)
                 ->first();
+
+            if (!$stockItem) {
+                $stockItem = Stock::create([
+                    'item_id' => $movement->item_id,
+                    'operation_area_id' => auth()->user()->operation_area,
+                    'quantity' => 0,
+                ]);
+            }
 
             $quantity = $movement->adjustment_type == 'increase' ? $movement->quantity : -$movement->quantity;
             $stockItem->update([
@@ -328,7 +337,7 @@ class AdjustmentController extends Controller
 
         $adjustmentId = \request('adjustment_id');
         if ($adjustmentId) {
-            $adjustment = Adjustment::find($adjustmentId);
+            $adjustment = Adjustment::find(decryptId($adjustmentId));
         }elseif (session()->has('adjustment_id')) {
             $adjustment = Adjustment::find(session()->get('adjustment_id'));
         } else {

@@ -120,4 +120,9 @@ class ItemController extends Controller
 
         return $items;
     }
+
+    public function getItemUnitPrice(Item $item){
+        return $this->getItemLastUnitPrice($item);
+    }
 }
+

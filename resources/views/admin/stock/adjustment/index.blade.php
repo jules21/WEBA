@@ -81,7 +81,7 @@
                                         <button type="button" class="btn btn-light-primary btn-sm  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
                                         <div class="dropdown-menu" style="">
                                             @if(in_array($adjustment->status, [\App\Constants\Status::RETURN_BACK, \App\Constants\Status::PENDING]))
-                                                <a href="{{route('admin.stock.stock-adjustments.new',['adjustment_id' => $adjustment->id])}}"
+                                                <a href="{{route('admin.stock.stock-adjustments.new',['adjustment_id' => encryptId($adjustment->id)])}}"
                                                    class="dropdown-item">
                                                     Details
                                                 </a>
