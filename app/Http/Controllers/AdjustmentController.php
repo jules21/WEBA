@@ -291,6 +291,9 @@ class AdjustmentController extends Controller
             $stockItem->update([
                 'quantity' => $stockItem->quantity + $quantity,
             ]);
+            if ($movement->adjustment_type == 'decrease'){
+                $this->updateMovementFromOldest($movement->item, $movement->quantity);
+            }
         }
     }
 
