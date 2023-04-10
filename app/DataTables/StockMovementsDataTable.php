@@ -73,6 +73,9 @@ class StockMovementsDataTable extends DataTable
                     return '<span class="text-danger font-weight-lighter">-'.$item->qty_out.' '.$item->item->packagingUnit->name.'</span>';
                 }
             })
+            ->editColumn('unit_price', function ($item) {
+                return $item->unit_price ? ($item->unit_price . ' RWF') : '-';
+            })
             ->rawColumns(['type', 'item_id', 'quantity', 'created_at', 'qty_change', 'description']);
     }
 
@@ -123,6 +126,8 @@ class StockMovementsDataTable extends DataTable
                 ->title('Qty In/Out'),
             Column::make('closing_qty')
                 ->title('Closing Qty'),
+            Column::make('unit_price')
+                ->title('Unit Price'),
             Column::make('description')
                 ->title('Description'),
             Column::make('created_at')

@@ -57,4 +57,14 @@ class Controller extends BaseController
             if ($quantity <= 0) break;
         }
     }
+    protected function getItemLastUnitPrice($item)
+    {
+        $movement = StockMovement::query()
+            ->where('item_id', '=', $item->id)
+            ->where('operation_area_id', '=', auth()->user()->operation_area)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        return $movement ? $movement->unit_price : 0;
+    }
 }

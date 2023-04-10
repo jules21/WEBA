@@ -386,4 +386,4 @@ Route::get('/operation-areas-by-district', [OperationAreaController::class, 'get
 //get items by categories
 Route::get('/items-by-categories', [ItemController::class, 'getItemsByCategories'])->name('get-items-by-categories');
 //get items by categories
-//admin.items.get-unit-price
+Route::get('item-unit-price/{item}',[ItemController::class, 'getItemUnitPrice'])->name('items.get-unit-price');
