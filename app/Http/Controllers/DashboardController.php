@@ -41,7 +41,6 @@ class DashboardController extends Controller
         $topOperators = $this->getTopOperators();
         $consumerPerOperators = $this->getOperatorConsumers();
         $recentPayment = $this->getRecentFiveMothPayment();
-
         return view('admin.dashboard.level1', compact('totalOperators', 'totalOperationAreas',
             'totalMeters', 'totalCustomers', 'consumptionPerMonth',
             'topOperators', 'consumerPerOperators', 'recentPayment'));
@@ -208,7 +207,7 @@ class DashboardController extends Controller
 
     public function getRecentFiveMothPayment()
     {
-        $billings = Payment::query()
+       $billings = Payment::query()
             ->whereDate('created_at', '>=', date('Y-m-d', strtotime('-5 months')))
             ->select(\DB::raw('sum(amount) as amount, extract("MONTH" FROM created_at) as month, extract("YEAR" FROM created_at) as year'))
             ->groupByRaw('extract("MONTH" FROM created_at),extract("YEAR" FROM created_at)')
@@ -216,11 +215,8 @@ class DashboardController extends Controller
         $data = [];
         //get recent five months
         for ($i = 5; $i >= 0; $i--) {
-            $month = date('m', strtotime("-$i months"));
-            $monthShortName = date('M-Y', mktime(0, 0, 0, $month, 10));
-            $year = date('Y', strtotime("-$i months"));
-            $amount = $billings->where('month', $month)->where('year', $year)->first();
-            $data[$monthShortName] = floatval($amount->amount ?? 0) ?? 0;
+            $month = date('Y-m', strtotime("-$i months"));
+            $data[date("M-Y", strtotime($month))] = floatval($billings->where('month', date('m', strtotime($month)))->where('year', date('Y', strtotime($month)))->first()->amount ?? 0) ?? 0;
         }
 
         return $data;
