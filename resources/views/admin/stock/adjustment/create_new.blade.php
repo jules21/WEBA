@@ -462,7 +462,8 @@
                 $('#adjustment-type').val($(this).data('adjustment_type')).trigger('change');
                 let $itemId = $('#item_id');
                 $itemId.val($(this).data('item_id'));
-                $itemId.select2().trigger('change');
+                $itemId.select2();
+                // $itemId.select2().trigger('change');
                 $('#quantity').val($(this).data('quantity'));
                 $('#unit_price').val($(this).data('unit_price'));
                 $('#description').val($(this).data('description'));

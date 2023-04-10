@@ -106,6 +106,11 @@ class AdjustmentController extends Controller
     public function destroy(Adjustment $adjustment)
     {
         try {
+
+            if (session()->has('adjustment_id')) {
+                session()->forget('adjustment_id');
+            }
+
             $adjustment->items()->delete();
             $adjustment->delete();
 
