@@ -19,9 +19,15 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
+                        @if(Str::contains(url()->previous(), 'admin/stock-management/adjustments/create'))
+                            <a href="{{ route('admin.stock.adjustments.create') }}" class="text-muted">
+                                Stock Adjustments
+                            </a>
+                        @else
                         <a href="{{ route('admin.stock.adjustments.index') }}" class="text-muted">
                             Stock Adjustments
                         </a>
+                        @endif
                     </li>
                     <li class="breadcrumb-item">
                         <span class="text-muted">
@@ -247,7 +253,15 @@
                                     </div>
 
                                     <div class="timeline-content">
-                                        {{ $item->comment }}
+                                        <p class="mb-0">
+                                            {{ $item->comment }}
+                                        </p>
+                                        @if($item->attachment_url)
+                                            <a href="{{ $item->attachment_url }}" target="_blank"
+                                               class="btn btn-light-primary rounded-lg mt-2">
+                                                Download Attachment
+                                            </a>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach
