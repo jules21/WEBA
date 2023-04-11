@@ -24,7 +24,8 @@ class OperatorUserController extends Controller
         $operationArea = OperationArea::findOrFail(decryptId($operationAreaId));
         $users = $operationArea->users()->with(['roles', 'operationArea'])->select('users.*');
         $datatable = new OperatorUserDatatable($users);
+        $operator = $operationArea->operator;
 
-        return $datatable->render('admin.operator.users', compact('operationArea'));
+        return $datatable->render('admin.operator.users', compact('operationArea', 'operator'));
     }
 }

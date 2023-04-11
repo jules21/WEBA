@@ -75,7 +75,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/{operator}/users', [OperatorUserController::class, 'index'])->name('users');
 
-        Route::get('/{operator_area}/users', [OperatorUserController::class, 'operatorAreaUsers'])->name('operator-area-users');
+        Route::get('operating-area/{operator_area}/users', [OperatorUserController::class, 'operatorAreaUsers'])->name('operator-area-users');
 
         Route::get('/export', [OperatorController::class, 'exportToExcel'])->name('export-to-excel');
 
