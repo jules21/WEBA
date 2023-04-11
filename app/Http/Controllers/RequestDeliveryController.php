@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\Status;
 use App\Http\Requests\ValidateDeliveryRequest;
+use App\Http\Requests\ValidateUploadDeliveryNote;
 use App\Models\MeterRequest;
 use App\Models\Request as AppRequest;
 use App\Models\RequestDelivery;
@@ -18,6 +19,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Str;
 use Throwable;
 
 class RequestDeliveryController extends Controller
@@ -95,7 +97,7 @@ class RequestDeliveryController extends Controller
 //        $meters = $data['meters'] ?? [];
         $quantities = $data['quantities'];
         foreach ($quantities as $key => $itemQty) {
-//            if ($itemQty <= 0) continue;
+            if ($itemQty <= 0) continue;
             $requestItem = StockMovementDetail::find($items[$key]);
             $prevRemaining = $data['remaining_items'][$key];
             $delivery->details()->create([
@@ -121,8 +123,7 @@ class RequestDeliveryController extends Controller
 
         // update request status if all items have no remaining
 
-        $exists = $delivery->details()->where('remaining', '>', 0)->exists();
-        if ($exists) {
+        if ($request->total_qty > $request->total_delivered) {
             $request->update(['status' => Status::PARTIALLY_DELIVERED]);
         } else {
             $request->update(['status' => Status::DELIVERED]);
@@ -160,7 +161,6 @@ class RequestDeliveryController extends Controller
 
         $this->updateMovementFromOldest($item, $quantity);
 
-
     }
 
     private function generateBatchNumber()
@@ -195,14 +195,33 @@ class RequestDeliveryController extends Controller
 
     public function printDelivery(AppRequest $request)
     {
-        $delivery = $request->deliveries()->latest()->first();
-        $delivery->load(['details.requestItem.item', 'request']);
-        $request = $delivery->request;
+        $request->load(['items.item']);
+
 
         return view('admin.requests.delivery.print_delivery', [
-            'delivery' => $delivery,
             'request' => $request,
         ]);
+    }
+
+    public function uploadDeliveryNote(ValidateUploadDeliveryNote $request, $deliveryId)
+    {
+        $data = $request->validated();
+
+        $delivery = RequestDelivery::findOrFail(decryptId($deliveryId));
+        $customerName = $delivery->request->customer->name;
+
+        $file = $request->file('delivery_note');
+        $extension = $file->extension();
+        $fileName = Str::of($customerName)->slug('_') . '_' . $delivery->batch_number . '.' . $extension;
+        $path = $file
+            ->storeAs(RequestDelivery::DELIVERY_NOTE_PATH, $fileName);
+
+        $delivery->update([
+            'delivery_note' => basename($path)
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Delivery note uploaded successfully');
     }
 
 }
