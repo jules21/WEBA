@@ -122,6 +122,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/{request}/item-delivery', [RequestDeliveryController::class, 'store'])->name('delivery-request.store');
         Route::get('/delivery/{id}/items', [RequestDeliveryController::class, 'items'])->name('delivery.items');
         Route::get('/delivery/{id}/print-delivery', [RequestDeliveryController::class, 'deliveryNote'])->name('print-delivery');
+        Route::post('/delivery/{id}/upload-delivery-note', [RequestDeliveryController::class, 'uploadDeliveryNote'])->name('upload-delivery-note');
         Route::get('/delivery/{request}/print-receipt', [RequestDeliveryController::class, 'printDelivery'])->name('print-receipt');
 
         Route::get('/export', [RequestsController::class, 'exportDataToExcel'])->name('export-data-to-excel');
