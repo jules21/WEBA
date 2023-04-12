@@ -51,8 +51,9 @@
                     <table class="table border table-head-solid table-head-custom" id="kt_datatable1">
                         <thead>
                         <tr>
-                            <th>Operation area</th>
+                            <th>Initiated By</th>
                             <th>Description</th>
+                            <th>Items</th>
                             <th>Status</th>
                             <th>Created At</th>
                             <th>Action</th>
@@ -61,8 +62,13 @@
                         <tbody>
                         @foreach($adjustments as $adjustment)
                             <tr>
-                                <td>{{$adjustment->operationArea->name ?? ''}}</td>
+                                <td>{{optional($adjustment->createdBy)->name ?? ''}}</td>
                                 <td>{{$adjustment->description}}</td>
+                                <td>
+                                    <span class="badge  font-weight-bold badge-primary rounded-pill">
+                                        {{count($adjustment->items)}}
+                                    </span>
+                                </td>
                                 <td>
                                     @if(in_array($adjustment->status, [\App\Constants\Status::RETURN_BACK, \App\Constants\Status::PENDING]))
                                         <span class="badge label-lg font-weight-bold badge-warning rounded-pill">{{$adjustment->status}}</span>
@@ -144,7 +150,7 @@
 
             $("#kt_datatable1").DataTable({
                 responsive:true,
-                "order": [[ 3, "desc" ]]
+                "order": [[ 4, "desc" ]]
             });
 
 

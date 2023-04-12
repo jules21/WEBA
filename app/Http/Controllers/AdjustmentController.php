@@ -324,7 +324,7 @@ class AdjustmentController extends Controller
      */
     public function extracted($user)
     {
-        $query = Adjustment::with('operationArea');
+        $query = Adjustment::with('operationArea','createdBy','items');
         $query->when($user->operator_id, function ($query) use ($user) {
             $query->whereHas('operationArea', function ($query) use ($user) {
                 $query->where('operator_id', $user->operator_id);
