@@ -519,7 +519,13 @@
 
         $('#adjustment-type').change(function (){
             $('#item_id').val('');
+            $('#item_id').select2();
             $('#quantity').val('');
+            if ($(this).val() === 'increase') {
+                $('#unit_price').val('').attr('readonly', false);
+            } else {
+                $('#unit_price').val('').attr('readonly', true);
+            }
         })
 
         $('#item_id').change(function (){
@@ -573,6 +579,8 @@
                     $('#unit_price').val(response);
                     if(response == 0){
                         $('#unit_price').attr('readonly', false);
+                    }else{
+                        $('#unit_price').attr('readonly', true);
                     }
 
                 },
