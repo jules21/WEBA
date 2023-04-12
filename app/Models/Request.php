@@ -216,12 +216,14 @@ class Request extends Model implements Auditable
 
     public function getApprovalStatuses(): array
     {
+
         if ($this->status == Status::ASSIGNED) {
-            return [
-                Status::PROPOSE_TO_APPROVE,
-                Status::RETURN_BACK,
-                Status::REJECTED,
-            ];
+            $arr = collect([]);
+            if ((!$this->equipment_payment && $this->items->count() > 0) || $this->equipment_payment) {
+                $arr->push(Status::PROPOSE_TO_APPROVE);
+            }
+            $arr->push(Status::RETURN_BACK, Status::REJECTED);
+            return $arr->toArray();
         } elseif ($this->status == Status::PROPOSE_TO_APPROVE) {
             return [
                 Status::APPROVED,
@@ -231,8 +233,8 @@ class Request extends Model implements Auditable
         } elseif ($this->status == Status::APPROVED) {
             return [
                 Status::METER_ASSIGNED,
-             /*   Status::RETURN_BACK,
-                Status::REJECTED,*/
+                /*   Status::RETURN_BACK,
+                   Status::REJECTED,*/
             ];
         }
 

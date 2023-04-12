@@ -262,7 +262,7 @@ class RequestsController extends Controller
                 ['operator_id', '=', auth()->user()->operator_id],
             ])
             ->get();
-         $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, RequestType::NEW_CONNECTION);
+        $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, RequestType::NEW_CONNECTION);
         return view('admin.requests.show', [
             'request' => $request,
             'reviews' => $reviews,
@@ -404,12 +404,19 @@ class RequestsController extends Controller
                 ->where(function (Builder $builder) {
                     $hasPermission = false;
                     $user = auth()->user();
+
+
                     if ($user->can(Permission::ReviewRequest)) {
                         $hasPermission = true;
                         $builder
                             ->where('status', '=', Status::ASSIGNED)
                             ->whereHas('requestAssignment', fn(Builder $builder) => $builder->where('user_id', '=', auth()->id()));
                     }
+                    if ($user->can(Permission::CreateRequest)) {
+                        $hasPermission = true;
+                        $builder->orWhere('status', '=', Status::PENDING);
+                    }
+
 
                     if ($user->can(Permission::ApproveRequest)) {
                         $hasPermission = true;
