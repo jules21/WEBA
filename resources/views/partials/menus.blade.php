@@ -423,7 +423,7 @@
                                                             <i class="menu-bullet menu-bullet-dot">
                                                                 <span></span>
                                                             </i>
-                                                            <span class="menu-text">Create New</span>
+                                                            <span class="menu-text">My Adjustments</span>
                                                         </a>
                                                     </li>
                                                 @endcan
