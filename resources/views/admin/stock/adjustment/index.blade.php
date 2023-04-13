@@ -34,16 +34,30 @@
     <div class="">
         <div class="card card-custom">
             <div class="card-header flex-wrap">
-                <h3 class="card-title">
-                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
-                        Stock Adjustments
-                    @elseif(Str::contains(Route::currentRouteName(), 'admin.stock.stock-adjustments.tasks'))
-                         Stock Adjustments
-                    @else
-                        All Stock Adjustments
 
+                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
+                    <h3 class="card-title"> Stock Adjustments</h3>
+                    @elseif(Str::contains(Route::currentRouteName(), 'admin.stock.stock-adjustments.tasks'))
+                    <h3 class="card-title"> Stock Adjustments</h3>
+                    @else
+                    <h3 class="card-title"> All Stock Adjustments</h3>
+                    <div class="dropdown dropdown-inline pt-5">
+                            <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="la la-download"></i>Export</button>
+                            <!--begin::Dropdown Menu-->
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="nav flex-column nav-hover">
+                                    <li class="nav-item export-doc">
+                                        <a href="#" class="nav-link" target="_blank" id="excel">
+                                            <i class="nav-icon la la-file-excel-o"></i>
+                                            <span class="nav-text">Excel</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--end::Dropdown Menu-->
+                </div>
                     @endif
-                </h3>
                 @can('Create Adjustment')
                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
                         <div class="card-toolbar">
@@ -154,6 +168,11 @@
             @csrf
         </form>
     </div>
+    @php
+        //Declare new queries you want to append to string:
+        $newQueries = ['is_download' => 1];
+        $newUrl = request()->fullUrlWithQuery($newQueries);
+    @endphp
 @endsection
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
@@ -199,6 +218,11 @@
                     $('#delete-form').submit();
                 }
             });
+        });
+
+        $(document).on("click","#excel", function(e) {
+            let url = "{!! $newUrl !!}";
+            $(this).attr("href",url);
         });
     </script>
 

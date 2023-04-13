@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\Permission;
 use App\Constants\Status;
+use App\Exports\StockAdjustmentExport;
 use App\Http\Requests\StoreAdjustmentRequest;
 use App\Http\Requests\UpdateAdjustmentRequest;
 use App\Http\Requests\ValidateAdjustmentItemRequest;
@@ -14,6 +15,7 @@ use App\Models\Request;
 use App\Models\Stock;
 use App\Traits\GetClassName;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use ReflectionClass;
 
 class AdjustmentController extends Controller
@@ -32,6 +34,11 @@ class AdjustmentController extends Controller
         $user = auth()->user();
         $query = $this->extracted($user);
         $adjustments = $query->get();
+
+        //export
+        if (request()->is_download == true && ! \request()->ajax()) {
+            return $this->exportAdjustment($adjustments);
+        }
 
         return view('admin.stock.adjustment.index', compact('adjustments'));
     }
@@ -324,7 +331,7 @@ class AdjustmentController extends Controller
      */
     public function extracted($user)
     {
-        $query = Adjustment::with('operationArea','createdBy','items');
+        $query = Adjustment::with('operationArea','createdBy','items','approvedBy','items.item');
         $query->when($user->operator_id, function ($query) use ($user) {
             $query->whereHas('operationArea', function ($query) use ($user) {
                 $query->where('operator_id', $user->operator_id);
@@ -380,4 +387,9 @@ class AdjustmentController extends Controller
             'stock' => $stock_data ?? null
         ]);
 }
+
+    public function exportAdjustment($query)
+    {
+        return Excel::download(new StockAdjustmentExport($query), 'Stock Adjustment List.xlsx');
+    }
 }
