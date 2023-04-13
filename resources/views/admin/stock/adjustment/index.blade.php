@@ -34,7 +34,7 @@
     <div class="">
         <div class="card card-custom">
             <div class="card-header flex-wrap">
-                <h3 class="card-title">Stock Adjustments</h3>
+                <h3 class="card-title">Adjustments</h3>
                 @can('Create Adjustment')
                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
                         <div class="card-toolbar">
@@ -70,14 +70,26 @@
                                     </span>
                                 </td>
                                 <td>
-                                    @if(in_array($adjustment->status, [\App\Constants\Status::RETURN_BACK, \App\Constants\Status::PENDING]))
-                                        <span class="badge label-lg font-weight-bold badge-warning rounded-pill">{{$adjustment->status}}</span>
-                                    @elseif($adjustment->status == 'Submitted')
-                                        <span class="badge label-lg font-weight-bold badge-info rounded-pill">Submitted</span>
-                                    @elseif($adjustment->status == 'Approved')
-                                        <span class="badge label-lg font-weight-bold badge-success rounded-pill">Approved</span>
-                                    @elseif($adjustment->status == 'Rejected')
-                                        <span class="badge label-lg font-weight-bold badge-danger rounded-pill">Rejected</span>
+                                    @if($adjustment->status == \App\Constants\Status::PENDING)
+                                        <span class="badge badge-primary font-weight-bold badge-pill">
+                                            Pending
+                                        </span>
+                                    @elseif($adjustment->status == \App\Constants\Status::SUBMITTED)
+                                        <span class="badge badge-info font-weight-bold badge-pill">
+                                            Submitted
+                                        </span>
+                                    @elseif($adjustment->status == \App\Constants\Status::RETURN_BACK)
+                                        <span class="badge badge-warning font-weight-bold badge-pill">
+                                            Return Back
+                                        </span>
+                                    @elseif($adjustment->status == \App\Constants\Status::APPROVED)
+                                        <span class="badge badge-success font-weight-bold badge-pill">
+                                            Approved
+                                        </span>
+                                    @elseif($adjustment->status == \App\Constants\Status::REJECTED)
+                                        <span class="badge badge-danger font-weight-bold badge-pill">
+                                            Rejected
+                                        </span>
                                     @endif
                                 </td>
 

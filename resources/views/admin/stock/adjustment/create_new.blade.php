@@ -330,7 +330,7 @@
                                 <option value="">Select Item</option>
                                 @foreach($stock ?? [] as $record)
                                     <option data-quantity="{{$record->quantity}}" value="{{$record->id}}">
-                                        {{optional($record)->name}} - qty({{optional($record)->quantity}})
+                                        {{optional($record)->name}} - Qty({{optional($record)->quantity}})
                                     </option>
                                 @endforeach
                             </select>
