@@ -544,7 +544,11 @@
             //     $('#unit_price').val(response);
             // })
             if($(this).val() != ''){
-                getUnitPrice($(this).val());
+                if (adjustmenTtype === 'increase') {
+                    $('#unit_price').val('');
+                } else {
+                    getUnitPrice($(this).val());
+                }
             }else{
                 $('#unit_price').val('');
             }

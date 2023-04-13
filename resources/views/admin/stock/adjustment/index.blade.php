@@ -34,7 +34,16 @@
     <div class="">
         <div class="card card-custom">
             <div class="card-header flex-wrap">
-                <h3 class="card-title">Adjustments</h3>
+                <h3 class="card-title">
+                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
+                        Stock Adjustments
+                    @elseif(Str::contains(Route::currentRouteName(), 'admin.stock.stock-adjustments.tasks'))
+                         Stock Adjustments
+                    @else
+                        All Stock Adjustments
+
+                    @endif
+                </h3>
                 @can('Create Adjustment')
                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
                         <div class="card-toolbar">
@@ -45,6 +54,7 @@
                         </div>
                    @endif
                 @endcan
+
             </div>
             <div class="card-body">
                 <div class="table-responsive">
