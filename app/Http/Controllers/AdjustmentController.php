@@ -78,8 +78,8 @@ class AdjustmentController extends Controller
             $this->saveFlowHistory($adjustment, 'Adjustment updated', Adjustment::PENDING);
         }else{
             $adjustment =  Adjustment::query()->create($request->validated());
-            session()->forget('adjustment_id');
-            session()->put('adjustment_id', $adjustment->id);
+//            session()->forget('adjustment_id');
+//            session()->put('adjustment_id', $adjustment->id);
             $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
         }
         return $adjustment;

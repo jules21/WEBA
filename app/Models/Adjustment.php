@@ -65,7 +65,7 @@ class Adjustment extends Model implements Auditable
 
     const REJECTED = 'Rejected';
 
-    protected $appends = ['status_color'];
+    protected $appends = ['status_color', 'id_encrypted'];
 
     public function resolveRouteBinding($value, $field = null)
     {
@@ -134,6 +134,11 @@ class Adjustment extends Model implements Auditable
     public function getAttachment(): ?string
     {
         return $this->attachment ? Storage::url('public/adjustment/attachments'.$this->attachment) : null;
+    }
+
+    public function getIdEncryptedAttribute(): string
+    {
+        return encryptId($this->id);
     }
 
 }
