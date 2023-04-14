@@ -397,7 +397,8 @@
                             $("#submit-container").removeClass('d-none');
 
                             console.log(response);
-                            // location.reload();
+                            window.history.replaceState(null, null, "?adjustment_id=" + response.id_encrypted);
+
                         },
                         error: function (xhr) {
                             console.log(xhr);
