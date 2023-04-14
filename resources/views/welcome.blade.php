@@ -19,7 +19,7 @@
                     Empowering Private Water Operators for Sustainable Water Management - Reducing
                     Financial Loss and Non-Revenue Water .
                 </p>
-                <a href="" class="btn btn-light tw-rounded-sm py-3 px-4 hover:tw-bg-accent">
+                <a href="" class="btn bg-white tw-rounded-sm py-3 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
                     Request Water connection
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right"
                          width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
