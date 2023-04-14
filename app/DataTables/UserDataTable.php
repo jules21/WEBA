@@ -24,12 +24,6 @@ class UserDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
-//            ->editColumn('institution_id', function ($item) {
-//                return $item->institution ? $item->institution->name : "-";
-//            })
-//            ->editColumn('operator', function ($item) {
-//                return $item->operator ? $item->operator->name : "-";
-//            })
             ->editColumn('name', function ($item) {
                 return '<div>
                             <div class="font-weight-bold">'.$item->name.'</div>
@@ -75,7 +69,7 @@ class UserDataTable extends DataTable
             })
             ->addColumn('action', function ($item) {
                 return '<div class="btn-group">
-                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown"
+                                <button type="button" class="btn btn-light-primary btn-sm dropdown-toggle" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">Actions
                                 </button>
                                 <div class="dropdown-menu" style="">
