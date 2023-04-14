@@ -173,7 +173,8 @@
                 processing: true,
                 ajax: "{!! request()->fullUrl() !!}",
                 columns: [
-                    {data: "created_at", name: "created_at",
+                    {
+                        data: "created_at", name: "created_at",
                         render: function (data, type, row) {
                             return moment(data).format('DD/MM/YYYY');
                         }
@@ -185,7 +186,12 @@
                     {
                         data: "status", name: "status",
                         render: function (data, type, row) {
-                            return `<span class="badge badge-${row.status_color} rounded-pill">${data}</span>`;
+                            return `
+                            <div class="d-flex">
+                                <span style="display: ${row.return_back_status ? '' : 'none'}" class="label label-inline label-outline-warning rounded-pill mr-2">${row.return_back_status}</span>
+                                <span class=" badge badge-${row.status_color} rounded-pill">${data}</span>
+                            </div
+                            `;
                         },
                     },
                     {data: "action", name: "action", orderable: false, searchable: false}

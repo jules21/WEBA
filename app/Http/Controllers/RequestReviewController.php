@@ -33,14 +33,25 @@ class RequestReviewController extends Controller
         $previousStatus = $request->getPreviousStatus();
         // update request
         $this->updateRequest($request, $status);
+
+
         // save review
         $this->saveHistory($request, $data['comment'], $status);
         $this->saveHistory($request, "Request status marked as '$status'", $status, false);
         $this->takeDecision($status, $request);
 
-        if ($status==Status::RETURN_BACK){
+        if ($status == Status::RETURN_BACK) {
             $request->update([
                 'status' => $previousStatus,
+                'return_back_status' =>  Status::RETURN_BACK
+            ]);
+        } elseif ($status != Status::REJECTED && $request->return_back_status == Status::RETURN_BACK) {
+            $request->update([
+                'return_back_status' => Status::RE_SUBMITTED
+            ]);
+        } else {
+            $request->update([
+                'return_back_status' => null
             ]);
         }
 
@@ -69,7 +80,6 @@ class RequestReviewController extends Controller
             'status' => $status,
             'approval_date' => $status == Status::APPROVED ? now() : null,
             'approved_by' => $status == Status::APPROVED ? auth()->user()->id : null,
-            'return_back_status' => $status == Status::RETURN_BACK ? Status::RETURN_BACK : null,
         ]);
     }
 
