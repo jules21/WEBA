@@ -30,7 +30,7 @@ trait HasStatusColor
             case strtolower(BalanceType::DEBIT):
                 return 'danger';
             case strtolower(Status::METER_ASSIGNED):
-                return 'green';
+                return 'accent';
             default:
                 return 'secondary';
         }
