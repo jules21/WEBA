@@ -57,7 +57,7 @@ class CustomerController extends Controller
                 ->addIndexColumn()
                 ->addColumn('action', function (Customer $row) {
                     return '<div class="dropdown">
-                             <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                             <button class="btn btn-light-primary rounded-sm btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                 Options
                             </button>
                             <div class="dropdown-menu border">
@@ -90,9 +90,8 @@ class CustomerController extends Controller
                 })
                 ->addColumn('connection', function (Customer $row) {
                     return '<a href="' . route('admin.customers.connections', encryptId($row->id)) . '">
-
-                                                    <span class="badge badge-primary">' . $row->connections_count . '</span>
-                                                </a>';
+                                <span class="badge badge-primary rounded-pill">' . $row->connections_count . '</span>
+                            </a>';
                 })
                 ->rawColumns(['action', 'name', 'connection'])
                 ->make(true);
