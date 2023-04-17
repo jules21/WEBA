@@ -45,13 +45,13 @@ class RequestDeliveryController extends Controller
                 ->addColumn('action', function (RequestDelivery $row) {
                     $count = $row->details_count;
                     $btn = '<a href="' . route('admin.requests.print-delivery', encryptId($row->id)) . '"  data-toggle="tooltip" target="_blank"  data-id="' . $row->id . '"
-                    data-original-title="Print" class="edit btn btn-light-danger btn-sm editProduct"><i class="flaticon2-print"></i> Print</a>';
+                    data-original-title="Print" class="edit btn btn-success btn-sm font-weight-bold"><i class="flaticon2-printer"></i> Print</a>';
 
-                    return $btn . ' <a href="' . route('admin.requests.delivery.items', encryptId($row->id)) . '" data-toggle="tooltip"  data-id="' . $row->id . '"
-                data-original-title="Items" class="btn btn-light-primary btn-sm deleteProduct">
+                    return '<div class="btn-group">'. $btn . ' <a href="' . route('admin.requests.delivery.items', encryptId($row->id)) . '" data-toggle="tooltip"  data-id="' . $row->id . '"
+                data-original-title="Items" class="btn btn-primary btn-sm font-weight-bold">
                    ' . $count . '
                     Items
-                    </a>';
+                    </a></div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);

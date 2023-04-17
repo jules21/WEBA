@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none mb-4" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-2">
@@ -47,13 +47,12 @@
         </div>
     </div>
 
-    <div class="card card-body">
-
+    <div class="card card-body tw-shadow-sm border tw-border-gray-300">
 
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h4>
-                    Request Items Deliver for {{ $request->customer->name}}
+                    Items Delivery for {{ $request->customer->name}}
                 </h4>
             </div>
             @if($request->status != \App\Constants\Status::DELIVERED)
@@ -63,11 +62,11 @@
                 </button>
             @endif
         </div>
-        <div class="separator separator-dashed my-8"></div>
+        <div class="separator separator-dashed my-5"></div>
 
 
         <div class="table-responsive my-3">
-            <table class="table table-head-custom border table-head-solid table-hover dataTable">
+            <table class="table table-head-custom border rounded dataTable">
                 <thead>
                 <tr>
                     <th>Delivery Date</th>

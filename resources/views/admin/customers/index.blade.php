@@ -3,7 +3,7 @@
 @section('title',"Customers")
 
 @section('page-header')
-    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none mb-4" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-2">
@@ -28,7 +28,7 @@
     </div>
 @endsection
 @section('content')
-    <div class="card shadow-none border">
+    <div class="card tw-shadow-sm border tw-border-gray-300">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>
@@ -43,7 +43,7 @@
 
 
             <div class="table-responsive my-3">
-                <table class="table table-head-custom border table-head-solid table-hover dataTable">
+                <table class="table table-head-custom border rounded dataTable">
                     {{--                    <table class="table table-head-custom border rounded-lg table-hover dataTable">--}}
                     <thead>
                     <tr>

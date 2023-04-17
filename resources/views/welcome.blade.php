@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title','Home Page')
 @section('content')
-    <div class="container my-5">
+    <div class="container my-md-5">
         <div class="row">
             <div class="col-lg-8 my-2">
                 <div class="mb-4">
@@ -19,7 +19,7 @@
                     Empowering Private Water Operators for Sustainable Water Management - Reducing
                     Financial Loss and Non-Revenue Water .
                 </p>
-                <a href="" class="btn bg-white tw-rounded-sm py-3 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
+                <a href="" class="btn bg-white tw-rounded-sm py-3 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary md:tw-w-auto tw-w-full">
                     Request Water connection
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right"
                          width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
@@ -150,7 +150,6 @@
         </div>
 
     </div>
-
     <div class="py-4 tw-bg-gray-50 tw-bg-opacity-100">
 
         <h4 class="text-center">
@@ -180,7 +179,6 @@
 @section('scripts')
     <script src="{{ asset('css/slick/slick.min.js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/@srexi/purecounterjs/dist/purecounter_vanilla.js"></script>
-
     <script>
         $(document).on('ready', function () {
             $('.autoplay').slick({
