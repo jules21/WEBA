@@ -87,6 +87,7 @@
         </main>
     </div>
     <p class="text-center tw-text-gray-500  py-4  mb-0">© Copyright 2023, All Rights Reserved by RURA</p>
+
 </div>
 
 {{--<div class="d-flex tw-w-full tw-min-h-screen">

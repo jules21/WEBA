@@ -10,6 +10,10 @@ class ClientsController extends Controller
 {
     public function home()
     {
+        $recentOperators = Operator::query()
+            ->latest()
+            ->limit(5)
+            ->get();
         $operators = Operator::query()
             ->latest()
             ->get();
@@ -18,6 +22,7 @@ class ClientsController extends Controller
             ->limit(5)
             ->get();
         return view('client.home', [
+            'recentOperators' => $recentOperators,
             'operators' => $operators,
             'recentRequests' => $recentRequests
         ]);

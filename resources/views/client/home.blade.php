@@ -7,11 +7,12 @@
         </x-layouts.breadcrumb-item>
 
         <x-slot name="actions">
-            <a  href="{{ route('clients.connection-new') }}"
-                    class="btn rounded tw-bg-accent/30  tw-font-semibold hover:tw-bg-accent hover:tw-text-white">
+            <button class="btn rounded tw-bg-accent  tw-font-semibold hover:tw-bg-accent hover:tw-text-white "
+                    type="button" data-toggle="modal" data-target="#exampleModal">
                 <span class="ti ti-plus"></span>
                 New Connection
-            </a>
+            </button>
+
         </x-slot>
 
     </x-layouts.breadcrumb>
@@ -92,7 +93,45 @@
                 </ul>
             </div>
         </div>
+    </div>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
+            <div class="modal-content tw-rounded-md border-0">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        New Connection
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="ti ti-x"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group list-group-flush">
+                        @foreach($operators as $item)
+                            <a href="#" class="dropdown-item list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1">
+                                        {{ $item->name }}
+                                    </h6>
+                                </div>
+                                {{--                                <p class="mb-1">Some placeholder content in a paragraph.</p>--}}
+                                <small class="text-muted">
+                                    {{ $item->address }}
+                                </small>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 @endsection

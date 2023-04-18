@@ -1,5 +1,5 @@
 {
-    "/js/app.js": "/js/app.js?id=4854cff83522929542f7a59db40d57b1",
-    "/css/master.css": "/css/master.css?id=54020838748aa0740705cba2430338bb",
-    "/css/tailwind.css": "/css/tailwind.css?id=949ef427b4f94f74268c779902f95f09"
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/css/tailwind.css": "/css/tailwind.css"
 }
