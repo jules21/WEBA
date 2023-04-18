@@ -8,13 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
-    <!--end::Fonts-->
-    <!--begin::Page Custom Styles(used by this page)-->
-    <link href="{{ asset('assets/css/pages/login/classic/login-4.css') }}" rel="stylesheet" type="text/css"/>
     <!--end::Page Custom Styles-->
     <!--begin::Global Theme Styles(used by all pages)-->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ mix('css/tailwind.css') }}" rel="stylesheet" type="text/css"/>
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="{{ asset('assets/logos/logo.svg') }}"/>
 </head>
@@ -31,7 +28,7 @@
                 <small class="tw-text-xs font-weight-bold">RWSS</small>
                 <span class="text-white">Login</span>
             </h3>
-            <div class="card lg:tw-p-10 border-0 card-body tw-rounded-lg lg:tw-rounded-xl">
+            <div class="card lg:tw-p-10 border-0 card-body tw-rounded-sm">
                 <div class="d-flex justify-content-center align-items-center">
                     <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
                 </div>
@@ -45,7 +42,7 @@
                             Email Address
                         </label>
                         <input
-                            class="form-control tw-py-6 tw-rounded-[12px] tw-border-[#AAAAAA]  tw-text-[14px] @error('email') is-invalid @enderror"
+                            class="form-control tw-py-6 tw-rounded-sm tw-border-[#AAAAAA]  tw-text-[14px] @error('email') is-invalid @enderror"
                             type="email" id="email" placeholder="Email" value="{{ old('email') }}" name="email"
                             required
                             autocomplete="off" autofocus/>
@@ -59,7 +56,7 @@
                         <label for="password"
                                class="form-label  tw-text-[14px] text-dark tw-opacity-60 tw-leading-[21px] font-weight-normal">Password</label>
                         <input
-                            class="form-control  tw-rounded-[12px] tw-border-[#AAAAAA] tw-py-6  tw-text-[14px] @error('password') is-invalid @enderror"
+                            class="form-control  tw-rounded-sm tw-border-[#AAAAAA] tw-py-6  tw-text-[14px] @error('password') is-invalid @enderror"
                             type="password" id="password"
                             placeholder="Password" name="password" required autocomplete="off"/>
                         @error('password')
@@ -72,10 +69,10 @@
                     <div class="d-flex flex-column flex-lg-row align-items-start tw-gap-4 lg:tw-gap-0 justify-content-between mb-4">
 
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" name="remember"
+                            <input type="checkbox" class="custom-control-input rounded-0" name="remember"
                                    id="remember" {{ old('remember') ? 'checked' : '' }}>
                             <label
-                                class="custom-control-label tw-text-xs lg:tw-text-sm text-dark tw-opacity-60 tw-leading-[21px] font-weight-normal"
+                                class="custom-control-label tw-text-xs lg:tw-text-sm text-dark tw-leading-[21px] font-weight-normal"
                                 for="remember">
                                 Remember this device
                             </label>
@@ -90,7 +87,7 @@
 
                     <div class="my-2">
                         <button type="submit"
-                                class="btn btn-accent tw-font-semibold tw-py-4 w-100  tw-text-[14px] text-white tw-rounded-[12px]">
+                                class="btn btn-accent tw-font-semibold tw-py-4 w-100  tw-text-[14px] text-white tw-rounded-sm hover:tw-ring-2 tw-ring-accent tw-ring-offset-2">
                             Sign In
                         </button>
                     </div>

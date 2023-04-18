@@ -511,25 +511,6 @@ class RequestsController extends Controller
     }
 
     /**
-     * @return Sector[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection|_IH_Sector_C|_IH_Sector_QB[]
-     */
-    public function getSectors($operationArea)
-    {
-        return Sector::query()
-            ->where('district_id', '=', $operationArea->district_id)
-            ->orderBy('name')
-            ->get();
-    }
-
-    /**
-     * @return RequestType[]|Builder[]|\Illuminate\Database\Eloquent\Collection|_IH_RequestType_C|_IH_RequestType_QB[]
-     */
-    public function getRequestsTypes()
-    {
-        return RequestType::query()->where('is_active', '=', true)->get();
-    }
-
-    /**
      * @return Customer[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection|_IH_Customer_C|_IH_Customer_QB[]
      */
     public function getCustomers()
@@ -537,28 +518,6 @@ class RequestsController extends Controller
         return Customer::query()
             ->where('operator_id', '=', auth()->user()->operator_id)
             ->orderBy('name')->get();
-    }
-
-    /**
-     * @return WaterUsage[]|Builder[]|\Illuminate\Database\Eloquent\Collection|_IH_WaterUsage_C|_IH_WaterUsage_QB[]
-     */
-    public function getWaterUsages()
-    {
-        return WaterUsage::query()->get();
-    }
-
-    public function getRoadTypes(): Collection
-    {
-        return RoadType::query()
-            ->pluck('name');
-    }
-
-    /**
-     * @return RoadCrossType[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\LaravelIdea\Helper\App\Models\_IH_RoadCrossType_C|\LaravelIdea\Helper\App\Models\_IH_RoadCrossType_QB[]
-     */
-    public function getRoadCrossTypes()
-    {
-        return RoadCrossType::query()->get();
     }
 
     public function exportDataToExcel()

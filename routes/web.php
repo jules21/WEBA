@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 Route::get('/home', [ClientsController::class, 'home'])->name('home');
 
-Route::get('/new-connection', [ClientsController::class, 'newConnection'])->name('clients.connection-new');
+Route::get('/new-connection/{operator}', [ClientsController::class, 'newConnection'])->name('clients.connection-new');
 
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');

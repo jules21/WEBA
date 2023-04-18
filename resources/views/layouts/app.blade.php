@@ -11,8 +11,8 @@
     <link rel="icon" href="{{ asset('images/logo.svg') }}" type="image/icon type"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/tailwind.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     @yield('styles')
 
 </head>
@@ -23,7 +23,7 @@
 <p class="text-center text-white  py-4 opacity-50 mb-0">© Copyright 2023, All Rights Reserved by RURA</p>
 
 
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ mix('js/app.js') }}"></script>
 
 @yield('scripts')
 </body>
