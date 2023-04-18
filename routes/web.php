@@ -6,6 +6,7 @@ use App\Http\Controllers\AuditingController;
 use App\Http\Controllers\CashMovementController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\ChartAccountController;
+use App\Http\Controllers\Client\ClientsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
@@ -31,20 +32,12 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
+Route::get('/home', [HomeController::class, 'home'])->name('home');
 
-Route::post('/money', [HomeController::class, 'generateQrCodeFromExcelFile'])->name('file-excel-from-code-qr-generate');
+Route::get('/new-connection', [ClientsController::class, 'newConnection'])->name('clients.connection-new');
+
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
 Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('villages');
@@ -97,7 +90,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::put('/{appRequest}/update', [RequestsController::class, 'update'])->name('update');
         Route::delete('/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
 
-        Route::group(['middleware' => 'can:'.Permission::AssignRequest], function () {
+        Route::group(['middleware' => 'can:' . Permission::AssignRequest], function () {
             Route::get('/new', [RequestsController::class, 'newRequests'])->name('new');
             Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
             Route::post('/requests/re-assign', [RequestAssignmentController::class, 'reAssign'])->name('re-assign');
@@ -387,4 +380,4 @@ Route::get('/operation-areas-by-district', [OperationAreaController::class, 'get
 //get items by categories
 Route::get('/items-by-categories', [ItemController::class, 'getItemsByCategories'])->name('get-items-by-categories');
 //get items by categories
-Route::get('item-unit-price/{item}',[ItemController::class, 'getItemUnitPrice'])->name('items.get-unit-price');
+Route::get('item-unit-price/{item}', [ItemController::class, 'getItemUnitPrice'])->name('items.get-unit-price');
