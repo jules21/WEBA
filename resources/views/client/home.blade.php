@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('client.layout.auth')
 @section('breadcrumbs')
     <x-layouts.breadcrumb>
 
@@ -7,11 +7,11 @@
         </x-layouts.breadcrumb-item>
 
         <x-slot name="actions">
-            <button type="button" href="{{ route('clients.connection-new') }}"
+            <a  href="{{ route('clients.connection-new') }}"
                     class="btn rounded tw-bg-accent/30  tw-font-semibold hover:tw-bg-accent hover:tw-text-white">
                 <span class="ti ti-plus"></span>
                 New Connection
-            </button>
+            </a>
         </x-slot>
 
     </x-layouts.breadcrumb>

@@ -29,18 +29,5 @@ class HomeController extends Controller
         ]);
     }
 
-    public function home()
-    {
-        $operators = Operator::query()
-            ->latest()
-            ->get();
-        $recentRequests = Request::with(['requestType','operator'])
-            ->latest()
-            ->limit(5)
-            ->get();
-        return view('clients.home', [
-            'operators' => $operators,
-            'recentRequests' => $recentRequests
-        ]);
-    }
+
 }
