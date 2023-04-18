@@ -1,51 +1,64 @@
-<nav {{ $attributes->class(['navbar navbar-expand-lg navbar-light bg-white']) }}>
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+
+<nav  {{ $attributes->class(['navbar navbar-expand-lg navbar-dark bg-dark border-bottom tw-bg-no-repeat tw-bg-center tw-bg-cover']) }}
+     style="background-image: url({{ asset('images/aside_bg.png') }})">
+    <div class="lg:tw-px-20 container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{{ asset('images/logo.png') }}" class="tw-h-10" alt=""/>
+        </a>
+        <button x-data="{open:false}" @click="open=!open" class="navbar-toggler shadow-none rounded-0 border-0" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+            <span class="ti ti-menu-2" x-show="!open"></span>
+            <span class="ti ti-x" x-show="open"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto align-items-center">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link tw-text-lg" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold" href="#">
+                        <span>Home</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link tw-text-lg" href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-notification"
-                             width="28" height="28" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
-                             fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M10 6h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3"></path>
-                            <path d="M17 7m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                        </svg>
+                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold" href="#">
+                        <span>Pay with MOMO</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold" href="#">
+                        <span>Help</span>
                     </a>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link tw-text-lg dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                    <a class="nav-link tw-text-l tw-font-semibold dropdown-toggle" href="#" role="button"
+                       data-toggle="dropdown"
                        aria-expanded="false">
-                        <img src="{{ asset('assets/media/users/100_5.jpg') }}" class="tw-h-10 rounded-circle" alt=""/>
+                        John Doe
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right tw-shadow tw-rounded-xl">
-                        <a class="dropdown-item py-2" href="#">Action</a>
-                        <a class="dropdown-item py-2" href="#">Another action</a>
+                    <div class="dropdown-menu dropdown-menu-right tw-shadow tw-rounded">
+                        <a class="dropdown-item tw-text-l" href="#">
+                            <span class="ti ti-user tw-text-[20px]"></span>
+                            Profile
+                        </a>
+                        <a class="dropdown-item tw-text-lg" href="#">
+                            <span class="ti ti-settings-2 tw-text-[20px]"></span>
+                            Account
+                        </a>
+                        <a class="dropdown-item tw-text-lg" href="#">
+                            <span class="ti ti-square-asterisk tw-text-[20px]"></span>
+                            Change Password
+                        </a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item py-2" href="#">Something else here</a>
+                        <a class="dropdown-item tw-text-lg" href="#">
+                            <span class="ti ti-logout tw-text-[20px]"></span>
+                            Logout
+                        </a>
                     </div>
                 </li>
-
                 <li class="nav-item">
-                    <a class="nav-link tw-text-lg" href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="28"
-                             height="28" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
-                             stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path
-                                d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
-                            <path d="M7 12h14l-3 -3m0 6l3 -3"></path>
-                        </svg>
+                    <a class="nav-link d-flex tw-gap-1 align-items-center btn btn-accent btn-sm text-dark px-4 rounded-sm tw-font-semibold " href="#">
+                        <span>Check Bills</span>
                     </a>
                 </li>
             </ul>
