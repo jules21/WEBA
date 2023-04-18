@@ -34,7 +34,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
-Route::get('/home', [HomeController::class, 'home'])->name('home');
+Route::get('/home', [ClientsController::class, 'home'])->name('home');
 
 Route::get('/new-connection', [ClientsController::class, 'newConnection'])->name('clients.connection-new');
 
@@ -370,7 +370,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', [HomeController::class, 'home'])->name('home');
 //ajax routes
 Route::get('/operation-area', [OperationAreaController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
 Route::get('/Operator-operation-areas', [OperationAreaController::class, 'getOperationAreasByOperator'])->name('operator-operation-areas');
@@ -381,3 +380,19 @@ Route::get('/operation-areas-by-district', [OperationAreaController::class, 'get
 Route::get('/items-by-categories', [ItemController::class, 'getItemsByCategories'])->name('get-items-by-categories');
 //get items by categories
 Route::get('item-unit-price/{item}', [ItemController::class, 'getItemUnitPrice'])->name('items.get-unit-price');
+
+
+/*
+Route::group(['prefix' => 'client'], function () {
+  Route::get('/login', 'ClientAuth\LoginController@showLoginForm')->name('login');
+  Route::post('/login', 'ClientAuth\LoginController@login');
+  Route::post('/logout', 'ClientAuth\LoginController@logout')->name('logout');
+
+  Route::get('/register', 'ClientAuth\RegisterController@showRegistrationForm')->name('register');
+  Route::post('/register', 'ClientAuth\RegisterController@register');
+
+  Route::post('/password/email', 'ClientAuth\ForgotPasswordController@sendResetLinkEmail')->name('password.request');
+  Route::post('/password/reset', 'ClientAuth\ResetPasswordController@reset')->name('password.email');
+  Route::get('/password/reset', 'ClientAuth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+  Route::get('/password/reset/{token}', 'ClientAuth\ResetPasswordController@showResetForm');
+});*/

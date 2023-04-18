@@ -36,6 +36,11 @@ return [
     */
 
     'guards' => [
+        'client' => [
+            'driver' => 'session',
+            'provider' => 'clients',
+        ],
+
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
@@ -60,6 +65,11 @@ return [
     */
 
     'providers' => [
+        'clients' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\Client::class,
+        ],
+
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
@@ -87,6 +97,12 @@ return [
     */
 
     'passwords' => [
+        'clients' => [
+            'provider' => 'clients',
+            'table' => 'client_password_resets',
+            'expire' => 60,
+        ],
+
         'users' => [
             'provider' => 'users',
             'table' => 'password_resets',

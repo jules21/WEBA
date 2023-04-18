@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('client.layout.auth')
 
 @section('title',"New Request")
 
