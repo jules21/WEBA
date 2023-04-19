@@ -162,15 +162,6 @@ class PaymentController extends Controller
             if ($billing) {
                 $meterRequest = $billing->meterRequest;
                 [$paymentConfiguration, $paymentMapping] = $this->getBillPaymentMapping($meterRequest, $bankId);
-                $history = new Payment();
-                $history->billing_id = $billing->id;
-                $history->amount = $amount;
-                $history->subscription_number = $referenceNumber;
-                $history->bank_reference_number = $bank_txn_ref;
-                $history->narration = $narration;
-                $history->payment_mapping_id = $paymentMapping->id;
-                $history->payment_date = $paymentDate ?? now();
-                $history->save();
                 $billings = Billing::where('subscription_number', $referenceNumber)
                     ->where('balance', '>', 0)->orderBy("created_at", 'desc')->get();
                 $meterRequest->update(['balance' => $meterRequest->balance + $amount]);
@@ -178,6 +169,15 @@ class PaymentController extends Controller
                     $balance = $bill->balance;
                     $bill->balance = $balance > $amount ? $balance - $amount : 0;
                     $bill->update();
+                    $history = new Payment();
+                    $history->billing_id = $bill->id;
+                    $history->amount = $balance;
+                    $history->subscription_number = $referenceNumber;
+                    $history->bank_reference_number = $bank_txn_ref;
+                    $history->narration = $narration;
+                    $history->payment_mapping_id = $paymentMapping->id;
+                    $history->payment_date = $paymentDate ?? now();
+                    $history->save();
                     $amount = $amount - $balance;
                     if ($amount <= 0) {
                         break;
