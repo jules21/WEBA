@@ -163,7 +163,7 @@ class PaymentController extends Controller
                 $meterRequest = $billing->meterRequest;
                 [$paymentConfiguration, $paymentMapping] = $this->getBillPaymentMapping($meterRequest, $bankId);
                 $billings = Billing::where('subscription_number', $referenceNumber)
-                    ->where('balance', '>', 0)->orderBy("created_at", 'desc')->get();
+                    ->where('balance', '>', 0)->orderBy("created_at")->get();
                 $meterRequest->update(['balance' => $meterRequest->balance + $amount]);
                 foreach ($billings as $bill) {
                     $balance = $bill->balance;
