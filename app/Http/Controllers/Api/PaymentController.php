@@ -171,20 +171,17 @@ class PaymentController extends Controller
                 $history->payment_mapping_id = $paymentMapping->id;
                 $history->payment_date = $paymentDate ?? now();
                 $history->save();
-                $billing = Billing::where('subscription_number', $referenceNumber)
-                    ->where('balance', '>', 0)->get();
+                $billings = Billing::where('subscription_number', $referenceNumber)
+                    ->where('balance', '>', 0)->orderBy("created_at",'desc')->get();
                 $meterRequest->update(['balance' => $meterRequest->balance + $amount]);
-                foreach ($billing as $bill) {
+                foreach ($billings as $bill) {
                     $balance = $bill->balance;
-                    $bill->balance = $bill->balance > $amount ? $bill->balance - $amount : 0;
+                    $bill->balance = $balance > $amount ? $balance - $amount : 0;
                     $bill->update();
                     $amount = $amount - $balance;
                     if ($amount <= 0) {
                         break;
                     }
-                }
-                if ($amount > 0) {
-                    $meterRequest->update(['balance' => $meterRequest->balance + $amount]);
                 }
 
                 return response()->json([
