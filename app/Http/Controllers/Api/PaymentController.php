@@ -35,7 +35,7 @@ class PaymentController extends Controller
                 }
 
                 $paymentMapping = $this->getMapping($declaration, $bankId);
-                if (! $paymentMapping) {
+                if (!$paymentMapping) {
                     return $this->errorResponse('Payment is not allowed for this bank');
                 }
                 $data['rura_ref_no'] = $referenceNumber;
@@ -64,7 +64,7 @@ class PaymentController extends Controller
             if ($billing) {
                 $meterRequest = $billing->meterRequest;
                 [$paymentConfiguration, $paymentMapping] = $this->getBillPaymentMapping($meterRequest, $bankId);
-                if (! $paymentMapping) {
+                if (!$paymentMapping) {
                     return $this->errorResponse('Payment is not allowed for this bank');
                 } else {
                     $totalAmount = Billing::query()
@@ -172,7 +172,7 @@ class PaymentController extends Controller
                 $history->payment_date = $paymentDate ?? now();
                 $history->save();
                 $billings = Billing::where('subscription_number', $referenceNumber)
-                    ->where('balance', '>', 0)->orderBy("created_at",'desc')->get();
+                    ->where('balance', '>', 0)->orderBy("created_at", 'desc')->get();
                 $meterRequest->update(['balance' => $meterRequest->balance + $amount]);
                 foreach ($billings as $bill) {
                     $balance = $bill->balance;
