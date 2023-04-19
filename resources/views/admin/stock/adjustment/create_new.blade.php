@@ -19,7 +19,7 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('admin.stock.adjustments.index') }}" class="text-muted">
+                        <a href="{{ route('admin.stock.adjustments.create') }}" class="text-muted">
                             Stock Adjustments
                         </a>
                     </li>
@@ -144,7 +144,7 @@
                                         </td>
                                         <td>{{ number_format($item->unit_price) }}</td>
                                         <td>RWF {{ number_format($item->total) }}</td>
-                                        <td>RWF {{ $item->description }}</td>
+                                        <td>{{ $item->description }}</td>
                                         <td>
                                             @if($adjustment->status == \App\Models\Adjustment::PENDING)
                                                 <button
@@ -330,7 +330,7 @@
                                 <option value="">Select Item</option>
                                 @foreach($stock ?? [] as $record)
                                     <option data-quantity="{{$record->quantity}}" value="{{$record->id}}">
-                                        {{optional($record)->name}} - qty({{optional($record)->quantity}})
+                                        {{optional($record)->name}} - Qty({{optional($record)->quantity}})
                                     </option>
                                 @endforeach
                             </select>
@@ -341,7 +341,7 @@
                         </div>
                         <div class="form-group">
                             <label for="unit_price">Unit Price</label>
-                            <input type="number" name="unit_price" id="unit_price" class="form-control"/>
+                            <input type="number" name="unit_price" id="unit_price" class="form-control" readonly/>
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
@@ -397,7 +397,8 @@
                             $("#submit-container").removeClass('d-none');
 
                             console.log(response);
-                            // location.reload();
+                            window.history.replaceState(null, null, "?adjustment_id=" + response.id_encrypted);
+
                         },
                         error: function (xhr) {
                             console.log(xhr);
@@ -458,16 +459,17 @@
                 $('#addModal').modal('show');
             });
             $(document).on('click', '.js-edit', function () {
+                $('#addModal').modal('show');
+                $('#adjustment-type').val($(this).data('adjustment_type')).trigger('change');
                 let $itemId = $('#item_id');
                 $itemId.val($(this).data('item_id'));
-                $('#_item_id').val($(this).data('id'));
+                $itemId.select2();
+                // $itemId.select2().trigger('change');
                 $('#quantity').val($(this).data('quantity'));
                 $('#unit_price').val($(this).data('unit_price'));
                 $('#description').val($(this).data('description'));
+                $('#_item_id').val($(this).data('id'));
                 $('#item_adjustment_id').val($(this).data('adjustment_id'));
-                $('#adjustment-type').val($(this).data('adjustment_type')).trigger('change');
-                $itemId.trigger('change');
-                $('#addModal').modal('show');
             });
             $(document).on('click', '.js-delete', function (e) {
                 e.preventDefault();
@@ -518,10 +520,17 @@
 
         $('#adjustment-type').change(function (){
             $('#item_id').val('');
+            $('#item_id').select2();
             $('#quantity').val('');
+            if ($(this).val() === 'increase') {
+                $('#unit_price').val('').attr('readonly', false);
+            } else {
+                $('#unit_price').val('').attr('readonly', true);
+            }
         })
 
         $('#item_id').change(function (){
+            //quantity
             $('#quantity').val('');
             const adjustmenTtype = $('#adjustment-type').val();
             if (adjustmenTtype === 'increase') {
@@ -531,8 +540,19 @@
                 const quantity = $(this).find(':selected').data('quantity');
                 $('#available-quantity').val(quantity);
             }
-
-
+            //unit price
+            // getUnitPrice($(this).val()).done(function (response){
+            //     $('#unit_price').val(response);
+            // })
+            if($(this).val() != ''){
+                if (adjustmenTtype === 'increase') {
+                    $('#unit_price').val('');
+                } else {
+                    getUnitPrice($(this).val());
+                }
+            }else{
+                $('#unit_price').val('');
+            }
         })
 
         $('#editText').on('click', function (){
@@ -552,21 +572,27 @@
                 $("#submit-container").removeClass('d-none');
             }
         }
-        {{--const getUnitPrice = function (item_id) {--}}
-        {{--    const url = "{{ route('admin.items.get-unit-price', ':id') }}";--}}
-        {{--    return $.ajax({--}}
-        {{--        url: url.replace(':id', item_id),--}}
-        {{--        type: 'GET',--}}
-        {{--        data: {--}}
-        {{--            _token: $('meta[name="csrf-token"]').attr('content')--}}
-        {{--        },--}}
-        {{--        success: function (response) {--}}
-        {{--            $('#unit_price').val(response.unit_price);--}}
-        {{--        },--}}
-        {{--        error: function (xhr) {--}}
-        {{--            console.log(xhr);--}}
-        {{--        }--}}
-        {{--    });--}}
-        {{--}--}}
+        const getUnitPrice = function (item_id) {
+            const url = "{{ route('items.get-unit-price', ':id') }}";
+            return $.ajax({
+                url: url.replace(':id', item_id),
+                type: 'GET',
+                data: {
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    $('#unit_price').val(response);
+                    if(response == 0){
+                        $('#unit_price').attr('readonly', false);
+                    }else{
+                        $('#unit_price').attr('readonly', true);
+                    }
+
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                }
+            });
+        }
     </script>
 @endsection

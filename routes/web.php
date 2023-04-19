@@ -6,6 +6,7 @@ use App\Http\Controllers\AuditingController;
 use App\Http\Controllers\CashMovementController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\ChartAccountController;
+use App\Http\Controllers\Client\ClientsController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
@@ -31,20 +32,12 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
+Route::get('/home', [ClientsController::class, 'home'])->name('home');
 
-Route::post('/money', [HomeController::class, 'generateQrCodeFromExcelFile'])->name('file-excel-from-code-qr-generate');
+Route::get('/new-connection/{operator}', [ClientsController::class, 'newConnection'])->name('clients.connection-new');
+
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
 Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('villages');
@@ -75,7 +68,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/{operator}/users', [OperatorUserController::class, 'index'])->name('users');
 
-        Route::get('/{operator_area}/users', [OperatorUserController::class, 'operatorAreaUsers'])->name('operator-area-users');
+        Route::get('operating-area/{operator_area}/users', [OperatorUserController::class, 'operatorAreaUsers'])->name('operator-area-users');
 
         Route::get('/export', [OperatorController::class, 'exportToExcel'])->name('export-to-excel');
 
@@ -97,7 +90,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::put('/{appRequest}/update', [RequestsController::class, 'update'])->name('update');
         Route::delete('/{request}/delete', [RequestsController::class, 'destroy'])->name('delete');
 
-        Route::group(['middleware' => 'can:'.Permission::AssignRequest], function () {
+        Route::group(['middleware' => 'can:' . Permission::AssignRequest], function () {
             Route::get('/new', [RequestsController::class, 'newRequests'])->name('new');
             Route::post('/requests/assign', [RequestAssignmentController::class, 'assignRequests'])->name('assign');
             Route::post('/requests/re-assign', [RequestAssignmentController::class, 'reAssign'])->name('re-assign');
@@ -122,6 +115,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/{request}/item-delivery', [RequestDeliveryController::class, 'store'])->name('delivery-request.store');
         Route::get('/delivery/{id}/items', [RequestDeliveryController::class, 'items'])->name('delivery.items');
         Route::get('/delivery/{id}/print-delivery', [RequestDeliveryController::class, 'deliveryNote'])->name('print-delivery');
+        Route::post('/delivery/{id}/upload-delivery-note', [RequestDeliveryController::class, 'uploadDeliveryNote'])->name('upload-delivery-note');
         Route::get('/delivery/{request}/print-receipt', [RequestDeliveryController::class, 'printDelivery'])->name('print-receipt');
 
         Route::get('/export', [RequestsController::class, 'exportDataToExcel'])->name('export-data-to-excel');
@@ -376,7 +370,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
 Auth::routes(['register' => false]);
 
-Route::get('/home', [HomeController::class, 'home'])->name('home');
 //ajax routes
 Route::get('/operation-area', [OperationAreaController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
 Route::get('/Operator-operation-areas', [OperationAreaController::class, 'getOperationAreasByOperator'])->name('operator-operation-areas');
@@ -386,3 +379,20 @@ Route::get('/operation-areas-by-district', [OperationAreaController::class, 'get
 //get items by categories
 Route::get('/items-by-categories', [ItemController::class, 'getItemsByCategories'])->name('get-items-by-categories');
 //get items by categories
+Route::get('item-unit-price/{item}', [ItemController::class, 'getItemUnitPrice'])->name('items.get-unit-price');
+
+
+/*
+Route::group(['prefix' => 'client'], function () {
+  Route::get('/login', 'ClientAuth\LoginController@showLoginForm')->name('login');
+  Route::post('/login', 'ClientAuth\LoginController@login');
+  Route::post('/logout', 'ClientAuth\LoginController@logout')->name('logout');
+
+  Route::get('/register', 'ClientAuth\RegisterController@showRegistrationForm')->name('register');
+  Route::post('/register', 'ClientAuth\RegisterController@register');
+
+  Route::post('/password/email', 'ClientAuth\ForgotPasswordController@sendResetLinkEmail')->name('password.request');
+  Route::post('/password/reset', 'ClientAuth\ResetPasswordController@reset')->name('password.email');
+  Route::get('/password/reset', 'ClientAuth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
+  Route::get('/password/reset/{token}', 'ClientAuth\ResetPasswordController@showResetForm');
+});*/

@@ -35,11 +35,15 @@
         <div class="flex-wrap card-header">
             <div class="card-title">
                 <h3 class="kt-portlet__head-title">
-                   {{$operator->name}} Users
+                   @if(Str::contains(Route::currentRouteName(), 'admin.operator.operator-area-users') && isset($operationArea))
+                        {{$operator->name}} > {{$operationArea->name}} Users
+                     @else
+                        {{$operator->name}} Users
+                   @endif
                 </h3>
             </div>
             <div class="card-toolbar">
-                <a href="javascript:void(0)" class="btn btn-primary"
+                <a href="javascript:void(0)" class="btn btn-light-primary"
                    data-toggle="modal"
                    data-target="#addModal" >
                     <i class="la la-plus"></i>
@@ -88,15 +92,22 @@
                                            placeholder="Phone">
                                 </div>
                                 <input type="hidden" name="operator_id" value="{{$operator->id}}">
-                                <div class="col-md-12 form-group">
-                                    <label>Operation Areas</label>
-                                    <select class="form-control" name="operation_area">
-                                        <option value="">Select Area</option>
-                                        @foreach($operator->operationAreas as $area)
-                                            <option value="{{$area->id}}">{{$area->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+
+                                @if(Str::contains(Route::currentRouteName(), 'admin.operator.operator-area-users') && isset($operationArea))
+                                    <input type="hidden" name="operation_area" value="{{$operationArea->id ?? ''}}">
+                                @else
+                                    <div class="col-md-12 form-group">
+                                        <label>Operation Areas</label>
+                                        <select class="form-control" name="operation_area">
+                                            <option value="">Select Area</option>
+                                            @foreach($operator->operationAreas as $area)
+                                                <option value="{{$area->id}}">{{$area->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                @endif
+
+
 
                             </div>
 

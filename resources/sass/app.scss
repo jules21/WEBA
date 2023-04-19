@@ -1,16 +1,25 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins');
+@import url('https://fonts.googleapis.com/css?family=Inter');
+@import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.15.0/tabler-icons.min.css');
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-body{
+
+body {
     min-height: 100vh !important;
 }
 
-* {
-    font-family: 'Poppins', sans-serif;
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-family: Inter, Helvetica, "sans-serif";
 }
+
 
 .bg {
     background-image: url(../images/bg1.png);
@@ -74,16 +83,17 @@ body{
 .slick-next:before {
     content: url(../images/next.svg) !important;
 }
+
 .slick-prev:before {
     content: url(../images/prev.svg) !important;
 }
 
 
-.admin-bg{
+.admin-bg {
     background-image: url(../images/Adminbg.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-
+[x-cloak] { display: none !important; }

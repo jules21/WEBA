@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\Permission;
 use App\Constants\Status;
+use App\Exports\StockAdjustmentExport;
 use App\Http\Requests\StoreAdjustmentRequest;
 use App\Http\Requests\UpdateAdjustmentRequest;
 use App\Http\Requests\ValidateAdjustmentItemRequest;
@@ -14,13 +15,14 @@ use App\Models\Request;
 use App\Models\Stock;
 use App\Traits\GetClassName;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use ReflectionClass;
 
 class AdjustmentController extends Controller
 {
     use GetClassName;
 
-    const ADJUSTMENT_ATTACHMENT_PATH = 'public/adjustment/attachments';
+    const ADJUSTMENT_ATTACHMENT_PATH ='attachments/purchases';
 
     /**
      * Display a listing of the resource.
@@ -32,6 +34,11 @@ class AdjustmentController extends Controller
         $user = auth()->user();
         $query = $this->extracted($user);
         $adjustments = $query->get();
+
+        //export
+        if (request()->is_download == true && ! \request()->ajax()) {
+            return $this->exportAdjustment($adjustments);
+        }
 
         return view('admin.stock.adjustment.index', compact('adjustments'));
     }
@@ -71,8 +78,8 @@ class AdjustmentController extends Controller
             $this->saveFlowHistory($adjustment, 'Adjustment updated', Adjustment::PENDING);
         }else{
             $adjustment =  Adjustment::query()->create($request->validated());
-            session()->forget('adjustment_id');
-            session()->put('adjustment_id', $adjustment->id);
+//            session()->forget('adjustment_id');
+//            session()->put('adjustment_id', $adjustment->id);
             $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
         }
         return $adjustment;
@@ -106,6 +113,11 @@ class AdjustmentController extends Controller
     public function destroy(Adjustment $adjustment)
     {
         try {
+
+            if (session()->has('adjustment_id')) {
+                session()->forget('adjustment_id');
+            }
+
             $adjustment->items()->delete();
             $adjustment->delete();
 
@@ -252,15 +264,16 @@ class AdjustmentController extends Controller
 
     }
 
-    public function saveFlowHistory($model, $message, $status, $isComment = false): void
+    public function saveFlowHistory($model, $message, $status, $isComment = false, $fileName = null)
     {
-        $model->flowHistories()
+        $test = $model->flowHistories()
             ->create([
                 'status' => $status,
                 'user_id' => auth()->id(),
                 'comment' => $message,
                 'type' => (new ReflectionClass(Adjustment::class))->getShortName(),
                 'is_comment' => $isComment,
+                'attachment' => $fileName,
             ]);
     }
 
@@ -273,10 +286,21 @@ class AdjustmentController extends Controller
                 ->where('operation_area_id', '=', $adjustment->operation_area_id)
                 ->first();
 
+            if (!$stockItem) {
+                $stockItem = Stock::create([
+                    'item_id' => $movement->item_id,
+                    'operation_area_id' => auth()->user()->operation_area,
+                    'quantity' => 0,
+                ]);
+            }
+
             $quantity = $movement->adjustment_type == 'increase' ? $movement->quantity : -$movement->quantity;
             $stockItem->update([
                 'quantity' => $stockItem->quantity + $quantity,
             ]);
+            if ($movement->adjustment_type == 'decrease'){
+                $this->updateMovementFromOldest($movement->item, $movement->quantity);
+            }
         }
     }
 
@@ -307,7 +331,7 @@ class AdjustmentController extends Controller
      */
     public function extracted($user)
     {
-        $query = Adjustment::with('operationArea');
+        $query = Adjustment::with('operationArea','createdBy','items','approvedBy','items.item');
         $query->when($user->operator_id, function ($query) use ($user) {
             $query->whereHas('operationArea', function ($query) use ($user) {
                 $query->where('operator_id', $user->operator_id);
@@ -328,7 +352,7 @@ class AdjustmentController extends Controller
 
         $adjustmentId = \request('adjustment_id');
         if ($adjustmentId) {
-            $adjustment = Adjustment::find($adjustmentId);
+            $adjustment = Adjustment::find(decryptId($adjustmentId));
         }elseif (session()->has('adjustment_id')) {
             $adjustment = Adjustment::find(session()->get('adjustment_id'));
         } else {
@@ -363,4 +387,9 @@ class AdjustmentController extends Controller
             'stock' => $stock_data ?? null
         ]);
 }
+
+    public function exportAdjustment($query)
+    {
+        return Excel::download(new StockAdjustmentExport($query), 'Stock Adjustment List.xlsx');
+    }
 }

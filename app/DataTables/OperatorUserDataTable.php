@@ -62,7 +62,7 @@ class OperatorUserDataTable extends DataTable
             })
             ->addColumn('action', function ($item) {
                 return '<div class="btn-group">
-                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown"
+                                <button type="button" class="btn btn-light-primary btn-sm dropdown-toggle" data-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">Actions
                                 </button>
                                 <div class="dropdown-menu" style="">

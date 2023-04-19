@@ -171,6 +171,15 @@ label.error {
     color: #32b354;
 }
 
+.badge-accent {
+    color: #ffffff;
+    background-color: $accent;
+}
+
+.text-accent {
+    color: $accent;
+}
+
 .datepicker table tr th {
     vertical-align: bottom !important;
 }
@@ -191,6 +200,7 @@ label.error {
     background-image: url(../images/check-fill.svg) !important;
     border-color: $success !important;
 }
-.bg-accent{
+
+.bg-accent {
     background-color: $accent !important;
 }

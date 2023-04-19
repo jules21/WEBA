@@ -11,16 +11,10 @@
     <link rel="icon" href="{{ asset('images/logo.svg') }}" type="image/icon type"/>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/slick/slick.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/slick/slick-theme.css') }}">
-    <style>
-        .slick-prev:before,
-        .slick-next:before {
-            color: black;
-        }
-    </style>
+    <link href="{{ mix('css/tailwind.css') }}" rel="stylesheet">
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    @yield('styles')
+
 </head>
 <body class="bg">
 <x-nav/>
@@ -28,9 +22,9 @@
 
 <p class="text-center text-white  py-4 opacity-50 mb-0">© Copyright 2023, All Rights Reserved by RURA</p>
 
-{{--<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>--}}
-<script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="{{ mix('js/app.js') }}"></script>
+
 @yield('scripts')
 </body>
 </html>

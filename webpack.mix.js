@@ -5,12 +5,11 @@ const path = require("path");
 mix.postCss("resources/css/app.css", "public/css/tailwind.css", [
     require("tailwindcss"),
 ]);
-
 mix.js('resources/js/app.js', 'public/js')
     .vue()
-    // .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/master.scss', 'public/css/master.css')
- /*   .purgeCss({
+/*    .purgeCss({
         enabled: mix.inProduction(),
         extend: {
             content: [
@@ -40,10 +39,11 @@ mix.js('resources/js/app.js', 'public/js')
                     /^fade/,
                     /^collapse/,
                     /^collapsed/,
+                    /^collapsing/,
                 ],
             },
         }
-    })*/;
+    })*/
 
 if (mix.inProduction()) {
     mix.version();

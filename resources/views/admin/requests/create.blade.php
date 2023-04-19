@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <div class="card card-body tw-shadow-sm border tw-border-gray-300">
+    <div class="card tw-shadow-sm border tw-border-gray-300">
         <div class="card-body">
             <div class="d-flex justify-content-between align-items-center">
                 <h4>

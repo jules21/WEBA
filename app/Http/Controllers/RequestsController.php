@@ -262,7 +262,7 @@ class RequestsController extends Controller
                 ['operator_id', '=', auth()->user()->operator_id],
             ])
             ->get();
-         $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, RequestType::NEW_CONNECTION);
+        $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, RequestType::NEW_CONNECTION);
         return view('admin.requests.show', [
             'request' => $request,
             'reviews' => $reviews,
@@ -404,12 +404,19 @@ class RequestsController extends Controller
                 ->where(function (Builder $builder) {
                     $hasPermission = false;
                     $user = auth()->user();
+
+
                     if ($user->can(Permission::ReviewRequest)) {
                         $hasPermission = true;
                         $builder
                             ->where('status', '=', Status::ASSIGNED)
                             ->whereHas('requestAssignment', fn(Builder $builder) => $builder->where('user_id', '=', auth()->id()));
                     }
+                    if ($user->can(Permission::CreateRequest)) {
+                        $hasPermission = true;
+                        $builder->orWhere('status', '=', Status::PENDING);
+                    }
+
 
                     if ($user->can(Permission::ApproveRequest)) {
                         $hasPermission = true;
@@ -504,25 +511,6 @@ class RequestsController extends Controller
     }
 
     /**
-     * @return Sector[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection|_IH_Sector_C|_IH_Sector_QB[]
-     */
-    public function getSectors($operationArea)
-    {
-        return Sector::query()
-            ->where('district_id', '=', $operationArea->district_id)
-            ->orderBy('name')
-            ->get();
-    }
-
-    /**
-     * @return RequestType[]|Builder[]|\Illuminate\Database\Eloquent\Collection|_IH_RequestType_C|_IH_RequestType_QB[]
-     */
-    public function getRequestsTypes()
-    {
-        return RequestType::query()->where('is_active', '=', true)->get();
-    }
-
-    /**
      * @return Customer[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Query\Builder[]|Collection|_IH_Customer_C|_IH_Customer_QB[]
      */
     public function getCustomers()
@@ -530,28 +518,6 @@ class RequestsController extends Controller
         return Customer::query()
             ->where('operator_id', '=', auth()->user()->operator_id)
             ->orderBy('name')->get();
-    }
-
-    /**
-     * @return WaterUsage[]|Builder[]|\Illuminate\Database\Eloquent\Collection|_IH_WaterUsage_C|_IH_WaterUsage_QB[]
-     */
-    public function getWaterUsages()
-    {
-        return WaterUsage::query()->get();
-    }
-
-    public function getRoadTypes(): Collection
-    {
-        return RoadType::query()
-            ->pluck('name');
-    }
-
-    /**
-     * @return RoadCrossType[]|Builder[]|\Illuminate\Database\Eloquent\Collection|\LaravelIdea\Helper\App\Models\_IH_RoadCrossType_C|\LaravelIdea\Helper\App\Models\_IH_RoadCrossType_QB[]
-     */
-    public function getRoadCrossTypes()
-    {
-        return RoadCrossType::query()->get();
     }
 
     public function exportDataToExcel()

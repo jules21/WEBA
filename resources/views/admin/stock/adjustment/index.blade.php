@@ -34,7 +34,30 @@
     <div class="">
         <div class="card card-custom">
             <div class="card-header flex-wrap">
-                <h3 class="card-title">Stock Adjustments</h3>
+
+                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
+                    <h3 class="card-title"> Stock Adjustments</h3>
+                    @elseif(Str::contains(Route::currentRouteName(), 'admin.stock.stock-adjustments.tasks'))
+                    <h3 class="card-title"> Stock Adjustments</h3>
+                    @else
+                    <h3 class="card-title"> All Stock Adjustments</h3>
+                    <div class="dropdown dropdown-inline pt-5">
+                            <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="la la-download"></i>Export</button>
+                            <!--begin::Dropdown Menu-->
+                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                <ul class="nav flex-column nav-hover">
+                                    <li class="nav-item export-doc">
+                                        <a href="#" class="nav-link" target="_blank" id="excel">
+                                            <i class="nav-icon la la-file-excel-o"></i>
+                                            <span class="nav-text">Excel</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--end::Dropdown Menu-->
+                </div>
+                    @endif
                 @can('Create Adjustment')
                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
                         <div class="card-toolbar">
@@ -45,14 +68,16 @@
                         </div>
                    @endif
                 @endcan
+
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table border table-head-solid table-head-custom" id="kt_datatable1">
                         <thead>
                         <tr>
-                            <th>Operation area</th>
+                            <th>Initiated By</th>
                             <th>Description</th>
+                            <th>Items</th>
                             <th>Status</th>
                             <th>Created At</th>
                             <th>Action</th>
@@ -61,17 +86,34 @@
                         <tbody>
                         @foreach($adjustments as $adjustment)
                             <tr>
-                                <td>{{$adjustment->operationArea->name ?? ''}}</td>
+                                <td>{{optional($adjustment->createdBy)->name ?? ''}}</td>
                                 <td>{{$adjustment->description}}</td>
                                 <td>
-                                    @if(in_array($adjustment->status, [\App\Constants\Status::RETURN_BACK, \App\Constants\Status::PENDING]))
-                                        <span class="badge label-lg font-weight-bold badge-warning rounded-pill">{{$adjustment->status}}</span>
-                                    @elseif($adjustment->status == 'Submitted')
-                                        <span class="badge label-lg font-weight-bold badge-info rounded-pill">Submitted</span>
-                                    @elseif($adjustment->status == 'Approved')
-                                        <span class="badge label-lg font-weight-bold badge-success rounded-pill">Approved</span>
-                                    @elseif($adjustment->status == 'Rejected')
-                                        <span class="badge label-lg font-weight-bold badge-danger rounded-pill">Rejected</span>
+                                    <span class="badge  font-weight-bold badge-primary rounded-pill">
+                                        {{count($adjustment->items)}}
+                                    </span>
+                                </td>
+                                <td>
+                                    @if($adjustment->status == \App\Constants\Status::PENDING)
+                                        <span class="badge badge-primary font-weight-bold badge-pill">
+                                            Pending
+                                        </span>
+                                    @elseif($adjustment->status == \App\Constants\Status::SUBMITTED)
+                                        <span class="badge badge-info font-weight-bold badge-pill">
+                                            Submitted
+                                        </span>
+                                    @elseif($adjustment->status == \App\Constants\Status::RETURN_BACK)
+                                        <span class="badge badge-warning font-weight-bold badge-pill">
+                                            Return Back
+                                        </span>
+                                    @elseif($adjustment->status == \App\Constants\Status::APPROVED)
+                                        <span class="badge badge-success font-weight-bold badge-pill">
+                                            Approved
+                                        </span>
+                                    @elseif($adjustment->status == \App\Constants\Status::REJECTED)
+                                        <span class="badge badge-danger font-weight-bold badge-pill">
+                                            Rejected
+                                        </span>
                                     @endif
                                 </td>
 
@@ -81,7 +123,7 @@
                                         <button type="button" class="btn btn-light-primary btn-sm  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
                                         <div class="dropdown-menu" style="">
                                             @if(in_array($adjustment->status, [\App\Constants\Status::RETURN_BACK, \App\Constants\Status::PENDING]))
-                                                <a href="{{route('admin.stock.stock-adjustments.new',['adjustment_id' => $adjustment->id])}}"
+                                                <a href="{{route('admin.stock.stock-adjustments.new',['adjustment_id' => encryptId($adjustment->id)])}}"
                                                    class="dropdown-item">
                                                     Details
                                                 </a>
@@ -126,6 +168,11 @@
             @csrf
         </form>
     </div>
+    @php
+        //Declare new queries you want to append to string:
+        $newQueries = ['is_download' => 1];
+        $newUrl = request()->fullUrlWithQuery($newQueries);
+    @endphp
 @endsection
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
@@ -144,7 +191,7 @@
 
             $("#kt_datatable1").DataTable({
                 responsive:true,
-                "order": [[ 3, "desc" ]]
+                "order": [[ 4, "desc" ]]
             });
 
 
@@ -171,6 +218,11 @@
                     $('#delete-form').submit();
                 }
             });
+        });
+
+        $(document).on("click","#excel", function(e) {
+            let url = "{!! $newUrl !!}";
+            $(this).attr("href",url);
         });
     </script>
 

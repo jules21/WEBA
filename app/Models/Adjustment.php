@@ -65,7 +65,7 @@ class Adjustment extends Model implements Auditable
 
     const REJECTED = 'Rejected';
 
-    protected $appends = ['status_color'];
+    protected $appends = ['status_color', 'id_encrypted'];
 
     public function resolveRouteBinding($value, $field = null)
     {
@@ -122,6 +122,11 @@ class Adjustment extends Model implements Auditable
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    public function approvedBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
     public function movementDetails(): MorphMany
     {
         return $this->morphMany(StockMovementDetail::class, 'model');
@@ -129,6 +134,11 @@ class Adjustment extends Model implements Auditable
     public function getAttachment(): ?string
     {
         return $this->attachment ? Storage::url('public/adjustment/attachments'.$this->attachment) : null;
+    }
+
+    public function getIdEncryptedAttribute(): string
+    {
+        return encryptId($this->id);
     }
 
 }

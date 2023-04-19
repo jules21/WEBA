@@ -1,5 +1,5 @@
 @extends('layouts.print')
-@section('title',"Delivery Note")
+@section('title',"Delivery Note -".$request->customer->name.time())
 
 @section('content')
     <div class="container my-5">

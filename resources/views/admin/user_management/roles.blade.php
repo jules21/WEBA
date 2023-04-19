@@ -40,11 +40,11 @@
                 </h3>
             </div>
             <div class="card-toolbar">
-                <a href="javascript:void(0)" class="btn btn-primary"
+                <a href="javascript:void(0)" class="btn btn-light-primary"
                    data-toggle="modal"
                    data-target="#addModal" >
                     <i class="la la-plus"></i>
-                    New Record
+                    New Role
                 </a>
             </div>
             <!--end::Dropdown-->
@@ -78,7 +78,7 @@
                         <td>{{$role->created_at->format('Y-m-d')}}</td>
                         <td>
                             <div class="btn-group">
-                                <button type="button" class="btn btn-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
+                                <button type="button" class="btn btn-light-primary  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions</button>
                                 <div class="dropdown-menu" style="">
                                     <a class="dropdown-item" href="{{route('admin.roles.add.permissions',$role->id)}}">Manage Permissions</a>
                                     <div class="dropdown-divider"></div>

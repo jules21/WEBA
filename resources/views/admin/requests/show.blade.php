@@ -167,9 +167,9 @@
                     @endif
 
                     @if( $request->canBeApprovedByMe() && auth()->user()->operation_area)
-                        @if((!$request->equipment_payment && $requestItems->count()>0) || $request->equipment_payment)
-                            @include('admin.requests.partials._review_form')
-                        @endif
+
+                        @include('admin.requests.partials._review_form')
+
                     @endif
                 @endif
 

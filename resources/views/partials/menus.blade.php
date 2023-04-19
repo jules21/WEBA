@@ -405,7 +405,7 @@
                                 <li class="menu-item menu-item-submenu nav-stock-adjustments" aria-haspopup="true"
                                     data-menu-toggle="hover">
                                     <a href="javascript:;" class="menu-link menu-toggle">
-                                        <i class="menu-bullet menu-bullet-line">
+                                        <i class="menu-bullet menu-bullet-dot">
                                             <span></span>
                                         </i>
                                         <span class="menu-text">Stock Adjustments</span>
@@ -423,7 +423,7 @@
                                                             <i class="menu-bullet menu-bullet-dot">
                                                                 <span></span>
                                                             </i>
-                                                            <span class="menu-text">Create New</span>
+                                                            <span class="menu-text">My Adjustments</span>
                                                         </a>
                                                     </li>
                                                 @endcan

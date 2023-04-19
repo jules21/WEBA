@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Models\RequestDelivery
@@ -35,14 +37,17 @@ use Illuminate\Support\Carbon;
  * @method static Builder|RequestDelivery whereRequestId($value)
  * @method static Builder|RequestDelivery whereUpdatedAt($value)
  *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $details
+ * @property-read Collection<int, RequestDeliveryDetail> $details
  * @property-read int|null $details_count
- * @property-read \App\Models\Request $request
+ * @property-read Request $request
  *
  * @mixin Eloquent
  */
 class RequestDelivery extends Model
 {
+    protected $appends = ['deliver_note_url'];
+    const DELIVERY_NOTE_PATH = 'attachments/delivery_notes/';
+
     public function details(): HasMany
     {
         return $this->hasMany(RequestDeliveryDetail::class, 'request_delivery_id');
@@ -51,5 +56,10 @@ class RequestDelivery extends Model
     public function request(): BelongsTo
     {
         return $this->belongsTo(Request::class);
+    }
+
+    public function getDeliverNoteUrlAttribute(): ?string
+    {
+        return $this->delivery_note ? Storage::url(self::DELIVERY_NOTE_PATH . $this->delivery_note) : null;
     }
 }
