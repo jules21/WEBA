@@ -171,7 +171,7 @@ class PaymentController extends Controller
                     $bill->update();
                     $history = new Payment();
                     $history->billing_id = $bill->id;
-                    $history->amount = $balance;
+                    $history->amount = min($balance, $amount);
                     $history->subscription_number = $referenceNumber;
                     $history->bank_reference_number = $bank_txn_ref;
                     $history->narration = $narration;
