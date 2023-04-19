@@ -298,7 +298,7 @@
                                 <select type="text" name="operation_area_id" id="operation_area_id"
                                         class="form-control">
                                     <option value="">Please Select Operation Area</option>
-                                    @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                    @foreach($Areas as $area)
                                         <option value="{{$area->id}}">{{$area->name}}</option>
                                     @endforeach
                                 </select>
@@ -420,7 +420,7 @@
                                 <select type="text" name="operation_area_id" id="edit_operation_area_id"
                                         class="form-control">
                                     <option value="">Please Select Operation Area</option>
-                                    @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                    @foreach($Areas as $area)
                                         <option value="{{$area->id}}">{{$area->name}}</option>
                                     @endforeach
                                 </select>

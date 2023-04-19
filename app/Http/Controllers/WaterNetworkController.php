@@ -45,7 +45,16 @@ class WaterNetworkController extends Controller
                 ->orderBy('id', 'DESC')
                 ->get();
 
-            return view('admin.settings.water_networks', compact('waterNetworks', 'operators', 'operationAreas'));
+            $Areas = OperationArea::query()
+                ->when(isOperator(), function (Builder $builder) {
+                    $builder->where('operator_id', '=', auth()->user()->operator_id);
+                })
+                ->when(isForOperationArea(), function (Builder $builder) {
+                    $builder->where('id', '=', auth()->user()->operation_area);
+                })
+                ->get();
+
+            return view('admin.settings.water_networks', compact('waterNetworks', 'operators', 'operationAreas','Areas'));
         } else {
             $startDate = request('start_date');
             $endDate = request('end_date');
@@ -70,7 +79,16 @@ class WaterNetworkController extends Controller
                 ->orderBy('id', 'DESC')
                 ->get();
 
-            return view('admin.settings.water_networks', compact('waterNetworks', 'operators', 'operationAreas'));
+            $Areas = OperationArea::query()
+                ->when(isOperator(), function (Builder $builder) {
+                    $builder->where('operator_id', '=', auth()->user()->operator_id);
+                })
+                ->when(isForOperationArea(), function (Builder $builder) {
+                    $builder->where('id', '=', auth()->user()->operation_area);
+                })
+                ->get();
+
+            return view('admin.settings.water_networks', compact('waterNetworks', 'operators', 'operationAreas','Areas'));
         }
     }
 

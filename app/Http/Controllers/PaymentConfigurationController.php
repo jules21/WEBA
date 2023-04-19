@@ -39,7 +39,16 @@ class PaymentConfigurationController extends Controller
             $operationAreas = OperationArea::query()
                 ->findMany($operation_area_id);
 
-            return view('admin.settings.payment_configurations', compact('payments', 'operators', 'operationAreas'));
+            $Areas = OperationArea::query()
+                ->when(isOperator(), function (Builder $builder) {
+                    $builder->where('operator_id', '=', auth()->user()->operator_id);
+                })
+                ->when(isForOperationArea(), function (Builder $builder) {
+                    $builder->where('id', '=', auth()->user()->operation_area);
+                })
+                ->get();
+
+            return view('admin.settings.payment_configurations', compact('payments', 'operators', 'operationAreas','Areas'));
         } else {
             $startDate = request('start_date');
             $endDate = request('end_date');
@@ -66,7 +75,16 @@ class PaymentConfigurationController extends Controller
             $operationAreas = OperationArea::query()
                 ->findMany($operation_area_id);
 
-            return view('admin.settings.payment_configurations', compact('payments', 'operators', 'operationAreas'));
+            $Areas = OperationArea::query()
+                ->when(isOperator(), function (Builder $builder) {
+                    $builder->where('operator_id', '=', auth()->user()->operator_id);
+                })
+                ->when(isForOperationArea(), function (Builder $builder) {
+                    $builder->where('id', '=', auth()->user()->operation_area);
+                })
+                ->get();
+
+            return view('admin.settings.payment_configurations', compact('payments', 'operators', 'operationAreas','Areas'));
         }
 
     }
