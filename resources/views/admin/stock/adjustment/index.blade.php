@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title','Item Adjustments')
+@section('title', @isset($title) ? $title : 'Stock Adjustments')
 @section('page-header')
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
@@ -35,38 +35,38 @@
         <div class="card card-custom">
             <div class="card-header flex-wrap">
 
-                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
+                @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
                     <h3 class="card-title"> Stock Adjustments</h3>
-                    @elseif(Str::contains(Route::currentRouteName(), 'admin.stock.stock-adjustments.tasks'))
+                @elseif(Str::contains(Route::currentRouteName(), 'admin.stock.stock-adjustments.tasks'))
                     <h3 class="card-title"> Stock Adjustments</h3>
-                    @else
+                @else
                     <h3 class="card-title"> All Stock Adjustments</h3>
                     <div class="dropdown dropdown-inline pt-5">
-                            <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="la la-download"></i>Export</button>
-                            <!--begin::Dropdown Menu-->
-                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                <ul class="nav flex-column nav-hover">
-                                    <li class="nav-item export-doc">
-                                        <a href="#" class="nav-link" target="_blank" id="excel">
-                                            <i class="nav-icon la la-file-excel-o"></i>
-                                            <span class="nav-text">Excel</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!--end::Dropdown Menu-->
-                </div>
-                    @endif
+                        <button type="button" class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="la la-download"></i>Export</button>
+                        <!--begin::Dropdown Menu-->
+                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                            <ul class="nav flex-column nav-hover">
+                                <li class="nav-item export-doc">
+                                    <a href="#" class="nav-link" target="_blank" id="excel">
+                                        <i class="nav-icon la la-file-excel-o"></i>
+                                        <span class="nav-text">Excel</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!--end::Dropdown Menu-->
+                    </div>
+                @endif
                 @can('Create Adjustment')
-                   @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
+                    @if(Str::contains(Route::currentRouteName(), 'admin.stock.adjustments.create'))
                         <div class="card-toolbar">
                             <a href="{{route('admin.stock.stock-adjustments.new')}}" class="btn btn-light-primary">
                                 <i class="la la-plus"></i>
                                 New Adjustment
                             </a>
                         </div>
-                   @endif
+                    @endif
                 @endcan
 
             </div>

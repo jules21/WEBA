@@ -40,7 +40,8 @@ class AdjustmentController extends Controller
             return $this->exportAdjustment($adjustments);
         }
 
-        return view('admin.stock.adjustment.index', compact('adjustments'));
+
+        return view('admin.stock.adjustment.index',['adjustments' => $adjustments, 'title' => 'All Adjustments']);
     }
 
     public function myTasks()
@@ -66,7 +67,7 @@ class AdjustmentController extends Controller
         $query = $this->extracted($user);
         $adjustments = $query->WhereIn('status', [Adjustment::PENDING, Adjustment::SUBMITTED,Status::RETURN_BACK])->get();
 
-        return view('admin.stock.adjustment.index', compact('adjustments'));
+        return view('admin.stock.adjustment.index', ['adjustments' => $adjustments, 'title' => 'My Adjustments']);
     }
 
     public function store(StoreAdjustmentRequest $request)
