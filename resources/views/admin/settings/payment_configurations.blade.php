@@ -144,8 +144,9 @@
                         <th>Request Type</th>
                         @if(auth()->user()->is_super_admin)
                             <th>Operator</th>
+                            <th>Operation Area</th>
                         @endif
-                        <th>Operation Area</th>
+
                         <th>amount</th>
                         <th>Action</th>
                     </tr>
@@ -158,9 +159,10 @@
                             <td>{{$payment->paymentType->name?? ''}}</td>
                             <td>{{$payment->requestType->name?? ''}}</td>
                             @if(auth()->user()->is_super_admin)
-                                <td>{{$payment->operator->name?? ''}}</td>
+                                <td>{{$payment->operator->name?? ''}}
+                                <td>{{$payment->operationArea->name?? ''}}</td>
                             @endif
-                            <td>{{$payment->operationArea->name?? ''}}</td>
+
                             <td>{{$payment->amount}}</td>
                             <td>
                                 <div class="dropdown">
@@ -256,7 +258,7 @@
                                         <label for="name">Operation Area</label>
                                         <select type="text" name="operation_area_id" id="operation_area_id" class="form-control">
                                             <option value="">Please Select Operation Area</option>
-                                            @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                            @foreach($Areas as $area)
                                                 <option value="{{$area->id}}">{{$area->name}}</option>
                                             @endforeach
                                         </select>
@@ -349,7 +351,7 @@
                                         <label for="name">Operation Area</label>
                                         <select type="text" name="operation_area_id" id="edit_operation_area_id" class="form-control">
                                             <option value="">Please Select Operation Area</option>
-                                            @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                            @foreach($Areas as $area)
                                                 <option value="{{$area->id}}">{{$area->name}}</option>
                                             @endforeach
                                         </select>

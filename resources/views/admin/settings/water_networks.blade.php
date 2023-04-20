@@ -158,8 +158,9 @@
                         <th>Water Network Status</th>
                         @if(auth()->user()->is_super_admin)
                             <th>Operator</th>
+                            <th>Operation Area</th>
                         @endif
-                        <th>Operation Area</th>
+
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -175,8 +176,9 @@
                             <td>{{$waterNetwork->waterNetworkStatus->name?? ''}}</td>
                             @if(auth()->user()->is_super_admin)
                                 <td>{{$waterNetwork->operator->name?? ''}}</td>
+                                <td>{{$waterNetwork->operationArea->name?? ''}}</td>
                             @endif
-                            <td>{{$waterNetwork->operationArea->name?? ''}}</td>
+
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-light-primary btn-sm dropdown-toggle" type="button"
@@ -298,7 +300,7 @@
                                 <select type="text" name="operation_area_id" id="operation_area_id"
                                         class="form-control">
                                     <option value="">Please Select Operation Area</option>
-                                    @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                    @foreach($Areas as $area)
                                         <option value="{{$area->id}}">{{$area->name}}</option>
                                     @endforeach
                                 </select>
@@ -420,7 +422,7 @@
                                 <select type="text" name="operation_area_id" id="edit_operation_area_id"
                                         class="form-control">
                                     <option value="">Please Select Operation Area</option>
-                                    @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                    @foreach($Areas as $area)
                                         <option value="{{$area->id}}">{{$area->name}}</option>
                                     @endforeach
                                 </select>

@@ -146,8 +146,8 @@
                         <th>Water Network Type</th>
                         @if(auth()->user()->is_super_admin)
                             <th>Operator</th>
+                            <th>Operation Area</th>
                         @endif
-                        <th>Operation Area</th>
                         <th>Unit Price</th>
                         @if(auth()->user()->operator_id)
                             <th>Action</th>
@@ -162,8 +162,9 @@
                             <td>{{$bill->waterNetworkType->name ?? ''}}</td>
                             @if(auth()->user()->is_super_admin)
                                 <td>{{$bill->operator->name ?? ''}}</td>
+                                <td>{{$bill->operationArea->name ?? ''}}</td>
                             @endif
-                            <td>{{$bill->operationArea->name ?? ''}}</td>
+
                             <td>{{$bill->unit_price}}</td>
                             @if(auth()->user()->operator_id)
                                 <td>

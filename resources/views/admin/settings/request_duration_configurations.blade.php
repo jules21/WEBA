@@ -143,8 +143,8 @@
                         <th>Request Type</th>
                         @if(auth()->user()->is_super_admin)
                             <th>Operator</th>
+                            <th>Operation Area</th>
                         @endif
-                        <th>Operation Area</th>
                         <th>Processing Days</th>
                         <th>Active</th>
                         <th>Action</th>
@@ -158,8 +158,9 @@
                             <td>{{$configuration->requestType->name}}</td>
                             @if(auth()->user()->is_super_admin)
                                 <td>{{$configuration->operator->name}}</td>
+                                <td>{{$configuration->operationArea->name}}</td>
                             @endif
-                            <td>{{$configuration->operationArea->name}}</td>
+
                             <td>{{$configuration->processing_days}}</td>
                             @if($configuration->is_active == 1)
                                 <td><span class="badge badge-success">Yes</span></td>
@@ -248,7 +249,7 @@
                                         <label for="name">Operation Area</label>
                                         <select type="text" name="operation_area_id" id="operation_area_id" class="form-control">
                                             <option value="">Please Select Operation Area</option>
-                                            @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                            @foreach($Areas as $area)
                                                 <option value="{{$area->id}}">{{$area->name}}</option>
                                             @endforeach
                                         </select>
@@ -337,7 +338,7 @@
                                         <label for="name">Operation Area</label>
                                         <select type="text" name="operation_area_id" id="edit_operation_area_id" class="form-control">
                                             <option value="">Please Select Operation Area</option>
-                                            @foreach(App\Models\OperationArea::query()->where('operator_id','=',auth()->user()->operator_id)->get() as $area)
+                                            @foreach($Areas as $area)
                                                 <option value="{{$area->id}}">{{$area->name}}</option>
                                             @endforeach
                                         </select>
