@@ -144,8 +144,9 @@
                         <th>Request Type</th>
                         @if(auth()->user()->is_super_admin)
                             <th>Operator</th>
+                            <th>Operation Area</th>
                         @endif
-                        <th>Operation Area</th>
+
                         <th>amount</th>
                         <th>Action</th>
                     </tr>
@@ -158,9 +159,10 @@
                             <td>{{$payment->paymentType->name?? ''}}</td>
                             <td>{{$payment->requestType->name?? ''}}</td>
                             @if(auth()->user()->is_super_admin)
-                                <td>{{$payment->operator->name?? ''}}</td>
+                                <td>{{$payment->operator->name?? ''}}
+                                <td>{{$payment->operationArea->name?? ''}}</td>
                             @endif
-                            <td>{{$payment->operationArea->name?? ''}}</td>
+
                             <td>{{$payment->amount}}</td>
                             <td>
                                 <div class="dropdown">
