@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ItemSellingPrice;
+use App\Models\ItemSellPrice;
 use App\Models\PaymentConfiguration;
 use App\Models\PaymentMapping;
 use App\Models\RequestType;
@@ -89,7 +91,7 @@ class Controller extends BaseController
      * @param $quantity
      * @return void
      */
-    protected function updateMovementFromOldest($item, $quantity): void
+    protected function updateMovementFromOldest($item, $quantity, $parent_movement = null): void
     {
         $movements = StockMovement::query()
             ->where([
@@ -101,15 +103,30 @@ class Controller extends BaseController
             ->get();
 
         foreach ($movements as $movement) {
-            $qty = $movement->qty_in;
+            $qty = $movement->qty_in;//20 30
 
             $movement->update([
                 'qty_available' => $qty > $quantity ? $qty - $quantity : 0,
             ]);
 
+            //save item selling price for each movement
+            ItemSellingPrice::query()->create([
+                'item_id' => $item->id,
+                'operation_area_id' => auth()->user()->operation_area,
+                'stock_movement_id' => $movement->id,
+                'price' => $movement->unit_price,
+                'quantity' => $qty > $quantity ? $quantity : $qty,
+                'currency_id' => $item->currency_id,
+                'parent_movement_id'=>$parent_movement->id,
+            ]);
+
             $quantity = $qty > $quantity ? 0 : $quantity - $qty;
+
             if ($quantity <= 0) break;
         }
+
+
+
     }
     protected function getItemLastUnitPrice($item)
     {

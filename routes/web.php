@@ -324,6 +324,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/stock-items/{item}', [App\Http\Controllers\StockController::class, 'show'])->name('stock-items.show');
         Route::get('/stock-movements', [App\Http\Controllers\StockMovementController::class, 'index'])->name('stock-items.movements');
         Route::get('/stock-movements/{movement}', [App\Http\Controllers\StockMovementController::class, 'show'])->name('stock-items.movements.show');
+        Route::get('/stock-movements/{movement}/history', [App\Http\Controllers\StockMovementController::class, 'history'])->name('stock-items.movements.history');
 
         //stock adjustment
         Route::resource('/adjustments', AdjustmentController::class);
