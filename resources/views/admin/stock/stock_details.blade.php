@@ -87,7 +87,9 @@
                                 <span class=" text-success font-weight-bold">{{ $stock->qty_in ? " +$stock->qty_in" : '0' }}</span>
                             </td>
                             <td>
-                                <span class=" text-danger font-weight-bold">{{ $stock->qty_out ? " -$stock->qty_out" : '0' }}</span>
+                                <a href="{{route('admin.stock.stock-items.movements.history', encryptId($stock->id))}}">
+                                    <span class=" text-danger font-weight-bold">{{ $stock->qty_out ? " -$stock->qty_out" : '0' }}</span>
+                                </a>
                             </td>
                             <td>
                                 <span class=" text-info font-weight-bold">
