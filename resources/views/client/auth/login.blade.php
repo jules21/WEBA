@@ -1,7 +1,7 @@
 @extends('client.layout.guest')
 @section('title', 'Login')
 @section('content')
-    <div class="form-v4-content " style="margin-top: 150px !important;">
+    <div class="form-v4-content " style="margin-top: 100px !important;">
         <div class="form-left">
             <div class="d-flex justify-content-center align-items-center">
                 <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
@@ -14,9 +14,8 @@
             <p class="text-2">
                 If you don't have an account yet, pleas click on the button below to register.
             </p>
-            <div class="form-left-last">
-                <a href="{{ route('client.register') }}">
-                    <input type="submit" name="account" class="account" value="Register">
+            <div class="form-left-last mb-4">
+                <a href="{{ route('client.register') }}" class="btn btn-outline-light">Create an account
                 </a>
             </div>
         </div>

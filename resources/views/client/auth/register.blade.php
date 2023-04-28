@@ -15,14 +15,13 @@
                 If you've already created an account with us, please click the button below to log in.
             </p>
             <div class="form-left-last">
-                <a href="{{ route('client.login') }}">
-                    <input type="submit" name="account" class="account" value="Have An Account">
+                <a href="{{ route('client.login') }}" class="btn btn-outline-light">Login to your account
                 </a>
             </div>
         </div>
-        <form class="form-detail" action="#" method="post" id="myform" action="{{ route('client.register') }}">
+        <form class="form-detail my-3" action="#" method="post" id="register-client" action="{{ route('client.register') }}">
             @csrf
-            <h2>REGISTER FORM</h2>
+            <h2>Register Form</h2>
 
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -174,14 +173,8 @@
                     </div>
                 </div>
             </div>
-            <div class="form-checkbox">
-                <label class="container"><p>I agree to the <a href="#" class="text">Terms and Conditions</a></p>
-                    <input type="checkbox" name="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
-            <div class="form-row-last">
-                <input type="submit" name="register" class="register" value="Register">
+            <div class="d-flex justify-content-end">
+                <input type="submit" name="register" class="btn btn-primary" value="Register"/>
             </div>
         </form>
     </div>
@@ -294,6 +287,25 @@
         let $inputDocNumber = $docNumber;
         let $documentTypeId = $('#document_type_id');
         let $legalTypeId = $('#legal_type_id');
+
+
+        $(document).on("submit",'#register-client', function() {
+            //add spinner to button
+            const btn = $('input[type="submit"]');
+            btn.attr('disabled', true);
+            btn.val('Please wait...');
+
+            btn.addClass('spinner-border spinner-border-sm');
+
+            //remove spinner after 3 seconds
+            setTimeout(function () {
+                btn.removeClass('spinner-border spinner-border-sm');
+                btn.attr('disabled', false);
+                btn.val('Register');
+            }, 3000);
+        });
+
+
         $legalTypeId.on('change', function () {
             getDocumentTypes($(this).val());
             $documentTypeId.trigger('change');

@@ -19,8 +19,8 @@
 <!--end::Head-->
 <!--begin::Body-->
 <body class="admin-bg">
-
-<div class="page-content">
+    <x-clients.nav/>
+<div class="container">
     @yield('content')
 </div>
 

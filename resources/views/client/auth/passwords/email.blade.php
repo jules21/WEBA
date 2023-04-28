@@ -1,7 +1,7 @@
 @extends('client.layout.guest')
 @section('title', 'Reset password')
 @section('content')
-    <div class="form-v4-content " style="margin-top: 150px !important;">
+    <div class="form-v4-content " style="margin-top: 100px !important;">
         <div class="form-left">
             <div class="d-flex justify-content-center align-items-center">
                 <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
@@ -10,13 +10,11 @@
             <p class="text-1">
                Please enter your email address to reset your password.
                 {{--                To get started, please fill out the registration form below.--}}
-            </p>
-            <p class="text-2">
-                If you've remembered Your account credentials, please click the button below to log in.
+                <br>
+                Remembered Your credentials! Click the button below to log in.
             </p>
             <div class="form-left-last">
-                <a href="{{ route('client.login') }}">
-                    <input type="submit" name="account" class="account" value="Login">
+                <a href="{{ route('client.login') }}" class="btn btn-outline-light">Login here
                 </a>
             </div>
         </div>
