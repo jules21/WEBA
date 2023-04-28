@@ -1,35 +1,33 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html lang="en">
+<!--begin::Head-->
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title> @yield('title') {{ config('app.name', 'CMS-RWSS') }}</title>
-    <link rel="icon" href="{{ asset('images/logo.svg') }}" type="image/icon type"/>
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
-    <link href="{{ mix('css/tailwind.css') }}" rel="stylesheet">
-    @yield('styles')
-    @livewireStyles
+    <meta charset="utf-8"/>
+    <title>@yield('title') {{ config('app.name', 'CMS-RWSS') }}</title>
+    <meta name="description" content="Login page example"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
+    <!--end::Page Custom Styles-->
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ mix('css/tailwind.css') }}" rel="stylesheet" type="text/css"/>
+    <!--end::Layout Themes-->
+    <link rel="shortcut icon" href="{{ asset('assets/logos/logo.svg') }}"/>
+    <link rel="stylesheet" href="{{asset('css/guest.css')}}">
 </head>
+<!--end::Head-->
+<!--begin::Body-->
 <body class="admin-bg">
-<div class="tw-min-h-screen d-flex flex-column">
-    <div class="flex-grow-1">
-        <x-clients.navbar/>
-        <main class="lg:tw-px-20 container-fluid my-4">
-            @yield('breadcrumbs')
-            <div class="row">
-                @yield('content')
-            </div>
-        </main>
-    </div>
-    <p class="text-center tw-text-gray-500  py-4  mb-0">© Copyright 2023, All Rights Reserved by RURA</p>
 
+<div class="page-content">
+    @yield('content')
+</div>
+
+<p class="text-center tw-text-xs tw-text-gray-100 mb-0 py-3 ">© Copyright 2023, All Rights Reserved by RURA</p>
 </div>
 
 <script src="{{ mix('js/app.js') }}"></script>
-@livewireScripts
 @yield('scripts')
 </body>
 </html>
