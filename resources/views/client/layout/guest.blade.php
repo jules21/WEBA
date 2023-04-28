@@ -13,16 +13,14 @@
     @yield('styles')
     @livewireStyles
 </head>
-<body class="bg-white">
+<body class="admin-bg">
 <div class="tw-min-h-screen d-flex flex-column">
     <div class="flex-grow-1">
         <x-clients.navbar/>
         <main class="lg:tw-px-20 container-fluid my-4">
             @yield('breadcrumbs')
             <div class="row">
-                <div class="col-md-8">
-                    @yield('content')
-                </div>
+                @yield('content')
             </div>
         </main>
     </div>

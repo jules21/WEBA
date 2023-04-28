@@ -1,297 +1,389 @@
-@extends('client.layout.guest')
+<!DOCTYPE html>
+<html lang="en">
+<!--begin::Head-->
+<head>
+    <meta charset="utf-8"/>
+    <title>Login</title>
+    <meta name="description" content="Login page example"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
+    <!--end::Page Custom Styles-->
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ mix('css/tailwind.css') }}" rel="stylesheet" type="text/css"/>
+    <!--end::Layout Themes-->
+    <link rel="shortcut icon" href="{{ asset('assets/logos/logo.svg') }}"/>
+    <style>
+        body {
+            margin:  0;
+        }
+        .page-content {
+            width: 100%;
+            margin:  0 auto;
+            display: flex;
+            display: -webkit-flex;
+            justify-content: center;
+            -o-justify-content: center;
+            -ms-justify-content: center;
+            -moz-justify-content: center;
+            -webkit-justify-content: center;
+            align-items: center;
+            -o-align-items: center;
+            -ms-align-items: center;
+            -moz-align-items: center;
+            -webkit-align-items: center;
+        }
+        .form-v4-content  {
+            background: #fff;
+            width: 850px;
+            border-radius: 10px;
+            -o-border-radius: 10px;
+            -ms-border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px;
+            box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+            -o-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+            -ms-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+            -webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15);
+            margin: 175px 0;
+            position: relative;
+            display: flex;
+            display: -webkit-flex;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .form-v4-content h2 {
+            font-weight: 700;
+            font-size: 30px;
+            padding: 6px 0 0;
+            margin-bottom: 34px;
+        }
+        .form-v4-content .form-left {
+            background: #3786bd;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            padding: 20px 40px;
+            position: relative;
+            width: 100%;
+            color: #fff;
+        }
+        .form-v4-content .form-left p {
+            font-size: 15px;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+        .form-v4-content .form-left span {
+            font-weight: 700;
+        }
+        .form-v4-content .form-left .text-2 {
+            margin: 20px 0 25px;
+        }
+        .form-v4-content .form-left .account {
+            background: #fff;
+            border-top-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            width: 180px;
+            border: none;
+            margin: 15px 0 50px 0px;
+            cursor: pointer;
+            color: #333;
+            font-weight: 700;
+            font-size: 15px;
+            font-family: 'Open Sans', sans-serif;
+            appearance: unset;
+            -moz-appearance: unset;
+            -webkit-appearance: unset;
+            -o-appearance: unset;
+            -ms-appearance: unset;
+            outline: none;
+            -moz-outline: none;
+            -webkit-outline: none;
+            -o-outline: none;
+            -ms-outline: none;
+        }
+        .form-v4-content .form-left .account:hover {
+            background: #e5e5e5;
+        }
+        .form-v4-content .form-left .form-left-last input {
+            padding: 15px;
+        }
+        .form-v4-content .form-detail {
+            padding: 20px 40px;
+            position: relative;
+            width: 100%;
+        }
+        .form-v4-content .form-detail h2 {
+            color: #3786bd;
+        }
+        .form-v4-content .form-detail .form-group {
+            display: flex;
+            display: -webkit-flex;
+            margin:  0 -8px;
+        }
+        .form-v4-content .form-detail .form-row {
+            width: 100%;
+            position: relative;
+        }
+        .form-v4-content .form-detail .form-group .form-row.form-row-1 {
+            width: 50%;
+            padding: 0 8px;
+        }
+        .form-v4-content .form-detail label {
+            font-weight: 600;
+            font-size: 15px;
+            color: #666;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .form-v4-content .form-detail .form-row label#valid {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            -o-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            -o-border-radius: 50%;
+            -ms-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -webkit-border-radius: 50%;
+            background: #53c83c;
+        }
+        .form-v4-content .form-detail .form-row label#valid::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 1px;
+            width: 3px;
+            height: 8px;
+            border: 1px solid #fff;
+            border-width: 0 2px 2px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+        .form-v4-content .form-detail .form-row label.error {
+            padding-left: 0;
+            margin-left: 0;
+            display: block;
+            position: absolute;
+            bottom: -5px;
+            width: 100%;
+            background: none;
+            color: red;
+        }
+        .form-v4-content .form-detail .form-row label.error::after {
+            content: "\f343";
+            font-family: "LineAwesome";
+            position: absolute;
+            transform: translate(-50%, -50%);
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            right: 10px;
+            top: -31px;
+            color: red;
+            font-size: 18px;
+            font-weight: 900;
+        }
+        .form-v4-content .form-detail .input-text {
+            margin-bottom: 27px;
+        }
+        .form-v4-content .form-detail input {
+            width: 100%;
+            padding: 11.5px 15px;
+            border: 1px solid #e5e5e5;
+            border-top-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            appearance: unset;
+            -moz-appearance: unset;
+            -webkit-appearance: unset;
+            -o-appearance: unset;
+            -ms-appearance: unset;
+            outline: none;
+            -moz-outline: none;
+            -webkit-outline: none;
+            -o-outline: none;
+            -ms-outline: none;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 15px;
+            color: #333;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -o-box-sizing: border-box;
+            -ms-box-sizing: border-box;
+        }
+        .form-v4-content .form-detail .form-row input:focus {
+            border: 1px solid #53c83c;
+        }
+        .form-v4-content .form-detail .form-checkbox {
+            margin-top: 1px;
+            position: relative;
+        }
+        .form-v4-content .form-detail .form-checkbox input {
+            position: absolute;
+            opacity: 0;
+        }
+        .form-v4-content .form-detail .form-checkbox .checkmark {
+            position: absolute;
+            top: 13px;
+            left: 0;
+            height: 15px;
+            width: 15px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .form-v4-content .form-detail .form-checkbox .checkmark::after {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 1px;
+            width: 3px;
+            height: 8px;
+            border: 1px solid #3786bd;
+            border-width: 0 2px 2px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            -o-transform: rotate(45deg);
+            -moz-transform: rotate(45deg);
+            transform: rotate(45deg);
+            display: none;
+        }
+        .form-v4-content .form-detail .form-checkbox input:checked ~ .checkmark::after {
+            display: block;
+        }
+        .form-v4-content .form-detail .form-checkbox p {
+            margin-left: 34px;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .form-v4-content .form-detail .form-checkbox .text {
+            font-weight: 700;
+            color: #3786bd;
+            text-decoration: underline;
+        }
+        .form-v4-content .form-detail .register {
+            background: #3786bd;
+            border-top-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+            width: 130px;
+            border: none;
+            margin: 6px 0 50px 0px;
+            cursor: pointer;
+            color: #fff;
+            font-weight: 700;
+            font-size: 15px;
+        }
+        .form-v4-content .form-detail .register:hover {
+            background: #2f73a3;
+        }
+        .form-v4-content .form-detail .form-row-last input {
+            padding: 12.5px;
+        }
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-end">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="card card-body">
-                <h3>Register</h3>
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                <hr>
-                <form action="{{ route('client.register.attempt') }}" novalidate
-                      method="post" id="register-client">
-                    @csrf
-                    <input type="hidden" value="0" id="id" name="id"/>
-                    <div class="modal-body">
+        /* Responsive */
+        @media screen and (max-width: 991px) {
+            .form-v4-content {
+                margin: 180px 20px;
+                flex-direction:  column;
+                -o-flex-direction:  column;
+                -ms-flex-direction:  column;
+                -moz-flex-direction:  column;
+                -webkit-flex-direction:  column;
+            }
+            .form-v4-content .form-left {
+                width: auto;
+                border-top-right-radius: 10px;
+                border-bottom-left-radius: 0;
+            }
+            .form-v4-content .form-detail {
+                padding: 30px 20px 30px 20px;
+                width: auto;
+            }
+        }
+        @media screen and (max-width: 575px) {
+            .form-v4-content .form-detail .form-group {
+                flex-direction: column;
+                -o-flex-direction:  column;
+                -ms-flex-direction:  column;
+                -moz-flex-direction:  column;
+                -webkit-flex-direction:  column;
+                margin: 0;
+            }
+            .form-v4-content .form-detail .form-group .form-row.form-row-1 {
+                width: 100%;
+                padding:  0;
+            }
+        }
 
-                        <div class="row">
+    </style>
+</head>
+<!--end::Head-->
+<!--begin::Body-->
+<body class="admin-bg">
 
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control" required value="{{ old('name') }}"/>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="phone">Phone Number</label>
-                                    <input type="tel" name="phone" id="phone" class="form-control" required value="{{ old('phone') }}"/>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="email">Email address</label>
-                                    <input type="email" name="email" id="email" class="form-control" required value="{{ old('email') }}"/>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="legal_type_id">Legal Type</label>
-                                    <select name="legal_type_id" id="legal_type_id" class="form-control" required>
-                                        <option value="">Select Legal</option>
-                                        @foreach($legalTypes as $item)
-                                            <option value="{{ $item->id }}" @if(old('legal_type_id') == $item->id) selected @endif>{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="document_type_id">Document Type</label>
-                                    <select name="document_type_id" id="document_type_id" class="form-control" required>
-                                        <option value="">Select Type</option>
-                                        @foreach($idTypes as $item)
-                                            <option value="{{ $item->id }}" @if(old('document_type_id') == $item->id) selected @endif>{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="doc_number">Document Number</label>
-                                    <div class="d-flex flex-shrink-0">
-                                        <div class="w-100">
-                                            <input type="text" id="doc_number" name="doc_number" value="{{ old('doc_number') }}"
-                                                   class="form-control"
-                                                   required/>
-                                            <span class="invalid-feedback small"></span>
-                                        </div>
-                                        <button type="button" id="btnCheckIdDetails" style="display: none"
-                                                class="btn btn-primary ml-2 align-self-start">
-                                            Check
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="province_id">Province</label>
-                                    <select name="province_id" id="province_id" class="form-control" required>
-                                        <option value="">Select Province</option>
-                                        @foreach($provinces as $item)
-                                            <option value="{{ $item->id }}" @if(old('province_id') == $item->id) selected @endif>{{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="district_id">District</label>
-                                    <select name="district_id" id="district_id" class="form-control" required>
-                                        <option value="">Select District</option>
-                                    </select>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="sector_id">Sector</label>
-                                    <select name="sector_id" id="sector_id" class="form-control" required>
-                                        <option value="">Select Sector</option>
-                                    </select>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="cell_id">Cell</label>
-                                    <select name="cell_id" id="cell_id" class="form-control" required>
-                                        <option value="">Select Cell</option>
-                                    </select>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="village_id">Village</label>
-                                    <select name="village_id" id="village_id" class="form-control">
-                                        <option value="">Select Village</option>
-                                    </select>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="password">Password</label>
-                                    <input type="password" name="password" id="password" class="form-control" required/>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label for="password-confirm">Confirm Password</label>
-                                    <input type="password" name="password_confirmation" id="password-confirm" class="form-control"/>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
-                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
+<div class="page-content">
+    <div class="form-v4-content">
+        <div class="form-left">
+            <h2>INFOMATION</h2>
+            <p class="text-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et molestie ac feugiat sed. Diam volutpat commodo.</p>
+            <p class="text-2"><span>Eu ultrices:</span> Vitae auctor eu augue ut. Malesuada nunc vel risus commodo viverra. Praesent elementum facilisis leo vel.</p>
+            <div class="form-left-last">
+                <input type="submit" name="account" class="account" value="Have An Account">
             </div>
         </div>
+        <form class="form-detail" action="#" method="post" id="myform">
+            <h2>REGISTER FORM</h2>
+            <div class="form-group">
+                <div class="form-row form-row-1">
+                    <label for="first_name">First Name</label>
+                    <input type="text" name="first_name" id="first_name" class="input-text">
+                </div>
+                <div class="form-row form-row-1">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" name="last_name" id="last_name" class="input-text">
+                </div>
+            </div>
+            <div class="form-row">
+                <label for="your_email">Your Email</label>
+                <input type="text" name="your_email" id="your_email" class="input-text" required pattern="[^@]+@[^@]+.[a-zA-Z]{2,6}">
+            </div>
+            <div class="form-group">
+                <div class="form-row form-row-1 ">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" class="input-text" required>
+                </div>
+                <div class="form-row form-row-1">
+                    <label for="comfirm-password">Comfirm Password</label>
+                    <input type="password" name="comfirm_password" id="comfirm_password" class="input-text" required>
+                </div>
+            </div>
+            <div class="form-checkbox">
+                <label class="container"><p>I agree to the <a href="#" class="text">Terms and Conditions</a></p>
+                    <input type="checkbox" name="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="form-row-last">
+                <input type="submit" name="register" class="register" value="Register">
+            </div>
+        </form>
     </div>
 </div>
-@endsection
 
-@section('scripts')
-    //include jquery from cdn
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest(App\Http\Requests\RegisterClientRequest::class,'#register-client') !!}
-
-    <script>
-
-        function getDistricts(provinceId, selectedDistrictId) {
-            let districtId = $('#district_id');
-            districtId.empty();
-            districtId.append('<option value="">Select District</option>');
-
-            $.ajax({
-                url: "/districts/" + provinceId,
-                method: "GET",
-                success: function (data) {
-                    console.log(data);
-                    $.each(data, function (index, value) {
-                        districtId.append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                    districtId.val(selectedDistrictId);
-                }
-            });
-        }
-        function getSectors(districtId, selectedSectorId) {
-            let sectorId = $('#sector_id');
-            sectorId.empty();
-            sectorId.append('<option value="">Select Sector</option>');
+<p class="text-center tw-text-xs tw-text-gray-100 mb-0 py-3 ">© Copyright 2023, All Rights Reserved by RURA</p>
+</div>
 
 
-            $.ajax({
-                url: "/sectors/" + districtId,
-                method: "GET",
-                success: function (data) {
-                    console.log(data);
-                    $.each(data, function (index, value) {
-                        sectorId.append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                    sectorId.val(selectedSectorId);
-                }
-            });
-        }
-        function getCells(sectorId, selectedCellId) {
-            let cellId = $('#cell_id');
-            cellId.empty();
-            cellId.append('<option value="">Select Cell</option>');
-            $.ajax({
-                url: "/cells/" + sectorId,
-                method: "GET",
-                success: function (data) {
-                    console.log(data);
-                    $.each(data, function (index, value) {
-                        cellId.append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                    cellId.val(selectedCellId);
-                }
-            })
-        }
-        function getVillages(cellId, selectedVillageId) {
-            let villageId = $('#village_id');
-            villageId.empty();
-            villageId.append('<option value="">Select Village</option>');
-            $.ajax({
-                url: "/villages/" + cellId,
-                method: "GET",
-                success: function (data) {
-                    $.each(data, function (index, value) {
-                        villageId.append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                    villageId.val(selectedVillageId);
-                }
-            })
-        }
-        function getDocumentTypes(legalTypeId, selectedDocTypedId) {
-            let docTypeId = $('#document_type_id');
-            docTypeId.empty();
-            docTypeId.append('<option value="">Select Doc Type</option>');
-            $.ajax({
-                url: "/documents-types/" + legalTypeId,
-                method: "GET",
-                success: function (data) {
-                    $.each(data, function (index, value) {
-                        docTypeId.append('<option value="' + value.id + '">' + value.name + '</option>');
-                    });
-                    docTypeId.val(selectedDocTypedId);
-                }
-            })
-
-
-        }
-
-
-
-        $('#province_id').on('change', function (e) {
-            getDistricts($(this).val());
-        });
-        $('#district_id').on('change', function (e) {
-            getSectors($(this).val());
-        });
-        $('#sector_id').on('change', function (e) {
-            getCells($(this).val());
-        });
-
-
-        let $docNumber = $('#doc_number');
-        let $inputDocNumber = $docNumber;
-        let $documentTypeId = $('#document_type_id');
-        let $legalTypeId = $('#legal_type_id');
-        $legalTypeId.on('change', function () {
-            getDocumentTypes($(this).val());
-            $documentTypeId.trigger('change');
-        });
-    </script>
-@endsection
+</body>
+</html>

@@ -1,5 +1,5 @@
 
-<nav  {{ $attributes->class(['navbar navbar-expand-lg navbar-dark bg-dark border-bottom tw-bg-no-repeat tw-bg-center tw-bg-cover']) }}
+<nav  {{ $attributes->class(['navbar navbar-expand-lg navbar-dark bg-dark border-bottom tw-bg-no-repeat tw-bg-center tw-bg-cover m-0']) }}
      style="background-image: url({{ asset('images/aside_bg.png') }})">
     <div class="lg:tw-px-20 container-fluid">
         <a class="navbar-brand" href="#">
