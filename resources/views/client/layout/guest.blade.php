@@ -20,7 +20,7 @@
 <!--begin::Body-->
 <body class="admin-bg">
     <x-clients.nav/>
-<div class="page-content container">
+<div class="container">
     @yield('content')
 </div>
 

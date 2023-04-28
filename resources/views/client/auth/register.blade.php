@@ -21,7 +21,7 @@
         </div>
         <form class="form-detail my-3" action="#" method="post" id="register-client" action="{{ route('client.register') }}">
             @csrf
-            <h2>REGISTER FORM</h2>
+            <h2>Register Form</h2>
 
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -287,6 +287,25 @@
         let $inputDocNumber = $docNumber;
         let $documentTypeId = $('#document_type_id');
         let $legalTypeId = $('#legal_type_id');
+
+
+        $(document).on("submit",'#register-client', function() {
+            //add spinner to button
+            const btn = $('input[type="submit"]');
+            btn.attr('disabled', true);
+            btn.val('Please wait...');
+
+            btn.addClass('spinner-border spinner-border-sm');
+
+            //remove spinner after 3 seconds
+            setTimeout(function () {
+                btn.removeClass('spinner-border spinner-border-sm');
+                btn.attr('disabled', false);
+                btn.val('Register');
+            }, 3000);
+        });
+
+
         $legalTypeId.on('change', function () {
             getDocumentTypes($(this).val());
             $documentTypeId.trigger('change');

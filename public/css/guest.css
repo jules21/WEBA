@@ -1,22 +1,6 @@
 body {
     margin:  0;
 }
-.page-content {
-    width: 100%;
-    margin:  0 auto;
-    display: flex;
-    display: -webkit-flex;
-    justify-content: center;
-    -o-justify-content: center;
-    -ms-justify-content: center;
-    -moz-justify-content: center;
-    -webkit-justify-content: center;
-    align-items: center;
-    -o-align-items: center;
-    -ms-align-items: center;
-    -moz-align-items: center;
-    -webkit-align-items: center;
-}
 .form-v4-content  {
     background: #fff;
     border-radius: 10px;
