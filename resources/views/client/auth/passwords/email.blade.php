@@ -10,9 +10,8 @@
             <p class="text-1">
                Please enter your email address to reset your password.
                 {{--                To get started, please fill out the registration form below.--}}
-            </p>
-            <p class="text-2">
-                If you've remembered Your account credentials, please click the button below to log in.
+                <br>
+                Remembered Your credentials! Click the button below to log in.
             </p>
             <div class="form-left-last">
                 <a href="{{ route('client.login') }}" class="btn btn-outline-light">Login here
