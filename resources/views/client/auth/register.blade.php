@@ -19,7 +19,7 @@
                 </a>
             </div>
         </div>
-        <form class="form-detail my-3" action="#" method="post" id="myform" action="{{ route('client.register') }}">
+        <form class="form-detail my-3" action="#" method="post" id="register-client" action="{{ route('client.register') }}">
             @csrf
             <h2>REGISTER FORM</h2>
 

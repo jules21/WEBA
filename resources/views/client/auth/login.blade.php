@@ -1,7 +1,7 @@
 @extends('client.layout.guest')
 @section('title', 'Login')
 @section('content')
-    <div class="form-v4-content " style="margin-top: 120px !important;">
+    <div class="form-v4-content " style="margin-top: 100px !important;">
         <div class="form-left">
             <div class="d-flex justify-content-center align-items-center">
                 <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
