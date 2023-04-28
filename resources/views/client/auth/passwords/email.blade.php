@@ -1,7 +1,7 @@
 @extends('client.layout.guest')
 @section('title', 'Reset password')
 @section('content')
-    <div class="form-v4-content " style="margin-top: 150px !important;">
+    <div class="form-v4-content " style="margin-top: 120px !important;">
         <div class="form-left">
             <div class="d-flex justify-content-center align-items-center">
                 <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
@@ -15,8 +15,7 @@
                 If you've remembered Your account credentials, please click the button below to log in.
             </p>
             <div class="form-left-last">
-                <a href="{{ route('client.login') }}">
-                    <input type="submit" name="account" class="account" value="Login">
+                <a href="{{ route('client.login') }}" class="btn btn-outline-light">Login here
                 </a>
             </div>
         </div>

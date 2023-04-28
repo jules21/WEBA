@@ -15,12 +15,11 @@
                 If you've already created an account with us, please click the button below to log in.
             </p>
             <div class="form-left-last">
-                <a href="{{ route('client.login') }}">
-                    <input type="submit" name="account" class="account" value="Have An Account">
+                <a href="{{ route('client.login') }}" class="btn btn-outline-light">Login to your account
                 </a>
             </div>
         </div>
-        <form class="form-detail" action="#" method="post" id="myform" action="{{ route('client.register') }}">
+        <form class="form-detail my-3" action="#" method="post" id="myform" action="{{ route('client.register') }}">
             @csrf
             <h2>REGISTER FORM</h2>
 
@@ -174,14 +173,8 @@
                     </div>
                 </div>
             </div>
-            <div class="form-checkbox">
-                <label class="container"><p>I agree to the <a href="#" class="text">Terms and Conditions</a></p>
-                    <input type="checkbox" name="checkbox">
-                    <span class="checkmark"></span>
-                </label>
-            </div>
-            <div class="form-row-last">
-                <input type="submit" name="register" class="register" value="Register">
+            <div class="d-flex justify-content-end">
+                <input type="submit" name="register" class="btn btn-primary" value="Register"/>
             </div>
         </form>
     </div>
