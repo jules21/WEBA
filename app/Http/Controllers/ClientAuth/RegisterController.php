@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\ClientAuth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterClientRequest;
 use App\Models\Client;
+use App\Models\DocumentType;
+use App\Models\LegalType;
+use App\Models\Province;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -53,11 +57,8 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:clients',
-            'password' => 'required|min:6|confirmed',
-        ]);
+        $request = new RegisterClientRequest();
+        return Validator::make($data,$request->rules(),$request->messages());
     }
 
     /**
@@ -72,6 +73,16 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'legal_type_id' => $data['legal_type_id'],
+            'document_type_id' => $data['document_type_id'],
+            'doc_number' => $data['doc_number'],
+            'phone' => $data['phone'],
+            'province_id' => $data['province_id'],
+            'district_id' => $data['district_id'],
+            'sector_id' => $data['sector_id'],
+            'cell_id' => $data['cell_id'],
+            'village_id' => $data['village_id'],
+
         ]);
     }
 
@@ -82,7 +93,12 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('client.auth.register');
+        return view('client.auth.register',
+            [
+                'legalTypes' => LegalType::all(),
+                'provinces' => Province::all(),
+                'idTypes' => DocumentType::query()->get(),
+            ]);
     }
 
     /**

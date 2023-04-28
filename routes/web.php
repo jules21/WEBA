@@ -383,17 +383,14 @@ Route::get('/items-by-categories', [ItemController::class, 'getItemsByCategories
 Route::get('item-unit-price/{item}', [ItemController::class, 'getItemUnitPrice'])->name('items.get-unit-price');
 
 
-/*
-Route::group(['prefix' => 'client'], function () {
-  Route::get('/login', 'ClientAuth\LoginController@showLoginForm')->name('login');
-  Route::post('/login', 'ClientAuth\LoginController@login');
-  Route::post('/logout', 'ClientAuth\LoginController@logout')->name('logout');
-
-  Route::get('/register', 'ClientAuth\RegisterController@showRegistrationForm')->name('register');
-  Route::post('/register', 'ClientAuth\RegisterController@register');
-
-  Route::post('/password/email', 'ClientAuth\ForgotPasswordController@sendResetLinkEmail')->name('password.request');
-  Route::post('/password/reset', 'ClientAuth\ResetPasswordController@reset')->name('password.email');
-  Route::get('/password/reset', 'ClientAuth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
-  Route::get('/password/reset/{token}', 'ClientAuth\ResetPasswordController@showResetForm');
-});*/
+Route::group(['prefix' => 'client','as'=>'client.'], function () {
+    Route::get('/login', [\App\Http\Controllers\ClientAuth\LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [\App\Http\Controllers\ClientAuth\LoginController::class, 'login'])->name('login.attempt');
+    Route::post('/logout', [\App\Http\Controllers\ClientAuth\LoginController::class, 'logout'])->name('logout');
+    Route::get('/register', [\App\Http\Controllers\ClientAuth\RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [\App\Http\Controllers\ClientAuth\RegisterController::class, 'register'])->name('register.attempt');
+  Route::post('/password/email', [\App\Http\Controllers\ClientAuth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.request');
+  Route::post('/password/reset', [\App\Http\Controllers\ClientAuth\ResetPasswordController::class,'reset'])->name('password.email');
+  Route::get('/password/reset', [\App\Http\Controllers\ClientAuth\ForgotPasswordController::class,'showLinkRequestForm'])->name('password.reset');
+  Route::get('/password/reset/{token}', [\App\Http\Controllers\ClientAuth\ResetPasswordController::class,'showResetForm']);
+});
