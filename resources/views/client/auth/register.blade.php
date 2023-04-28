@@ -27,7 +27,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input type="text" name="name" id="name" class="form-control" required/>
+                                    <input type="text" name="name" id="name" class="form-control" required value="{{ old('name') }}"/>
                                     <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
@@ -35,14 +35,14 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="phone">Phone Number</label>
-                                    <input type="tel" name="phone" id="phone" class="form-control" required/>
+                                    <input type="tel" name="phone" id="phone" class="form-control" required value="{{ old('phone') }}"/>
                                     <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="email">Email address</label>
-                                    <input type="email" name="email" id="email" class="form-control"/>
+                                    <input type="email" name="email" id="email" class="form-control" required value="{{ old('email') }}"/>
                                     <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@
                                     <select name="legal_type_id" id="legal_type_id" class="form-control" required>
                                         <option value="">Select Legal</option>
                                         @foreach($legalTypes as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            <option value="{{ $item->id }}" @if(old('legal_type_id') == $item->id) selected @endif>{{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                     <span class="invalid-feedback small"></span>
@@ -67,7 +67,7 @@
                                     <select name="document_type_id" id="document_type_id" class="form-control" required>
                                         <option value="">Select Type</option>
                                         @foreach($idTypes as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            <option value="{{ $item->id }}" @if(old('document_type_id') == $item->id) selected @endif>{{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                     <span class="invalid-feedback small"></span>
@@ -78,7 +78,7 @@
                                     <label for="doc_number">Document Number</label>
                                     <div class="d-flex flex-shrink-0">
                                         <div class="w-100">
-                                            <input type="text" id="doc_number" name="doc_number"
+                                            <input type="text" id="doc_number" name="doc_number" value="{{ old('doc_number') }}"
                                                    class="form-control"
                                                    required/>
                                             <span class="invalid-feedback small"></span>
@@ -100,7 +100,7 @@
                                     <select name="province_id" id="province_id" class="form-control" required>
                                         <option value="">Select Province</option>
                                         @foreach($provinces as $item)
-                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            <option value="{{ $item->id }}" @if(old('province_id') == $item->id) selected @endif>{{ $item->name }}</option>
                                         @endforeach
                                     </select>
                                     <span class="invalid-feedback small"></span>
