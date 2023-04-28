@@ -34,7 +34,7 @@
                     <a class="nav-link tw-text-l tw-font-semibold dropdown-toggle" href="#" role="button"
                        data-toggle="dropdown"
                        aria-expanded="false">
-                        John Doe
+                        {{auth('client')->user() ? auth('client')->user()->name : ''}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right tw-shadow tw-rounded">
                         <a class="dropdown-item tw-text-l" href="#">
@@ -45,15 +45,18 @@
                             <span class="ti ti-settings-2 tw-text-[20px]"></span>
                             Account
                         </a>
-                        <a class="dropdown-item tw-text-lg" href="#">
-                            <span class="ti ti-square-asterisk tw-text-[20px]"></span>
-                            Change Password
-                        </a>
+{{--                        <a class="dropdown-item tw-text-lg" href="#">--}}
+{{--                            <span class="ti ti-square-asterisk tw-text-[20px]"></span>--}}
+{{--                            Change Password--}}
+{{--                        </a>--}}
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item tw-text-lg" href="#">
+                        <a class="dropdown-item tw-text-lg" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <span class="ti ti-logout tw-text-[20px]"></span>
                             Logout
                         </a>
+                        <form id="logout-form" action="{{route('client.logout')}}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     </div>
                 </li>
                 <li class="nav-item">

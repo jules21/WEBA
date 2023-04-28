@@ -132,7 +132,7 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
-            $("#kt_datatable1").DataTable({
+            const table = $("#kt_datatable1").DataTable({
                 responsive:true,
                 "order": [[ 0, "desc" ]],
             });
@@ -141,5 +141,15 @@
                 $(this).attr("href",url);
             });
         });
+
+        // const table = $('#kt_datatable1').DataTable();
+
+        $('#kt_datatable1').on('click', 'tbody td', function() {
+            //get textContent of the TD
+            console.log('TD cell textContent : ', this.textContent)
+
+            //get the value of the TD using the API
+            console.log('value by API : ', table.cell({ row: this.parentNode.rowIndex, column : this.cellIndex }).data());
+        })
     </script>
 @endsection
