@@ -15,10 +15,12 @@
                 If you've already created an account with us, please click the button below to log in.
             </p>
             <div class="form-left-last">
-                <input type="submit" name="account" class="account" value="Have An Account">
+                <a href="{{ route('client.login') }}">
+                    <input type="submit" name="account" class="account" value="Have An Account">
+                </a>
             </div>
         </div>
-        <form class="form-detail" action="#" method="post" id="myform">
+        <form class="form-detail" action="#" method="post" id="myform" action="{{ route('client.register') }}">
             @csrf
             <h2>REGISTER FORM</h2>
 
@@ -185,7 +187,6 @@
     </div>
 @endsection
 @section('scripts')
-    //include jquery from cdn
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
     {!! JsValidator::formRequest(App\Http\Requests\RegisterClientRequest::class,'#register-client') !!}

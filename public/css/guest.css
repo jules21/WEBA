@@ -89,7 +89,7 @@ body {
 .form-v4-content .form-left .account:hover {
     background: #e5e5e5;
 }
-.form-v4-content .form-left .form-left-last input {
+.form-v4-content .form-left .form-left-last input, a.link {
     padding: 15px;
 }
 .form-v4-content .form-detail {
@@ -174,10 +174,10 @@ body {
     font-size: 18px;
     font-weight: 900;
 }
-.form-v4-content .form-detail .input-text {
+.form-v4-content .form-detail .input-text, a.link {
     margin-bottom: 27px;
 }
-.form-v4-content .form-detail input {
+.form-v4-content .form-detail input, a.link {
     width: 100%;
     padding: 11.5px 15px;
     border: 1px solid #e5e5e5;
