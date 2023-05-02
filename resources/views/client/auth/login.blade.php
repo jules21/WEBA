@@ -12,7 +12,7 @@
                 {{--                To get started, please fill out the registration form below.--}}
             </p>
             <p class="text-2">
-                If you don't have an account yet, pleas click on the button below to register.
+                If you don't have an account yet, please click on the button below to register.
             </p>
             <div class="form-left-last mb-4">
                 <a href="{{ route('client.register') }}" class="btn btn-outline-light">Create an account
@@ -22,16 +22,6 @@
         <form class="form-detail" action="#" method="post" id="myform" action="{{ route('client.login') }}">
             @csrf
             <h2>Login Form</h2>
-
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
 
             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                 <label for="email" class="col-md-4 control-label">E-Mail Address</label>

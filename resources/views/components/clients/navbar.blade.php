@@ -37,20 +37,20 @@
                         {{auth('client')->user() ? auth('client')->user()->name : ''}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right tw-shadow tw-rounded">
-                        <a class="dropdown-item tw-text-l" href="#">
+                        <a class="dropdown-item tw-text-lg" href="#">
                             <span class="ti ti-user tw-text-[20px]"></span>
                             Profile
                         </a>
-                        <a class="dropdown-item tw-text-lg" href="#">
-                            <span class="ti ti-settings-2 tw-text-[20px]"></span>
-                            Account
-                        </a>
+{{--                        <a class="dropdown-item tw-text-lg" href="#">--}}
+{{--                            <span class="ti ti-settings-2 tw-text-[20px]"></span>--}}
+{{--                            Account--}}
+{{--                        </a>--}}
 {{--                        <a class="dropdown-item tw-text-lg" href="#">--}}
 {{--                            <span class="ti ti-square-asterisk tw-text-[20px]"></span>--}}
 {{--                            Change Password--}}
 {{--                        </a>--}}
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item tw-text-lg" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             <span class="ti ti-logout tw-text-[20px]"></span>
                             Logout
                         </a>

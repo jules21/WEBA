@@ -41,7 +41,7 @@ class RegisterClientRequest extends FormRequest
                 new ValidateDocNumber(),
             ],
             'email' => ['nullable', 'string', 'email', 'max:255', 'unique:clients'],
-            'phone' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255', 'unique:clients'],
             'legal_type_id' => ['required'],
             'province_id' => ['required'],
             'district_id' => ['required'],
