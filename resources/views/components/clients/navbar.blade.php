@@ -37,7 +37,7 @@
                         {{auth('client')->user() ? auth('client')->user()->name : ''}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right tw-shadow tw-rounded">
-                        <a class="dropdown-item tw-text-lg" href="#">
+                        <a class="dropdown-item tw-text-lg" href="{{route('client.profile')}}">
                             <span class="ti ti-user tw-text-[20px]"></span>
                             Profile
                         </a>

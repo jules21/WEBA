@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Models\DocumentType;
 use App\Models\LegalType;
 use App\Models\Province;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -17,6 +18,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 
+use Illuminate\Http\Request;
 class RegisterController extends Controller
 {
     /*
@@ -37,7 +39,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected string $redirectTo = '/home';
+    protected string $redirectTo = '/client/login';
 
     /**
      * Create a new controller instance.
@@ -109,5 +111,18 @@ class RegisterController extends Controller
     protected function guard()
     {
         return Auth::guard('client');
+    }
+
+    public function register(RegisterClientRequest $request)
+    {
+        $this->validator($request->all())->validate();
+
+        event(new Registered($user = $this->create($request->all())));
+
+        return redirect($this->redirectPath())->with('success', 'Your account has been created successfully! please login');
+    }
+    protected function registered()
+    {
+        return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
     }
 }
