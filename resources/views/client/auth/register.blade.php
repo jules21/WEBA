@@ -23,6 +23,13 @@
             @csrf
             <h2>Register Form</h2>
 
+            @if($errors->any())
+                @foreach($errors->all() as $error)
+                    <div class="alert alert-danger">{{ $error }}</div>
+                @endforeach
+
+            @endif
+
 
 
             <div class="row">
