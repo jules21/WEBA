@@ -25,24 +25,24 @@ class UpdateBillChargeRequest extends FormRequest
     public function rules()
     {
         return [
-            'water_network_type_id' => [
-                'required',
-                Rule::unique('bill_charges')->where(function ($query) {
-                    return $query->where([
-                        ['operation_area_id', '=', request('operation_area_id')],
-                        ['water_network_type_id', '=', request('water_network_type_id')],
-                    ]);
-                }),
-            ],
-            'operation_area_id' => [
-                'required',
-                Rule::unique('bill_charges')->where(function ($query) {
-                    return $query->where([
-                        ['operation_area_id', '=', request('operation_area_id')],
-                        ['water_network_type_id', '=', request('water_network_type_id')],
-                    ]);
-                }),
-            ],
+//            'water_network_type_id' => [
+//                'required',
+//                Rule::unique('bill_charges')->where(function ($query) {
+//                    return $query->where([
+//                        ['operation_area_id', '=', request('operation_area_id')],
+//                        ['water_network_type_id', '=', request('water_network_type_id')],
+//                    ]);
+//                }),
+//            ],
+//            'operation_area_id' => [
+//                'required',
+//                Rule::unique('bill_charges')->where(function ($query) {
+//                    return $query->where([
+//                        ['operation_area_id', '=', request('operation_area_id')],
+//                        ['water_network_type_id', '=', request('water_network_type_id')],
+//                    ]);
+//                }),
+//            ],
             'unit_price' => ['required'],
         ];
     }
