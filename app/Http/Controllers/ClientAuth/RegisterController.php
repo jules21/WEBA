@@ -113,16 +113,16 @@ class RegisterController extends Controller
         return Auth::guard('client');
     }
 
-    public function register(RegisterClientRequest $request)
-    {
-        $this->validator($request->all())->validate();
-
-        event(new Registered($user = $this->create($request->all())));
-
-        return redirect($this->redirectPath())->with('success', 'Your account has been created successfully! please login');
-    }
-    protected function registered()
-    {
-        return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
-    }
+//    public function register(RegisterClientRequest $request)
+//    {
+//        $this->validator($request->all())->validate();
+//
+//        event(new Registered($user = $this->create($request->all())));
+//
+//        return redirect($this->redirectPath())->with('success', 'Your account has been created successfully! please login');
+//    }
+//    protected function registered()
+//    {
+//        return redirect()->route('login')->with('success', 'Registration successful. Please log in.');
+//    }
 }
