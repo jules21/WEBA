@@ -17,7 +17,7 @@ class AuditingController extends Controller
         }
         if ($request->ajax()) {
             $audits = Audit::query()
-                ->with(['user', 'auditable'])
+                ->with(['user', 'auditable','stock.operationArea'])
                 ->when($user->operator_id, function ($q) use ($user) {
                     $q->whereHas('user', function ($q) use ($user) {
                         $q->where('operator_id', '=', $user->operator_id);

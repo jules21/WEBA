@@ -70,7 +70,9 @@ class StockMovementsDataTable extends DataTable
                 if ($item->qty_in > 0) {
                     return '<span class="text-success  font-weight-lighter">+'.$item->qty_in.' '.$item->item->packagingUnit->name.'</span>';
                 } else {
-                    return '<span class="text-danger font-weight-lighter">-'.$item->qty_out.' '.$item->item->packagingUnit->name.'</span>';
+                    $qty =$item->qty_out.' '.$item->item->packagingUnit->name;
+                    return "<a href='".route('admin.stock.stock-items.movements.history', encryptId($item->id))."'>
+                    <span class='text-danger  font-weight-lighter'>-$qty</span></a>";
                 }
             })
             ->editColumn('unit_price', function ($item) {
@@ -102,7 +104,7 @@ class StockMovementsDataTable extends DataTable
                     ->addTableClass('table border table-head-custom table-hover  table-head-solid')
                     ->minifiedAjax()
                     ->addTableClass('table table-striped- table-hover table-checkable')
-                    ->orderBy(7, 'desc');
+                    ->orderBy(8, 'desc');
     }
 
     /**

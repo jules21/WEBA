@@ -33,7 +33,7 @@
                         Financial Loss and Non-Revenue Water .
                     </p>
                     <div class="d-flex tw-gap-6 justify-content-center justify-content-sm-start">
-                        <a href=""
+                        <a href="{{route('client.login')}}"
                            class="btn text-white bg-accent tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
                             Login
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login"
@@ -45,7 +45,7 @@
                                 <path d="M20 12h-13l3 -3m0 6l-3 -3"></path>
                             </svg>
                         </a>
-                        <a href=""
+                        <a href="{{route('client.register')}}"
                            class="btn bg-white tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
                             Register
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-plus"

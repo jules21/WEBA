@@ -40,7 +40,8 @@ class AdjustmentController extends Controller
             return $this->exportAdjustment($adjustments);
         }
 
-        return view('admin.stock.adjustment.index', compact('adjustments'));
+
+        return view('admin.stock.adjustment.index',['adjustments' => $adjustments, 'title' => 'All Adjustments']);
     }
 
     public function myTasks()
@@ -66,7 +67,7 @@ class AdjustmentController extends Controller
         $query = $this->extracted($user);
         $adjustments = $query->WhereIn('status', [Adjustment::PENDING, Adjustment::SUBMITTED,Status::RETURN_BACK])->get();
 
-        return view('admin.stock.adjustment.index', compact('adjustments'));
+        return view('admin.stock.adjustment.index', ['adjustments' => $adjustments, 'title' => 'My Adjustments']);
     }
 
     public function store(StoreAdjustmentRequest $request)
@@ -280,7 +281,7 @@ class AdjustmentController extends Controller
     public function updateStockItems(Adjustment $adjustment): void
     {
         foreach ($adjustment->items()->get() as $movement) {
-            $this->updateStockMovement($movement, $adjustment);
+            $parentMov = $this->updateStockMovement($movement, $adjustment);
 
             $stockItem = Stock::where('item_id', '=', $movement->item_id)
                 ->where('operation_area_id', '=', $adjustment->operation_area_id)
@@ -299,12 +300,12 @@ class AdjustmentController extends Controller
                 'quantity' => $stockItem->quantity + $quantity,
             ]);
             if ($movement->adjustment_type == 'decrease'){
-                $this->updateMovementFromOldest($movement->item, $movement->quantity);
+                $this->updateMovementFromOldest($movement->item, $movement->quantity, $parentMov);
             }
         }
     }
 
-    public function updateStockMovement($movement, Adjustment $adjustment): void
+    public function updateStockMovement($movement, Adjustment $adjustment)
     {
         $item_id = $movement->item_id;
         $item = Item::find($item_id);
@@ -313,7 +314,7 @@ class AdjustmentController extends Controller
             ->where('operation_area_id', '=', $adjustment->operation_area_id)
             ->first();
 
-        $adjustment->movements()->create([
+       return $adjustment->movements()->create([
             'item_id' => $item_id,
             'opening_qty' => $prevStockItem->quantity ?? 0,
             'qty_out' => $movement->adjustment_type == 'decrease' ? $movement->quantity : 0,

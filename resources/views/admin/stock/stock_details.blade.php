@@ -60,8 +60,9 @@
                 <table class="table table-head-custom table-head-solid table-hover" id="kt_datatable1">
                     <thead>
                     <tr>
+
+                        <th>link</th>
                         <th>Done At</th>
-                        {{--                            <th>Operation Area</th>--}}
                         <th>Product</th>
                         <th>Product Category</th>
                         <th>Opening Qty</th>
@@ -70,13 +71,15 @@
                         <th>Closing Qty</th>
                         <th>Unit Price</th>
                         <th>Initiated By</th>
-{{--                        <th>Description</th>--}}
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($movements as $stock)
                         <tr>
-                            <th>{{$stock->created_at}}</th>
+                            <td>
+                                <a href="{{route('admin.stock.stock-items.movements.history', encryptId($stock->id))}}"></a>
+                            </td>
+                            <td>{{$stock->created_at}}</td>
                             {{--                                <td>{{ $stock->operationArea->name ?? '' }}</td>--}}
                             <td>{{ $stock->item->name ?? '' }}</td>
                             <td>{{ $stock->item->category->name ?? '' }}</td>
@@ -87,7 +90,9 @@
                                 <span class=" text-success font-weight-bold">{{ $stock->qty_in ? " +$stock->qty_in" : '0' }}</span>
                             </td>
                             <td>
-                                <span class=" text-danger font-weight-bold">{{ $stock->qty_out ? " -$stock->qty_out" : '0' }}</span>
+                                <a href="{{route('admin.stock.stock-items.movements.history', encryptId($stock->id))}}">
+                                    <span class=" text-danger font-weight-bold">{{ $stock->qty_out ? " -$stock->qty_out" : '0' }}</span>
+                                </a>
                             </td>
                             <td>
                                 <span class=" text-info font-weight-bold">
@@ -130,14 +135,36 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
-            $("#kt_datatable1").DataTable({
+            const table = $("#kt_datatable1").DataTable({
                 responsive:true,
                 "order": [[ 0, "desc" ]],
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                        "searchable": false
+                    }
+                ]
             });
             $(document).on("click","#excel", function(e) {
                 let url = "{!! $newUrl !!}";
                 $(this).attr("href",url);
             });
         });
+
+        // const table = $('#kt_datatable1').DataTable();
+
+        $('#kt_datatable1').on('click', 'tbody tr', function() {
+            let table = $('#kt_datatable1').DataTable();
+
+            var data = table.row(this).data().map(function(item, index) {
+                var r = {}; r['col'+index]=item; return r;
+            });
+            let url = data[0]['col0'];
+            //extract href from url
+            let href = url.split('"')[1];
+            //redirect to href link
+            window.location.href = href;
+        })
     </script>
 @endsection

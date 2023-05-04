@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Client;
 use App\Models\Operator;
 use App\Models\Request;
 use App\Models\Sector;
@@ -10,6 +11,11 @@ use App\Models\WaterUsage;
 
 class ClientsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:client');
+    }
+
     public function home()
     {
         $recentOperators = Operator::query()
@@ -49,5 +55,15 @@ class ClientsController extends Controller
             'roadTypes' => $roadTypes,
             'roadCrossTypes' => $roadCrossTypes
         ]);
+    }
+
+    public function profile()
+    {
+        return view('client.profile');
+    }
+
+    public function updateProfile(Request $request, Client $client)
+    {
+        dd($request->all()->toArray());
     }
 }

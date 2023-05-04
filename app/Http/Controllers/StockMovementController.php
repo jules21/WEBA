@@ -6,6 +6,7 @@ use App\DataTables\StockMovementsDataTable;
 use App\Exports\StockMovementExport;
 use App\Models\Item;
 use App\Models\ItemCategory;
+use App\Models\ItemSellingPrice;
 use App\Models\StockMovement;
 use Excel;
 
@@ -64,5 +65,14 @@ class StockMovementController extends Controller
     public function exportStockMovement($query)
     {
         return Excel::download(new StockMovementExport($query), 'Stock Movement List.xlsx');
+    }
+
+    public function history($movement)
+    {
+        $movement = StockMovement::with('item')->findOrFail(decryptId($movement));
+        $histories = ItemSellingPrice::query()->with(['item'])
+            ->where('parent_movement_id', $movement->id)
+            ->get();
+        return view('admin.stock.movement_history', compact('movement', 'histories'));
     }
 }

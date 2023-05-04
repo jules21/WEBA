@@ -147,7 +147,7 @@ class RequestDeliveryController extends Controller
     {
         $item = $requestItem->item;
         $stockItem = $item->stock()->first();
-        $item->stockMovements()
+        $movement = $item->stockMovements()
             ->create([
                 'operation_area_id' => auth()->user()->operation_area,
                 'opening_qty' => $stockItem->quantity ?? 0,
@@ -159,7 +159,7 @@ class RequestDeliveryController extends Controller
             ]);
 
 
-        $this->updateMovementFromOldest($item, $quantity);
+        $this->updateMovementFromOldest($item, $quantity, $movement);
 
     }
 

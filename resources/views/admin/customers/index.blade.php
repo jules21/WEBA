@@ -226,7 +226,7 @@
 
 @section('scripts')
     {{--    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
-        {!! JsValidator::formRequest(App\Http\Requests\StoreCustomerRequest::class) !!}--}}
+        {!! JsValidator::formRequest(App\Http\Requests\StoreCustomerRequest::class) !--}}!}
     {{--    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.2/dist/jquery.validate.min.js"></script>--}}
 
     <script>
