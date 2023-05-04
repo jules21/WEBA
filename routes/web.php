@@ -393,4 +393,7 @@ Route::group(['prefix' => 'client','as'=>'client.'], function () {
   Route::post('/password/reset', [\App\Http\Controllers\ClientAuth\ResetPasswordController::class,'reset'])->name('password.email');
   Route::get('/password/reset', [\App\Http\Controllers\ClientAuth\ForgotPasswordController::class,'showLinkRequestForm'])->name('password.reset');
   Route::get('/password/reset/{token}', [\App\Http\Controllers\ClientAuth\ResetPasswordController::class,'showResetForm']);
+    Route::get('/profile', [ClientsController::class, 'profile'])->name('profile');
+    Route::put('/profile/{client}/update', [ClientsController::class, 'updateProfile'])->name('profile.update');
+
 });
