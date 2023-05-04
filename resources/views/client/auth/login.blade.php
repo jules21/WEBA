@@ -1,9 +1,9 @@
 @extends('client.layout.guest')
 @section('title', 'Login')
 @section('content')
-    <div class="tw-shadow  tw-mt-20 tw-rounded-xl overflow-hidden border tw-border-primary">
+    <div class="tw-mt-20 tw-rounded-xl overflow-hidden">
         <div class="row">
-            <div class="col-md-5 card-body">
+            <div class="col-md-5">
                 <div class="text-white p-4">
                     <div class="d-flex justify-content-center align-items-center">
                         <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
@@ -11,7 +11,6 @@
                     <h2 class="mb-4">Account Login</h2>
                     <p class="text-1">
                         Welcome back to our system! <br> Please enter your login details to access your account.
-                        {{--                To get started, please fill out the registration form below.--}}
                     </p>
                     <p class="text-2">
                         If you don't have an account yet, please click on the button below to register.
@@ -19,7 +18,7 @@
                     <a href="{{ route('client.register') }}" class="btn btn-outline-light tw-mt-10">Create an account</a>
                 </div>
             </div>
-            <div class="col-md-7 bg-white card-body">
+            <div class="col-md-7 bg-white card-body tw-rounded-xl">
                 <form class="p-4" method="post" id="myform" action="{{ route('client.login') }}" autocomplete="off">
                     @csrf
                     <h2 class="text-primary font-weight-bolder mb-5">Login Form</h2>
