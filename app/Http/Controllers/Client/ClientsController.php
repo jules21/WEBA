@@ -11,6 +11,11 @@ use App\Models\WaterUsage;
 
 class ClientsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:client');
+    }
+
     public function home()
     {
         $recentOperators = Operator::query()
