@@ -38,7 +38,7 @@
                 <h4>
                     {{ isset($customer)?$customer->name."'s":'All' }} Requests
                 </h4>
-                {{--              <x-simple-export-form action="{{ route('admin.requests.export-data-to-excel') }}"/>--}}
+                              <x-simple-export-form action="{{ route('admin.requests.export-data-to-excel') }}"/>
             </div>
 
 

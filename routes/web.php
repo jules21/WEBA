@@ -134,6 +134,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::put('/{purchase}/update', [PurchaseController::class, 'update'])->name('update');
         Route::delete('/{purchase}/delete', [PurchaseController::class, 'destroy'])->name('destroy');
         Route::post('/{purchase}/submit-review', [PurchaseController::class, 'submitReview'])->name('submit-review');
+
+        Route::get('/export', [PurchaseController::class, 'exportDataToExcel'])->name('export-data-to-excel');
     });
     Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
         Route::get('/chart-of-accounts', [ChartAccountController::class, 'index'])->name('chart-of-accounts');

@@ -1,16 +1,16 @@
 @extends('client.layout.guest')
 @section('title', 'Register')
 @section('content')
-    <div class="card tw-shadow bg-transparent tw-mt-20 overflow-hidden tw-rounded-xl border tw-border-primary">
+    <div class=" bg-transparent tw-mt-20 overflow-hidden tw-rounded-xl">
         <div class="row">
             <div class="col-lg-4">
-                <div class="text-white card-body">
+                <div class="text-white">
                     <div class="d-flex justify-content-center align-items-center">
                         <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
                     </div>
                     <h2>Create An Account </h2>
                     <p class="text-1">
-                        Welcome to our system! We're excited that you're interested in creating an account with us. <br>
+                        Welcome to our system! We're excited that you're interested in creating an account with us. <br> <br>
                         By creating an account, you'll be able to access exclusive features and content that are not
                         available to non-registered users.
                         {{--                To get started, please fill out the registration form below.--}}
@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8 bg-white">
+            <div class="col-lg-8 bg-white tw-rounded-xl">
                 <div class="card-body">
                     <form method="post" id="register-client" action="{{ route('client.register') }}">
                         @csrf

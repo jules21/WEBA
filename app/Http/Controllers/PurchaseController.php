@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Constants\Permission;
 use App\Constants\Status;
+use App\Exports\RequestsExport;
+use App\Exports\StockInExport;
 use App\Http\Requests\ValidatePurchaseRequest;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Models\Item;
@@ -20,6 +22,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\UploadedFile;
+use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
 use function request;
@@ -32,9 +35,10 @@ class PurchaseController extends Controller
     public function index()
     {
 
-        if (request()->ajax()) {
+        $startDate = \request('start_date');
+        $endDate = \request('end_date');
             $data = Purchase::query()
-                ->with(['supplier'])
+                ->with(['supplier','movementDetails.item.packagingUnit'])
                 ->where('operation_area_id', '=', auth()->user()->operation_area)
                 ->withCount('movementDetails')
                 ->where(function (Builder $builder) {
@@ -50,8 +54,12 @@ class PurchaseController extends Controller
                     }
 
                     $builder->whereIn('status', $statuses);
+                })
+                ->when(!is_null($startDate) && !is_null($endDate), function (Builder $query) use ($startDate, $endDate) {
+                    return $query->whereDate('created_at', '>=', $startDate)
+                        ->whereDate('created_at', '<=', $endDate);
                 });
-
+        if (request()->ajax()) {
             return datatables()->of($data)
                 ->editColumn('supplier_nane', function ($row) {
                     return $row->supplier->name;
@@ -82,6 +90,10 @@ class PurchaseController extends Controller
                 })
                 ->rawColumns(['action'])
                 ->make(true);
+        }
+
+        if (request()->is_download == true && ! request()->ajax()) {
+            return $this->exportDataToExcel($data->get());
         }
 
         return view('admin.purchases.index');
@@ -440,5 +452,12 @@ class PurchaseController extends Controller
             'vat' => $movement->vat,
             'description' => "Purchase of $item->name from {$purchase->supplier->name}  ",
         ]);
+    }
+
+    public function exportDataToExcel($data)
+    {
+        $now = now()->format('Y-m-d-H-i-s');
+        $stockInExport = new StockInExport($data);
+        return Excel::download($stockInExport, "stock-in-$now.xlsx");
     }
 }
