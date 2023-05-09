@@ -15,8 +15,8 @@
             Reload
         </button>
         <button type="submit" class="btn btn-light-success mb-2 font-weight-bolder rounded">
+            <i class="la la-download"></i>
             Export
-            <i class="la la-file-export"></i>
         </button>
     </div>
 </form>
