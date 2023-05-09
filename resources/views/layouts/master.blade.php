@@ -509,6 +509,20 @@
             });
 
         });
+        $('#btnExportData').on('click', function () {
+            let $btn = $(this);
+            let startDate = $('#start_date').val();
+            let enDate = $('#end_date').val();
+
+            $btn.addClass('spinner spinner-white spinner-right').attr('disabled', true);
+
+            // replace current url with new one
+            window.history.replaceState({}, '', `{{ request()->url() }}?start_date=${startDate}&end_date=${enDate}&export=1`);
+            dataTable.ajax.url(`{{request()->url()}}?start_date=${startDate}&end_date=${enDate}`).load(function () {
+                $btn.removeClass('spinner spinner-white spinner-right').attr('disabled', false);
+            });
+
+        });
 
     });
 

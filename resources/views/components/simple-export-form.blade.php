@@ -2,10 +2,10 @@
       {{ $attributes->class(['form-inline']) }} autocomplete="off"
       target="_blank">
     <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 w-100 w-lg-150px datepicker rounded-sm"
-           placeholder="Start Date" value="{{ request('start_date') }}"
+           placeholder="Start Date" value="{{ request('start_date') }}"  onfocus="(this.type='date')" onblur="(this.type='text')"
            id="start_date" name="start_date"/>
     <input type="text" class="form-control form-control-sm mb-2 mr-sm-2 w-100 w-lg-150px datepicker rounded-sm"
-           placeholder="End Date" value="{{ request('end_date') }}" id="end_date"
+           placeholder="End Date" value="{{ request('end_date') }}" id="end_date"  onfocus="(this.type='date')" onblur="(this.type='text')"
            name="end_date"/>
 
     <div class="btn-group btn-group-sm">

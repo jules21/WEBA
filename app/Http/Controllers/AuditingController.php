@@ -15,9 +15,10 @@ class AuditingController extends Controller
         if (! $user->can(Permission::ManageSystemAudit)) {
             abort(403);
         }
+        $user->load('operationArea', 'operator');
         if ($request->ajax()) {
             $audits = Audit::query()
-                ->with(['user', 'auditable','stock.operationArea'])
+                ->with(['user'])
                 ->when($user->operator_id, function ($q) use ($user) {
                     $q->whereHas('user', function ($q) use ($user) {
                         $q->where('operator_id', '=', $user->operator_id);
