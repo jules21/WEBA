@@ -30,7 +30,7 @@
         </div>
 
         <form
-            action=""
+            action="{{ route('client.request-new-connection',encryptId($operator->id)) }}"
             class="mt-2" method="post" id="formSave"
             enctype="multipart/form-data">
             @csrf
@@ -44,13 +44,15 @@
                         <label for="water_usage_id">
                             Water Usage
                         </label>
-                        <select name="water_usage_id" id="water_usage_id" class="form-control select2"
+                        <select name="water_usage_id" id="water_usage_id" class="form-control select2" required
                                 style="width:100% !important;">
                             <option value="">Select Request Type</option>
                             @foreach($waterUsage as $requestType)
                                 <option
-                                    {{ isset($request) && $request->water_usage_id == $requestType->id ? 'selected' : '' }}
-                                    value="{{ $requestType->id }}">{{ $requestType->name }}</option>
+                                    {{ old('water_usage_id',$request->water_usage_id??'') == $requestType->id ? 'selected' : '' }}
+                                    value="{{ $requestType->id }}">
+                                    {{ $requestType->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -60,8 +62,8 @@
                         <label for="meter_qty">
                             How many meters do you need?
                         </label>
-                        <input type="number"
-                               value="{{ isset($request)?$request->meter_qty:"" }}"
+                        <input type="number" required
+                               value="{{ old('meter_qty',$request->meter_qty??"") }}" min="1"
                                name="meter_qty" id="meter_qty" class="form-control">
                     </div>
                 </div>
@@ -70,8 +72,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="upi">UPI</label>
-                        <input type="text"
-                               value="{{ isset($request)?$request->upi:"" }}"
+                        <input type="text" value="{{old('upi',$request->upi??"") }}" required
                                name="upi" id="upi" class="form-control"/>
                     </div>
                 </div>
@@ -79,7 +80,7 @@
                     <div class="form-group">
                         <label for="upi_attachment">UPI Attachment </label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="upi_attachment"
+                            <input type="file" class="custom-file-input" id="upi_attachment" required
                                    name="upi_attachment">
                             <label class="custom-file-label" for="upi_attachment">Choose file</label>
                         </div>
@@ -91,7 +92,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="sector_id">Sector </label>
-                        <select name="sector_id" id="sector_id" class="form-control select2"
+                        <select name="sector_id" id="sector_id" class="form-control select2" required
                                 style="width:100% !important;">
                             <option value="">Select Sector</option>
                             @foreach($sectors as $item)
@@ -105,7 +106,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="cell_id">Cell </label>
-                        <select name="cell_id" id="cell_id" class="form-control select2"
+                        <select name="cell_id" id="cell_id" class="form-control select2" required
                                 style="width:100% !important;">
                             <option value="">Select Cell</option>
                         </select>
@@ -135,29 +136,36 @@
                 <div class="col-lg-6">
                     <label for="cross_road">New connection will cross the road</label>
                     <div class="form-group">
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input
-                                {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'checked' : '' }} type="radio"
-                                id="new_connection_crosses_road1" value="1" name="new_connection_crosses_road"
-                                class="custom-control-input">
-                            <label class="custom-control-label" for="new_connection_crosses_road1">
-                                Yes
-                            </label>
+                        <div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input
+                                    {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'checked' : '' }} type="radio"
+                                    id="new_connection_crosses_road1" value="1" name="new_connection_crosses_road"
+                                    required
+                                    class="custom-control-input">
+                                <label class="custom-control-label" for="new_connection_crosses_road1">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input
+                                    {{ isset($request) && $request->new_connection_crosses_road == 0 ? 'checked' : '' }} type="radio"
+                                    id="new_connection_crosses_road2" value="0" name="new_connection_crosses_road"
+                                    required
+                                    class="custom-control-input">
+                                <label class="custom-control-label" for="new_connection_crosses_road2">No</label>
+                            </div>
                         </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input
-                                {{ isset($request) && $request->new_connection_crosses_road == 0 ? 'checked' : '' }} type="radio"
-                                id="new_connection_crosses_road2" value="0" name="new_connection_crosses_road"
-                                class="custom-control-input">
-                            <label class="custom-control-label" for="new_connection_crosses_road2">No</label>
-                        </div>
+                        <label id="new_connection_crosses_road-error" class="error"
+                               for="new_connection_crosses_road"></label>
+
                     </div>
 
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group" id="roadTypeContainer" style="display: none">
                         <label for="road_type">Road Type</label>
-                        <select name="road_type" id="road_type" class="form-control ">
+                        <select name="road_type" id="road_type" class="form-control" required>
                             <option value="">Select Road Type</option>
                             @foreach($roadTypes as $roadType)
                                 <option
@@ -165,6 +173,7 @@
                                     value="{{ $roadType }}">{{ $roadType }}</option>
                             @endforeach
                         </select>
+
                     </div>
                 </div>
             </div>
@@ -179,7 +188,7 @@
                                 <div class="col-md-4">
                                     <div class="custom-control my-2  custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" value="{{ $item->id }}"
-                                               id="customCheck{{ $item->id }}"
+                                               id="customCheck{{ $item->id }}" required
                                                {{ isset($request) && in_array($item->id, $selected_road_cross_types??[]) ? 'checked' : '' }}
                                                name="road_cross_types[]">
                                         <label class="custom-control-label" for="customCheck{{ $item->id }}">
@@ -189,6 +198,7 @@
                                 </div>
                             @endforeach
                         </div>
+                        <label id="road_cross_types[]-error" class="error" for="road_cross_types[]"></label>
                     </div>
                 </div>
             </div>
@@ -197,21 +207,29 @@
                 <div class="col-lg-6">
                     <label>Will you dig a water pipe by yourself?</label>
                     <div class="form-group">
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input
-                                {{ isset($request) && $request->digging_pipeline == 1 ? 'checked' : '' }} type="radio"
-                                id="customRadioInline1" value="1" name="digging_pipeline" class="custom-control-input">
-                            <label class="custom-control-label" for="customRadioInline1">
-                                Yes
-                            </label>
+                        <div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input
+                                    {{ isset($request) && $request->digging_pipeline == 1 ? 'checked' : '' }} type="radio"
+                                    required
+                                    id="customRadioInline1" value="1" name="digging_pipeline"
+                                    class="custom-control-input">
+                                <label class="custom-control-label" for="customRadioInline1">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input
+                                    {{ isset($request) && $request->digging_pipeline == 0 ? 'checked' : '' }} type="radio"
+                                    required
+                                    id="customRadioInline2" value="0" name="digging_pipeline"
+                                    class="custom-control-input">
+                                <label class="custom-control-label" for="customRadioInline2">No</label>
+                            </div>
                         </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input
-                                {{ isset($request) && $request->digging_pipeline == 0 ? 'checked' : '' }} type="radio"
-                                id="customRadioInline2" value="0" name="digging_pipeline" class="custom-control-input">
-                            <label class="custom-control-label" for="customRadioInline2">No</label>
-                        </div>
+                        <label id="digging_pipeline-error" class="error" for="digging_pipeline"></label>
                     </div>
+
                 </div>
 
 
@@ -220,20 +238,27 @@
                         Do You want to pay for the materials yourself by submitting an EBM invoice ?
                     </label>
                     <div class="form-group">
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input
-                                {{ isset($request) && $request->equipment_payment == 1 ? 'checked' : '' }} type="radio"
-                                id="equipment_payment1" value="1" name="equipment_payment" class="custom-control-input">
-                            <label class="custom-control-label" for="equipment_payment1">
-                                Yes
-                            </label>
+                        <div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input
+                                    {{ isset($request) && $request->equipment_payment == 1 ? 'checked' : '' }} type="radio"
+                                    required
+                                    id="equipment_payment1" value="1" name="equipment_payment"
+                                    class="custom-control-input">
+                                <label class="custom-control-label" for="equipment_payment1">
+                                    Yes
+                                </label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input
+                                    {{ isset($request) && $request->equipment_payment == 0 ? 'checked' : '' }} type="radio"
+                                    required
+                                    id="equipment_payment2" value="0" name="equipment_payment"
+                                    class="custom-control-input">
+                                <label class="custom-control-label" for="equipment_payment2">No</label>
+                            </div>
                         </div>
-                        <div class="custom-control custom-radio custom-control-inline">
-                            <input
-                                {{ isset($request) && $request->equipment_payment == 0 ? 'checked' : '' }} type="radio"
-                                id="equipment_payment2" value="0" name="equipment_payment" class="custom-control-input">
-                            <label class="custom-control-label" for="equipment_payment2">No</label>
-                        </div>
+                        <label id="equipment_payment-error" class="error" for="equipment_payment"></label>
                     </div>
                 </div>
             </div>
@@ -255,7 +280,6 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
     <script>
 
         function getDistricts(provinceId, selectedDistrictId) {
@@ -331,6 +355,18 @@
         }
 
         $(function () {
+            let $formSave = $('#formSave');
+            $formSave.validate();
+            $formSave.on('submit', function (e) {
+                e.preventDefault();
+                if ($(this).valid()) {
+                    let btn = $(this).find('button[type=submit]');
+                    btn.prop('disabled', true);
+                    btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+                    e.target.submit();
+                }
+            });
+
             $('#province_id').on('change', function (e) {
                 getDistricts($(this).val());
             });
