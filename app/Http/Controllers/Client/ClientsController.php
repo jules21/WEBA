@@ -19,6 +19,7 @@ class ClientsController extends Controller
     public function home()
     {
         $operators = Operator::query()
+            ->whereHas('operationAreas')
             ->latest()
             ->get();
         $recentRequests = Request::with(['requestType', 'operator'])
@@ -44,6 +45,7 @@ class ClientsController extends Controller
         $sectors = Sector::query()
             ->whereIn('district_id', $operationAreas)
             ->get();
+
         $requestTypes = $this->getRequestsTypes();
         $waterUsage = $this->getWaterUsages();
         $roadTypes = $this->getRoadTypes();

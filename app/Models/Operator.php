@@ -156,7 +156,8 @@ class Operator extends Model implements Auditable
 
     public function findCustomerByDocNumber($docNumber)
     {
-        return $this->where('doc_number', '=', $docNumber)
+        return Customer::query()
+            ->where('doc_number', '=', $docNumber)
             ->first();
     }
 }

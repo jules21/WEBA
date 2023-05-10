@@ -78,7 +78,7 @@ class ClientRequestsController extends Controller
     {
         $client = auth('client')->user();
         $customer = $operator->findCustomerByDocNumber($client->doc_number);
-        if (!is_null($customer))
+        if ($customer)
             return $customer;
 
         return $operator->customers()

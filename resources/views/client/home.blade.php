@@ -18,13 +18,14 @@
     </x-layouts.breadcrumb>
 @endsection
 @section('content')
-    <div class="card card-body h-100 tw-rounded-lg tw-bg-cover tw-bg-no-repeat" style="background-image: url({{ asset('images/bg_logo.png') }});">
+    <div class="card card-body h-100 tw-rounded-lg tw-bg-cover tw-bg-no-repeat tw-bg-center"
+         style="background-image: url({{ asset('images/bg_logo.png') }});">
         <h4>
             Recent Requests
         </h4>
 
         <ul class="list-group list-group-flush mt-4">
-            @foreach($recentRequests as $item)
+            @forelse($recentRequests as $item)
                 <li class="list-group-item d-flex align-items-start mb-3 bg-transparent">
                     <img src="{{ $item->operator->logo_url }}" class="mr-3 tw-w-10" alt="...">
                     <div class="media-body">
@@ -33,7 +34,8 @@
                                 {{ $item->operator->name }}
 
                             </h5>
-                            <span class="badge badge-{{ $item->status_color }} rounded-pill tw-py-1.5 tw-px-2">{{ $item->status }}</span>
+                            <span
+                                class="badge badge-{{ $item->status_color }} rounded-pill tw-py-1.5 tw-px-2">{{ $item->status }}</span>
 
                         </div>
                         <p class="text-muted">
@@ -51,7 +53,13 @@
                         </div>
                     </div>
                 </li>
-            @endforeach
+            @empty
+                <li class="list-group-item list-group-item-action">
+                    <div class="alert alert-info">
+                        No recent requests found.
+                    </div>
+                </li>
+            @endforelse
 
 
         </ul>

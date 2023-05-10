@@ -260,6 +260,12 @@
 .tw-bg-center {
     background-position: center !important
 }
+.tw-bg-bottom {
+    background-position: bottom !important
+}
+.tw-bg-top {
+    background-position: top !important
+}
 .tw-bg-repeat {
     background-repeat: repeat !important
 }

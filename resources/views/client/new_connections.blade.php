@@ -280,8 +280,6 @@
     </div>
 @endsection
 @section('scripts')
-    {{--    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>--}}
-    {{--    {!! JsValidator::formRequest(App\Http\Requests\ValidateNewConnectionRequest::class) !!}--}}
     <script>
 
         function getDistricts(provinceId, selectedDistrictId) {
@@ -357,7 +355,18 @@
         }
 
         $(function () {
-            $('#formSave').validate();
+            let $formSave = $('#formSave');
+            $formSave.validate();
+            $formSave.on('submit', function (e) {
+                e.preventDefault();
+                if ($(this).valid()) {
+                    let btn = $(this).find('button[type=submit]');
+                    btn.prop('disabled', true);
+                    btn.html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+                    e.target.submit();
+                }
+            });
+
             $('#province_id').on('change', function (e) {
                 getDistricts($(this).val());
             });

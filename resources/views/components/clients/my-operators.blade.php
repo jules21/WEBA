@@ -5,7 +5,7 @@
 
 
     <ul class="list-unstyled mt-4">
-        @foreach(myOperators() as $item)
+        @forelse(myOperators() as $item)
             <li class="media mb-3">
                 <img src="{{ $item->logo_url }}" class="mr-3 tw-w-10" alt="...">
                 <div class="media-body">
@@ -29,6 +29,12 @@
                     </div>
                 </div>
             </li>
-        @endforeach
+        @empty
+            <li class="media d-block tw-w-full">
+                <div class="alert alert-info">
+                    No operators found.
+                </div>
+            </li>
+        @endforelse
     </ul>
 </div>
