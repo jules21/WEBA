@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use OwenIt\Auditing\Contracts\Auditable;
 
 /**
@@ -19,33 +23,33 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string $subscription_number
  * @property string $amount
  * @property string $balance
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Billing newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Billing newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Billing query()
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereAmount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereBalance($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereLastIndex($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereMeterNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereStartingIndex($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereSubscriptionNumber($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereUnitPrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereUserId($value)
+ * @method static Builder|Billing newModelQuery()
+ * @method static Builder|Billing newQuery()
+ * @method static Builder|Billing query()
+ * @method static Builder|Billing whereAmount($value)
+ * @method static Builder|Billing whereBalance($value)
+ * @method static Builder|Billing whereCreatedAt($value)
+ * @method static Builder|Billing whereId($value)
+ * @method static Builder|Billing whereLastIndex($value)
+ * @method static Builder|Billing whereMeterNumber($value)
+ * @method static Builder|Billing whereStartingIndex($value)
+ * @method static Builder|Billing whereSubscriptionNumber($value)
+ * @method static Builder|Billing whereUnitPrice($value)
+ * @method static Builder|Billing whereUpdatedAt($value)
+ * @method static Builder|Billing whereUserId($value)
  *
  * @property string|null $comment
  * @property string|null $attachment
- * @property-read \App\Models\MeterRequest|null $meterRequest
- * @property-read \App\Models\User $user
+ * @property-read MeterRequest|null $meterRequest
+ * @property-read User $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereAttachment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Billing whereComment($value)
+ * @method static Builder|Billing whereAttachment($value)
+ * @method static Builder|Billing whereComment($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Billing extends Model implements Auditable
 {
@@ -53,7 +57,7 @@ class Billing extends Model implements Auditable
 
     protected $guarded = [];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -68,7 +72,7 @@ class Billing extends Model implements Auditable
         return $this->belongsTo(MeterRequest::class, 'subscription_number', 'subscription_number');
     }
 
-    public function history()
+    public function history(): HasMany
     {
         return $this->hasMany(Payment::class, 'billing_id', 'id');
     }

@@ -14,8 +14,8 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link tw-rounded-xl hover:tw-bg-primary/5 tw-text-lg d-flex align-items-center tw-gap-1 active"
-               href="#">
+            <a class="nav-link tw-rounded-xl hover:tw-bg-primary/5 tw-text-lg d-flex align-items-center tw-gap-1 {{ request()->routeIs('client.billings')?'tw-bg-primary/5':'' }}"
+               href="{{ route('client.billings') }}">
                 <div
                     class="d-flex justify-content-center align-items-center tw-h-12 tw-w-12 bg-primary text-white rounded-circle flex-shrink-0">
                     <i class="ti ti-receipt tw-text-[24px]"></i>
