@@ -9604,3 +9604,8 @@ html, body {
 [x-cloak] {
   display: none !important;
 }
+
+.error {
+  color: #e3342f !important;
+  font-size: 13px !important;
+}

@@ -121,12 +121,12 @@ class Operator extends Model implements Auditable
 
     public function getFullAddressAttribute(): string
     {
-        return $this->address.' '.$this->village->name.' '.$this->cell->name.' '.$this->sector->name.' '.$this->district->name.' '.$this->province->name;
+        return $this->address . ' ' . $this->village->name . ' ' . $this->cell->name . ' ' . $this->sector->name . ' ' . $this->district->name . ' ' . $this->province->name;
     }
 
     public function getLogoUrlAttribute(): string
     {
-        return $this->logo ? Storage::url(self::LOGO_PATH.$this->logo) : asset('img/logo.svg');
+        return $this->logo ? Storage::url(self::LOGO_PATH . $this->logo) : asset('img/logo.svg');
     }
 
     public function operationAreas(): HasMany
@@ -134,9 +134,9 @@ class Operator extends Model implements Auditable
         return $this->hasMany(OperationArea::class);
     }
 
-    public function customers(): BelongsToMany
+    public function customers(): HasMany
     {
-        return $this->belongsToMany(Customer::class, 'customer_operators', 'operator_id', 'customer_id');
+        return $this->hasMany(Customer::class, 'operator_id');
     }
 
     public function stocks(): HasManyThrough
@@ -152,5 +152,11 @@ class Operator extends Model implements Auditable
     public function requests(): HasMany
     {
         return $this->hasMany(Request::class, 'operator_id');
+    }
+
+    public function findCustomerByDocNumber($docNumber)
+    {
+        return $this->where('doc_number', '=', $docNumber)
+            ->first();
     }
 }
