@@ -30,7 +30,7 @@
         </div>
 
         <form
-            action="{{ isset($request)?route('admin.requests.update',encryptId($request->id)): route("admin.requests.store") }}"
+            action=""
             class="mt-2" method="post" id="formSave"
             enctype="multipart/form-data">
             @csrf
