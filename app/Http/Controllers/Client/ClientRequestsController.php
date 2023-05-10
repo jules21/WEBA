@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Constants\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ValidateNewConnectionRequest;
 use App\Models\OperationArea;
@@ -47,6 +48,7 @@ class ClientRequestsController extends Controller
             'meter_qty' => $data['meter_qty'],
             'upi' => $data['upi'],
             'upi_attachment' => $data['upi_attachment'],
+            'province_id' => $operationArea->district->province_id,
             'district_id' => $operationArea->district_id,
             'sector_id' => $sector_id,
             'cell_id' => $data['cell_id'],
@@ -56,7 +58,8 @@ class ClientRequestsController extends Controller
             'road_type' => $data['road_type'],
             'digging_pipeline' => $data['digging_pipeline'],
             'equipment_payment' => $data['equipment_payment'],
-            'customer_initiated' => true
+            'customer_initiated' => true,
+            'status' => Status::SUBMITTED
         ]);
 
         $road_cross_types = $connectionRequest->input('road_cross_types', []);
@@ -94,7 +97,6 @@ class ClientRequestsController extends Controller
                 'cell_id' => $client->cell_id,
                 'village_id' => $client->village_id,
                 'document_type_id' => $client->document_type_id,
-
             ]);
     }
 }

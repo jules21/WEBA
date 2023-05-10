@@ -406,4 +406,6 @@ Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
     Route::post('/new-connection/{operator}', [ClientRequestsController::class, 'requestNewConnection'])
         ->name('request-new-connection');
 
+    Route::get('/billings', App\Http\Livewire\Client\ClientBilling::class)->name('billings');
+
 });

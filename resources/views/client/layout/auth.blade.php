@@ -26,6 +26,9 @@
                 </div>
                 <div class="col-md-8">
                     @yield('content')
+                    @if(isset($slot))
+                        {{ $slot }}
+                    @endif
                 </div>
             </div>
         </main>
