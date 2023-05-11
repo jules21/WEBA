@@ -43,7 +43,8 @@ class StoreBillChargeRequest extends FormRequest
                     ]);
                 }),
             ],
-            'unit_price' => ['required'],
+//            'water_network_type_id' => ['required', Rule::unique('bill_charges')],
+//            'unit_price' => ['required'],
         ];
     }
 
