@@ -47,7 +47,8 @@
                                     Requested:</strong> {{ $item->meter_qty }}
 
                             </p>
-                            <a href="" class="btn btn-secondary btn-sm rounded-sm">
+                            <a href="{{ route('client.request-details',encryptId($item->id)) }}"
+                               class="btn btn-secondary btn-sm rounded-sm">
                                 Details
                             </a>
                         </div>
