@@ -1,7 +1,9 @@
 <?php
 
 use App\Constants\Permission;
+use App\Models\Operator;
 use App\Models\PaymentConfiguration;
+use Illuminate\Database\Eloquent\Builder;
 
 function getPaymentConfiguration($paymentTypeId, $requestTypeId, $operationAreaId = null): ?PaymentConfiguration
 {
@@ -66,4 +68,15 @@ function isSuperAdmin(): bool
 function isForOperationArea(): bool
 {
     return auth()->check() && auth()->user()->operation_area;
+}
+
+function myOperators()
+{
+    return Operator::query()
+        ->whereHas('customers', function (Builder $builder) {
+            $builder->where('doc_number', '=', auth('client')->user()->doc_number);
+        })
+        ->limit(5)
+        ->latest()
+        ->get();
 }

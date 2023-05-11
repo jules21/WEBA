@@ -29,6 +29,10 @@
  * Date: 2023-03-08T15:28Z
  */
 
+/*! jQuery Validation Plugin - v1.19.5 - 7/1/2022
+ * https://jqueryvalidation.org/
+ * Copyright (c) 2022 Jörn Zaefferer; Licensed MIT */
+
 /**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
  * @version 1.16.1

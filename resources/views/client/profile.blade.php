@@ -31,8 +31,12 @@
                                              alt="Admin" class="rounded-circle" width="150">
                                         <div class="mt-3">
                                             <h4>{{auth('client')->user()->name}}</h4>
-                                            <p class="text-secondary mb-1">{{auth('client')->user()->email}}
-                                                {{auth('client')->user()->phone}}</p>
+                                            <p>
+                                                <a href="mailto:{{auth('client')->user()->email}}"
+                                                   class="text-decoration-none text-muted">{{auth('client')->user()->email}}</a> |
+                                            <a href="tel:{{auth('client')->user()->phone}}"
+                                                    class="text-decoration-none">{{auth('client')->user()->phone}}</a>
+                                            </p>
                                             <p class="text-muted font-size-sm">
                                                 {{optional(auth('client')->user()->province)->name}},
                                                 {{optional(auth('client')->user()->district)->name}},

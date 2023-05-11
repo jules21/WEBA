@@ -6,7 +6,12 @@ use App\Http\Controllers\AuditingController;
 use App\Http\Controllers\CashMovementController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\ChartAccountController;
+use App\Http\Controllers\Client\ClientRequestsController;
 use App\Http\Controllers\Client\ClientsController;
+use App\Http\Controllers\ClientAuth\ForgotPasswordController;
+use App\Http\Controllers\ClientAuth\LoginController;
+use App\Http\Controllers\ClientAuth\RegisterController;
+use App\Http\Controllers\ClientAuth\ResetPasswordController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
@@ -35,8 +40,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 Route::get('/home', [ClientsController::class, 'home'])->name('home');
-
-Route::get('/new-connection/{operator}', [ClientsController::class, 'newConnection'])->name('clients.connection-new');
 
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
@@ -134,6 +137,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::put('/{purchase}/update', [PurchaseController::class, 'update'])->name('update');
         Route::delete('/{purchase}/delete', [PurchaseController::class, 'destroy'])->name('destroy');
         Route::post('/{purchase}/submit-review', [PurchaseController::class, 'submitReview'])->name('submit-review');
+
+        Route::get('/export', [PurchaseController::class, 'exportDataToExcel'])->name('export-data-to-excel');
     });
     Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
         Route::get('/chart-of-accounts', [ChartAccountController::class, 'index'])->name('chart-of-accounts');
@@ -383,17 +388,24 @@ Route::get('/items-by-categories', [ItemController::class, 'getItemsByCategories
 Route::get('item-unit-price/{item}', [ItemController::class, 'getItemUnitPrice'])->name('items.get-unit-price');
 
 
-Route::group(['prefix' => 'client','as'=>'client.'], function () {
-    Route::get('/login', [\App\Http\Controllers\ClientAuth\LoginController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [\App\Http\Controllers\ClientAuth\LoginController::class, 'login'])->name('login.attempt');
-    Route::post('/logout', [\App\Http\Controllers\ClientAuth\LoginController::class, 'logout'])->name('logout');
-    Route::get('/register', [\App\Http\Controllers\ClientAuth\RegisterController::class, 'showRegistrationForm'])->name('register');
-    Route::post('/register', [\App\Http\Controllers\ClientAuth\RegisterController::class, 'register'])->name('register.attempt');
-  Route::post('/password/email', [\App\Http\Controllers\ClientAuth\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.request');
-  Route::post('/password/reset', [\App\Http\Controllers\ClientAuth\ResetPasswordController::class,'reset'])->name('password.email');
-  Route::get('/password/reset', [\App\Http\Controllers\ClientAuth\ForgotPasswordController::class,'showLinkRequestForm'])->name('password.reset');
-  Route::get('/password/reset/{token}', [\App\Http\Controllers\ClientAuth\ResetPasswordController::class,'showResetForm']);
+Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login.attempt');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.attempt');
+    Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.request');
+    Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.email');
+    Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.reset');
+    Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm']);
     Route::get('/profile', [ClientsController::class, 'profile'])->name('profile');
-    Route::put('/profile/{client}/update', [ClientsController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/profile/{client}/update', [ClientsController::class, 'updateProfile'])
+        ->name('profile.update');
+    Route::get('/new-connection/{operator}', [ClientsController::class, 'newConnection'])
+        ->name('connection-new');
+    Route::post('/new-connection/{operator}', [ClientRequestsController::class, 'requestNewConnection'])
+        ->name('request-new-connection');
+
+    Route::get('/billings', App\Http\Livewire\Client\ClientBilling::class)->name('billings');
 
 });

@@ -7,7 +7,7 @@ use App\Models\Client;
 use App\Models\Operator;
 use App\Models\Request;
 use App\Models\Sector;
-use App\Models\WaterUsage;
+use Illuminate\Database\Eloquent\Builder;
 
 class ClientsController extends Controller
 {
@@ -18,19 +18,18 @@ class ClientsController extends Controller
 
     public function home()
     {
-        $recentOperators = Operator::query()
-            ->latest()
-            ->limit(2)
-            ->get();
         $operators = Operator::query()
+            ->whereHas('operationAreas')
             ->latest()
             ->get();
         $recentRequests = Request::with(['requestType', 'operator'])
+            ->whereHas('customer', function (Builder $builder) {
+                $builder->where('doc_number', '=', auth('client')->user()->doc_number);
+            })
             ->latest()
             ->limit(5)
             ->get();
         return view('client.home', [
-            'recentOperators' => $recentOperators,
             'operators' => $operators,
             'recentRequests' => $recentRequests
         ]);
@@ -39,9 +38,14 @@ class ClientsController extends Controller
     public function newConnection(Operator $operator)
     {
 
+        $operationAreas = $operator->operationAreas()
+            ->pluck('district_id')
+            ->toArray();
+
         $sectors = Sector::query()
-            ->where('district_id', '=', $operator->district_id)
+            ->whereIn('district_id', $operationAreas)
             ->get();
+
         $requestTypes = $this->getRequestsTypes();
         $waterUsage = $this->getWaterUsages();
         $roadTypes = $this->getRoadTypes();

@@ -1,16 +1,17 @@
 @extends('client.layout.guest')
 @section('title', 'Register')
 @section('content')
-    <div class="card tw-shadow bg-transparent tw-mt-20 overflow-hidden tw-rounded-xl border tw-border-primary">
+    <div class=" bg-transparent tw-mt-20 overflow-hidden">
         <div class="row">
             <div class="col-lg-4">
-                <div class="text-white card-body">
+                <div class="text-white">
                     <div class="d-flex justify-content-center align-items-center">
                         <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
                     </div>
                     <h2>Create An Account </h2>
                     <p class="text-1">
                         Welcome to our system! We're excited that you're interested in creating an account with us. <br>
+                        <br>
                         By creating an account, you'll be able to access exclusive features and content that are not
                         available to non-registered users.
                         {{--                To get started, please fill out the registration form below.--}}
@@ -18,14 +19,14 @@
                     <p class="text-2">
                         If you've already created an account with us, please click the button below to log in.
                     </p>
-                    <div class="form-left-last">
+                    <div class="form-left-last mb-4">
                         <a href="{{ route('client.login') }}" class="btn btn-outline-light">Login to your account
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8 bg-white">
-                <div class="card-body">
+            <div class="col-lg-8">
+                <div class="card-body card tw-rounded-md">
                     <form method="post" id="register-client" action="{{ route('client.register') }}">
                         @csrf
                         <h2>Register Form</h2>
@@ -172,7 +173,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button type="submit" name="register" class="btn btn-primary" >
+                            <button type="submit" name="register" class="btn btn-primary">
                                 Create Account
                             </button>
 
@@ -185,10 +186,8 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     {!! JsValidator::formRequest(App\Http\Requests\RegisterClientRequest::class,'#register-client') !!}
-
     <script>
 
         function getDistricts(provinceId, selectedDistrictId) {

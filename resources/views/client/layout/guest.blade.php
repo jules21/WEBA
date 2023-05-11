@@ -14,6 +14,7 @@
     <link href="{{ mix('css/tailwind.css') }}" rel="stylesheet" type="text/css"/>
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="{{ asset('assets/logos/logo.svg') }}"/>
+    <link rel="stylesheet" href="{{asset('css/guest.css')}}">
 </head>
 <!--end::Head-->
 <!--begin::Body-->
