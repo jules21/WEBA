@@ -1,17 +1,17 @@
-<div class="card mb-3">
+<div class="card mb-3 tw-rounded-lg tw-h-full">
     <div class="card-body">
         <h5 class="mb-4">
             Request Details
         </h5>
         <div class="row">
-      {{--      <div class="col-md-6 col-xl-4">
-                <div class="form-group">
-                    <label class="font-weight-bold">Type</label>
-                    <div class="form-control-plaintext py-0">
-                        {{ $request->requestType->name }}
-                    </div>
-                </div>
-            </div>--}}
+            {{--      <div class="col-md-6 col-xl-4">
+                      <div class="form-group">
+                          <label class="font-weight-bold">Type</label>
+                          <div class="form-control-plaintext py-0">
+                              {{ $request->requestType->name }}
+                          </div>
+                      </div>
+                  </div>--}}
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
                     <label for="name" class="font-weight-bold">Water Usage</label>
@@ -128,7 +128,7 @@
                     @endforelse
                 </div>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="form-group">
                     <label class="font-weight-bold">Description</label>
                     <div class="form-control-plaintext py-0">
@@ -139,119 +139,123 @@
 
         </div>
 
-        <div class="row mt-4">
-            <div class="col-lg-12">
-                <div class="">
-                    <h4>
-                        Water Network & Connection Fee
-                    </h4>
-                    @if($request->canAddConnectionFee())
-                        <form action="{{ route('admin.requests.add-water-network', encryptId($request->id)) }}"
-                              method="post" id="saveWaterNetworkForm">
-                            @csrf
-                            <div class="row">
-                                <div class="col-md-4 my-2">
-                                    <div class="form-group">
-                                        <label for="water_network_id">
+        @if(auth()->check())
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <div class="">
+                        <h4>
+                            Water Network & Connection Fee
+                        </h4>
+                        @if($request->canAddConnectionFee())
+                            <form action="{{ route('admin.requests.add-water-network', encryptId($request->id)) }}"
+                                  method="post" id="saveWaterNetworkForm">
+                                @csrf
+                                <div class="row">
+                                    <div class="col-md-4 my-2">
+                                        <div class="form-group">
+                                            <label for="water_network_id">
                                             <span class="font-weight-bold">
                                                 Connection Fee
                                             </span>
-                                        </label>
-                                        <input type="text" name="connection_fee" id="connection_fee" disabled
-                                               class="form-control-plaintext" value="RWF {{ number_format($paymentConfig->amount) }}">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4 my-2">
-                                    <div class="form-group">
-                                        <label for="water_network_id">
-                                            <span class="font-weight-bold">Water Network</span>
-                                        </label>
-                                        <select name="water_network_id" id="water_network_id" class="form-control">
-                                            <option value="">
-                                                Please Select Water Network
-                                            </option>
-                                            @foreach($waterNetworks as $item)
-                                                <option value="{{ $item->id }}"
-                                                    {{ $request->water_network_id == $item->id ? 'selected' : '' }}>
-                                                    {{ $item->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 my-2">
-                                    <div class="form-group">
-                                        <div style="visibility: hidden" class="mb-2">
-                                            Save Button
+                                            </label>
+                                            <input type="text" name="connection_fee" id="connection_fee" disabled
+                                                   class="form-control-plaintext"
+                                                   value="RWF {{ number_format($paymentConfig->amount) }}">
                                         </div>
-                                        <button type="submit"
-                                                class="btn btn-light-primary" id="addWaterNetwork">
-                                            Save Changes
-                                        </button>
+                                    </div>
+
+                                    <div class="col-md-4 my-2">
+                                        <div class="form-group">
+                                            <label for="water_network_id">
+                                                <span class="font-weight-bold">Water Network</span>
+                                            </label>
+                                            <select name="water_network_id" id="water_network_id" class="form-control">
+                                                <option value="">
+                                                    Please Select Water Network
+                                                </option>
+                                                @foreach($waterNetworks as $item)
+                                                    <option value="{{ $item->id }}"
+                                                        {{ $request->water_network_id == $item->id ? 'selected' : '' }}>
+                                                        {{ $item->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 my-2">
+                                        <div class="form-group">
+                                            <div style="visibility: hidden" class="mb-2">
+                                                Save Button
+                                            </div>
+                                            <button type="submit"
+                                                    class="btn btn-light-primary" id="addWaterNetwork">
+                                                Save Changes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        @elseif(!is_null($request->water_network_id))
+                            <div class="row mt-4">
+                                <div class="col-lg-6">
+                                    <label for="">
+                                        <span class="font-weight-bold">Water Network</span>
+                                    </label>
+                                    <div class="form-control-plaintext py-0">
+                                        {{ $request->waterNetwork->name }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <label for="">
+                                        <span class="font-weight-bold">Connection Fee</span>
+                                    </label>
+                                    <div class="form-control-plaintext py-0">
+                                        RWF {{ number_format($request->connection_fee,0) }}
                                     </div>
                                 </div>
                             </div>
-                        </form>
-                    @elseif(!is_null($request->water_network_id))
-                        <div class="row mt-4">
-                            <div class="col-lg-6">
-                                <label for="">
-                                    <span class="font-weight-bold">Water Network</span>
-                                </label>
-                                <div class="form-control-plaintext py-0">
-                                    {{ $request->waterNetwork->name }}
+                        @else
+                            <div class="alert alert-info mb-0 mt-3 alert-custom ">
+                                <div class="alert-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info"
+                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5"
+                                         stroke="currentColor"
+                                         fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                        <circle cx="12" cy="12" r="9"/>
+                                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                        <polyline points="11 12 12 12 12 16 13 16"/>
+                                    </svg>
+                                </div>
+                                <div class="alert-text">
+                                    No Water Network & Connection Fee Added Yet !
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <label for="">
-                                    <span class="font-weight-bold">Connection Fee</span>
-                                </label>
-                                <div class="form-control-plaintext py-0">
-                                    RWF {{ number_format($request->connection_fee,0) }}
-                                </div>
-                            </div>
-                        </div>
-                    @else
-                        <div class="alert alert-info mb-0 mt-3 alert-custom ">
-                            <div class="alert-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-info"
-                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                    <circle cx="12" cy="12" r="9"/>
-                                    <line x1="12" y1="8" x2="12.01" y2="8"/>
-                                    <polyline points="11 12 12 12 12 16 13 16"/>
-                                </svg>
-                            </div>
-                            <div class="alert-text">
-                                No Water Network & Connection Fee Added Yet !
-                            </div>
-                        </div>
-                    @endif
+                        @endif
+                    </div>
                 </div>
             </div>
-        </div>
 
-
-        @if(is_null($request->water_network_id))
-            <div class="alert alert-light-warning alert-custom alert-notice my-3 p-2 rounded-0">
-                <div class="alert-icon text-warning">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shield-exclamation"
-                         width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
-                         fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path
-                            d="M15.04 19.745c-.942 .551 -1.964 .976 -3.04 1.255a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 .195 6.015"></path>
-                        <path d="M19 16v3"></path>
-                        <path d="M19 22v.01"></path>
-                    </svg>
+            @if(is_null($request->water_network_id))
+                <div class="alert alert-light-warning alert-custom alert-notice my-3 p-2 rounded-0">
+                    <div class="alert-icon text-warning">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shield-exclamation"
+                             width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
+                             fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path
+                                d="M15.04 19.745c-.942 .551 -1.964 .976 -3.04 1.255a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 .195 6.015"></path>
+                            <path d="M19 16v3"></path>
+                            <path d="M19 22v.01"></path>
+                        </svg>
+                    </div>
+                    <div class="alert-text">
+                        Please add the water network to proceed.
+                    </div>
                 </div>
-                <div class="alert-text">
-                    Please add the water network to proceed.
-                </div>
-            </div>
+            @endif
         @endif
+
 
     </div>
 </div>

@@ -95,4 +95,12 @@ class ClientRequestsController extends Controller
                 'document_type_id' => $client->document_type_id,
             ]);
     }
+
+    public function details(Request $request)
+    {
+        $request->load(['customer', 'operator', 'operationArea', 'requestType', 'waterUsage', 'pipeCrosses.pipeCross']);
+        return view('client.request_details', [
+            'request' => $request
+        ]);
+    }
 }
