@@ -26,11 +26,11 @@
         </h4>
         <div class="tw-text-sm alert alert-info d-flex align-items-center tw-gap-2">
             <i class="ti ti-info-circle tw-text-[24px]"></i> Fill the form below to request new connection At
-            <strong>{{ $operator->name }} </strong>
+            <strong>{{ $operator->name }} </strong> in <strong>{{ $operationArea->district->name }}</strong> District.
         </div>
 
         <form
-            action="{{ route('client.request-new-connection',encryptId($operator->id)) }}"
+            action="{{ route('client.request-new-connection',encryptId($operator->id)) }}?op_id={{ encryptId($operationArea->id) }}"
             class="mt-2" method="post" id="formSave"
             enctype="multipart/form-data">
             @csrf

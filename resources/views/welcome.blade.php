@@ -33,31 +33,47 @@
                         Financial Loss and Non-Revenue Water .
                     </p>
                     <div class="d-flex tw-gap-6 justify-content-center justify-content-sm-start">
-                        <a href="{{route('client.login')}}"
-                           class="btn text-white bg-accent tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
-                            Login
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login"
-                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
-                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path
-                                    d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
-                                <path d="M20 12h-13l3 -3m0 6l-3 -3"></path>
-                            </svg>
-                        </a>
-                        <a href="{{route('client.register')}}"
-                           class="btn bg-white tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
-                            Register
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-plus"
-                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
-                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
-                                <path d="M16 19h6"></path>
-                                <path d="M19 16v6"></path>
-                                <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
-                            </svg>
-                        </a>
+                        @if(auth('client')->check())
+                            <a href="{{ route('home') }}"
+                               class="btn bg-white tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
+                                Go to Dashboard
+                                <svg class="tw-w-3 tw-h-3 tw-ml-2" fill="currentColor" viewBox="0 0 20 20"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
+                                          clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        @else
+                            <a href="{{route('client.login')}}"
+                               class="btn text-white bg-accent tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
+                                Login
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75"
+                                     stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path
+                                        d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
+                                    <path d="M20 12h-13l3 -3m0 6l-3 -3"></path>
+                                </svg>
+                            </a>
+                            <a href="{{route('client.register')}}"
+                               class="btn bg-white tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
+                                Register
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-plus"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75"
+                                     stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                    <path d="M16 19h6"></path>
+                                    <path d="M19 16v6"></path>
+                                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4"></path>
+                                </svg>
+                            </a>
+                        @endif
+
                     </div>
                 </div>
             </div>

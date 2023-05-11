@@ -20,15 +20,11 @@ class ClientRequestsController extends Controller
     {
         $data = $connectionRequest->validated();
         $sector_id = $data['sector_id'];
+        $opId = decryptId(\request('op_id'));
 
-        $operationArea = OperationArea::query()
-            ->whereHas('district', function ($builder) use ($sector_id) {
-                $builder->whereHas('sectors', function ($builder) use ($sector_id) {
-                    $builder->where('id', '=', $sector_id);
-                });
-            })->first();
+        $operationArea = OperationArea::query()->findOrFail($opId);
         if (is_null($operationArea))
-            return back()->with('error', 'No operation area found for this sector')
+            return back()->with('error', 'No operation area found for this operator,please contact the operator for more information.')
                 ->withInput($connectionRequest->all());
 
         if ($connectionRequest->hasFile('upi_attachment')) {

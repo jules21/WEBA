@@ -22,7 +22,8 @@
         @foreach($billings as $item)
             <div class="card">
                 <div class="card-header" id="headingOne">
-                    <div class="tw-cursor-pointer  text-left" data-toggle="collapse" data-target="#collapseOne{{$item->id}}" aria-controls="collapseOne{{$item->id}}">
+                    <div class="tw-cursor-pointer  text-left" data-toggle="collapse"
+                         data-target="#collapseOne{{$item->id}}" aria-controls="collapseOne{{$item->id}}">
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="font-weight-bold">Subscription #:</div>
