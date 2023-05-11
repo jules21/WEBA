@@ -345,7 +345,7 @@
 
                         <div class="form-group">
                             <label for="unit_price">Unit Price</label>
-                            <input type="number" name="unit_price" id="edit_unit_price" class="form-control">
+                            <input type="number" name="unit_price" id="_unit_price" class="form-control">
                         </div>
 
                     </div>
@@ -451,7 +451,7 @@
             $("#_water_network_type_id").val($(this).data('network'));
             $("#edit_operation_area_id").val($(this).data('area'));
             $("#_operation_area_id").val($(this).data('area'));
-            $("#edit_unit_price").val($(this).data('price'));
+            $("#_unit_price").val($(this).data('price'));
             $('#submissionFormEdit').attr('action', url);
         });
 
