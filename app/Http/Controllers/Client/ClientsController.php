@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Client;
+use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\Request;
 use App\Models\Sector;
@@ -19,6 +20,7 @@ class ClientsController extends Controller
     public function home()
     {
         $operators = Operator::query()
+            ->with('operationAreas.district')
             ->whereHas('operationAreas')
             ->latest()
             ->get();
@@ -37,13 +39,10 @@ class ClientsController extends Controller
 
     public function newConnection(Operator $operator)
     {
-
-        $operationAreas = $operator->operationAreas()
-            ->pluck('district_id')
-            ->toArray();
-
+        $opId = decryptId(\request('op_id'));
+        $operationArea = OperationArea::query()->findOrFail($opId);
         $sectors = Sector::query()
-            ->whereIn('district_id', $operationAreas)
+            ->where('district_id', '=', $operationArea->district_id)
             ->get();
 
         $requestTypes = $this->getRequestsTypes();
@@ -57,7 +56,8 @@ class ClientsController extends Controller
             'requestTypes' => $requestTypes,
             'waterUsage' => $waterUsage,
             'roadTypes' => $roadTypes,
-            'roadCrossTypes' => $roadCrossTypes
+            'roadCrossTypes' => $roadCrossTypes,
+            'operationArea' => $operationArea
         ]);
     }
 

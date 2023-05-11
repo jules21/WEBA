@@ -47,7 +47,7 @@
                                     Requested:</strong> {{ $item->meter_qty }}
 
                             </p>
-                            <a href="" class="btn btn-info btn-sm rounded-sm">
+                            <a href="" class="btn btn-secondary btn-sm rounded-sm">
                                 Details
                             </a>
                         </div>
@@ -56,7 +56,7 @@
             @empty
                 <li class="list-group-item list-group-item-action">
                     <div class="alert alert-info">
-                        No recent requests found.
+                        No recent requests found,you can use "New Connection" button to create a new request.
                     </div>
                 </li>
             @endforelse
@@ -82,18 +82,33 @@
                 <div class="modal-body">
                     <div class="list-group list-group-flush">
                         @foreach($operators as $item)
-                            <a href="{{ route('client.connection-new',encryptId($item->id)) }}"
-                               class="dropdown-item list-group-item list-group-item-action border-0 mb-3 rounded tw-bg-primary/5 tw-group hover:tw-bg-primary hover:tw-border-0">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h6 class="mb-1 group-hover:tw-text-white">
+                            <div href="{{ route('client.connection-new',encryptId($item->id)) }}"
+                                 class="list-group-item d-flex justify-content-between hover:tw-bg-gray-100">
+                                <div>
+                                    <h6 class="mb-1">
                                         {{ $item->name }}
                                     </h6>
+                                    <small class="text-muted group-hover:tw-text-white">
+                                        {{ $item->address }}
+                                    </small>
                                 </div>
-                                {{--                                <p class="mb-1">Some placeholder content in a paragraph.</p>--}}
-                                <small class="text-muted group-hover:tw-text-white">
-                                    {{ $item->address }}
-                                </small>
-                            </a>
+                                <div class="dropdown">
+                                    <button
+                                        class="tw-inline-flex tw-items-center px-2 tw-py-2 tw-text-sm tw-font-medium tw-text-white tw-bg-primary border tw-border tw-rounded hover:tw-bg-gray-100 hover:tw-text-accent focus:tw-z-10 focus:tw-ring-2 focus:tw-ring-offset-2 focus:tw-outline-none focus:tw-ring-accent focus:tw-text-accent tw-no-underline dropdown-toggle"
+                                        type="button"
+                                        data-toggle="dropdown">
+                                        Select District
+                                    </button>
+                                    <div class="dropdown-menu tw-shadow dropdown-menu-right">
+                                        @foreach($item->operationAreas as $operationArea)
+                                            <a class="dropdown-item"
+                                               href="{{ route('client.connection-new',encryptId($item->id)) }}?op_id={{ encryptId($operationArea->id) }}">
+                                                {{ $operationArea->district->name }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach
                     </div>
                 </div>

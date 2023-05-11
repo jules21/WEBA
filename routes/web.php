@@ -35,6 +35,7 @@ use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\RequestTechnicianController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
+use App\Http\Livewire\Client\Payments;
 use Illuminate\Support\Facades\Route;
 
 
@@ -407,5 +408,6 @@ Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
         ->name('request-new-connection');
 
     Route::get('/billings', App\Http\Livewire\Client\ClientBilling::class)->name('billings');
+    Route::get('/payments', Payments::class)->name('payments');
 
 });
