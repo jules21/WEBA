@@ -51,4 +51,14 @@ class ClientsController extends Controller
         dd($request->all()->toArray());
     }
 
+    public function help()
+    {
+        return view('client.help');
+    }
+
+    public function faq()
+    {
+        return view('client.faq');
+    }
+
 }

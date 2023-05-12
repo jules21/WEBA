@@ -88,7 +88,7 @@ class Controller extends BaseController
             ->get();
     }
 
-    public function saveFlowHistory(AppRequest $req, $message, $status = Status::SUBMITTED): void
+    public function saveFlowHistory($req, $message, $status = Status::SUBMITTED, bool $isComment = false, string $fileName = null): void
     {
         $req->flowHistories()
             ->create([
@@ -96,6 +96,8 @@ class Controller extends BaseController
                 'status' => $status,
                 'user_id' => auth()->id() ?? null,
                 'comment' => $message,
+                'attachment' => $fileName,
+                'is_comment' => $isComment,
             ]);
     }
 

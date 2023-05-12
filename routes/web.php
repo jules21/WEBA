@@ -41,7 +41,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 Route::get('/home', [ClientsController::class, 'home'])->name('home');
-
+Route::get('/help', [ClientsController::class, 'help'])->name('help');
+Route::get('/faq', [ClientsController::class, 'faq'])->name('faq');
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
 Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('villages');
