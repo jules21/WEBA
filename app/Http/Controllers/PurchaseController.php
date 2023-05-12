@@ -277,25 +277,6 @@ class PurchaseController extends Controller
             ->with('success', 'Purchase deleted successfully');
     }
 
-    /**
-     * @param $purchase
-     * @param $message
-     * @param $status
-     * @param bool $isComment
-     * @param string|null $fileName
-     */
-    public function saveFlowHistory($purchase, $message, $status, bool $isComment = false, string $fileName = null): void
-    {
-        $purchase->flowHistories()
-            ->create([
-                'status' => $status,
-                'user_id' => auth()->id(),
-                'comment' => $message,
-                'type' => $purchase->getClassName(),
-                'is_comment' => $isComment,
-                'attachment' => $fileName,
-            ]);
-    }
 
     /**
      * @throws Throwable
