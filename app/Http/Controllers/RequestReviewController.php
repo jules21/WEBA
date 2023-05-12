@@ -244,11 +244,7 @@ class RequestReviewController extends Controller
             if ($requestItems->count() > 0) {
                 $this->declareMaterialsFee($requestItems, $request);
             }
-            $request->operator
-                ->customers()
-                ->syncWithoutDetaching([
-                    $request->customer_id,
-                ]);
+
         } elseif ($status == Status::METER_ASSIGNED) {
             $request->load('meterNumbers.item');
             $this->declareMetersFee($request);

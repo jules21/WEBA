@@ -296,8 +296,9 @@
                     <div class="modal-body">
 
                         <div class="form-group">
+                            <input type="hidden" name="water_network_type_id" id="_water_network_type_id">
                             <label for="name">Water Network Type</label>
-                            <select name="water_network_type_id" id="edit_water_network_type_id" class="form-control"
+                            <select name="water_network_type" id="edit_water_network_type_id" class="form-control" disabled
                                     required>
                                 <option value="">Please Select Water Network Type</option>
                                 @foreach(App\Models\WaterNetworkType::all() as $type)
@@ -330,8 +331,9 @@
                             </div>
                         @else
                             <div class="form-group">
+                                <input type="hidden" name="operation_area_id" id="_operation_area_id">
                                 <label for="name">Operation Area</label>
-                                <select type="text" name="operation_area_id" id="edit_operation_area_id"
+                                <select type="text" id="edit_operation_area_id" disabled
                                         class="form-control">
                                     <option value="">Please Select Operation Area</option>
                                     @foreach($Areas as $area)
@@ -343,7 +345,7 @@
 
                         <div class="form-group">
                             <label for="unit_price">Unit Price</label>
-                            <input type="number" name="unit_price" id="edit_unit_price" class="form-control">
+                            <input type="number" name="unit_price" id="_unit_price" class="form-control">
                         </div>
 
                     </div>
@@ -446,8 +448,10 @@
             var url = $(this).data('url');
             $("#BillId").val($(this).data('id'));
             $("#edit_water_network_type_id").val($(this).data('network'));
+            $("#_water_network_type_id").val($(this).data('network'));
             $("#edit_operation_area_id").val($(this).data('area'));
-            $("#edit_unit_price").val($(this).data('price'));
+            $("#_operation_area_id").val($(this).data('area'));
+            $("#_unit_price").val($(this).data('price'));
             $('#submissionFormEdit').attr('action', url);
         });
 

@@ -96,3 +96,9 @@ html, body {
 }
 
 [x-cloak] { display: none !important; }
+
+.error {
+    color: $red !important;
+    font-size: 13px !important;
+}
+
