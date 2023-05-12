@@ -3,6 +3,7 @@
 @section('styles')
     <link rel="stylesheet" type="text/css" href="{{ asset('css/slick/slick.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/slick/slick-theme.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
     <style>
         .slick-prev:before,
         .slick-next:before {

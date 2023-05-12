@@ -35,6 +35,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 Route::get('/home', [ClientsController::class, 'home'])->name('home');
+Route::get('/set-language/{locale}', [HomeController::class, 'setLanguage'])->name('lang.switch');
 
 Route::get('/new-connection/{operator}', [ClientsController::class, 'newConnection'])->name('clients.connection-new');
 
