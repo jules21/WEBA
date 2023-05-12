@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Status;
 use App\Models\ItemSellingPrice;
 use App\Models\ItemSellPrice;
 use App\Models\PaymentConfiguration;
 use App\Models\PaymentMapping;
+use App\Models\Request as AppRequest;
 use App\Models\RequestType;
 use App\Models\RoadCrossType;
 use App\Models\RoadType;
@@ -86,11 +88,17 @@ class Controller extends BaseController
             ->get();
     }
 
-    /**
-     * @param $item
-     * @param $quantity
-     * @return void
-     */
+    public function saveFlowHistory(AppRequest $req, $message, $status = Status::SUBMITTED): void
+    {
+        $req->flowHistories()
+            ->create([
+                'type' => $req->getClassName(),
+                'status' => $status,
+                'user_id' => auth()->id() ?? null,
+                'comment' => $message,
+            ]);
+    }
+
     protected function updateMovementFromOldest($item, $quantity, $parent_movement = null): void
     {
         $movements = StockMovement::query()
@@ -117,7 +125,7 @@ class Controller extends BaseController
                 'price' => $movement->unit_price,
                 'quantity' => $qty > $quantity ? $quantity : $qty,
                 'currency_id' => $item->currency_id,
-                'parent_movement_id'=>$parent_movement->id,
+                'parent_movement_id' => $parent_movement->id,
             ]);
 
             $quantity = $qty > $quantity ? 0 : $quantity - $qty;
@@ -126,8 +134,8 @@ class Controller extends BaseController
         }
 
 
-
     }
+
     protected function getItemLastUnitPrice($item)
     {
         $movement = StockMovement::query()

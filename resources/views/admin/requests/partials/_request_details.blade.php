@@ -64,7 +64,7 @@
                 <div class="form-group">
                     <label class="font-weight-bold">Road Type:</label>
                     <div class="form-control-plaintext py-0">
-                        {{ $request->road_type }}
+                        {{ $request->road_type??'N/A' }}
                     </div>
                 </div>
             </div>

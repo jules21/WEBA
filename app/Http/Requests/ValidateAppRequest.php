@@ -11,7 +11,7 @@ class ValidateAppRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return true;
     }
 
     /**
@@ -23,8 +23,6 @@ class ValidateAppRequest extends FormRequest
             'customer_id' => ['required', 'integer'],
             'request_type_id' => ['required', 'integer'],
             'water_usage_id' => ['required', 'integer'],
-            //            'province_id' => ['required', 'integer'],
-            //            'district_id' => ['required', 'integer'],
             'sector_id' => ['required', 'integer'],
             'cell_id' => ['required', 'integer'],
             'village_id' => ['nullable'],
