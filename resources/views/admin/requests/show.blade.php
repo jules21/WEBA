@@ -118,7 +118,7 @@
                 </li>
             </ul>
 
-            @if($request->status==\App\Constants\Status::PENDING && auth()->user()->can(\App\Constants\Permission::CreateRequest))
+            @if($request->status==\App\Constants\Status::PENDING && !$request->customer_initiated && auth()->user()->can(\App\Constants\Permission::CreateRequest))
                 <a href="{{ route('admin.requests.edit', encryptId($request->id)) }}"
                    class="btn btn-sm bg-accent font-weight-bolder align-self-start text-primary">
                     <i class="flaticon2-edit text-primary"></i>

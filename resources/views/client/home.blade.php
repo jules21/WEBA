@@ -34,8 +34,13 @@
                                 {{ $item->operator->name }}
 
                             </h5>
-                            <span
-                                class="badge badge-{{ $item->status_color }} rounded-pill tw-py-1.5 tw-px-2">{{ $item->status }}</span>
+                            <div>
+                                @if($item->return_back_status==\App\Constants\Status::RETURN_BACK)
+                                    <span class="badge badge-warning rounded-pill align-self-start tw-py-1.5 tw-px-2">Returned Back</span>
+                                @endif
+                                <span
+                                    class="badge badge-{{ $item->status_color }} rounded-pill tw-py-1.5 tw-px-2">{{ $item->status }}</span>
+                            </div>
 
                         </div>
                         <p class="text-muted">

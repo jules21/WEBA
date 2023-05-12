@@ -9,6 +9,9 @@ use App\Models\Operator;
 use App\Models\Request;
 use App\Models\Sector;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use LaravelIdea\Helper\App\Models\_IH_Sector_C;
+use LaravelIdea\Helper\App\Models\_IH_Sector_QB;
 
 class ClientsController extends Controller
 {
@@ -37,29 +40,6 @@ class ClientsController extends Controller
         ]);
     }
 
-    public function newConnection(Operator $operator)
-    {
-        $opId = decryptId(\request('op_id'));
-        $operationArea = OperationArea::query()->findOrFail($opId);
-        $sectors = Sector::query()
-            ->where('district_id', '=', $operationArea->district_id)
-            ->get();
-
-        $requestTypes = $this->getRequestsTypes();
-        $waterUsage = $this->getWaterUsages();
-        $roadTypes = $this->getRoadTypes();
-        $roadCrossTypes = $this->getRoadCrossTypes();
-
-        return view('client.new_connections', [
-            'operator' => $operator,
-            'sectors' => $sectors,
-            'requestTypes' => $requestTypes,
-            'waterUsage' => $waterUsage,
-            'roadTypes' => $roadTypes,
-            'roadCrossTypes' => $roadCrossTypes,
-            'operationArea' => $operationArea
-        ]);
-    }
 
     public function profile()
     {
@@ -70,4 +50,5 @@ class ClientsController extends Controller
     {
         dd($request->all()->toArray());
     }
+
 }
