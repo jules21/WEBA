@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Constants\Permission;
 use App\Constants\Status;
+use App\Traits\GetClassName;
 use App\Traits\HasStatusColor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -47,7 +48,7 @@ use Storage;
  */
 class Adjustment extends Model implements Auditable
 {
-    use HasFactory, HasStatusColor, \OwenIt\Auditing\Auditable;
+    use HasFactory, HasStatusColor, \OwenIt\Auditing\Auditable, GetClassName;
 
     protected $fillable = [
         'status',
@@ -140,5 +141,6 @@ class Adjustment extends Model implements Auditable
     {
         return encryptId($this->id);
     }
+
 
 }

@@ -47,6 +47,9 @@
                             <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
+                            <a class="text-muted" href="{{ route('admin.customers.index') }}">Customers</a>
+                        </li>
+                        <li class="breadcrumb-item">
                             <a class="text-muted">Billing</a>
                         </li>
                     </ul>

@@ -79,8 +79,12 @@ class ItemCategoryController extends Controller
      */
     public function destroy(ItemCategory $itemCategory)
     {
-        $itemCategory->delete();
-//        return new JsonResponse(['status'=>'success']);
-        return redirect()->back()->with('success', 'Category deleted successfully');
+        try {
+            $itemCategory->delete();
+            return redirect()->back()->with('success', 'Category deleted successfully');
+        } catch (\Exception $exception) {
+            info($exception->getMessage());
+            return redirect()->back()->with('error', 'Category cannot be deleted, it has items attached to it');
+        }
     }
 }
