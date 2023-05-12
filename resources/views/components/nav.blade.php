@@ -39,12 +39,12 @@
                             <path d="M12 20l4 -9l4 9"></path>
                             <path d="M19.1 18h-6.2"></path>
                         </svg>
-                        {{ app()->getLocale()=='en'?__('app.English'):__('app.French') }}
+                        {{ app()->getLocale()=='en'?__('app.English'):__('app.Kinyarwanda') }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown09">
                         @if(app()->getLocale()=='en')
-                            <a class="dropdown-item" href="{{ route('lang.switch', 'fr') }}">
-                                {{ __('app.French') }}
+                            <a class="dropdown-item" href="{{ route('lang.switch', 'rw') }}">
+                                {{ __('app.Kinyarwanda') }}
                             </a>
                         @else
                             <a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">
