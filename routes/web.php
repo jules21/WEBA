@@ -317,6 +317,18 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/operation_areas/{id}', [App\Http\Controllers\BillChargeController::class, 'loadAreaOperation']);
         Route::get('/export_bill_charges/', [App\Http\Controllers\BillChargeController::class, 'export'])->name('export.bill.charges');
 
+        //faqs
+        Route::get('/faqs', [App\Http\Controllers\FaqController::class, 'index'])->name('faq');
+        Route::post('/faq/store', [App\Http\Controllers\FaqController::class, 'store'])->name('faq.store');
+        Route::post('/faq/update', [App\Http\Controllers\FaqController::class, 'update'])->name('faq.edit');
+        Route::get('/faqs/delete/{id}', [App\Http\Controllers\FaqController::class, 'destroy'])->name('faq.delete');
+
+        //user manuals
+        Route::get('/user_manuals', [App\Http\Controllers\UserManualController::class, 'index'])->name('user.manuals');
+        Route::post('/user_manual/store', [App\Http\Controllers\UserManualController::class, 'store'])->name('user.manual.store');
+        Route::post('/user_manual/update', [App\Http\Controllers\UserManualController::class, 'update'])->name('user.manual.edit');
+        Route::get('/user_manual/delete/{id}', [App\Http\Controllers\UserManualController::class, 'destroy'])->name('user.manual.delete');
+
         Route::get('/operation-areas/by-water-network-type', [App\Http\Controllers\BillChargeController::class, 'loadAreaOperationAreas'])->name('bill-charge.load-area-operation-areas');
 
         Route::get('/banks', [App\Http\Controllers\PaymentServiceProviderController::class, 'index'])->name('banks');
