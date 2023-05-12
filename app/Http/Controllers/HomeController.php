@@ -11,6 +11,14 @@ use App\Models\WaterNetwork;
 
 class HomeController extends Controller
 {
+    public function setLanguage($locale)
+    {
+        if (in_array($locale, ['en', 'fr'])) {
+            session()->put('locale', $locale);
+            app()->setLocale($locale);
+        }
+        return redirect()->back();
+    }
     public function welcome()
     {
         $operators = Operator::query()->inRandomOrder()->get();
