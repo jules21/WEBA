@@ -84,7 +84,7 @@ class RequestsController extends Controller
                 ->addColumn('action', function (AppRequest $row) {
                     $buttons = '';
 
-                    if ($row->status == Status::PENDING && auth()->user()->can(Permission::CreateRequest) && isForOperationArea()) {
+                    if ($row->status == Status::PENDING && auth()->user()->can(Permission::CreateRequest) && isForOperationArea() && !$row->customer_initiated) {
                         $buttons = '<a class="dropdown-item js-edit" href="' . route('admin.requests.edit', encryptId($row->id)) . '">
                                         <i class="fas fa-edit"></i>
                                         <span class="ml-2">Edit</span>
@@ -201,13 +201,13 @@ class RequestsController extends Controller
         $data['province_id'] = $district->province_id;
         $data['district_id'] = $district->id;
         $data['request_type_id'] = RequestType::NEW_CONNECTION;
+        $data['status'] = Status::SUBMITTED;
         unset($data['road_cross_types']);
 
         if ($request->hasFile('upi_attachment')) {
             $dir = $request->file('upi_attachment')->store(Request::UPI_ATTACHMENT_PATH);
             $data['upi_attachment'] = basename($dir);
         }
-
         DB::beginTransaction();
         $req = AppRequest::query()->create($data);
         $road_cross_types = $request->input('road_cross_types', []);
@@ -379,17 +379,6 @@ class RequestsController extends Controller
         ]);
     }
 
-    public function saveFlowHistory(AppRequest $req, $message, $status = Status::PENDING): void
-    {
-        $req->flowHistories()
-            ->create([
-                'type' => $req->getClassName(),
-                'status' => $status,
-                'user_id' => auth()->id(),
-                'comment' => $message,
-            ]);
-    }
-
     /**
      * @throws Exception
      */
@@ -405,7 +394,6 @@ class RequestsController extends Controller
                     $hasPermission = false;
                     $user = auth()->user();
 
-
                     if ($user->can(Permission::ReviewRequest)) {
                         $hasPermission = true;
                         $builder
@@ -414,7 +402,10 @@ class RequestsController extends Controller
                     }
                     if ($user->can(Permission::CreateRequest)) {
                         $hasPermission = true;
-                        $builder->orWhere('status', '=', Status::PENDING);
+                        $builder->orWhere([
+                            ['status', '=', Status::PENDING],
+                            ['customer_initiated', '=', false]
+                        ]);
                     }
 
 

@@ -22,7 +22,7 @@
 @section('content')
     <div class="card card-body h-100 tw-rounded-md">
         <h4>
-            New Connection
+            {{ isset($request)?'Edit':'Request' }} New Connection
         </h4>
         <div class="tw-text-sm alert alert-info d-flex align-items-center tw-gap-2">
             <i class="ti ti-info-circle tw-text-[24px]"></i> Fill the form below to request new connection At
@@ -30,7 +30,7 @@
         </div>
 
         <form
-            action="{{ route('client.request-new-connection',encryptId($operator->id)) }}?op_id={{ encryptId($operationArea->id) }}"
+            action="{{ $action }}"
             class="mt-2" method="post" id="formSave"
             enctype="multipart/form-data">
             @csrf
@@ -72,7 +72,8 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="upi">UPI</label>
-                        <input type="text" value="{{old('upi',$request->upi??"") }}" required
+                        <input type="text" value="{{old('upi',$request->upi??"") }}"
+                               required
                                name="upi" id="upi" class="form-control"/>
                     </div>
                 </div>
@@ -80,9 +81,11 @@
                     <div class="form-group">
                         <label for="upi_attachment">UPI Attachment </label>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="upi_attachment" required
+                            <input type="file" class="custom-file-input" id="upi_attachment"
+                                   {{ isset($request)?'':'required'  }}
+                                   accept=".pdf,image/jpeg,image/png,image/jpg"
                                    name="upi_attachment">
-                            <label class="custom-file-label" for="upi_attachment">Choose file</label>
+                            <label class="custom-file-label tw-truncate" for="upi_attachment">Choose file</label>
                         </div>
                     </div>
                 </div>
@@ -163,7 +166,8 @@
 
                 </div>
                 <div class="col-lg-6">
-                    <div class="form-group" id="roadTypeContainer" style="display: none">
+                    <div class="form-group" id="roadTypeContainer"
+                         style="display: {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'block' : 'none' }}">
                         <label for="road_type">Road Type</label>
                         <select name="road_type" id="road_type" class="form-control" required>
                             <option value="">Select Road Type</option>
@@ -386,11 +390,13 @@
             @endif
 
             // radio with name new_connection_crosses_road
-            $('input[name="new_connection_crosses_road"]').on('change', function (e) {
-                if ($(this).val() === '1') {
-                    $('#roadTypeContainer').slideDown();
+            let newConnectionCrossesRoad = $('input[name="new_connection_crosses_road"]');
+            newConnectionCrossesRoad.on('change', function (e) {
+                console.log($(this).val());
+                if (Number($(this).val()) === 1) {
+                    $('#roadTypeContainer').css('display', 'block');
                 } else {
-                    $('#roadTypeContainer').slideUp();
+                    $('#roadTypeContainer').css('display', 'none');
                 }
             });
 

@@ -39,5 +39,18 @@
 <script src="{{ mix('js/app.js') }}"></script>
 @yield('scripts')
 @livewireScripts
+<script>
+    $(function () {
+        $('.custom-file-input').on('change', function () {
+            let fileName = $(this).val().split('\\').pop();
+            let next = $(this).next('.custom-file-label');
+            next.addClass("selected").html(fileName);
+            // set title attribute to file name
+            $(this).attr('title', fileName);
+            next.attr('title', fileName);
+        });
+
+    });
+</script>
 </body>
 </html>

@@ -4,15 +4,42 @@ namespace App\Http\Controllers\Client;
 
 use App\Constants\Status;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ValidateAppRequest;
 use App\Http\Requests\ValidateNewConnectionRequest;
 use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\Request;
+use App\Models\Request as AppRequest;
 use App\Models\RequestType;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ClientRequestsController extends Controller
 {
+    public function newConnection(Operator $operator)
+    {
+        $opId = decryptId(\request('op_id'));
+        $operationArea = OperationArea::query()->findOrFail($opId);
+        $sectors = $this->getSectors($operationArea);
+
+        $requestTypes = $this->getRequestsTypes();
+        $waterUsage = $this->getWaterUsages();
+        $roadTypes = $this->getRoadTypes();
+        $roadCrossTypes = $this->getRoadCrossTypes();
+        $action = route('client.request-new-connection', encryptId($operator->id)) . '?op_id=' . encryptId($operationArea->id);
+        return view('client.new_connections', [
+            'operator' => $operator,
+            'sectors' => $sectors,
+            'requestTypes' => $requestTypes,
+            'waterUsage' => $waterUsage,
+            'roadTypes' => $roadTypes,
+            'roadCrossTypes' => $roadCrossTypes,
+            'operationArea' => $operationArea,
+            'action' => $action
+        ]);
+    }
+
+
     /**
      * @throws \Throwable
      */
@@ -51,7 +78,7 @@ class ClientRequestsController extends Controller
             'village_id' => $data['village_id'],
             'description' => $data['description'],
             'new_connection_crosses_road' => $data['new_connection_crosses_road'],
-            'road_type' => $data['road_type'],
+            'road_type' => $data['new_connection_crosses_road'] == 0 ? null : $data['road_type'],
             'digging_pipeline' => $data['digging_pipeline'],
             'equipment_payment' => $data['equipment_payment'],
             'customer_initiated' => true,
@@ -65,6 +92,7 @@ class ClientRequestsController extends Controller
             ]);
         }
 
+        $this->saveFlowHistory($request, 'Request submitted by customer');
 
         DB::commit();
         return redirect()
@@ -98,9 +126,97 @@ class ClientRequestsController extends Controller
 
     public function details(Request $request)
     {
+        $lastReview = $request
+            ->flowHistories()
+            ->where('is_comment', '=', true)
+            ->orderByDesc('id')
+            ->first();
+
         $request->load(['customer', 'operator', 'operationArea', 'requestType', 'waterUsage', 'pipeCrosses.pipeCross']);
         return view('client.request_details', [
-            'request' => $request
+            'request' => $request,
+            'lastReview' => $lastReview
         ]);
+    }
+
+    public function edit(Request $request)
+    {
+        if ($request->status != Status::PENDING) {
+            return redirect()->back()->with('error', 'Request cannot be edited');
+        }
+
+        $requestTypes = $this->getRequestsTypes();
+        $waterUsage = $this->getWaterUsages();
+        $roadTypes = $this->getRoadTypes();
+        $roadCrossTypes = $this->getRoadCrossTypes();
+        $operator = $request->operator;
+        $operationArea = $request->operationArea;
+        $sectors = $this->getSectors($operationArea);
+        $selected_road_cross_types = $request->pipeCrosses()->pluck('road_cross_type_id')->toArray();
+        $action = route('client.requests.update', encryptId($request->id));
+        return view('client.new_connections', [
+            'operator' => $operator,
+            'sectors' => $sectors,
+            'requestTypes' => $requestTypes,
+            'waterUsage' => $waterUsage,
+            'roadTypes' => $roadTypes,
+            'roadCrossTypes' => $roadCrossTypes,
+            'operationArea' => $operationArea,
+            'request' => $request,
+            'selected_road_cross_types' => $selected_road_cross_types,
+            'action' => $action
+        ]);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function update(ValidateNewConnectionRequest $request, AppRequest $appRequest)
+    {
+        $data = $request->validated();
+        DB::beginTransaction();
+        unset($data['road_cross_types']);
+
+        if ($data['new_connection_crosses_road'] == 0) {
+            $data['road_type'] = null;
+        }
+
+        if ($request->hasFile('upi_attachment')) {
+
+            if ($appRequest->upi_attachment) {
+                Storage::delete(Request::UPI_ATTACHMENT_PATH . '/' . $appRequest->upi_attachment);
+            }
+
+            $dir = $request->file('upi_attachment')->store(Request::UPI_ATTACHMENT_PATH);
+            $data['upi_attachment'] = basename($dir);
+        }
+
+        $appRequest->update($data);
+        $appRequest->pipeCrosses()->delete();
+        $road_cross_types = $request->input('road_cross_types', []);
+        foreach ($road_cross_types as $road_cross_type) {
+            $appRequest->pipeCrosses()->create([
+                'road_cross_type_id' => $road_cross_type,
+            ]);
+        }
+
+        if ($appRequest->return_back_status == Status::RETURN_BACK) {
+            $appRequest->update([
+                'status' => Status::ASSIGNED,
+                'return_back_status' => Status::RE_SUBMITTED,
+            ]);
+            $this->saveFlowHistory($appRequest, 'Request Re-submitted by customer', Status::ASSIGNED);
+        } else {
+            $this->saveFlowHistory($appRequest, 'Request updated by  customer');
+        }
+
+
+        DB::commit();
+
+        $detailsRoute = route('client.request-details', encryptId($appRequest->id));
+
+        return redirect()
+            ->to($detailsRoute)
+            ->with('success', 'Request updated successfully');
     }
 }

@@ -72,7 +72,7 @@ class RequestAssignmentController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-            $this->saveFlowHistory($appReq, 'Assigned', 'Request reassigned');
+            $this->saveFlowHistory($appReq, 'Request reassigned', 'Assigned');
         }
 
         RequestAssignment::insert($requestAssignments);
@@ -94,18 +94,8 @@ class RequestAssignmentController extends Controller
         $appRequest = AppRequest::find($requestId);
         $appRequest->status = 'Assigned';
         $appRequest->save();
-        $this->saveFlowHistory($appRequest, 'Assigned', 'Request assigned');
+        $this->saveFlowHistory($appRequest, 'Request assigned', 'Assigned');
     }
 
-    public function saveFlowHistory(AppRequest $appRequest, $status, $message): void
-    {
-        // get class name without namespace
-        $appRequest->flowHistories()
-            ->create([
-                'type' => $appRequest->getClassName(),
-                'status' => $status,
-                'user_id' => auth()->id(),
-                'comment' => $message,
-            ]);
-    }
+
 }
