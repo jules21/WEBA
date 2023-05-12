@@ -13,7 +13,7 @@ class HomeController extends Controller
 {
     public function setLanguage($locale)
     {
-        if (in_array($locale, ['en', 'fr'])) {
+        if (in_array($locale, ['en', 'rw'])) {
             session()->put('locale', $locale);
             app()->setLocale($locale);
         }

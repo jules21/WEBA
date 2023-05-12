@@ -116,21 +116,21 @@ class UserController extends Controller
         $action = $user->is_active ? 'Deactivate' : 'Activate';
         $user->is_active = ! $user->is_active;
         $user->save();
-        $this->saveFlowHistory($user, \request('reason'), $action);
+//        $this->saveUserHistory($user, \request('reason'), $action);
 
         return redirect()->back()->with('success', "{$user->email} {$action}d successfully");
     }
 
-    public function saveFlowHistory($user, $reason, $action)
-    {
-        $flow = new UserFlowHistory();
-        $flow->user_id = $user->id;
-        $flow->reason = $reason;
-        $flow->action = $action;
-        $flow->done_by = auth()->user()->id;
-        $flow->done_at = Carbon::now();
-        $flow->save();
-    }
+//    public function saveUserHistory($user, $reason, $action)
+//    {
+//        $flow = new UserFlowHistory();
+//        $flow->user_id = $user->id;
+//        $flow->reason = $reason;
+//        $flow->action = $action;
+//        $flow->done_by = auth()->user()->id;
+//        $flow->done_at = Carbon::now();
+//        $flow->save();
+//    }
 
     protected function sendSMS(User $user, $message = null): void
     {

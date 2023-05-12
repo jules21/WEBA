@@ -102,3 +102,8 @@ html, body {
     font-size: 13px !important;
 }
 
+.active-link{
+    border-bottom: 3px solid $accent !important;
+    color: $accent !important;
+}
+

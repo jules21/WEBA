@@ -79,15 +79,9 @@ class AdjustmentController extends Controller
             $this->saveFlowHistory($adjustment, 'Adjustment updated', Adjustment::PENDING);
         }else{
             $adjustment =  Adjustment::query()->create($request->validated());
-//            session()->forget('adjustment_id');
-//            session()->put('adjustment_id', $adjustment->id);
             $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
         }
         return $adjustment;
-
-//        $adjustment =  Adjustment::query()->create($request->validated());
-//        $this->saveFlowHistory($adjustment, 'Adjustment created', Adjustment::PENDING);
-//        return back()->with('success', 'Adjustment created successfully');
     }
 
     /**
@@ -263,19 +257,6 @@ class AdjustmentController extends Controller
             ->back()
             ->with('success', 'Adjustment reviewed successfully');
 
-    }
-
-    public function saveFlowHistory($model, $message, $status, $isComment = false, $fileName = null)
-    {
-        $test = $model->flowHistories()
-            ->create([
-                'status' => $status,
-                'user_id' => auth()->id(),
-                'comment' => $message,
-                'type' => (new ReflectionClass(Adjustment::class))->getShortName(),
-                'is_comment' => $isComment,
-                'attachment' => $fileName,
-            ]);
     }
 
     public function updateStockItems(Adjustment $adjustment): void
