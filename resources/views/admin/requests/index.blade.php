@@ -31,6 +31,60 @@
         </div>
     </div>
 
+    <!--begin:filter-->
+{{--    <div class="card card-body mb-4">--}}
+{{--        @if(Str::contains(Route::currentRouteName(), 'admin.requests.index'))--}}
+{{--            <form action="#" id="filter-form">--}}
+{{--                <div class="row">--}}
+{{--                    <div class="col-md-3">--}}
+{{--                        <div class="form-group">--}}
+
+{{--                            <label for="from_date">From Date</label>--}}
+{{--                            <input type="date" name="from_date" id="from_date" class="form-control " placeholder="From Date" value="{{request()->get('from_date')}}">--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="col-md-3 form-group">--}}
+{{--                        <label for="to_date">To Date</label>--}}
+{{--                        <input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" value="{{request()->get('to_date')}}">--}}
+{{--                    </div>--}}
+{{--                    @unless(Helper::isOperator())--}}
+{{--                        <div class="col-md-3 form-group">--}}
+{{--                            <label for="operator">Operator</label>--}}
+{{--                            <select name="operator_id" id="operator" class="form-control select2"--}}
+{{--                                    data-placeholder="Select Operator">--}}
+{{--                                <option value="">Select Operator</option>--}}
+{{--                                @foreach($operators ?? [] as $operator)--}}
+{{--                                    <option value="{{ $operator->id }}" {{request()->get('operator_id') == $operator->id ? 'selected' : ''}}>{{ $operator->name }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
+{{--                    @endunless--}}
+{{--                    @unless(Helper::hasOperationArea())--}}
+{{--                        <div class="col-md-3 form-group">--}}
+{{--                            <label for="operation_area">Operation Area</label>--}}
+{{--                            <select name="operation_area_id[]" id="operation_area" class="form-control select2"--}}
+{{--                                    data-placeholder="Select Operation Area" multiple="multiple">--}}
+{{--                                @foreach($operationAreas  ?? [] as $operationArea)--}}
+{{--                                    <option value="{{ $operationArea->id }}">{{ $operationArea->name }}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
+{{--                    @endunless--}}
+{{--                    <div class="col-md-6 form-group align-self-end">--}}
+{{--                        <div class="row col-12">--}}
+{{--                            <button type="submit" class="btn btn-primary mr-2" id="submit-btn">--}}
+{{--                                <i class="la la-search"></i>--}}
+{{--                                Filter--}}
+{{--                            </button>--}}
+{{--                            <a href="{{route('admin.requests.index')}}" class="btn btn-outline-dark"> clear search</a>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+
+{{--                </div>--}}
+{{--            </form>--}}
+{{--        @endif--}}
+{{--    </div>--}}
+    <!--end:filter-->
 
     <div class="card tw-shadow-sm border tw-border-gray-300">
         <div class="card-body">
