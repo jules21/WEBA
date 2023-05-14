@@ -106,12 +106,13 @@
                                             {{optional(auth('client')->user()->sector)->name}}
                                         </div>
                                     </div>
-{{--                                    <hr>--}}
-{{--                                    <div class="row">--}}
-{{--                                        <div class="col-sm-12">--}}
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-12">
 {{--                                            <a class="btn btn-info " id="edit-profile-btn" href="#">Edit</a>--}}
-{{--                                        </div>--}}
-{{--                                    </div>--}}
+                                            <a class="btn btn-primary text-white" id="change-password-btn" href="#">Change Password</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -181,18 +182,63 @@
 
                             </div>
                         </div>
+                        <div class="col-lg-12 d-none" id="change-password">
+                            <div class="card">
+                                <div class="card-body">
+                                    <form class="kt-form kt-form--label-right" id="change-password-form" method="POST" action="{{route("client.update-password")}}">
+                                        @csrf
+                                        <div class="card-body">
+                                            <!--begin::Alert-->
+                                            {{-- @include('partials._alerts') --}}
+                                            <!--end::Alert-->
+                                            <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label text-alert">Current Password</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <input type="password" class="form-control form-control-lg form-control-solid mb-2" name="current_password" placeholder="Current password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label text-alert">New Password</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <input type="password" class="form-control form-control-lg form-control-solid" name="new_password" placeholder="New password">
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-xl-3 col-lg-3 col-form-label text-alert">Verify Password</label>
+                                                <div class="col-lg-9 col-xl-6">
+                                                    <input type="password" class="form-control form-control-lg form-control-solid" name="new_confirm_password" placeholder="Verify password">
+                                                </div>
+                                            </div>
+                                            <button type="submit" class="btn btn-success mr-2">Change Password</button>
+                                            <button type="reset" class="btn btn-secondary">Clear</button>
+                                        </div>
+                                    </form>
+                                    <!--end::Form-->
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         @endsection
         @section('scripts')
             <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+                <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+                {!! JsValidator::formRequest('App\Http\Requests\ChangeClientPasswordRequest','#change-password-form') !!}
             <script>
                 $(document).ready(function () {
                     $('#edit-profile-btn').click(function () {
                         $('#profile-details').addClass('d-none');
                         $('#edit-profile').removeClass('d-none');
                     })
+
+                    $(document).on('click', '#change-password-btn', function () {
+                        $('#profile-details').addClass('d-none');
+                        $('#edit-profile').addClass('d-none');
+                        $('#change-password').removeClass('d-none');
+                    });
+
                 })
 
             </script>
