@@ -734,6 +734,18 @@
                             </a>
                         </li>
                     @endcan
+                    @if(auth()->user()->is_super_admin)
+                        @can('Manage Faqs')
+                            <li class="menu-item nav-faqs" aria-haspopup="true">
+                                <a href="{{ route('admin.faq') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">FAQs</span>
+                                </a>
+                            </li>
+                        @endcan
+                    @endif
                 </ul>
             </div>
         </li>
