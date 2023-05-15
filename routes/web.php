@@ -48,6 +48,8 @@ Route::get('/faq', [ClientsController::class, 'faq'])->name('faq');
 
 Route::get('/set-language/{locale}', [HomeController::class, 'setLanguage'])->name('lang.switch');
 
+Route::get('/get-operator-by-district', [HomeController::class, 'getOperatorsByDistrict'])->name('get-operators-by-district');
+
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
 Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('villages');
@@ -422,8 +424,11 @@ Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
     Route::get('/profile', [ClientsController::class, 'profile'])->name('profile');
     Route::put('/profile/{client}/update', [ClientsController::class, 'updateProfile'])
         ->name('profile.update');
-    Route::get('/new-connection/{operator}', [ClientRequestsController::class, 'newConnection'])
-        ->name('connection-new');
+    Route::get('/new-connection/request', [ClientRequestsController::class, 'newConnection'])->name('connection-new');
+    //client change password
+    Route::post('/change-password', [ClientsController::class, 'updatePassword'])->name('update-password');
+
+
     Route::post('/new-connection/{operator}', [ClientRequestsController::class, 'requestNewConnection'])
         ->name('request-new-connection');
     Route::get('/requests/{request}/details', [ClientRequestsController::class, 'details'])->name('request-details');

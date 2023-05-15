@@ -37,5 +37,18 @@ class HomeController extends Controller
         ]);
     }
 
+    public function getOperatorsByDistrict()
+    {
+        $districtId= \request('district_id');
+
+        $operators = Operator::query()
+            ->whereHas('operationAreas', function ($query) use ($districtId) {
+                $query->where('district_id', '=', $districtId);
+            })
+            ->get();
+        return response()->json($operators);
+
+    }
+
 
 }

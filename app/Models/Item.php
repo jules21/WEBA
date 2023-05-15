@@ -59,6 +59,7 @@ class Item extends Model implements Auditable
 {
     use HasFactory, \OwenIt\Auditing\Auditable;
 
+    protected $appends = ['qty'];
     protected $fillable = [
         'item_category_id',
         'name',
@@ -87,5 +88,10 @@ class Item extends Model implements Auditable
     public function stock(): HasOne
     {
         return $this->hasOne(Stock::class);
+    }
+
+    public function getQtyAttribute()
+    {
+        return $this->stock->quantity ?? 0;
     }
 }
