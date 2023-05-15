@@ -36,4 +36,13 @@ class Status
 
     const RE_SUBMITTED = 'Re-Submitted';
     const PAID = "Paid";
+
+
+    public static function getRequestStatuses(){
+        $allStatuses = (new \ReflectionClass(self::class))->getConstants();
+        $excluded = [self::ACTIVE,self::INACTIVE, self::SUSPENDED, self::CLOSED, self::PROPOSE_TO_APPROVE];
+        return array_filter($allStatuses, function ($status) use ($excluded) {
+            return !in_array($status, $excluded);
+        });
+    }
 }
