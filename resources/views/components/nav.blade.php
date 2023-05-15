@@ -14,21 +14,32 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto d-flex tw-gap-4">
                 <li class="nav-item active">
-                    <a class="nav-link text-white font-weight-bold  {{ request()->routeIs('welcome')?'active-link':'' }}" href="{{ url('/') }}">Home</a>
+                    <a class="nav-link text-white font-weight-bold  {{ request()->routeIs('welcome')?'active-link':'' }}" href="{{ url('/') }}">{{__('app.home')}}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white font-weight-bold" href="{{ route('login') }}">
-                        Staff Login
+                        {{__('app.staff_login')}}
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white font-weight-bold" href="#">
-                        Pay with MOMO
-                    </a>
-                </li>
+{{--                <li class="nav-item">--}}
+{{--                    <a class="nav-link text-white font-weight-bold" href="#">--}}
+{{--                        {{__('app.pay_with_MOMO')}}--}}
+{{--                    </a>--}}
+{{--                </li>--}}
                 <li class="nav-item">
                     <a class="nav-link text-white font-weight-bold {{ request()->routeIs('help')?'active-link':'' }}" href="{{ route('help') }}">
-                        Help
+                        {{__('app.help')}}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white font-weight-bold {{ request()->routeIs('faq')?'active-link':'' }}"
+                       href="{{ route('faq') }}">
+                        FAQ
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-accent tw-rounded-sm font-weight-bolder px-4 text-white hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary focus:tw-ring-2">
+                        {{__('app.pay_now')}}
                     </a>
                 </li>
                 <li class="nav-item dropdown">
@@ -56,17 +67,6 @@
                         @endif
 
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white font-weight-bold {{ request()->routeIs('faq')?'active-link':'' }}"
-                       href="{{ route('faq') }}">
-                        FAQ
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link btn btn-accent tw-rounded-sm font-weight-bolder px-4 text-white hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary focus:tw-ring-2">
-                        Pay Now
-                    </a>
                 </li>
             </ul>
         </div>

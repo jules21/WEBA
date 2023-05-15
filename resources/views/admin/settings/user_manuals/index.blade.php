@@ -64,12 +64,16 @@
                     </thead>
                     <tbody>
 
-                    @foreach($userManuals as $key=>$userManual)
+                    @foreach($manuals as $key=>$manual)
                         <tr>
                             <td>{{++$key}}</td>
-                            <td>{{$userManual->file}}</td>
-                            <td>{{$userManual->title}}</td>
-                            <td>{{$userManual->description}}</td>
+                            <td>
+                                <a class="btn btn-light-primary btn-sm rounded-pill" href="{{route('admin.user.manuals.download',$manual->slug)}}" target="_blank">
+                                    Download
+                                </a>
+                            </td>
+                            <td>{{$manual->title}}</td>
+                            <td>{{$manual->description}}</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-light-primary btn-sm dropdown-toggle" type="button"
@@ -78,11 +82,12 @@
                                         Action
                                     </button>
                                     <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
-                                        <a href="#" data-id="{{$userManual->id}}"
-                                           data-title="{{$userManual->title}}"
-                                           data-description="{{$userManual->description}}"
+                                        <a href="#" data-id="{{$manual->id}}"
+                                           data-title="{{$manual->title}}"
+                                           data-description="{{$manual->description}}"
+                                           data-file="{{$manual->file}}"
                                            class="dropdown-item js-edit">Edit</a>
-                                        <a href="{{route('admin.faq.delete',$userManual->id)}}"
+                                        <a href="{{route('admin.user.manual.delete',$manual->id)}}"
                                            class="dropdown-item js-delete">Delete</a>
                                     </div>
                                 </div>
@@ -101,9 +106,10 @@
     <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.faq.store')}}" method="post" id="submissionForm" class="submissionForm"
+            <form action="{{route('admin.user.manual.store')}}" method="post" id="submissionForm" class="submissionForm"
                   enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" value="0" name="id" id="id"/>
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">New User Manual</h4>
@@ -120,8 +126,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="question">Title</label>
-                            <input type="text" name="question" id="question" class="form-control">
+                            <label for="title">Title</label>
+                            <input type="text" name="title" id="title" class="form-control">
                         </div>
 
                         <div class="form-group">
@@ -146,7 +152,7 @@
     <div class="modal fade" id="modalUpdate" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.faq.edit')}}" method="post" id="submissionFormEdit"
+            <form action="{{route('admin.user.manual.edit')}}" method="post" id="submissionFormEdit"
                   class="submissionForm" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" value="0" id="UserManualId" name="UserManualId">
@@ -167,7 +173,7 @@
 
                         <div class="form-group">
                             <label for="title">Title</label>
-                            <input type="text" name="question" id="edit_title" class="form-control">
+                            <input type="text" name="title" id="edit_title" class="form-control">
                         </div>
 
                         <div class="form-group">
@@ -194,8 +200,8 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest(\App\Http\Requests\StorefaqRequest::class,'.submissionForm') !!}
-    {!! JsValidator::formRequest(\App\Http\Requests\UpdatefaqRequest::class,'.submissionFormEdit') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\StoreUserManualRequest::class,'.submissionForm') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\UpdateUserManualRequest::class,'.submissionFormEdit') !!}
 
     <script>
 
@@ -219,8 +225,16 @@
             var url = $(this).data('url');
             $("#UserManualId").val($(this).data('id'));
             $("#edit_title").val($(this).data('title'));
-            $("#edit_answer").val($(this).data('answer'));
+            $("#edit_description").val($(this).data('description'));
             $('#submissionFormEdit').attr('action', url);
+        });
+
+        $('form').on('submit', function(e) {
+            e.preventDefault();
+            var form = $(this);
+            let btn = form.find('button[type="submit"]');
+            btn.prop('disabled', true);
+            e.target.submit();
         });
 
         $(document).on('click', '.js-delete', function (e) {
@@ -228,7 +242,7 @@
             var href = this.href;
             Swal.fire({
                 title: "Are you sure?",
-                text: "Delete this FAQ ?",
+                text: "Delete this User Manual ?",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonText: "Yes, delete it!",

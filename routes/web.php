@@ -35,6 +35,7 @@ use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\RequestTechnicianController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
+use App\Http\Controllers\UserManualController;
 use App\Http\Livewire\Client\Payments;
 use Illuminate\Support\Facades\Route;
 
@@ -327,7 +328,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/user_manuals', [App\Http\Controllers\UserManualController::class, 'index'])->name('user.manuals');
         Route::post('/user_manual/store', [App\Http\Controllers\UserManualController::class, 'store'])->name('user.manual.store');
         Route::post('/user_manual/update', [App\Http\Controllers\UserManualController::class, 'update'])->name('user.manual.edit');
-        Route::get('/user_manual/delete/{id}', [App\Http\Controllers\UserManualController::class, 'destroy'])->name('user.manual.delete');
+        Route::get('/user-manuals/{id}/destroy', [UserManualController::class, 'destroy'])->name('user.manual.delete');
+        Route::get('/user-manuals/{slug}/download', [UserManualController::class, 'download'])->name('user.manuals.download');
 
         Route::get('/operation-areas/by-water-network-type', [App\Http\Controllers\BillChargeController::class, 'loadAreaOperationAreas'])->name('bill-charge.load-area-operation-areas');
 
@@ -338,6 +340,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/banks/update/{bankId}', [App\Http\Controllers\PaymentServiceProviderController::class, 'updateBank'])->name('banks.update');
 
     });
+    Route::get('/user-manuals/{slug}/download', [UserManualController::class, 'download'])->name('user.manuals.download');
     Route::prefix('stock-management')->name('stock.')->group(function () {
         Route::resource('item-categories', ItemCategoryController::class);
         Route::get('/item-categories/{itemCategory}/items', [App\Http\Controllers\ItemCategoryController::class, 'items'])->name('item-categories.items');
