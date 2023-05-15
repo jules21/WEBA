@@ -271,6 +271,7 @@ class RequestsController extends Controller
             ->get();
 
         $items = Item::query()
+            ->with('stock.operationArea')
             ->whereHas('category', fn(Builder $query) => $query->where('is_meter', '=', false))
             ->whereHas('stock', fn(Builder $query) => $query->where('quantity', '>', 0))
             ->orderBy('name')
