@@ -40,14 +40,13 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
-Route::get('/home', [ClientsController::class, 'home'])->name('home');
+Route::get('/home', [ClientsController::class, 'home'])->name('home')->middleware('auth:client');
 
 Route::get('/help', [ClientsController::class, 'help'])->name('help');
 Route::get('/faq', [ClientsController::class, 'faq'])->name('faq');
-
 Route::get('/set-language/{locale}', [HomeController::class, 'setLanguage'])->name('lang.switch');
-
 Route::get('/get-operator-by-district', [HomeController::class, 'getOperatorsByDistrict'])->name('get-operators-by-district');
+Route::get('/check-bills', \App\Http\Livewire\CheckBills::class)->name('check-bills');
 
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');

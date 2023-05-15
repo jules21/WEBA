@@ -20,11 +20,6 @@ use LaravelIdea\Helper\App\Models\_IH_Sector_QB;
 
 class ClientsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(RedirectIfNotClient::class);
-    }
-
     public function home()
     {
         $districts = District::query()
