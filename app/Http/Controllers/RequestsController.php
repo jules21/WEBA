@@ -54,6 +54,9 @@ class RequestsController extends Controller
         $districtId = \request('district_id');
         $operatorId = \request('operator_id');
         $opAreaId = \request('operation_area_id');
+        $requestType = \request('request_type');
+        $status = \request('request_status');
+        $upi = \request('upi');
 
         $data = AppRequest::query()
             ->with(['customer', 'requestType', 'operator'])
@@ -63,9 +66,15 @@ class RequestsController extends Controller
             ->when(isForOperationArea(), function (Builder $query) {
                 return $query->where('operation_area_id', '=', auth()->user()->operation_area);
             })
-            ->when(!is_null($startDate) && !is_null($endDate), function (Builder $query) use ($startDate, $endDate) {
-                return $query->whereDate('created_at', '>=', $startDate)
-                    ->whereDate('created_at', '<=', $endDate);
+//            ->when(!is_null($startDate) && !is_null($endDate), function (Builder $query) use ($startDate, $endDate) {
+//                return $query->whereDate('created_at', '>=', $startDate)
+//                    ->whereDate('created_at', '<=', $endDate);
+//            })
+            ->when((request()->has('start_date') && request()->filled('start_date')), function ($query) {
+                $query->whereDate('created_at', '>=', request()->start_date);
+            })
+            ->when((request()->has('end_date') && request()->filled('end_date')), function ($query) {
+                $query->whereDate('created_at', '<=', request()->end_date);
             })
             ->when(!is_null($districtId), function (Builder $query) use ($districtId) {
                 return $query->where('district_id', '=', $districtId);
@@ -75,6 +84,15 @@ class RequestsController extends Controller
             })
             ->when(!is_null($opAreaId), function (Builder $query) use ($opAreaId) {
                 return $query->where('operation_area_id', '=', $opAreaId);
+            })
+            ->when(!is_null($requestType), function (Builder $query) use ($requestType) {
+                return $query->where('request_type_id', '=', $requestType);
+            })
+            ->when(!is_null($status), function (Builder $query) use ($status) {
+                return $query->where('status', '=', $status);
+            })
+            ->when(!is_null($upi), function (Builder $query) use ($upi) {
+                return $query->where('upi', '=', $upi);
             })
             ->select('requests.*');
         if (request()->ajax()) {
@@ -115,8 +133,15 @@ class RequestsController extends Controller
         }
         $customer = !empty($customerId) ? Customer::find(decryptId($customerId)) : null;
 
+        //export
+        if (request()->is_download == true && ! \request()->ajax()) {
+            return $this->exportDataToExcel();
+        }
+
         return view('admin.requests.index', [
             'customer' => $customer,
+            'requestTypes' => RequestType::all(),
+            'requestStatuses' => Status::getRequestStatuses(),
         ]);
     }
 
@@ -519,9 +544,11 @@ class RequestsController extends Controller
         $districtId = request('district_id');
         $operationAreaId = request('operation_area_id');
         $operatorId = request('operator_id');
-
+        $requestType = \request('request_type');
+        $status = \request('request_status');
+        $upi = \request('upi');
         $now = now()->format('Y-m-d-H-i-s');
-        $requestsExport = new RequestsExport($startDate, $endDate, $districtId, $operatorId, $operationAreaId);
+        $requestsExport = new RequestsExport($startDate, $endDate, $districtId, $operatorId, $operationAreaId, $requestType, $status, $upi);
 
         return $requestsExport
             ->download("requests_$now.xlsx");

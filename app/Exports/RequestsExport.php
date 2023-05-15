@@ -31,13 +31,23 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
 
     private ?string $operationAreaId;
 
-    public function __construct(?string $startDate, ?string $endDate, ?int $districtId, ?string $operatorId, ?string $operationAreaId)
+    private ?string $requestType;
+
+    private ?string $status;
+
+    private ?string $upi;
+
+    public function __construct(?string $startDate, ?string $endDate, ?int $districtId, ?string $operatorId, ?string $operationAreaId,
+                                ?string $requestType, ?string $status, ?string $upi)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
         $this->districtId = $districtId;
         $this->operatorId = $operatorId;
         $this->operationAreaId = $operationAreaId;
+        $this->requestType = $requestType;
+        $this->status = $status;
+        $this->upi = $upi;
     }
 
     public function ShouldAutoSize(): bool
@@ -68,7 +78,17 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
             })
             ->when($this->operationAreaId, function ($query) {
                 return $query->where('operation_area_id', $this->operationAreaId);
+            })
+            ->when($this->requestType, function ($query) {
+                return $query->where('request_type_id', $this->requestType);
+            })
+            ->when($this->status, function ($query) {
+                return $query->where('status', $this->status);
+            })
+            ->when($this->upi, function ($query) {
+                return $query->where('upi', $this->upi);
             });
+
 
     }
 

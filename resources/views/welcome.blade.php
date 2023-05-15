@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title','Home Page')
+@section('title',trans('app.home_page'))
 @section('styles')
     <link rel="stylesheet" type="text/css" href="{{ asset('css/slick/slick.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/slick/slick-theme.css') }}">
@@ -18,26 +18,26 @@
                 <div>
                     <div class="mb-4">
                         <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-5xl md:tw-leading-loose font-weight-bolder md:mb-3  tw-tracking-wide">
-                            CUSTOMER MANAGEMENT
+                            {{__('app.CUSTOMER_MANAGEMENT')}}
                         </h1>
                         <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-5xl md:tw-leading-loose font-weight-bolder md:mb-2  tw-tracking-wide">
-                            SYSTEM(CMS)
+                            {{__('app.SYSTEM(CMS)')}}
                         </h1>
                     </div>
                     <h2 class="mb-4  tw-text-sm md:tw-text-2xl text-accent font-weight-bolder tw-tracking-widest text-uppercase">
-                        For Rural Water Supply Services
+                        {{__('app.for_rural_water_supply_services')}}
                     </h2>
                 </div>
                 <div>
                     <p class="tw-text-gray-300 mb-4  tw-tracking-wide">
-                        Empowering Private Water Operators for Sustainable Water Management <br> Reducing
-                        Financial Loss and Non-Revenue Water .
+                        {{__('app.empowering_private_water_operators_for_sustainable_water_management')}} <br>
+                        {{__('app.reducing_financial_loss_and_non-revenue_water.')}}
                     </p>
                     <div class="d-flex tw-gap-6 justify-content-center justify-content-sm-start">
                         @if(auth('client')->check())
                             <a href="{{ route('home') }}"
                                class="btn bg-white tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
-                                Go to Dashboard
+                                {{__('app.go_to_dashboard')}}
                                 <svg class="tw-w-3 tw-h-3 tw-ml-2" fill="currentColor" viewBox="0 0 20 20"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -48,7 +48,7 @@
                         @else
                             <a href="{{route('client.login')}}"
                                class="btn text-white bg-accent tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
-                                Login
+                                {{__('app.login')}}
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login"
                                      width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75"
                                      stroke="currentColor"
@@ -61,7 +61,7 @@
                             </a>
                             <a href="{{route('client.register')}}"
                                class="btn bg-white tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
-                                Register
+                                {{__('app.register')}}
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-plus"
                                      width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75"
                                      stroke="currentColor"
@@ -80,7 +80,7 @@
             </div>
             <div class="col-lg-4 my-2 text-white">
                 <div class="tw-grid tw-grid-cols-2 tw-gap-1 bg-primary">
-                    <x-counter-card title="Population Served" :count="$totalCustomers">
+                    <x-counter-card title="{{__('app.population_served')}}" :count="$totalCustomers">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-friends" width="24"
                              height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
                              stroke-linecap="round" stroke-linejoin="round">
@@ -91,7 +91,7 @@
                             <path d="M15 22v-4h-2l2 -6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1l2 6h-2v4"></path>
                         </svg>
                     </x-counter-card>
-                    <x-counter-card title="Water Connections" :count="$totalWaterConnections">
+                    <x-counter-card title="{{__('app.water_connections')}}" :count="$totalWaterConnections">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-affiliate-filled"
                              width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
                              fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -101,7 +101,7 @@
                                 stroke-width="0" fill="currentColor"></path>
                         </svg>
                     </x-counter-card>
-                    <x-counter-card title="Private Water Operators" :count="$operators->count()">
+                    <x-counter-card title="{{__('app._private_water_operators')}}" :count="$operators->count()">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24"
                              height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
                              stroke-linecap="round" stroke-linejoin="round">
@@ -112,7 +112,7 @@
                             <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
                         </svg>
                     </x-counter-card>
-                    <x-counter-card title="Water Networks" :count="$totalWaterNetworks">
+                    <x-counter-card title="{{__('app.water_networks')}}" :count="$totalWaterNetworks">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-topology-bus"
                              width="24"
                              height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
@@ -132,12 +132,12 @@
         </div>
 
         <h3 class="text-white font-weight-bold mt-2">
-            CMS Features
+            {{__('app.features')}}
         </h3>
         <div class="row">
             <div class="col-sm-6 my-2 col-lg-3">
-                <x-feature-card title="Billing"
-                                description="Generate accurate and timely water bills for customers, improving revenue collection and reducing financial loss.">
+                <x-feature-card title="{{__('app.billing')}}"
+                                description="{{__('app.billing_description')}}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt" width="24"
                          height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
                          stroke-linecap="round" stroke-linejoin="round">
@@ -148,8 +148,8 @@
                 </x-feature-card>
             </div>
             <div class="col-sm-6 my-2 col-lg-3">
-                <x-feature-card title="Payment"
-                                description="Allow customers to have multiple payment options and a fully automated payment process, improving convenience and increasing timely payments.">
+                <x-feature-card title="{{__('app.payment')}}"
+                                description="{{__('app.payment_description')}}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash" width="24"
                          height="24"
                          viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
@@ -163,8 +163,8 @@
                 </x-feature-card>
             </div>
             <div class="col-sm-6 my-2 col-lg-3">
-                <x-feature-card title="Inventory Management"
-                                description="Keep track of inventory levels, ensure adequate supply of spare parts, and optimize procurement processes for efficient operations.">
+                <x-feature-card title="{{__('app.inventory_management')}}"
+                                description="{{__('app.inventory_management_description')}}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-devices-check"
                          width="24"
                          height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
@@ -178,8 +178,8 @@
                 </x-feature-card>
             </div>
             <div class="col-sm-6 my-2 col-lg-3">
-                <x-feature-card title="Accounting"
-                                description="Streamline financial management by automating accounting tasks, producing financial reports, and ensuring compliance with regulations.">
+                <x-feature-card title="{{__('app.accounting')}}"
+                                description="{{__('app.accounting_description')}}">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calculator" width="24"
                          height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
                          stroke-linecap="round" stroke-linejoin="round">
@@ -202,7 +202,7 @@
     <div class="py-4 tw-bg-gray-50 tw-bg-opacity-100">
 
         <h4 class="text-center">
-            More than {{ $operators->count() }} + Private Water Operators
+            {{__('app.more_than')}} {{ $operators->count() }} {{__('app.private_water_operators')}}
         </h4>
 
         <section class="container">

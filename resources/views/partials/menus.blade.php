@@ -746,6 +746,18 @@
                             </li>
                         @endcan
                     @endif
+
+                        @can('Manage User Manual')
+                            <li class="menu-item nav-faqs" aria-haspopup="true">
+                                <a href="{{ route('admin.user.manuals') }}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">User Manuals</span>
+                                </a>
+                            </li>
+                        @endcan
+
                 </ul>
             </div>
         </li>
