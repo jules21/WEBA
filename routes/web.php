@@ -421,11 +421,11 @@ Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
     Route::get('/profile', [ClientsController::class, 'profile'])->name('profile');
     Route::put('/profile/{client}/update', [ClientsController::class, 'updateProfile'])
         ->name('profile.update');
-    Route::get('/new-connection/request', [ClientRequestsController::class, 'newConnection'])
+    Route::get('/new-connection/request', [ClientRequestsController::class, 'newConnection'])->name('connection-new');
     //client change password
     Route::post('/change-password', [ClientsController::class, 'updatePassword'])->name('update-password');
-    Route::get('/new-connection/{operator}', [ClientRequestsController::class, 'newConnection'])
-        ->name('connection-new');
+
+
     Route::post('/new-connection/{operator}', [ClientRequestsController::class, 'requestNewConnection'])
         ->name('request-new-connection');
     Route::get('/requests/{request}/details', [ClientRequestsController::class, 'details'])->name('request-details');

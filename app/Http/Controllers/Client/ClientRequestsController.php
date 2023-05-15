@@ -18,8 +18,8 @@ class ClientRequestsController extends Controller
 {
     public function newConnection()
     {
-        $operator = Operator::query()->findOrFail(decryptId(\request('op_id')));
-        $districtId = decryptId(\request('district'));
+        $operator = Operator::query()->findOrFail(\request('op_id'));
+        $districtId = \request('district');
         $operationArea = OperationArea::query()
             ->where([
                 ['operator_id', '=', $operator->id],
