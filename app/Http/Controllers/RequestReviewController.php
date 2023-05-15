@@ -43,7 +43,7 @@ class RequestReviewController extends Controller
         if ($status == Status::RETURN_BACK) {
             $request->update([
                 'status' => $previousStatus,
-                'return_back_status' =>  Status::RETURN_BACK
+                'return_back_status' => Status::RETURN_BACK
             ]);
         } elseif ($status != Status::REJECTED && $request->return_back_status == Status::RETURN_BACK) {
             $request->update([
@@ -159,6 +159,7 @@ class RequestReviewController extends Controller
         ]);
 
         DB::commit();
+        session()->flash('success', 'Water network added successfully');
         if ($request->ajax()) {
             return response()->json([
                 'message' => 'Water network added successfully',

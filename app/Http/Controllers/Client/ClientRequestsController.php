@@ -16,11 +16,17 @@ use Illuminate\Support\Facades\Storage;
 
 class ClientRequestsController extends Controller
 {
-    public function newConnection(Operator $operator)
+    public function newConnection()
     {
-        $opId = decryptId(\request('op_id'));
-        $operationArea = OperationArea::query()->findOrFail($opId);
+        $operator = Operator::query()->findOrFail(decryptId(\request('op_id')));
+        $districtId = decryptId(\request('district'));
+        $operationArea = OperationArea::query()
+            ->where([
+                ['operator_id', '=', $operator->id],
+                ['district_id', '=', $districtId]
+            ])->first();
         $sectors = $this->getSectors($operationArea);
+
 
         $requestTypes = $this->getRequestsTypes();
         $waterUsage = $this->getWaterUsages();

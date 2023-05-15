@@ -85,45 +85,75 @@
                         </span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="list-group list-group-flush">
-                        @foreach($operators as $item)
-                            <div href="{{ route('client.connection-new',encryptId($item->id)) }}"
-                                 class="list-group-item d-flex justify-content-between hover:tw-bg-gray-100">
-                                <div>
-                                    <h6 class="mb-1">
-                                        {{ $item->name }}
-                                    </h6>
-                                    <small class="text-muted group-hover:tw-text-white">
-                                        {{ $item->address }}
-                                    </small>
-                                </div>
-                                <div class="dropdown">
-                                    <button
-                                        class="tw-inline-flex tw-items-center px-2 tw-py-2 tw-text-sm tw-font-medium tw-text-white tw-bg-primary border tw-border tw-rounded hover:tw-bg-gray-100 hover:tw-text-accent focus:tw-z-10 focus:tw-ring-2 focus:tw-ring-offset-2 focus:tw-outline-none focus:tw-ring-accent focus:tw-text-accent tw-no-underline dropdown-toggle"
-                                        type="button"
-                                        data-toggle="dropdown">
-                                        Select District
-                                    </button>
-                                    <div class="dropdown-menu tw-shadow dropdown-menu-right">
-                                        @foreach($item->operationAreas as $operationArea)
-                                            <a class="dropdown-item"
-                                               href="{{ route('client.connection-new',encryptId($item->id)) }}?op_id={{ encryptId($operationArea->id) }}">
-                                                {{ $operationArea->district->name }}
-                                            </a>
-                                        @endforeach
-                                    </div>
+                <form action="{{ route('client.connection-new') }}">
+                    <div class="modal-body">
+                        <div class="tw-my-6">
+
+                            <div class="d-flex justify-content-between">
+                                <label for="district">District</label>
+                                <div class="d-none align-items-center" id="loader">
+                                    <strong>Loading...</strong>
+                                    <div class="spinner-border spinner-border-sm ml-auto" role="status"
+                                         aria-hidden="true"></div>
                                 </div>
                             </div>
-                        @endforeach
+                            <select required
+                                    class="form-control tw-shadow focus:tw-ring tw-ring-primary focus:tw-ring-offset-2"
+                                    id="district" name="district">
+                                <option value="">Select District</option>
+                                @foreach($districts as $district)
+                                    <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="tw-my-6">
+                            <label for="operator_id">Operator</label>
+                            <select required
+                                    class="form-control tw-shadow focus:tw-ring tw-ring-primary focus:tw-ring-offset-2"
+                                    id="operator_id" name="op_id">
+                                <option value="">Select Operator</option>
+
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                    </button>
-                </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" class="btn btn-primary" id="btn-create-request">
+                            Continue <i class="ti ti-arrow-right"></i>
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
+@endsection
+@section('scripts')
+    <script>
+        $(function () {
+            $('#district').on('change', function () {
+                let districtId = $(this).val();
+                $('#loader').removeClass('d-none')
+                    .addClass('d-flex');
+                $.ajax({
+                    url: '{{ route('get-operators-by-district') }}',
+                    type: 'GET',
+                    data: {
+                        district_id: districtId
+                    },
+                    success: function (response) {
+                        let options = '<option value="">Select Operator</option>';
+                        $.each(response, function (index, value) {
+                            options += '<option value="' + value.id + '">' + value.name + '</option>';
+                        });
+                        $('#operator_id').html(options);
+                    },
+                    complete: function () {
+                        $('#loader').removeClass('d-flex')
+                            .addClass('d-none');
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
