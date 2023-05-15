@@ -4,7 +4,8 @@
         <a class="navbar-brand" href="{{ url('/') }}">
             <img src="{{ asset('images/logo.png') }}" class="" alt="Logo">
         </a>
-        <button x-data="{open:false}"  @click="open=!open" class="navbar-toggler tw-rounded-sm" type="button" data-toggle="collapse"
+        <button x-data="{open:false}" @click="open=!open" class="navbar-toggler tw-rounded-sm" type="button"
+                data-toggle="collapse"
                 data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="ti ti-menu-2" x-show="!open"></span>
@@ -43,8 +44,11 @@
                     </a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white font-weight-bold" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <a class="nav-link dropdown-toggle text-white font-weight-bold" href="#" id="dropdown09"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24"
+                             height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                             stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M4 5h7"></path>
                             <path d="M9 3v2c0 4.418 -2.239 8 -5 8"></path>

@@ -19,6 +19,7 @@ class HomeController extends Controller
         }
         return redirect()->back();
     }
+
     public function welcome()
     {
         $operators = Operator::query()->inRandomOrder()->get();
@@ -39,7 +40,7 @@ class HomeController extends Controller
 
     public function getOperatorsByDistrict()
     {
-        $districtId= \request('district_id');
+        $districtId = \request('district_id');
 
         $operators = Operator::query()
             ->whereHas('operationAreas', function ($query) use ($districtId) {
@@ -47,8 +48,9 @@ class HomeController extends Controller
             })
             ->get();
         return response()->json($operators);
-
     }
+
+
 
 
 }
