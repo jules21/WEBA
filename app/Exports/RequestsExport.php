@@ -54,35 +54,15 @@ class RequestsExport implements WithHeadings, FromCollection, WithColumnFormatti
         $data = collect();
         foreach ($this->data as $key => $row) {
             $arr = [];
-            $row->customer ? $arr[] = $row->customer->name : $arr[] = '-';
-            $row->requestType ? $arr[] = $row->requestType->name : $arr[] = '-';
-            $row->operator ? $arr[] = $row->operator->name : $arr[] = '-';
-            $row->operationArea ? $arr[] = $row->operationArea->name : $arr[] = '-';
+            $arr[] = $row->customer->name ?? '-';
+            $arr[] = $row->requestType->name ?? '-';
+            $arr[] = $row->operator->name ?? '-';
+            $arr[] = $row->operationArea->name ?? '-';
             $arr[] = $row->meter_qty ?? '-';
-            $row->waterUsage ? $arr[] = $row->waterUsage->name : $arr[] = '-';
+            $arr[] = $row->waterUsage->name ?? '-';
             $arr[] = $row->upi ?? '-';
             $arr[] = $row->status ?? '-';
             $data->push($arr);
-
-
-//            $adjustment->created_by ? $arr[] = $adjustment->createdBy->name : $arr[] = '-';
-//            $arr[] = $adjustment->description ?? '-';
-//            $items = '';
-//            foreach ($adjustment->items as $key => $item) {
-//
-//                if ($item->adjustment_type == 'increase')
-//                    $items .= $item->item->name.' (+'.$item->quantity.')';
-//                else
-//                    $items .= $item->item->name.' (-'.$item->quantity.')';
-//
-//                if ($key < count($adjustment->items) - 1) {
-//                    $items .= ', ';
-//                }
-//            }
-//            $arr[] = $items;
-//            $arr[] = $adjustment->created_at ?? '-';
-//            $arr[] = $adjustment->status ?? '-';
-//            $adjustment->approved_by ? $arr[] = $adjustment->approvedBy->name : $arr[] = '-';
         }
 
         return $data;
