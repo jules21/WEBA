@@ -47,6 +47,8 @@
                         <label for="to_date">To Date</label>
                         <input type="date" name="end_date" id="to_date" class="form-control" placeholder="To Date" value="{{request()->get('end_date')}}">
                     </div>
+                    <input type="hidden" id="is_operator" value="{{Helper::isOperator()}}"/>
+                    <input type="hidden" id="has_op_area" value="{{Helper::hasOperationArea()}}"/>
                     @unless(Helper::isOperator())
                         <div class="col-md-3 form-group">
                             <label for="operator">Operator</label>
@@ -146,6 +148,8 @@
                     <thead>
                     <tr>
                         <th>Created At</th>
+                        <th>Operator</th>
+                        <th>Operation Area</th>
                         <th>Customer</th>
                         <th>Request Type</th>
                         <th>Meter Qty</th>
@@ -171,8 +175,6 @@
 @endsection
 
 @section('scripts')
-    {{--  <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
-      {!! JsValidator::formRequest(App\Http\Requests\StoreCustomerRequest::class) !!}--}}
 
     <script>
         const initData = () => {
@@ -212,7 +214,7 @@
             $('.nav-request-management').addClass('menu-item-active menu-item-open');
             $('.nav-all-requests').addClass('menu-item-active');
 
-            window.dataTable = $('.dataTable').DataTable({
+            const table = $('.dataTable').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: "{!! request()->fullUrl() !!}",
@@ -223,6 +225,16 @@
                             return (new Date(data)).toLocaleDateString();
                         }
                     },
+                    {data: "operator.name", name: "operator.name",
+                        render: function (data, type, row) {
+                            data = data ? data : '';
+                            return data;
+                        }},
+                    {data: "operation_area.name", name: "operation_area.name",
+                        render: function (data, type, row) {
+                            data = data ? data : '';
+                            return data;
+                        }},
                     {data: "customer.name", name: "customer.name"},
                     {data: "request_type.name", name: "requestType.name"},
                     {data: "meter_qty", name: "meter_qty"},
@@ -238,10 +250,23 @@
                 order: [[0, 'desc']]
             });
 
+            const isOperator = $("#is_operator").val()
+            const opArea =$("#has_op_area").val()
+            console.log(isOperator,opArea)
+            if(opArea == 1){
+                const column = table.column(1);
+                column.visible(false);
+                const column2 = table.column(2);
+                column2.visible(false);
+            }else if(isOperator == 1){
+                const column = table.column(1);
+                column.visible(false);
+            }
+
+
             $('#addButton').on('click', function () {
                 $('#addModal').modal('show');
             });
-
             $(document).on('click', '.js-delete', function (e) {
                 e.preventDefault();
 
@@ -271,12 +296,10 @@
                 });
 
             });
-
             $(document).on("click","#excel", function(e) {
                 let url = "{!! $newUrl !!}";
                 $(this).attr("href",url);
             });
-
             $(document).on('change', '#operator', function (e) {
                 e.preventDefault();
                 let operatorId = $(this).val();

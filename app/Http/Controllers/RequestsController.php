@@ -60,7 +60,7 @@ class RequestsController extends Controller
         $upi = \request('upi');
 
         $data = AppRequest::query()
-            ->with(['customer', 'requestType', 'operator'])
+            ->with(['customer', 'requestType', 'operator', 'operationArea'])
             ->when(!is_null($customerId), function (Builder $query) use ($customerId) {
                 return $query->where('customer_id', '=', decryptId($customerId));
             })
