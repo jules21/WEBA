@@ -178,7 +178,7 @@ class Request extends Model implements Auditable
         return $this->belongsTo(Village::class);
     }
 
-    public function waterUsage(): BelongsTo
+        public function waterUsage(): BelongsTo
     {
         return $this->belongsTo(WaterUsage::class);
     }
