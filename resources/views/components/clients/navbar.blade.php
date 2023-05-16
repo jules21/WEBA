@@ -24,7 +24,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link d-flex tw-gap-1 align-items-center btn btn-accent btn-sm text-dark px-4 rounded-sm tw-font-semibold "
-                       href="#">
+                       href="{{ route('check-bills') }}">
                         <span>
                             Pay Now
                         </span>

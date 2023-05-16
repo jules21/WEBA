@@ -420,22 +420,27 @@ Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
     Route::post('/password/reset', [ResetPasswordController::class, 'reset'])->name('password.email');
     Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.reset');
     Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm']);
-    Route::get('/profile', [ClientsController::class, 'profile'])->name('profile');
-    Route::put('/profile/{client}/update', [ClientsController::class, 'updateProfile'])
-        ->name('profile.update');
-    Route::get('/new-connection/request', [ClientRequestsController::class, 'newConnection'])->name('connection-new');
-    //client change password
-    Route::post('/change-password', [ClientsController::class, 'updatePassword'])->name('update-password');
 
+    Route::group(['middleware' => 'auth:client'], function () {
+        Route::get('/profile', [ClientsController::class, 'profile'])->name('profile');
+        Route::put('/profile/{client}/update', [ClientsController::class, 'updateProfile'])
+            ->name('profile.update');
+        Route::get('/new-connection/request', [ClientRequestsController::class, 'newConnection'])->name('connection-new');
+        //client change password
+        Route::post('/change-password', [ClientsController::class, 'updatePassword'])->name('update-password');
 
-    Route::post('/new-connection/{operator}', [ClientRequestsController::class, 'requestNewConnection'])
-        ->name('request-new-connection');
-    Route::get('/requests/{request}/details', [ClientRequestsController::class, 'details'])->name('request-details');
-    Route::get('/requests/{request}/edit', [ClientRequestsController::class, 'edit'])->name('requests.edit');
-    Route::put('/requests/{appRequest}/update', [ClientRequestsController::class, 'update'])->name('requests.update');
+        Route::post('/new-connection/{operator}', [ClientRequestsController::class, 'requestNewConnection'])
+            ->name('request-new-connection');
+        Route::get('/requests/{request}/details', [ClientRequestsController::class, 'details'])->name('request-details');
+        Route::get('/requests/{request}/edit', [ClientRequestsController::class, 'edit'])->name('requests.edit');
+        Route::put('/requests/{appRequest}/update', [ClientRequestsController::class, 'update'])->name('requests.update');
 
-    Route::get('/billings', App\Http\Livewire\Client\ClientBilling::class)->name('billings');
-    Route::get('/payments', Payments::class)->name('payments');
+        Route::get('/billings', App\Http\Livewire\Client\ClientBilling::class)->name('billings');
+        Route::get('/payments', Payments::class)->name('payments');
+
+        Route::get('/requests', [ClientsController::class, 'requests'])->name('requests');
+
+    });
 
 
 });

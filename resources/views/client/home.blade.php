@@ -5,6 +5,9 @@
         <x-layouts.breadcrumb-item>
             Home
         </x-layouts.breadcrumb-item>
+        <x-layouts.breadcrumb-item>
+            Overview
+        </x-layouts.breadcrumb-item>
 
         <x-slot name="actions">
             <button class="btn rounded tw-bg-accent  tw-font-semibold hover:tw-bg-accent hover:tw-text-white "
@@ -18,58 +21,95 @@
     </x-layouts.breadcrumb>
 @endsection
 @section('content')
-    <div class="card card-body h-100 tw-rounded-lg tw-bg-cover tw-bg-no-repeat tw-bg-center"
-         style="background-image: url({{ asset('images/bg_logo.png') }});">
-        <h4>
-            Recent Requests
-        </h4>
 
-        <ul class="list-group list-group-flush mt-4">
-            @forelse($recentRequests as $item)
-                <li class="list-group-item d-flex align-items-start mb-3 bg-transparent">
-                    <img src="{{ $item->operator->logo_url }}" class="mr-3 tw-w-10" alt="...">
-                    <div class="media-body">
-                        <div class="mt-0 mb-1 d-flex justify-content-between align-items-center">
-                            <h5>
-                                {{ $item->operator->name }}
+    <div class="tw-grid tw-grid-cols-2 tw-gap-2">
+        <div class="card card-body tw-rounded-lg text-primary d-flex justify-content-center align-items-center  border">
+            <div
+                class="bg-primary  text-accent p-2 rounded-circle tw-h-16 tw-w-16 d-flex justify-content-center align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-git-pull-request" width="24"
+                     height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M6 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                    <path d="M6 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                    <path d="M18 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                    <path d="M6 8l0 8"></path>
+                    <path d="M11 6h5a2 2 0 0 1 2 2v8"></path>
+                    <path d="M14 9l-3 -3l3 -3"></path>
+                </svg>
+            </div>
+            <div class="card-text  d-flex justify-content-center align-items-center flex-column mt-4">
+                <h5 class="text-center small font-weight-bolder">Total Requests</h5>
+                <h4>{{ $customerOverview->totalRequests }}</h4>
+            </div>
+        </div>
+        <div class="card card-body tw-rounded-lg text-primary d-flex justify-content-center align-items-center  border">
+            <div
+                class="bg-primary  text-accent p-2 rounded-circle tw-h-16 tw-w-16 d-flex justify-content-center align-items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-affiliate-filled" width="24"
+                     height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                     stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                        d="M18.5 3a2.5 2.5 0 1 1 -.912 4.828l-4.556 4.555a5.475 5.475 0 0 1 .936 3.714l2.624 .787a2.5 2.5 0 1 1 -.575 1.916l-2.623 -.788a5.5 5.5 0 0 1 -10.39 -2.29l-.004 -.222l.004 -.221a5.5 5.5 0 0 1 2.984 -4.673l-.788 -2.624a2.498 2.498 0 0 1 -2.194 -2.304l-.006 -.178l.005 -.164a2.5 2.5 0 1 1 4.111 2.071l.787 2.625a5.475 5.475 0 0 1 3.714 .936l4.555 -4.556a2.487 2.487 0 0 1 -.167 -.748l-.005 -.164l.005 -.164a2.5 2.5 0 0 1 2.495 -2.336z"
+                        stroke-width="0" fill="currentColor"></path>
+                </svg>
+            </div>
+            <div class="card-text  d-flex justify-content-center align-items-center flex-column mt-4">
+                <h5 class="text-center small font-weight-bolder">
+                    Water Connections
+                </h5>
+                <h4>{{ $customerOverview->totalConnections}} </h4>
+            </div>
+        </div>
+        <div
+            class="card card-body tw-rounded-lg tw-col-span-2 border">
+            <div class="mb-4">
+                <h4>Operator Overview</h4>
+                <p class="card-text">
+                    Billing overview by operators
+                </p>
+            </div>
 
-                            </h5>
+            <div class="list-group border-top-0">
+                @foreach($operatorData as $item)
+                    <div class="list-group-item d-flex justify-content-between">
+                        <div class="d-flex">
+                            <img src="{{ $item->logo_url }}" alt="" class="tw-h-10">
                             <div>
-                                @if($item->return_back_status==\App\Constants\Status::RETURN_BACK)
-                                    <span class="badge badge-warning rounded-pill align-self-start tw-py-1.5 tw-px-2">Returned Back</span>
-                                @endif
-                                <span
-                                    class="badge badge-{{ $item->status_color }} rounded-pill tw-py-1.5 tw-px-2">{{ $item->status }}</span>
+                                <div>{{ $item->name }}</div>
+                                <div class="text-muted tw-text-sm mt-2">{{ $item->subscription_number }}</div>
                             </div>
-
                         </div>
-                        <p class="text-muted">
-                            {{ $item->requestType->name }}
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <p class="mb-1">
-                                <strong>UPI:</strong> {{ $item->upi }}, <strong>Meter
-                                    Requested:</strong> {{ $item->meter_qty }}
-
-                            </p>
-                            <a href="{{ route('client.request-details',encryptId($item->id)) }}"
-                               class="btn btn-secondary btn-sm rounded-sm">
-                                Details
-                            </a>
+                        <div>
+                            {{ number_format($item->total_balance) }}
                         </div>
                     </div>
-                </li>
-            @empty
-                <li class="list-group-item list-group-item-action">
-                    <div class="alert alert-info">
-                        No recent requests found,you can use "New Connection" button to create a new request.
-                    </div>
-                </li>
-            @endforelse
+                @endforeach
+            </div>
 
-
-        </ul>
+        </div>
     </div>
+
+{{--    <div class="card card-body my-3 tw-rounded-lg">
+        <div class="d-flex justify-content-between ">
+            <div>
+                <h5 class="card-title">Water Consumption</h5>
+                <p class="card-text">Water consumption for the last 12 months</p>
+            </div>
+            <div>
+                --}}{{--               filter by operator--}}{{--
+                <select name="" id="" class="form-control">
+                    <option value="">All Operators</option>
+                    @foreach(myOperators() as $item)
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <canvas id="waterChart"></canvas>
+    </div>--}}
+
 
     <!-- Modal -->
     <div class=" modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -129,8 +169,84 @@
 
 @endsection
 @section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
+        const data = [
+            {month: 'January', consumption: 100, provider: 'Provider A'},
+            {month: 'February', consumption: 120, provider: 'Provider A'},
+            {month: 'March', consumption: 80, provider: 'Provider B'},
+            // Add more data for the remaining months
+        ];
+
+        function formatKMB(num) {
+            if (num < 1000) {
+                return num.toString();
+            } else if (num < 1000000) {
+                return (num / 1000).toFixed(1) + 'K';
+            } else if (num < 1000000000) {
+                return (num / 1000000).toFixed(1) + 'M';
+            } else if (num < 1000000000000) {
+                return (num / 1000000000).toFixed(1) + 'B';
+            } else {
+                return (num / 1000000000000).toFixed(1) + 'T';
+            }
+        }
+
+
         $(function () {
+
+            const ctx = document.getElementById('waterChart').getContext('2d');
+
+            let labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            let myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Water Consumption (cubic meters)',
+                        data: labels.map(() => Math.floor(Math.random() * 1000)),
+                        backgroundColor: 'rgba(3,77,151,0.9)',
+                        borderColor: 'rgb(3,77,151)',
+                        borderWidth: 3,
+                        fill: true,
+                        pointBorderWidth: 0,
+                        pointRadius: 2,
+                        pointBackgroundColor: 'rgba(3,77,151,0.1)',
+                        pointBorderColor: 'rgba(3,77,151,0.9)',
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: 'rgba(3,77,151,0.9)',
+                        barPercentage: 0.5, // Adjust the width of the bars (0.0 - 1.0)
+                        categoryPercentage: 0.7, // Adjust the spacing between bars (0.0 - 1.0)
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                display: true
+                            },
+                            ticks: {
+                                callback: function (value, index, values) {
+                                    return formatKMB(value);
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    elements: {
+                        line: {
+                            tension: 0.4,
+                        }
+                    },
+                },
+            });
+
             $('#district').on('change', function () {
                 let districtId = $(this).val();
                 $('#loader').removeClass('d-none')
