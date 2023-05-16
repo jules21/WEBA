@@ -8,6 +8,7 @@ use App\Http\Resources\MeterRequestResource;
 use App\Models\BillCharge;
 use App\Models\Billing;
 use App\Models\MeterRequest;
+use App\Models\Payment;
 use App\Notifications\PaymentNotification;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class BillingController extends Controller
     {
         $meterRequest = MeterRequest::where('subscription_number', $request->subscriptionNumber)
             ->first();
-        if (! $meterRequest) {
+        if (!$meterRequest) {
             return response()->json([
                 'action' => 0,
                 'message' => 'Subscription Number not found',
@@ -69,7 +70,7 @@ class BillingController extends Controller
         if ($user->can('Make Billing')) {
             $meterRequest = MeterRequest::where('subscription_number', $request->subscriptionNumber)
                 ->first();
-            if (! $meterRequest) {
+            if (!$meterRequest) {
                 return response()->json([
                     'action' => 0,
                     'message' => 'Subscription Number not found',
@@ -87,7 +88,7 @@ class BillingController extends Controller
             $charge = BillCharge::query()->where('operation_area_id', $meterRequest->request->operation_area_id)
                 ->where('water_network_type_id', $meterRequest->request->waterNetwork->water_network_type_id)
                 ->first();
-            if (! $charge) {
+            if (!$charge) {
                 return response()->json([
                     'action' => 0,
                     'message' => 'No charge found,Please contact admin',
@@ -110,12 +111,39 @@ class BillingController extends Controller
             $bill->balance = $bill->unit_price * ($bill->last_index - $bill->starting_index);
             $bill->save();
             $bill->load('meterRequest.request.customer');
+            $message = 'Dear ' . $meterRequest->request->customer->name . ', Your bill for the month of ' . date('F') . ' is ' . $bill->amount . ' RWF. Please pay before ' . date('d-m-Y', strtotime('+30 days')) . ' to avoid disconnection. Thank you.';
+            $meterRequest->request->customer->notify(new PaymentNotification($message));
+
+            //if meter request balance is greater than 0,make payment of the bill
+            if ($meterRequest->balance > 0) {
+                $billings = Billing::where('subscription_number', $request->subscriptionNumber)
+                    ->where('balance', '>', 0)->orderBy("created_at")->get();
+                $amount = min($bill->amount, $meterRequest->balance);
+
+                foreach ($billings as $bil) {
+                    $balance = $bill->balance;
+                    $bil->balance = $balance > $amount ? $balance - $amount : 0;
+                    $bil->update();
+                    $history = new Payment();
+                    $history->billing_id = $bil->id;
+                    $history->amount = min($balance, $amount);
+                    $history->subscription_number = $request->subscriptionNumber;
+                    $history->bank_reference_number = str_random(10);
+                    $history->narration = 'Automatic bill Payment  of ' . $bil->amount . ' RWF';
+                    $history->payment_date = now();
+                    $history->source = 'Balance';
+                    $history->save();
+                    $amount = $amount - $balance;
+                    if ($amount <= 0) {
+                        break;
+                    }
+                }
+            }
             $meterRequest->update([
                 'last_index' => $request->indexNumber,
                 'balance' => $meterRequest->balance - $bill->amount,
             ]);
-            $message = 'Dear '.$meterRequest->request->customer->name.', Your bill for the month of '.date('F').' is '.$bill->amount.' RWF. Please pay before '.date('d-m-Y', strtotime('+30 days')).' to avoid disconnection. Thank you.';
-            $meterRequest->request->customer->notify(new PaymentNotification($message));
+
 
             return response()->json([
                 'action' => 1,

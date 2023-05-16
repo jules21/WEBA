@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\faq;
+use App\Models\Faq;
 use App\Http\Requests\StorefaqRequest;
 use App\Http\Requests\UpdatefaqRequest;
 
@@ -15,7 +15,7 @@ class FaqController extends Controller
      */
     public function index()
     {
-        $faqs = faq::query()->orderBy('id','DESC')->get();
+        $faqs = Faq::query()->orderBy('id','DESC')->get();
         return view('admin.settings.faqs.index',compact('faqs'));
     }
 
@@ -37,7 +37,7 @@ class FaqController extends Controller
      */
     public function store(StorefaqRequest $request)
     {
-        $faq = new faq();
+        $faq = new Faq();
         $faq->question=$request->question;
         $faq->answer=$request->answer;
         $faq->save();
@@ -47,10 +47,10 @@ class FaqController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\faq  $faq
+     * @param  \App\Models\Faq  $faq
      * @return \Illuminate\Http\Response
      */
-    public function show(faq $faq)
+    public function show(Faq $faq)
     {
         //
     }
@@ -58,10 +58,10 @@ class FaqController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\faq  $faq
+     * @param  \App\Models\Faq  $faq
      * @return \Illuminate\Http\Response
      */
-    public function edit(faq $faq)
+    public function edit(Faq $faq)
     {
         //
     }
@@ -70,12 +70,12 @@ class FaqController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdatefaqRequest  $request
-     * @param  \App\Models\faq  $faq
+     * @param  \App\Models\Faq  $faq
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdatefaqRequest $request, faq $faq)
+    public function update(UpdatefaqRequest $request, Faq $faq)
     {
-        $faq = faq::findOrFail($request->input('FaqId'));
+        $faq = Faq::findOrFail($request->input('FaqId'));
         $faq->question=$request->question;
         $faq->answer=$request->answer;
         $faq->save();
@@ -85,13 +85,13 @@ class FaqController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\faq  $faq
+     * @param  \App\Models\Faq  $faq
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(faq $faq,$id)
+    public function destroy(Faq $faq, $id)
     {
         try {
-            $faq = faq::find($id);
+            $faq = Faq::find($id);
             $faq->delete();
             return redirect()->back()->with('success','Faq deleted Successfully');
         }catch (\Exception $exception){

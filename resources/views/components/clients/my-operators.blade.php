@@ -10,18 +10,20 @@
                 <img src="{{ $item->logo_url }}" class="mr-3 tw-w-10" alt="...">
                 <div class="media-body">
                     <h5 class="mt-0 mb-1">
-                        {{ $item->name }}
+                        <a href="{{ route('client.requests',['op'=>$item->id]) }}" class="text-decoration-none">
+                            {{ $item->name }}
+                        </a>
                     </h5>
                     <p class="mb-1">
                         {{ $item->address }}
                     </p>
                     <div class="d-flex tw-gap-1 justify-content-between">
-                  {{--      <a href="{{ route('client.connection-new',encryptId($item->id)) }}"
-                           class="btn btn-sm tw-bg-primary/10 tw-text-primary font-weight-bolder hover:tw-bg-primary hover:tw-text-white">
-                            <span class="ti ti-plus d-none d-lg-inline"></span>
-                            New Connection
-                        </a>
---}}
+                        {{--      <a href="{{ route('client.connection-new',encryptId($item->id)) }}"
+                                 class="btn btn-sm tw-bg-primary/10 tw-text-primary font-weight-bolder hover:tw-bg-primary hover:tw-text-white">
+                                  <span class="ti ti-plus d-none d-lg-inline"></span>
+                                  New Connection
+                              </a>
+      --}}
                     </div>
                 </div>
             </li>

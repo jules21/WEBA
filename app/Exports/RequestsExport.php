@@ -2,14 +2,12 @@
 
 namespace App\Exports;
 
-use App\Models\Request;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
@@ -17,38 +15,17 @@ use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumnFormatting, ShouldAutoSize, WithStyles, WithTitle, WithEvents
+class RequestsExport implements WithHeadings, FromCollection, WithColumnFormatting, ShouldAutoSize, WithStyles, WithTitle, WithEvents
 {
     use Exportable;
 
-    private ?string $startDate = null;
+    public $data;
 
-    private ?string $endDate;
-
-    private ?int $districtId;
-
-    private ?string $operatorId;
-
-    private ?string $operationAreaId;
-
-    private ?string $requestType;
-
-    private ?string $status;
-
-    private ?string $upi;
-
-    public function __construct(?string $startDate, ?string $endDate, ?int $districtId, ?string $operatorId, ?string $operationAreaId,
-                                ?string $requestType, ?string $status, ?string $upi)
+    public function __construct($data)
     {
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
-        $this->districtId = $districtId;
-        $this->operatorId = $operatorId;
-        $this->operationAreaId = $operationAreaId;
-        $this->requestType = $requestType;
-        $this->status = $status;
-        $this->upi = $upi;
+        $this->data = $data;
     }
+
 
     public function ShouldAutoSize(): bool
     {
@@ -59,39 +36,6 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
     {
         return 'Requests';
     }
-
-    public function query()
-    {
-        return Request::query()
-            ->with('customer', 'requestType', 'operator', 'operationArea', 'waterUsage')
-            ->when($this->startDate, function ($query) {
-                return $query->whereDate('created_at', '>=', $this->startDate);
-            })
-            ->when($this->endDate, function ($query) {
-                return $query->whereDate('created_at', '<=', $this->endDate);
-            })
-            ->when($this->districtId, function ($query) {
-                return $query->where('district_id', $this->districtId);
-            })
-            ->when($this->operatorId, function ($query) {
-                return $query->where('operator_id', $this->operatorId);
-            })
-            ->when($this->operationAreaId, function ($query) {
-                return $query->where('operation_area_id', $this->operationAreaId);
-            })
-            ->when($this->requestType, function ($query) {
-                return $query->where('request_type_id', $this->requestType);
-            })
-            ->when($this->status, function ($query) {
-                return $query->where('status', $this->status);
-            })
-            ->when($this->upi, function ($query) {
-                return $query->where('upi', $this->upi);
-            });
-
-
-    }
-
     public function headings(): array
     {
         return [
@@ -105,19 +49,23 @@ class RequestsExport implements FromQuery, WithHeadings, WithMapping, WithColumn
             'Status',
         ];
     }
-
-    public function map($row): array
+    public function collection()
     {
-        return [
-            optional($row->customer)->name,
-            optional($row->requestType)->name,
-            optional($row->operator)->name,
-            optional($row->operationArea)->name,
-            $row->meter_qty,
-            optional($row->waterUsage)->name,
-            $row->upi,
-            $row->status,
-        ];
+        $data = collect();
+        foreach ($this->data as $key => $row) {
+            $arr = [];
+            $arr[] = $row->customer->name ?? '-';
+            $arr[] = $row->requestType->name ?? '-';
+            $arr[] = $row->operator->name ?? '-';
+            $arr[] = $row->operationArea->name ?? '-';
+            $arr[] = $row->meter_qty ?? '-';
+            $arr[] = $row->waterUsage->name ?? '-';
+            $arr[] = $row->upi ?? '-';
+            $arr[] = $row->status ?? '-';
+            $data->push($arr);
+        }
+
+        return $data;
     }
 
     public function columnFormats(): array

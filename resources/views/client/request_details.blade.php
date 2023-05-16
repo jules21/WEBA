@@ -164,6 +164,12 @@
                     @endforelse
                 </div>
             </div>
+            <div class="col-lg-6">
+                <label class="font-weight-bold d-block">Operator:</label>
+                <div>
+                    {{ $request->operator->name }}
+                </div>
+            </div>
             <div class="col-lg-12">
                 <div class="form-group">
                     <label class="font-weight-bold">Description:</label>

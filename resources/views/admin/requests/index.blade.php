@@ -47,6 +47,8 @@
                         <label for="to_date">To Date</label>
                         <input type="date" name="end_date" id="to_date" class="form-control" placeholder="To Date" value="{{request()->get('end_date')}}">
                     </div>
+                    <input type="hidden" id="is_operator" value="{{Helper::isOperator()}}"/>
+                    <input type="hidden" id="has_op_area" value="{{Helper::hasOperationArea()}}"/>
                     @unless(Helper::isOperator())
                         <div class="col-md-3 form-group">
                             <label for="operator">Operator</label>
@@ -146,6 +148,8 @@
                     <thead>
                     <tr>
                         <th>Created At</th>
+                        <th>Operator</th>
+                        <th>Operation Area</th>
                         <th>Customer</th>
                         <th>Request Type</th>
                         <th>Meter Qty</th>
@@ -171,34 +175,46 @@
 @endsection
 
 @section('scripts')
-    {{--  <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
-      {!! JsValidator::formRequest(App\Http\Requests\StoreCustomerRequest::class) !!}--}}
 
     <script>
-
-        function getOperatorAreas(operatorId, $selectedAreaId = null) {
-            let operationArea = $('#operation_area_id');
-            if (operatorId) {
-                operationArea.html('<option value="">Loading...</option>');
-
-                $.ajax({
-                    url: "{{ route('operator-operation-areas') }}",
-                    data: {operator_id: operatorId},
-                    success: function (response) {
-                        operationArea.html('<option value="">All</option>');
-                        response.forEach(function (item) {
-                            operationArea.append(`<option value="${item.id}" ${$selectedAreaId == item.id ? 'selected' : ''}>${item.name}</option>`);
-                        });
-                    }
-                });
+        const initData = () => {
+            const operatorId = "{{ request()->get('operator_id') ? request()->get('operator_id') : '' }}";
+            if (operatorId !== '') {
+                getOperationArea(operatorId);
             }
-        }
+            if (operatorId !== '') {
+                $('#operator').val(operatorId).trigger('change');
+            }
+        };
+        const getOperationArea = (operatorId) => {
+            const url = "{{ route('operator-operation-areas') }}";
+            const operationArea = @json($operation_area_id);
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {operator_id: operatorId},
+                success: function (data) {
+
+                    $('#operation_area').empty();
+                    $('#operation_area').append('<option value="">Select Operation Area</option>');
+                    $.each(data, function (key, value) {
+                        if (operationArea && operationArea.includes(value.id.toString())) {
+                            $('#operation_area').append('<option value="' + value.id + '" selected>' + value.name + '</option>');
+                        } else {
+                            $('#operation_area').append('<option value="' + value.id + '">' + value.name + '</option>');
+                        }
+                    });
+                    $('#operation_area').select2();
+                }
+            });
+        };
 
         $(document).ready(function () {
+            initData();
             $('.nav-request-management').addClass('menu-item-active menu-item-open');
             $('.nav-all-requests').addClass('menu-item-active');
 
-            window.dataTable = $('.dataTable').DataTable({
+            const table = $('.dataTable').DataTable({
                 serverSide: true,
                 processing: true,
                 ajax: "{!! request()->fullUrl() !!}",
@@ -209,6 +225,16 @@
                             return (new Date(data)).toLocaleDateString();
                         }
                     },
+                    {data: "operator.name", name: "operator.name",
+                        render: function (data, type, row) {
+                            data = data ? data : '';
+                            return data;
+                        }},
+                    {data: "operation_area.name", name: "operation_area.name",
+                        render: function (data, type, row) {
+                            data = data ? data : '';
+                            return data;
+                        }},
                     {data: "customer.name", name: "customer.name"},
                     {data: "request_type.name", name: "requestType.name"},
                     {data: "meter_qty", name: "meter_qty"},
@@ -224,17 +250,23 @@
                 order: [[0, 'desc']]
             });
 
+            const isOperator = $("#is_operator").val()
+            const opArea =$("#has_op_area").val()
+            console.log(isOperator,opArea)
+            if(opArea == 1){
+                const column = table.column(1);
+                column.visible(false);
+                const column2 = table.column(2);
+                column2.visible(false);
+            }else if(isOperator == 1){
+                const column = table.column(1);
+                column.visible(false);
+            }
+
+
             $('#addButton').on('click', function () {
                 $('#addModal').modal('show');
             });
-
-            $('#operator_id').on('change', function () {
-                getOperatorAreas($(this).val());
-            });
-
-            getOperatorAreas($('#operator_id').val(), "{{ request('operation_area_id') }}");
-
-
             $(document).on('click', '.js-delete', function (e) {
                 e.preventDefault();
 
@@ -264,12 +296,36 @@
                 });
 
             });
-
             $(document).on("click","#excel", function(e) {
                 let url = "{!! $newUrl !!}";
                 $(this).attr("href",url);
             });
+            $(document).on('change', '#operator', function (e) {
+                e.preventDefault();
+                let operatorId = $(this).val();
+                if (operatorId !== '') {
+                    getOperationArea(operatorId);
+                }
+                else {
+                    $('#operation_area').empty();
+                    $('#operation_area').append('<option value="">Select Operation Area</option>');
+                }
+            });
+            $(document).on('change','#operation_area',function (e) {
+                e.preventDefault();
+                let operationAreaId = $(this).val();
+                if (operationAreaId !== '') {
+                    getCustomerFieldOfficer(operationAreaId);
+                }
+                else {
+                    $('#customer_field_officer').empty();
+                    $('#customer_field_officer').append('<option value="">Select Customer Field Officer</option>');
+                }
+            });
+
         });
+
+
     </script>
 
 @endsection

@@ -178,7 +178,7 @@ class Request extends Model implements Auditable
         return $this->belongsTo(Village::class);
     }
 
-    public function waterUsage(): BelongsTo
+        public function waterUsage(): BelongsTo
     {
         return $this->belongsTo(WaterUsage::class);
     }
@@ -378,5 +378,12 @@ class Request extends Model implements Auditable
             return Status::PENDING;
         }
         return null;
+    }
+
+    public function scopeOperatorCustomer()
+    {
+        return $this->whereHas('customer', function (Builder $builder) {
+            $builder->where('doc_number', '=', auth('client')->user()->doc_number);
+        });
     }
 }
