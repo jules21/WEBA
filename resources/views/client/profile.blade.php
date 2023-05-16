@@ -209,8 +209,14 @@
                                                     <input type="password" class="form-control form-control-lg form-control-solid" name="new_confirm_password" placeholder="Verify password">
                                                 </div>
                                             </div>
-                                            <button type="submit" class="btn btn-success mr-2">Change Password</button>
-                                            <button type="reset" class="btn btn-secondary">Clear</button>
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    <button type="submit" class="btn btn-success mr-2">Change Password</button>
+                                                    <button type="reset" class="btn btn-secondary">Clear</button>
+                                                </div>
+                                                <div>
+                                                <button type="button" class="btn btn-danger" id="cancel-password-btn">Cancel</button>
+                                            </div>
                                         </div>
                                     </form>
                                     <!--end::Form-->
@@ -239,6 +245,11 @@
                         $('#change-password').removeClass('d-none');
                     });
 
+                    $(document).on('click', '#cancel-password-btn', function () {
+                        $('#profile-details').removeClass('d-none');
+                        $('#edit-profile').addClass('d-none');
+                        $('#change-password').addClass('d-none');
+                    });
                 })
 
             </script>
