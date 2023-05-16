@@ -29,18 +29,12 @@
                 <i class="ti ti-circle-check tw-text-[24px]"></i>
                 Enter your bill number to check your bill details and pay with MTN Mobile Money
             </div>
-        @elseif(is_null($paymentDetails))
-            <div class="alert alert-danger d-flex align-items-center tw-gap-2">
-                <i class="ti ti-circle-check tw-text-[24px]"></i>
-                No payment details found for bill number <strong>{{ $billNumber }}</strong> provided, please check your
-                bill number and try again
-            </div>
         @endif
 
-        @if($billType==\App\Http\Livewire\CheckBills::WATER_BILL && $billingSummary)
+        @if($billType==\App\Http\Livewire\CheckBills::WATER_BILL)
             @include('water_payment_details')
         @endif
-        @if($billType==\App\Http\Livewire\CheckBills::OTHER_BILL && $paymentDetails)
+        @if($billType==\App\Http\Livewire\CheckBills::OTHER_BILL)
             @include('other_payment_details')
         @endif
 
