@@ -20,6 +20,7 @@ class ClientBilling extends Component
 
     public function render()
     {
+//        sleep(3);
         $billings = Billing::query()
             ->with(['meterRequest.request.operator', 'user'])
             ->whereHas('meterRequest', function (Builder $builder) {
@@ -34,8 +35,10 @@ class ClientBilling extends Component
                 });
             })
             ->when(!empty($this->search), function (Builder $builder) {
-                $builder->where('meter_number', 'like', '%' . $this->search . '%')
-                    ->orWhere('subscription_number', 'like', '%' . $this->search . '%');
+                $builder->where(function (Builder $builder) {
+                    $builder->where('meter_number', 'ilike', '%' . $this->search . '%')
+                        ->orWhere('subscription_number', 'ilike', '%' . $this->search . '%');
+                });
             })
             ->latest()
             ->paginate(10);

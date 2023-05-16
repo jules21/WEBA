@@ -1,7 +1,7 @@
 <div {{ $attributes->class(['card mb-4 card-body tw-rounded-lg']) }}>
     <ul class="nav flex-column tw-gap-2">
         <li class="nav-item">
-            <a class="nav-link tw-rounded-xl hover:tw-bg-primary/5 tw-text-lg d-flex align-items-center tw-gap-1 {{ request()->routeIs('home')?'tw-bg-primary/5':'' }}"
+            <a class="nav-link tw-rounded-xl hover:tw-bg-primary hover:tw-text-white tw-text-lg d-flex align-items-center tw-gap-1 tw-group {{ request()->routeIs('home')?'tw-bg-primary/90 tw-text-white':'' }}"
                href="{{ route('home') }}">
                 <div
                     class="d-flex justify-content-center align-items-center tw-h-12 tw-w-12 bg-primary text-white rounded-circle flex-shrink-0">
@@ -9,12 +9,27 @@
                 </div>
                 <div>
                     <div>Home</div>
-                    <div class="tw-text-sm  text-muted">Summary</div>
+                    <div class="tw-text-xs">Summary</div>
                 </div>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link tw-rounded-xl hover:tw-bg-primary/5 tw-text-lg d-flex align-items-center tw-gap-1 {{ request()->routeIs('client.billings')?'tw-bg-primary/5':'' }}"
+            <a class="nav-link tw-rounded-xl hover:tw-bg-primary hover:tw-text-white tw-text-lg d-flex align-items-center tw-gap-1 tw-group {{ request()->routeIs('client.requests')?'tw-bg-primary/90 tw-text-white':'' }}"
+               href="{{ route('client.requests') }}">
+                <div
+                    class="d-flex justify-content-center align-items-center tw-h-12 tw-w-12 bg-primary text-white rounded-circle flex-shrink-0">
+                    <i class="ti ti-git-pull-request tw-text-[24px]"></i>
+                </div>
+                <div>
+                    <div>Requests</div>
+                    <div class="tw-text-xs">
+                        View your requests
+                    </div>
+                </div>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link tw-rounded-xl hover:tw-bg-primary hover:tw-text-white tw-text-lg d-flex align-items-center tw-gap-1 {{ request()->routeIs('client.billings')?'tw-bg-primary/90 tw-text-white':'' }}"
                href="{{ route('client.billings') }}">
                 <div
                     class="d-flex justify-content-center align-items-center tw-h-12 tw-w-12 bg-primary text-white rounded-circle flex-shrink-0">
@@ -22,14 +37,14 @@
                 </div>
                 <div>
                     <div>Billing</div>
-                    <div class="tw-text-sm  text-muted">
+                    <div class="tw-text-xs">
                         View your bills
                     </div>
                 </div>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link tw-rounded-xl hover:tw-bg-primary/5 tw-text-lg d-flex align-items-center tw-gap-1 {{ request()->routeIs('client.payments')?'tw-bg-primary/5':'' }}"
+            <a class="nav-link tw-rounded-xl hover:tw-bg-primary hover:tw-text-white tw-text-lg d-flex align-items-center tw-gap-1 {{ request()->routeIs('client.payments')?'tw-bg-primary/90 tw-text-white':'' }}"
                href="{{ route('client.payments') }}">
                 <div
                     class="d-flex justify-content-center align-items-center tw-h-12 tw-w-12 bg-primary text-white rounded-circle flex-shrink-0">
@@ -37,28 +52,13 @@
                 </div>
                 <div>
                     <div>Payments</div>
-                    <div class="tw-text-sm text-muted">
+                    <div class="tw-text-xs">
                         View your payments history
                     </div>
                 </div>
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link tw-rounded-xl hover:tw-bg-primary/5 tw-text-lg d-flex align-items-center tw-gap-1 active"
-               href="#">
-                <div
-                    class="d-flex justify-content-center align-items-center tw-h-12 tw-w-12 bg-primary text-white rounded-circle flex-shrink-0">
-                    <i class="ti ti-notification tw-text-[24px]"></i>
-                </div>
-                <div>
-                    <div>Notifications</div>
-                    <div class="tw-text-sm text-muted">
-                        Your notifications at a glance
-                    </div>
-                </div>
-            </a>
-        </li>
 
 
     </ul>

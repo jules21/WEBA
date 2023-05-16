@@ -379,4 +379,11 @@ class Request extends Model implements Auditable
         }
         return null;
     }
+
+    public function scopeOperatorCustomer()
+    {
+        return $this->whereHas('customer', function (Builder $builder) {
+            $builder->where('doc_number', '=', auth('client')->user()->doc_number);
+        });
+    }
 }

@@ -9,10 +9,14 @@ use Livewire\Component;
 class Payments extends Component
 {
     public $search = '';
+    protected $queryString = [
+        'search' => ['except' => '']
+    ];
+
 
     public function render()
     {
-        $payments = PaymentDeclaration::with('paymentHistories.mapping.account.paymentServiceProvider')
+        $payments = PaymentDeclaration::with('paymentHistories.mapping.account.paymentServiceProvider', 'request.operator')
             ->whereHas('request', function (Builder $builder) {
                 $builder->whereHas('customer', function (Builder $builder) {
                     $builder->where([
@@ -22,9 +26,16 @@ class Payments extends Component
                 });
             })
             ->when($this->search, function (Builder $builder) {
-                $builder->where('payment_reference', 'like', "%{$this->search}%")
-                    ->orWhere('type', 'like', "%{$this->search}%")
-                    ->orWhere('status', 'like', "%{$this->search}%");
+                $builder->where(function (Builder $builder) {
+                    $builder->where('payment_reference', 'ilike', "%{$this->search}%")
+                        ->orWhere('type', 'ilike', "%{$this->search}%")
+                        ->orWhere('status', 'ilike', "%{$this->search}%")
+                        ->orWhereHas('request',function (Builder $builder){
+                            $builder->whereHas('operator',function (Builder $builder){
+                                $builder->where('name','ilike',"%{$this->search}%");
+                            });
+                        });
+                });
             })
             ->latest()
             ->paginate(10);
