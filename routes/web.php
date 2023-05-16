@@ -341,7 +341,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/banks/update/{bankId}', [App\Http\Controllers\PaymentServiceProviderController::class, 'updateBank'])->name('banks.update');
 
     });
-    Route::get('/user-manuals/{slug}/download', [UserManualController::class, 'download'])->name('user.manuals.download');
     Route::prefix('stock-management')->name('stock.')->group(function () {
         Route::resource('item-categories', ItemCategoryController::class);
         Route::get('/item-categories/{itemCategory}/items', [App\Http\Controllers\ItemCategoryController::class, 'items'])->name('item-categories.items');
@@ -409,6 +408,7 @@ Route::get('/items-by-categories', [ItemController::class, 'getItemsByCategories
 //get items by categories
 Route::get('item-unit-price/{item}', [ItemController::class, 'getItemUnitPrice'])->name('items.get-unit-price');
 
+Route::get('/user-manuals/{slug}/download', [UserManualController::class, 'download'])->name('user.manuals.download');
 
 Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
     Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

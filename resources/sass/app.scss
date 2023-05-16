@@ -106,4 +106,19 @@ html, body {
     border-bottom: 3px solid $accent !important;
     color: $accent !important;
 }
+button[data-toggle="collapse"].collapsed .icon-plus {
+    display: block; /* Show the plus icon */
+}
+
+button[data-toggle="collapse"]:not(.collapsed) .icon-minus {
+    display: block; /* Show the minus icon */
+}
+
+.icon-plus {
+    display: none; /* Hide the plus icon by default */
+}
+
+.icon-minus {
+    display: none; /* Hide the minus icon by default */
+}
 
