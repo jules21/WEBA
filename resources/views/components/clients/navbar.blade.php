@@ -1,5 +1,5 @@
 <nav
-    {{ $attributes->class(['navbar navbar-expand-lg navbar-dark bg-dark border-bottom tw-bg-no-repeat tw-bg-center tw-bg-cover m-0']) }}
+    {{ $attributes->class(['navbar navbar-expand-lg navbar-dark  border-bottom tw-bg-no-repeat tw-bg-center tw-bg-cover m-0']) }}
     style="background-image: url({{ asset('images/aside_bg.png') }})">
     <div class="lg:tw-px-20 container-fluid">
         <a class="navbar-brand" href="{{ url('/home') }}">
@@ -14,22 +14,11 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold"
+            <ul class="navbar-nav ml-auto tw-gap-4">
+                <li class="nav-item ">
+                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold {{ request()->routeIs('home')?'active-link':'' }}"
                        href="{{ url('/home') }}">
                         <span>Home</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold" href="#">
-                        <span>Pay with MOMO</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold"
-                       href="{{ route('help') }}">
-                        <span>Help</span>
                     </a>
                 </li>
 
@@ -39,6 +28,18 @@
                         <span>
                             Pay Now
                         </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold {{ request()->routeIs('help')?'active-link':'' }}"
+                       href="{{ route('help') }}">
+                        <span>Help</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold {{ request()->routeIs('faq')?'active-link':'' }}"
+                       href="{{ route('faq') }}">
+                        <span>FAQ</span>
                     </a>
                 </li>
                 @auth('client')

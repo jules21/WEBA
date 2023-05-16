@@ -37,7 +37,7 @@
             </div>
         @endif
 
-        @if($billType==\App\Http\Livewire\CheckBills::WATER_BILL && $paymentDetails)
+        @if($billType==\App\Http\Livewire\CheckBills::WATER_BILL && $billingSummary)
             @include('water_payment_details')
         @endif
         @if($billType==\App\Http\Livewire\CheckBills::OTHER_BILL && $paymentDetails)

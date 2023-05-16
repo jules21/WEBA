@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\faq;
+use App\Models\Faq;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class FaqPolicy
@@ -25,10 +25,10 @@ class FaqPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\faq  $faq
+     * @param  \App\Models\Faq  $faq
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, faq $faq)
+    public function view(User $user, Faq $faq)
     {
         //
     }
@@ -48,10 +48,10 @@ class FaqPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\faq  $faq
+     * @param  \App\Models\Faq  $faq
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, faq $faq)
+    public function update(User $user, Faq $faq)
     {
         //
     }
@@ -60,10 +60,10 @@ class FaqPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\faq  $faq
+     * @param  \App\Models\Faq  $faq
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, faq $faq)
+    public function delete(User $user, Faq $faq)
     {
         //
     }
@@ -72,10 +72,10 @@ class FaqPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\faq  $faq
+     * @param  \App\Models\Faq  $faq
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, faq $faq)
+    public function restore(User $user, Faq $faq)
     {
         //
     }
@@ -84,10 +84,10 @@ class FaqPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\faq  $faq
+     * @param  \App\Models\Faq  $faq
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, faq $faq)
+    public function forceDelete(User $user, Faq $faq)
     {
         //
     }

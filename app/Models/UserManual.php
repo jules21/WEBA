@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class UserManual extends Model
 {
     use HasFactory;
+
+    const USER_MANUALS_PATH = 'user_manuals';
 }

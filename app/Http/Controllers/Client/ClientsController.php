@@ -8,10 +8,12 @@ use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Middleware\RedirectIfNotClient;
 use App\Models\Client;
 use App\Models\District;
+use App\Models\Faq;
 use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\Request;
 use App\Models\Sector;
+use App\Models\UserManual;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
@@ -58,12 +60,22 @@ class ClientsController extends Controller
 
     public function help()
     {
-        return view('client.help');
+        $userManuals = UserManual::query()
+            ->latest()
+            ->paginate(10);
+        return view('client.help', [
+            'userManuals' => $userManuals
+        ]);
     }
 
     public function faq()
     {
-        return view('client.faq');
+        $faqs = Faq::query()
+            ->latest()
+            ->paginate(10);
+        return view('client.faq', [
+            'faqs' => $faqs
+        ]);
     }
 
 }
