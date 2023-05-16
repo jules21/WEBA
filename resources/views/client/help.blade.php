@@ -14,9 +14,18 @@
                 <div class="card shadow-sm tw-rounded-lg border-0 shadow-none">
                     <div class="card-body">
                         <div class="list-group list-group-flush">
-                            @for($i=0;$i<10;$i++)
+                            @if($userManuals->isEmpty())
+                                <div class="list-group-item">
+                                    <div class="alert alert-info">
+                                        No user manuals found yet.
+                                    </div>
+                                </div>
+                            @endif
+
+                            @foreach($userManuals as $item)
                                 <div class="list-group-item d-flex mb-3">
-                                    <div class="mr-2 tw-h-10 tw-w-10 flex-shrink-0 rounded-circle align-self-start d-flex justify-content-center align-items-center tw-bg-red-100 tw-text-red-700">
+                                    <div
+                                        class="mr-2 tw-h-10 tw-w-10 flex-shrink-0 rounded-circle align-self-start d-flex justify-content-center align-items-center tw-bg-red-100 tw-text-red-700">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
                                              fill="currentColor"
                                              class="tw-h-4 tw-w-4">
@@ -34,12 +43,11 @@
                                             <!--begin::Title-->
                                             <a href=""
                                                class="text-dark text-hover-primary text-decoration-none tw-text-sm mr-3 tw-font-medium">
-                                                User, Company Registration(Procuring Company &amp; Supplier) and User
-                                                Management
+                                                {{$item->title}}
                                             </a>
                                             <!--end::Title-->
                                             <!--begin::Label-->
-                                            <a href="https://bid.rw/user-manuals/user-company-registrationprocuring-company-supplier-and-user-management-63ce9ee94c2ed/download"
+                                            <a href="{{ route('user.manuals.download',$item->slug) }}"
                                                target="_blank"
                                                class="btn btn-primary btn-sm fw-bold text-white tw-rounded-sm d-flex align-items-center align-self-start hover:tw-ring-2 hover:tw-ring-offset-2 hover:tw-ring-primary">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -59,15 +67,14 @@
                                         </div>
                                         <!--end::Content-->
                                         <!--begin::Text-->
-                                        <span class="text-muted fw-semibold fs-6">
-                                    First register a user login account, and after the system will prompt you to register a company first. After company registration, You can decide who has access to what in the platform, this means the assignment of permissions to the specific user of your company profile.
-                                </span>
+                                        <span class="text-muted fw-semibold tw-text-sm">{{$item->description}}</span>
                                         <!--end::Text-->
                                     </div>
                                     <!--end::Section-->
                                 </div>
-                            @endfor
+                            @endforeach
                         </div>
+                        {{ $userManuals->links() }}
                     </div>
                 </div>
             </div>
