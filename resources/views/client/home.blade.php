@@ -196,7 +196,7 @@
 
         $(function () {
 
-            const ctx = document.getElementById('waterChart').getContext('2d');
+        /*    const ctx = document.getElementById('waterChart').getContext('2d');
 
             let labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             let myChart = new Chart(ctx, {
@@ -246,7 +246,7 @@
                     },
                 },
             });
-
+*/
             $('#district').on('change', function () {
                 let districtId = $(this).val();
                 $('#loader').removeClass('d-none')
