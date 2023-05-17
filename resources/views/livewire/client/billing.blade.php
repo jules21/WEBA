@@ -101,13 +101,20 @@
                                         {{ $item->user->name }}
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <div class="font-weight-normal">Operating area:</div>
+                                    <div class="tw-text-xs text-muted">
+                                        {{ $item->meterRequest->request->operationArea->name }}
+                                    </div>
+                                </div>
                                 <div class="col-md-4">
                                     <div class="font-weight-normal">Comment:</div>
                                     <div class="tw-text-xs text-muted">
                                         {{ $item->comment }}
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>

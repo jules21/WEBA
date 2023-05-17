@@ -7,13 +7,17 @@
         <x-layouts.breadcrumb-item>
             Request Details
         </x-layouts.breadcrumb-item>
+        <x-slot name="actions">
+            <span class="badge badge-{{ $request->status_color }} rounded-pill tw-py-1.5 tw-px-2">{{ $request->status }}</span>
+        </x-slot>
     </x-layouts.breadcrumb>
 @endsection
 @section('content')
     <div class="card card-body tw-rounded-lg">
-        <h4 class="mb-4">
-            Request Details
-        </h4>
+       <div class="d-flex justify-content-between mb-4">
+           <h4 class="mb-0">Request Details</h4>
+           <span class="text-muted tw-text-sm">{{ $request->created_at->format('d M Y') }}</span>
+       </div>
         @if($request->status==\App\Constants\Status::PENDING && $request->customer_initiated)
             <div
                 class="alert alert-warning d-flex justify-content-between tw-rounded-lg align-items-center border-warning">
@@ -134,7 +138,26 @@
                     </div>
                 </div>
             </div>
-
+            <div class="col-md-6 col-xl-4">
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Operator:
+                    </label>
+                    <div class="form-control-plaintext py-0">
+                        {{ $request->operator->name }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Operating area:
+                    </label>
+                    <div class="form-control-plaintext py-0">
+                        {{ $request->operationArea->name }}
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="row">
@@ -164,12 +187,6 @@
                     @endforelse
                 </div>
             </div>
-            <div class="col-lg-6">
-                <label class="font-weight-bold d-block">Operator:</label>
-                <div>
-                    {{ $request->operator->name }}
-                </div>
-            </div>
             <div class="col-lg-12">
                 <div class="form-group">
                     <label class="font-weight-bold">Description:</label>
@@ -178,8 +195,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
 @endsection
