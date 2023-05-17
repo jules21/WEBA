@@ -23,7 +23,8 @@
             </h4>
             <div class="tw-relative">
                 <div class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-3 tw-pointer-events-none">
-                    <svg aria-hidden="true" class="tw-w-5 tw-h-5 tw-text-gray-500" fill="currentColor" viewBox="0 0 20 20"
+                    <svg aria-hidden="true" class="tw-w-5 tw-h-5 tw-text-gray-500" fill="currentColor"
+                         viewBox="0 0 20 20"
                          xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
                               d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
@@ -48,7 +49,8 @@
                                     <div class="d-flex flex-column tw-gap-1">
                                         <div class="">
                                             <span class="text-muted">Code:</span>
-                                            <span class="tw-text-xs tw-font-medium">{{ $item->payment_reference }}</span>
+                                            <span
+                                                class="tw-text-xs tw-font-medium">{{ $item->payment_reference }}</span>
                                         </div>
                                         <div>
                                             <span class="text-muted">Payment Type:</span>
@@ -93,9 +95,19 @@
                          aria-labelledby="headingOne"
                          data-parent="#accordionExample">
                         <div class="card-body">
+                            <div class="mb-3">
+                                <div class="font-weight-normal">Operating area:</div>
+                                <div class="tw-text-xs text-muted">
+                                    {{ $item->request->operationArea->name }}
+                                </div>
+                            </div>
+
                             <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="mb-0">Payment History</h6>
                             </div>
+
+
+
 
                             @if($item->paymentHistories->isEmpty())
                                 <div class="tw-text-center  tw-mt-5 alert alert-info">
@@ -132,7 +144,8 @@
 
         <div class="d-flex mt-4 align-items-center flex-column flex-md-row justify-content-between ">
             <div>
-                Showing {{ $payments->firstItem() }} to {{ $payments->lastItem() }} out of {{ $payments->total() }} items
+                Showing {{ $payments->firstItem() }} to {{ $payments->lastItem() }} out of {{ $payments->total() }}
+                items
             </div>
             <div>{{ $payments->links() }}</div>
         </div>

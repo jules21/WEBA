@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Constants\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ChangeClientPasswordRequest;
 use App\Http\Requests\ChangePasswordRequest;
@@ -39,8 +40,10 @@ class ClientsController extends Controller
             $query->where('doc_number', $docNumber);
         })->count();
 
-        $totalWaterConnections = MeterRequest::whereHas('request.customer', function (Builder $query) use ($docNumber) {
-            $query->where('doc_number', $docNumber);
+        $totalWaterConnections = MeterRequest::whereHas('request', function (Builder $query) use ($docNumber) {
+            $query->whereHas('customer', function (Builder $query) use ($docNumber) {
+                $query->where('doc_number', $docNumber);
+            })->whereIn('status', Status::approvalStatuses());
         })->count();
 
         $totalAmountDue = Billing::whereHas('meterRequest.request.customer', function (Builder $query) use ($docNumber) {
@@ -53,11 +56,9 @@ class ClientsController extends Controller
             ->join('meter_requests', 'requests.id', '=', 'meter_requests.request_id')
             ->join('billings', 'meter_requests.subscription_number', '=', 'billings.subscription_number')
             ->join('customers', 'operators.id', '=', 'customers.operator_id')
-            ->where(DB::raw("customers.doc_number"), "=",$docNumber )
+            ->where(DB::raw("customers.doc_number"), "=", $docNumber)
             ->groupBy('billings.subscription_number', 'operators.name')
-            ->get();
-
-
+            ->paginate(5);
 
 
         $customerOverview = new CustomerOverview($totalRequests, $totalWaterConnections, $totalAmountDue);
@@ -72,6 +73,7 @@ class ClientsController extends Controller
     public function requests()
     {
         $recentRequests = Request::with(['requestType', 'operator'])
+            ->withCount('meterNumbers')
             ->whereHas('customer', function (Builder $builder) {
                 $builder->where('doc_number', '=', auth('client')->user()->doc_number);
             })
@@ -79,8 +81,7 @@ class ClientsController extends Controller
                 $builder->where('operator_id', '=', request('op'));
             })
             ->latest()
-            ->limit(10)
-            ->paginate()
+            ->paginate(10)
             ->withQueryString();
         return view('client.requests', [
             'recentRequests' => $recentRequests

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\Status;
 use App\Http\Requests\ValidateAssignMeterNumber;
+use App\Models\Item;
 use App\Models\MeterRequest;
 use App\Models\Request as AppRequest;
 use DB;
@@ -21,6 +22,21 @@ class MeterRequestController extends Controller
     {
         $data = $validateAssignMeterNumber->validated();
         $id = $validateAssignMeterNumber->input('id');
+
+
+        $alreadyAddedMeters = $request->meterNumbers()
+            ->where('item_id', '=', $data['item_id'])
+            ->count();
+        $inStockQty = Item::with('stock')->find($data['item_id'])->stock->quantity;
+
+        if ($alreadyAddedMeters >= $inStockQty) {
+            return response()->json([
+                'message' => 'You have already added all the meters in stock',
+                'status' => 'error',
+            ], ResponseAlias::HTTP_BAD_REQUEST);
+        }
+
+
         DB::beginTransaction();
         if ($id > 0) {
             $meterRequest = MeterRequest::query()->find($id);
@@ -66,7 +82,7 @@ class MeterRequestController extends Controller
     private function generateSubscriptionNumber(MeterRequest $meterRequest): void
     {
         // generate  8 number prefixed with request id left padded with zeroes
-        $subscriptionNumber = 'SN'.str_pad($meterRequest->id, 8, '0', STR_PAD_LEFT);
+        $subscriptionNumber = 'SN' . str_pad($meterRequest->id, 8, '0', STR_PAD_LEFT);
         $meterRequest->update([
             'subscription_number' => $subscriptionNumber,
         ]);

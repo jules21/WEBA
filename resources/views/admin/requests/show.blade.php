@@ -495,10 +495,15 @@
                 success: function (response) {
                     $itemSelect.append('<option value="">Select Item</option>');
                     $.each(response, function (index, item) {
+                        if (item.qty <= 0)
+                            return;
                         let selected = '';
                         if (Number(selectedItemId) === Number(item.id))
                             selected = 'selected';
-                        $itemSelect.append('<option value="' + item.id + '" ' + selected + '>' + item.name + ' - RWF ' + item.selling_price + '</option>');
+                        $itemSelect.append(`<option value="${item.id}" ${selected}>${item.name} - ${Number(item.selling_price).toLocaleString("en-RW", {
+                            style: 'currency',
+                            currency: 'RWF'
+                        })} (QTY:${item.qty})</option>`);
                     });
                     $itemSelect.trigger('change');
                 },
@@ -729,14 +734,31 @@
                     },
                     error: function (xhr, status, error) {
                         isSubmitting = false;
-                        Swal.fire({
-                            title: 'Error!',
-                            text: 'Something went wrong',
-                            icon: 'error',
-                            confirmButtonText: 'Ok'
-                        });
+
                         btn.removeClass('spinner spinner-white spinner-right');
-                        btn.prop('disabled', false);
+                        btn.prop('disabled', false)
+
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            let message = '';
+                            $.each(errors, function (index, error) {
+                                message += error[0] + ' ';
+                            });
+                            Swal.fire({
+                                title: 'Error!',
+                                text: message,
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            });
+                        } else {
+                            let message = xhr.responseJSON.message ?? 'Something went wrong, please try again later';
+                            Swal.fire({
+                                title: 'Error!',
+                                text: message,
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            });
+                        }
                     },
                     complete: function () {
 

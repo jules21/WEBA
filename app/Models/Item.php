@@ -90,7 +90,7 @@ class Item extends Model implements Auditable
         return $this->hasOne(Stock::class);
     }
 
-    public function getQtyAttribute()
+    public function getQtyAttribute(): int
     {
         return $this->stock->quantity ?? 0;
     }
