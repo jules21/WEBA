@@ -59,6 +59,7 @@
                         <th>File</th>
                         <th>Title</th>
                         <th>Description</th>
+                        <th>For Admins</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -75,6 +76,12 @@
                             <td>{{$manual->title}}</td>
                             <td>{{$manual->description}}</td>
                             <td>
+                                @if($manual->for_admin)
+                                    <span class="label label-inline label-light-success font-weight-bold">Yes</span>
+                                @else
+                                    <span class="label label-inline label-light-danger font-weight-bold">No</span>
+                                @endif
+                            <td>
                                 <div class="dropdown">
                                     <button class="btn btn-light-primary btn-sm dropdown-toggle" type="button"
                                             id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
@@ -86,6 +93,7 @@
                                            data-title="{{$manual->title}}"
                                            data-description="{{$manual->description}}"
                                            data-file="{{$manual->file}}"
+                                             data-for_admin="{{$manual->for_admin}}"
                                            class="dropdown-item js-edit">Edit</a>
                                         <a href="{{route('admin.user.manual.delete',$manual->id)}}"
                                            class="dropdown-item js-delete">Delete</a>
@@ -122,7 +130,10 @@
 
                         <div class="form-group">
                             <label for="file">File</label>
-                            <input type="file" name="file" id="file" class="form-control">
+                            <div class="custom-file">
+                                <input type="file" name="file" class="custom-file-input" id="file">
+                                <label class="custom-file-label" for="file">Choose file</label>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -133,6 +144,18 @@
                         <div class="form-group">
                             <label for="description">Description</label>
                             <textarea name="description" id="description" class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>For Admin</label>
+                            <div class="checkbox-inline">
+                                <label class="checkbox checkbox-rounded">
+                                    <input type="radio" checked="checked" name="for_admin" value="1">
+                                    <span></span>Yes</label>
+                                <label class="checkbox checkbox-rounded">
+                                    <input type="radio" name="for_admin" checked value="0">
+                                    <span></span>No</label>
+                            </div>
                         </div>
 
                     </div>
@@ -181,6 +204,18 @@
                             <textarea name="description" id="edit_description" class="form-control"></textarea>
                         </div>
 
+                        <div class="form-group">
+                            <label>For Admin</label>
+                            <div class="checkbox-inline">
+                                <label class="checkbox checkbox-rounded">
+                                    <input type="radio" checked="checked" name="for_admin" value="1">
+                                    <span></span>Yes</label>
+                                <label class="checkbox checkbox-rounded">
+                                    <input type="radio" name="for_admin" checked value="0">
+                                    <span></span>No</label>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="modal-footer">
@@ -226,6 +261,12 @@
             $("#UserManualId").val($(this).data('id'));
             $("#edit_title").val($(this).data('title'));
             $("#edit_description").val($(this).data('description'));
+            //for admin
+            if ($(this).data('for_admin') == 1) {
+                $("input[name='for_admin'][value='1']").prop('checked', true);
+            } else {
+                $("input[name='for_admin'][value='0']").prop('checked', true);
+            }
             $('#submissionFormEdit').attr('action', url);
         });
 

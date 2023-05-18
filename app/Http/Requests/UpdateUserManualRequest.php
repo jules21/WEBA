@@ -27,6 +27,7 @@ class UpdateUserManualRequest extends FormRequest
             "title"=>"required",
 //            "file"=>"required",
             "description"=>"required",
+            "for_admin"=>"required",
         ];
     }
 }
