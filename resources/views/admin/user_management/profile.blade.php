@@ -2,7 +2,7 @@
 @section('title')
      Profile
 @stop
-@section('navigation')
+@section('page-header')
     <div class="subheader py-2 py-lg-4 subheader-transparent" id="kt_subheader">
         <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->

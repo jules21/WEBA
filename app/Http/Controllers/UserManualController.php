@@ -108,4 +108,11 @@ class UserManualController extends Controller
 
     }
 
+    public function userManualForAdmins()
+    {
+        $manuals = UserManual::query()->where('for_admin', true)->get();
+
+        return view('admin.user_management.user_manual', compact('manuals'));
+    }
+
 }
