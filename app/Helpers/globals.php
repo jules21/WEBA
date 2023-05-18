@@ -73,6 +73,7 @@ function isForOperationArea(): bool
 function myOperators()
 {
     return Operator::query()
+        ->with('operationAreas')
         ->whereHas('customers', function (Builder $builder) {
             $builder->where('doc_number', '=', auth('client')->user()->doc_number);
         })

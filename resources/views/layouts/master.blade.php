@@ -17,11 +17,6 @@
     <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css"/>
     <!--end::Global Theme Styles-->
 
-    <!--begin::Layout Themes(used by all pages)-->
-
-    <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css"/>
-    {{--    <link rel="stylesheet" href="{{ asset('css/master.css') }}">--}}
-    <!--end::Layout Themes-->
     @yield("css")
     <link rel="icon" type="image/png" href="{{asset('images/logo.png')}}"/>
     <title>@yield('title', 'Home') - CMS RWSS</title>

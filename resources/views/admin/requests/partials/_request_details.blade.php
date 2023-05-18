@@ -98,6 +98,26 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6 col-xl-4">
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Operator:
+                    </label>
+                    <div class="form-control-plaintext py-0">
+                        {{ $request->operator->name }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-4">
+                <div class="form-group">
+                    <label class="font-weight-bold">
+                        Operating area:
+                    </label>
+                    <div class="form-control-plaintext py-0">
+                        {{ $request->operationArea->name }}
+                    </div>
+                </div>
+            </div>
 
         </div>
 
@@ -128,7 +148,8 @@
                     @endforelse
                 </div>
             </div>
-            <div class="col-lg-12">
+
+            <div class="col-lg-6">
                 <div class="form-group">
                     <label class="font-weight-bold">Description</label>
                     <div class="form-control-plaintext py-0">

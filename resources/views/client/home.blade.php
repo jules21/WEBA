@@ -71,44 +71,54 @@
                 </p>
             </div>
 
-            <div class="list-group border-top-0">
+            <div class="list-group mb-3 border-top-0">
                 @foreach($operatorData as $item)
                     <div class="list-group-item d-flex justify-content-between">
                         <div class="d-flex">
                             <img src="{{ $item->logo_url }}" alt="" class="tw-h-10">
                             <div>
                                 <div>{{ $item->name }}</div>
-                                <div class="text-muted tw-text-sm mt-2">{{ $item->subscription_number }}</div>
+                                <div class="text-muted tw-text-sm mt-1">{{ $item->subscription_number }}</div>
                             </div>
                         </div>
                         <div>
-                            {{ number_format($item->total_balance) }}
+                            Balance Due: <span class="text-primary font-weight-bold">{{ number_format($item->total_balance) }} RWF</span>
                         </div>
                     </div>
                 @endforeach
             </div>
 
+            <div class="d-flex justify-content-between flex-column flex-lg-row tw-gap-2">
+                <div>
+                    Showing {{ $operatorData->firstItem() }} to {{ $operatorData->lastItem() }}
+                    of {{ $operatorData->total() }} entries
+                </div>
+                <div>
+                    {{ $operatorData->links() }}
+                </div>
+            </div>
+
         </div>
     </div>
 
-{{--    <div class="card card-body my-3 tw-rounded-lg">
-        <div class="d-flex justify-content-between ">
-            <div>
-                <h5 class="card-title">Water Consumption</h5>
-                <p class="card-text">Water consumption for the last 12 months</p>
+    {{--    <div class="card card-body my-3 tw-rounded-lg">
+            <div class="d-flex justify-content-between ">
+                <div>
+                    <h5 class="card-title">Water Consumption</h5>
+                    <p class="card-text">Water consumption for the last 12 months</p>
+                </div>
+                <div>
+                    --}}{{--               filter by operator--}}{{--
+                    <select name="" id="" class="form-control">
+                        <option value="">All Operators</option>
+                        @foreach(myOperators() as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-            <div>
-                --}}{{--               filter by operator--}}{{--
-                <select name="" id="" class="form-control">
-                    <option value="">All Operators</option>
-                    @foreach(myOperators() as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        <canvas id="waterChart"></canvas>
-    </div>--}}
+            <canvas id="waterChart"></canvas>
+        </div>--}}
 
 
     <!-- Modal -->
@@ -196,57 +206,57 @@
 
         $(function () {
 
-            const ctx = document.getElementById('waterChart').getContext('2d');
+            /*    const ctx = document.getElementById('waterChart').getContext('2d');
 
-            let labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            let myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Water Consumption (cubic meters)',
-                        data: labels.map(() => Math.floor(Math.random() * 1000)),
-                        backgroundColor: 'rgba(3,77,151,0.9)',
-                        borderColor: 'rgb(3,77,151)',
-                        borderWidth: 3,
-                        fill: true,
-                        pointBorderWidth: 0,
-                        pointRadius: 2,
-                        pointBackgroundColor: 'rgba(3,77,151,0.1)',
-                        pointBorderColor: 'rgba(3,77,151,0.9)',
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: 'rgba(3,77,151,0.9)',
-                        barPercentage: 0.5, // Adjust the width of the bars (0.0 - 1.0)
-                        categoryPercentage: 0.7, // Adjust the spacing between bars (0.0 - 1.0)
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                display: true
+                let labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                let myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Water Consumption (cubic meters)',
+                            data: labels.map(() => Math.floor(Math.random() * 1000)),
+                            backgroundColor: 'rgba(3,77,151,0.9)',
+                            borderColor: 'rgb(3,77,151)',
+                            borderWidth: 3,
+                            fill: true,
+                            pointBorderWidth: 0,
+                            pointRadius: 2,
+                            pointBackgroundColor: 'rgba(3,77,151,0.1)',
+                            pointBorderColor: 'rgba(3,77,151,0.9)',
+                            pointHoverRadius: 5,
+                            pointHoverBackgroundColor: 'rgba(3,77,151,0.9)',
+                            barPercentage: 0.5, // Adjust the width of the bars (0.0 - 1.0)
+                            categoryPercentage: 0.7, // Adjust the spacing between bars (0.0 - 1.0)
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    display: true
+                                },
+                                ticks: {
+                                    callback: function (value, index, values) {
+                                        return formatKMB(value);
+                                    }
+                                }
                             },
-                            ticks: {
-                                callback: function (value, index, values) {
-                                    return formatKMB(value);
+                            x: {
+                                grid: {
+                                    display: false
                                 }
                             }
                         },
-                        x: {
-                            grid: {
-                                display: false
+                        elements: {
+                            line: {
+                                tension: 0.4,
                             }
-                        }
+                        },
                     },
-                    elements: {
-                        line: {
-                            tension: 0.4,
-                        }
-                    },
-                },
-            });
-
+                });
+    */
             $('#district').on('change', function () {
                 let districtId = $(this).val();
                 $('#loader').removeClass('d-none')
