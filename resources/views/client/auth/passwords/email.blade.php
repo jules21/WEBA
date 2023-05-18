@@ -8,20 +8,20 @@
                     <div class="d-flex justify-content-center align-items-center">
                         <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
                     </div>
-                    <h2 class="mb-4">Fogot Password</h2>
+                    <h2 class="mb-4">{{__('auth.forgot_password')}}</h2>
                     <p class="text-1">
-                        Please enter your email address to reset your password.
+                        {{__('auth.please_enter_your_email_address_to_reset_your_password.')}}
                         <br>
                         <br>
-                        Remembered Your credentials! Click the button below to log in.
+                        {{__('auth.remembered_your_credentials_lick_the_button_below_to_log_in.')}}
                     </p>
-                    <a href="{{ route('client.login') }}" class="btn btn-outline-light tw-mt-10">Login here</a>
+                    <a href="{{ route('client.login') }}" class="btn btn-outline-light tw-mt-10">{{__('auth.login_here')}}</a>
                 </div>
             </div>
             <div class="col-md-7 bg-white card-body tw-rounded-xl">
                 <form class="p-4" action="{{ url('/client/password/email') }}" method="post"  autocomplete="off">
                     @csrf
-                    <h2 class="text-primary font-weight-bolder mb-5">Reset Password</h2>
+                    <h2 class="text-primary font-weight-bolder mb-5">{{__('auth.reset_password')}}</h2>
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}
@@ -29,7 +29,7 @@
                     @endif
 
                     <div class="row my-4 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                        <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+                        <label for="email" class="col-md-4 control-label">{{__('auth.email_address')}}</label>
 
                         <div class="col-md-12">
                             <input id="email" type="email" class="form-control tw-rounded-md {{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" autofocus>
@@ -43,7 +43,7 @@
                     <div class="form-group row mt-4">
                         <div class="col-md-8 col-md-offset-4">
                             <button type="submit" class="btn btn-primary  tw-rounded-md">
-                                Send Password Reset Link
+                                {{__('auth.send_password_reset_link')}}
                             </button>
 
                         </div>
