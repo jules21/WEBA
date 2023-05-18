@@ -83,6 +83,7 @@ class UserManualController extends Controller
         $user = UserManual::findOrFail($request->input('UserManualId'));
         $user->title = $request->title;
         $user->description = $request->description;
+        $user->for_admin = $request->for_admin;
 
         if ($request->hasFile('file')) {
             $destination = UserManual::USER_MANUALS_PATH . $user->photo;

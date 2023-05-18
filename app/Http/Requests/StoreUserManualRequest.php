@@ -27,6 +27,7 @@ class StoreUserManualRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'file' => ['required_if:id,0', 'file', 'mimes:pdf'],
             'description' => ['required', 'string'],
+            'for_admin' => ['required', 'boolean'],
         ];
     }
 
