@@ -89,7 +89,7 @@ class UserManualController extends Controller
             if (Storage::exists($destination)) {
                 Storage::delete($destination);
             }
-            $dir = 'public/user_manuals';
+            $dir = UserManual::USER_MANUALS_PATH;
             $path = $request->file('file')->store($dir);
             $file = str_replace($dir, '', $path);
             $user->file = $file;
