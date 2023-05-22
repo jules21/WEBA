@@ -31,4 +31,16 @@
         "water_connections"=>"Water Connections",
         "_private_water_operators"=>"Private Water Operators",
         "water_networks"=>"Water Networks",
+        "help_description"=>"Here you can find some help about the system and how to use it.
+                    You can download the user manual from here.",
+        "frequently_asked_questions"=>"Frequently Asked Questions",
+        "faq_description"=>"This is a list of frequently asked questions about the system. If you have any other questions,
+                    please contact us.",
+        "Check_bills"=>"Check Bills",
+        "check_your_bills_here_and_pay_with_MTN_mobile_money"=>"Check your bills here and pay with MTN Mobile Money",
+        "bill_number"=>"Bill Number",
+        "check"=>"Check",
+        "enter_your_bill_number"=>"Enter your bill number to check your
+        bill details and pay with MTN Mobile Money",
+
     ];

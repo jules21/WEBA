@@ -45,5 +45,8 @@ return [
     "Select_village"=>"Select Village",
     "confirm_password"=>"Confirm Password",
     "create_account"=>"Create Account",
+    "remember_this_device"=>"Remember this device",
+    "sign_in"=>"Sign In",
+    "email"=>"Email",
 
 ];

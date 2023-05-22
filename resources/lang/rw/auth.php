@@ -44,5 +44,8 @@ return [
     "Select_village"=>"Hitamo Umudugudu",
     "confirm_password"=>"Emeza ijambo ry'ibanga",
     "create_account"=>"Fungura konti",
+    "remember_this_device"=>"Ibuka iki gikoresho",
+    "sign_in"=>"Injira",
+    "email"=>"Imeri",
 
 ];

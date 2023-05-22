@@ -31,4 +31,16 @@ return [
     "water_connections"=>"Guhuza Amazi",
     "_private_water_operators"=>"Abashinzwe gutanga Amazi bigenga",
     "water_networks"=>"Imiyoboro yamazi",
+    "help_description"=>"Hano urashobora kubona ubufasha bujyanye na sisitemu nuburyo bwo kuyikoresha.
+                    Urashobora gukuramo imfashanyigisho yumukoresha kuva hano.",
+    "frequently_asked_questions"=>"Ibibazo Bikunze Kubazwa",
+    "faq_description"=>"Uru ni urutonde rwibibazo bikunze kubazwa bijyanye na sisitemu. Niba ufite ikindi kibazo,
+                    nyamuneka twandikire.",
+    "Check_bills"=>"Reba fagitire",
+    "check_your_bills_here_and_pay_with_MTN_mobile_money"=>"Reba fagitire zawe hano hanyuma wishyure hamwe na MTN Mobile Money",
+    "bill_number"=>"Nimero Ya Gitansi",
+    "check"=>"Reba",
+    "enter_your_bill_number"=>"Injiza inomero ya gitansi yawe kugirango urebe umwirondoro
+        wayo urambuye kandi wishyure hamwe na MTN Amafaranga",
+
 ];
