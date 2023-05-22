@@ -108,6 +108,7 @@ class ClientsController extends Controller
     public function help()
     {
         $userManuals = UserManual::query()
+            ->where('for_admin','=',0)
             ->latest()
             ->paginate(10);
         return view('client.help', [
