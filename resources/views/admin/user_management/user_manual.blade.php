@@ -58,7 +58,7 @@
                     <!--end::Head-->
                     <!--begin::Row-->
                     <div class="row">
-                        @foreach($manuals as $manual)
+                        @forelse($manuals as $manual)
                             <!--begin::Col-->
                             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                                 <!--begin::Card-->
@@ -89,7 +89,16 @@
                                 <!--end:: Card-->
                             </div>
                             <!--end::Col-->
-                        @endforeach
+                        @empty
+                            <div class="col-md-12">
+                                <div class="alert alert-custom alert-notice alert-light-success fade show mb-5" role="alert">
+                                    <div class="alert-icon">
+                                        <i class="flaticon-warning"></i>
+                                    </div>
+                                    <div class="alert-text">No User Manual Found</div>
+                                </div>
+                            </div>
+                        @endforelse
                     </div>
                     <!--end::Row-->
 

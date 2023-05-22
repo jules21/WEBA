@@ -360,7 +360,6 @@
                     </div>
                 </div>
             </a>
-            @if(auth()->user()->is_super_admin)
                 <a href="{{route("admin.user.manual.admin")}}"
                    class="navi-item mb-5">
                     <div class="navi-link">
@@ -391,7 +390,7 @@
                         </div>
                     </div>
                 </a>
-            @endif
+
             <!--end:Item-->
         </div>
         <!--end::Nav-->
