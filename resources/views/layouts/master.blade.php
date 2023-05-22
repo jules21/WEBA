@@ -17,6 +17,11 @@
     <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css"/>
     <!--end::Global Theme Styles-->
 
+    <style>
+        #kt_subheader {
+            z-index: 7 !important;
+        }
+    </style>
     @yield("css")
     <link rel="icon" type="image/png" href="{{asset('images/logo.png')}}"/>
     <title>@yield('title', 'Home') - CMS RWSS</title>
@@ -37,7 +42,6 @@
     <!--begin::Logo-->
     <a href="{{ route('admin.dashboard') }}">
         <img alt="Logo" class="img-fluid h-40px" src="{{asset("img/logo.svg")}}">
-        {{--        <h3>Airtel</h3>--}}
     </a>
     <!--end::Logo-->
     <!--begin::Toolbar-->
@@ -166,7 +170,44 @@
                     <!--end::Header Menu Wrapper-->
                     <!--begin::Topbar-->
                     <div class="topbar">
+                        <div class="dropdown show">
+                            <!--begin::Toggle-->
+                            <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" aria-expanded="true">
+                                <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 5h7"></path>
+                                        <path d="M9 3v2c0 4.418 -2.239 8 -5 8"></path>
+                                        <path d="M5 9c0 2.144 2.952 3.908 6.7 4"></path>
+                                        <path d="M12 20l4 -9l4 9"></path>
+                                        <path d="M19.1 18h-6.2"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <!--end::Toggle-->
+                            <!--begin::Dropdown-->
+                            <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-right" style="position: absolute; transform: translate3d(-117px, 65px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="bottom-end">
+                                <!--begin::Nav-->
+                                <ul class="navi navi-hover py-4">
+                                    <!--begin::Item-->
+                                    <li class="navi-item">
+                                        <a href="{{ route('lang.switch', 'rw') }}" class="navi-link">
 
+                                            <span class="navi-text">{{ __('app.Kinyarwanda') }}</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="{{ route('lang.switch', 'en') }}" class="navi-link">
+
+                                            <span class="navi-text">{{ __('app.English') }}</span>
+                                        </a>
+                                    </li>
+                                    <!--end::Item-->
+                                </ul>
+                                <!--end::Nav-->
+                            </div>
+                            <!--end::Dropdown-->
+                        </div>
                         <!--begin::User-->
                         <div class="topbar-item">
                             <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2"

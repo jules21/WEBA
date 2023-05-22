@@ -52,7 +52,8 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown09">
                         @if(app()->getLocale()=='en')
-                            <a class="dropdown-item" href="{{ route('lang.switch', 'rw') }}">
+                            <a class="dropdown-item {{ app()->getLocale()=='rw'?'active':'' }}"
+                               href="{{ route('lang.switch', 'rw') }}"
                                 {{ __('app.Kinyarwanda') }}
                             </a>
                         @else
