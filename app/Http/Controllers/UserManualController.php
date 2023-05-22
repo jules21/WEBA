@@ -83,13 +83,14 @@ class UserManualController extends Controller
         $user = UserManual::findOrFail($request->input('UserManualId'));
         $user->title = $request->title;
         $user->description = $request->description;
+        $user->for_admin = $request->for_admin;
 
         if ($request->hasFile('file')) {
             $destination = UserManual::USER_MANUALS_PATH . $user->photo;
             if (Storage::exists($destination)) {
                 Storage::delete($destination);
             }
-            $dir = 'public/user_manuals';
+            $dir = UserManual::USER_MANUALS_PATH;
             $path = $request->file('file')->store($dir);
             $file = str_replace($dir, '', $path);
             $user->file = $file;
@@ -105,6 +106,13 @@ class UserManualController extends Controller
         $certificate->delete();
         return redirect()->back()->with('success', 'User manual Deleted Successfully');
 
+    }
+
+    public function userManualForAdmins()
+    {
+        $manuals = UserManual::query()->where('for_admin', true)->get();
+
+        return view('admin.user_management.user_manual', compact('manuals'));
     }
 
 }

@@ -22,7 +22,7 @@ class ItemController extends Controller
      */
     public function index()
     {
-        if (! \Helper::isOperator()) {
+        if (!\Helper::isOperator()) {
             abort(403);
         }
         $items = Item::query()
@@ -102,8 +102,8 @@ class ItemController extends Controller
     public function itemsByCategory($categoryId)
     {
         return Item::query()
-//            ->with('category', 'packagingUnit')
-            ->where('item_category_id', $categoryId)
+            ->with('stock.operationArea')
+            ->where('item_category_id','=', $categoryId)
             ->get();
     }
 
@@ -121,7 +121,8 @@ class ItemController extends Controller
         return $items;
     }
 
-    public function getItemUnitPrice(Item $item){
+    public function getItemUnitPrice(Item $item)
+    {
         return $this->getItemLastUnitPrice($item);
     }
 }

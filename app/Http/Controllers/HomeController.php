@@ -25,7 +25,7 @@ class HomeController extends Controller
         $operators = Operator::query()->inRandomOrder()->get();
         $totalCustomers = Customer::query()
             ->whereHas('requests', function ($query) {
-                $query->whereNotIn('status', [Status::REJECTED, Status::ASSIGNED, Status::PENDING]);
+                $query->whereNotIn('status', Status::pendingStatuses());
             })->count();
         $totalWaterConnections = MeterRequest::query()->count();
         $totalWaterNetworks = WaterNetwork::query()->count();
@@ -49,8 +49,6 @@ class HomeController extends Controller
             ->get();
         return response()->json($operators);
     }
-
-
 
 
 }

@@ -22,14 +22,10 @@ class ValidateAssignMeterNumber extends FormRequest
     {
         return [
             'item_category_id' => ['required', 'exists:item_categories,id'],
-            'item_id' => ['required', 'exists:items,id',
-                Rule::unique('meter_requests')->where(function ($query) {
-                    return $query->where('request_id', request('request_id'));
-                })->ignore(request('id')),
-            ],
+            'item_id' => ['required', 'exists:items,id'],
             'meter_number' => [
                 'required',
-                //                Rule::unique("meter_requests")->ignore(request('id'))
+                Rule::unique("meter_requests")->ignore(request('id'))
             ],
             'last_index' => ['required', 'numeric', 'integer'],
         ];

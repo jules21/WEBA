@@ -14,21 +14,30 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
-                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold" href="/">
+                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l text-white tw-font-semibold" href="/">
                         <span>Home</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold" href="#">
-                        <span>Pay with MOMO</span>
-                    </a>
-                </li>
-                <li class="nav-item mr-2">
-                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold" href="#">
+                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l text-white tw-font-semibold {{ request()->routeIs('help')?'active-link':'' }}"
+                       href="{{ route('help') }}">
                         <span>Help</span>
                     </a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l text-white tw-font-semibold {{ request()->routeIs('faq')?'active-link':'' }}"
+                       href="{{ route('faq') }}">
+                        <span>FAQ</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex tw-gap-1 align-items-center btn btn-accent btn-sm text-dark px-4 rounded-sm tw-font-semibold text-white"
+                       href="{{ route('check-bills') }}">
+                        <span>
+                            Pay Now
+                        </span>
+                    </a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle text-white font-weight-bold" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -43,7 +52,8 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown09">
                         @if(app()->getLocale()=='en')
-                            <a class="dropdown-item" href="{{ route('lang.switch', 'rw') }}">
+                            <a class="dropdown-item {{ app()->getLocale()=='rw'?'active':'' }}"
+                               href="{{ route('lang.switch', 'rw') }}"
                                 {{ __('app.Kinyarwanda') }}
                             </a>
                         @else
@@ -54,12 +64,6 @@
                         @endif
 
                     </div>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link d-flex tw-gap-1 align-items-center btn btn-accent btn-sm text-dark px-4 rounded-sm tw-font-semibold " href="#">
-                        <span>Check Bills</span>
-                    </a>
                 </li>
             </ul>
         </div>

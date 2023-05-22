@@ -17,11 +17,11 @@
     <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css"/>
     <!--end::Global Theme Styles-->
 
-    <!--begin::Layout Themes(used by all pages)-->
-
-    <link href="{{asset('assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css"/>
-    {{--    <link rel="stylesheet" href="{{ asset('css/master.css') }}">--}}
-    <!--end::Layout Themes-->
+    <style>
+        #kt_subheader {
+            z-index: 7 !important;
+        }
+    </style>
     @yield("css")
     <link rel="icon" type="image/png" href="{{asset('images/logo.png')}}"/>
     <title>@yield('title', 'Home') - CMS RWSS</title>
@@ -42,7 +42,6 @@
     <!--begin::Logo-->
     <a href="{{ route('admin.dashboard') }}">
         <img alt="Logo" class="img-fluid h-40px" src="{{asset("img/logo.svg")}}">
-        {{--        <h3>Airtel</h3>--}}
     </a>
     <!--end::Logo-->
     <!--begin::Toolbar-->
@@ -171,7 +170,44 @@
                     <!--end::Header Menu Wrapper-->
                     <!--begin::Topbar-->
                     <div class="topbar">
+                        <div class="dropdown show">
+                            <!--begin::Toggle-->
+                            <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" aria-expanded="true">
+                                <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M4 5h7"></path>
+                                        <path d="M9 3v2c0 4.418 -2.239 8 -5 8"></path>
+                                        <path d="M5 9c0 2.144 2.952 3.908 6.7 4"></path>
+                                        <path d="M12 20l4 -9l4 9"></path>
+                                        <path d="M19.1 18h-6.2"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                            <!--end::Toggle-->
+                            <!--begin::Dropdown-->
+                            <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-right" style="position: absolute; transform: translate3d(-117px, 65px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="bottom-end">
+                                <!--begin::Nav-->
+                                <ul class="navi navi-hover py-4">
+                                    <!--begin::Item-->
+                                    <li class="navi-item">
+                                        <a href="{{ route('lang.switch', 'rw') }}" class="navi-link">
 
+                                            <span class="navi-text">{{ __('app.Kinyarwanda') }}</span>
+                                        </a>
+                                    </li>
+                                    <li class="navi-item">
+                                        <a href="{{ route('lang.switch', 'en') }}" class="navi-link">
+
+                                            <span class="navi-text">{{ __('app.English') }}</span>
+                                        </a>
+                                    </li>
+                                    <!--end::Item-->
+                                </ul>
+                                <!--end::Nav-->
+                            </div>
+                            <!--end::Dropdown-->
+                        </div>
                         <!--begin::User-->
                         <div class="topbar-item">
                             <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2"
@@ -341,11 +377,35 @@
 
                 </div>
 
-            </a> <a href="{{route("admin.users.permissions",encryptId(Auth::user()->id))}}"
+            </a>
+            <a href="{{route("admin.users.permissions",encryptId(Auth::user()->id))}}"
                     class="navi-item mb-5">
                 <div class="navi-link">
                     <div class="symbol symbol-40 bg-light mr-3">
                         <div class="symbol-label">
+									<span class="svg-icon svg-icon-md svg-icon-success">
+                                        <span class="svg-icon svg-icon-md svg-icon-success">
+                                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo6\dist/../src/media/svg/icons\General\Shield-protected.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24"/>
+                                                <path d="M4,4 L11.6314229,2.5691082 C11.8750185,2.52343403 12.1249815,2.52343403 12.3685771,2.5691082 L20,4 L20,13.2830094 C20,16.2173861 18.4883464,18.9447835 16,20.5 L12.5299989,22.6687507 C12.2057287,22.8714196 11.7942713,22.8714196 11.4700011,22.6687507 L8,20.5 C5.51165358,18.9447835 4,16.2173861 4,13.2830094 L4,4 Z" fill="#000000" opacity="0.3"/>
+                                                <path d="M14.5,11 C15.0522847,11 15.5,11.4477153 15.5,12 L15.5,15 C15.5,15.5522847 15.0522847,16 14.5,16 L9.5,16 C8.94771525,16 8.5,15.5522847 8.5,15 L8.5,12 C8.5,11.4477153 8.94771525,11 9.5,11 L9.5,10.5 C9.5,9.11928813 10.6192881,8 12,8 C13.3807119,8 14.5,9.11928813 14.5,10.5 L14.5,11 Z M12,9 C11.1715729,9 10.5,9.67157288 10.5,10.5 L10.5,11 L13.5,11 L13.5,10.5 C13.5,9.67157288 12.8284271,9 12,9 Z" fill="#000000"/>
+                                            </g>
+                                        </svg><!--end::Svg Icon--></span>
+									</span>
+                        </div>
+                    </div>
+                    <div class="navi-text">
+                        <div class="font-weight-bold">Permissions</div>
+                        <div class="text-muted">Roles And Permissions</div>
+                    </div>
+                </div>
+            </a>
+                <a href="{{route("admin.user.manual.admin")}}"
+                   class="navi-item mb-5">
+                    <div class="navi-link">
+                        <div class="symbol symbol-40 bg-light mr-3">
+                            <div class="symbol-label">
 									<span class="svg-icon svg-icon-md svg-icon-success">
 										<!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
                                         <svg xmlns="http://www.w3.org/2000/svg"
@@ -363,15 +423,15 @@
 										</svg>
                                         <!--end::Svg Icon-->
 									</span>
+                            </div>
+                        </div>
+                        <div class="navi-text">
+                            <div class="font-weight-bold">User Guide</div>
+                            <div class="text-muted">User Manual</div>
                         </div>
                     </div>
-                    <div class="navi-text">
-                        <div class="font-weight-bold">Permissions</div>
-                        <div class="text-muted">Roles And Permissions</div>
-                    </div>
-                </div>
+                </a>
 
-            </a>
             <!--end:Item-->
         </div>
         <!--end::Nav-->
