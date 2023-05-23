@@ -8,8 +8,8 @@
                     <i class="ti ti-smart-home tw-text-[24px]"></i>
                 </div>
                 <div>
-                    <div>Home</div>
-                    <div class="tw-text-xs">Summary</div>
+                    <div>@lang('app.home')</div>
+                    <div class="tw-text-xs">@lang('app.summary')</div>
                 </div>
             </a>
         </li>
@@ -21,9 +21,9 @@
                     <i class="ti ti-git-pull-request tw-text-[24px]"></i>
                 </div>
                 <div>
-                    <div>Requests</div>
+                    <div>@lang('app.requests')</div>
                     <div class="tw-text-xs">
-                        View your requests
+                        @lang('app.view_your_requests')
                     </div>
                 </div>
             </a>
@@ -36,9 +36,9 @@
                     <i class="ti ti-receipt tw-text-[24px]"></i>
                 </div>
                 <div>
-                    <div>Billing</div>
+                    <div>@lang('app.billing')</div>
                     <div class="tw-text-xs">
-                        View your bills
+                        @lang('app.view_your_bills')
                     </div>
                 </div>
             </a>
@@ -51,9 +51,9 @@
                     <i class="ti ti-building-bank tw-text-[24px]"></i>
                 </div>
                 <div>
-                    <div>Payments</div>
+                    <div>@lang('app.payments')</div>
                     <div class="tw-text-xs">
-                        View your payments history
+                        @lang('app.view_your_payments_history')
                     </div>
                 </div>
             </a>

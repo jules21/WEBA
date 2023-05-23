@@ -15,7 +15,7 @@
     <div class="card card-body h-100 tw-rounded-lg tw-bg-cover tw-bg-no-repeat tw-bg-center"
          style="background-image: url({{ asset('images/bg_logo.png') }});">
         <h4>
-            All Requests
+            @lang('app.all_requests')
         </h4>
 
         <div class="list-group list-group-flush mt-4">
@@ -54,7 +54,7 @@
                                 class="badge badge-{{ $item->status_color }} rounded-pill tw-py-1.5 tw-px-2">{{ $item->status }}</span>
                             <a href="{{ route('client.request-details',encryptId($item->id)) }}"
                                class="btn btn-secondary btn-sm rounded-sm">
-                                Details
+                                @lang('app.details')
                             </a>
                         </div>
                     </div>
