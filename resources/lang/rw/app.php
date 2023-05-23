@@ -20,7 +20,7 @@ return [
     "more_than"=>"Abarenga",
     "private_water_operators"=>"Bigenga bashinzwe gutanga amazi",
     "billing"=>"Kwishyuza",
-    "billing_description"=>"Gukora fagitire y’amazi neza kandi ku gihe kubakiriya, kunoza ikusanyamakuru no kugabanya igihombo cyamafaranga.",
+    "billing_description"=>"Gukorera abakiriya fagitire y’amazi neza kandi ku gihe, kunoza ikusanyamakuru no kugabanya igihombo cyamafaranga.",
     "payment"=>"Kwishura",
     "payment_description"=>"Kwemerera abakiriya kugira uburyo bwinshi bwo kwishyurira hamwe nuburyo bwuzuye bwo kwishyura, kunoza neza no kongera ubwishyu mugihe.",
     "inventory_management"=>"Gucunga ibikoresho",
@@ -29,7 +29,7 @@ return [
     "accounting_description"=>"Kuringaniza imicungire yimari ukoresheje imirimo yibaruramari, gutanga raporo yimari, no kwemeza kubahiriza amabwiriza.",
     "population_served"=>"Abaturage bakorewe",
     "water_connections"=>"Guhuza Amazi",
-    "_private_water_operators"=>"Abashinzwe gutanga Amazi bigenga",
+    "_private_water_operators"=>"Abatanga Amazi bigenga",
     "water_networks"=>"Imiyoboro yamazi",
     "help_description"=>"Hano urashobora kubona ubufasha bujyanye na sisitemu nuburyo bwo kuyikoresha.
                     Urashobora gukuramo imfashanyigisho yumukoresha kuva hano.",

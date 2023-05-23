@@ -2,6 +2,7 @@
 return [
     "English" => "English",
     "Kinyarwanda"=>"Kinyarwanda",
+    "register"=>"Iyandikishe",
     "login"=>"Injira",
     "account_login"=>"Injira muri konte yawe",
     "welcome_back_to_our_system!"=>"Murakaza neza kuri sisitemu yacu!",

@@ -15,13 +15,13 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item active">
                     <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l text-white tw-font-semibold" href="/">
-                        <span>Home</span>
+                        <span>@lang('app.home')</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l text-white tw-font-semibold {{ request()->routeIs('help')?'active-link':'' }}"
                        href="{{ route('help') }}">
-                        <span>Help</span>
+                        <span>@lang('app.help')</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -34,7 +34,7 @@
                     <a class="nav-link d-flex tw-gap-1 align-items-center btn btn-accent btn-sm text-dark px-4 rounded-sm tw-font-semibold text-white"
                        href="{{ route('check-bills') }}">
                         <span>
-                            Pay Now
+                            @lang('app.pay_now')
                         </span>
                     </a>
                 </li>
