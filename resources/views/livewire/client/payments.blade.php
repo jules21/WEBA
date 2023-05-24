@@ -112,19 +112,19 @@
                                 </div>
                             @endif
 
-                            <ul class="tw-relative border-left tw-border-l-2 tw-border-accent dark:tw-border-gray-700 tw-list-none ">
+                            <ul class="tw-relative border-left tw-border-l-2 tw-border-accent  tw-list-none ">
                                 @foreach($item->paymentHistories as $history)
                                     <li class="border-bottom tw-mb-4 tw-border-b-2 tw-border-b-gray-200 tw-ml-2 last:tw-border-b-0">
                                         <div
                                             class="tw-absolute tw-w-3 tw-h-3 tw-bg-accent tw-rounded-full tw-mt-1.5 tw--left-1.5 border tw-border tw-border-white"></div>
                                         <time
-                                            class="tw-mb-1 tw-text-sm tw-font-normal tw-leading-none tw-text-gray-400 dark:tw-text-gray-500">
+                                            class="tw-mb-1 tw-text-sm tw-font-normal tw-leading-none tw-text-gray-400">
                                             {{ $history->created_at->format('d M Y') }}
                                         </time>
-                                        <h3 class="tw-text-lg tw-font-semibold tw-text-gray-900 dark:tw-text-white">
+                                        <h3 class="tw-text-lg tw-font-semibold tw-text-gray-900 ">
                                             {{number_format($history->amount)}} RWF
                                         </h3>
-                                        <p class="tw-mb-4 tw-text-base tw-font-normal tw-text-gray-500 dark:tw-text-gray-400">
+                                        <p class="tw-mb-4 tw-text-base tw-font-normal tw-text-gray-500 ">
                                             {{ $history->mapping->account->paymentServiceProvider->name }}
                                         </p>
 

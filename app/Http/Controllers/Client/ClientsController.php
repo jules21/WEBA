@@ -48,7 +48,6 @@ class ClientsController extends Controller
 
 
         $operatorData = MeterRequest::query()
-           ->withSum('billings', 'balance')
             ->with(['request.operator'])
             ->whereHas('request.customer', function (Builder $builder) use ($docNumber) {
                 $builder->where('doc_number', '=', $docNumber);

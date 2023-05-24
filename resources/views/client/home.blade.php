@@ -71,7 +71,7 @@
                     </p>
                 </div>
                 <div class="p-2" style="border: 1px dashed silver">
-                    Total Balance Due <span class="text-primary font-weight-bold">{{ number_format($operatorData->sum('billings_sum_balance')) }} RWF</span>
+                    Total Balance Due <span class="text-primary font-weight-bold">{{ number_format($operatorData->sum('balance')) }} RWF</span>
                 </div>
             </div>
 
@@ -86,7 +86,7 @@
                         </div>
                         <div>
                             <div>
-                                Balance Due: <span class="text-primary font-weight-bold">{{ number_format($item->billings_sum_balance??0) }} RWF</span>
+                                Balance Due: <span class="text-primary font-weight-bold">{{ number_format($item->balance??0) }} RWF</span>
                             </div>
                             <div class="btn-group btn-group-sm mt-1">
                                 @if($item->billings_sum_balance>0)
