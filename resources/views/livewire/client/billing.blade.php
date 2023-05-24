@@ -46,19 +46,19 @@
                              data-target="#collapseOne{{$item->id}}" aria-controls="collapseOne{{$item->id}}">
                             <div class="row">
                                 <div class="col-lg-3">
-                                    <div class="h6 tw-text-xs">@lang('app.subscription_#:')</div>
+                                    <div class="h6 tw-font-semibold tw-text-xs">@lang('app.subscription_#:')</div>
                                     <div class="tw-text-xs">
                                         {{ $item->subscription_number }}
                                     </div>
                                 </div>
                                 <div class="col-lg-3">
-                                    <div class="h6 tw-text-xs">@lang('app.meter_number'):</div>
+                                    <div class="h6 tw-font-semibold tw-text-xs">@lang('app.meter_number'):</div>
                                     <div class="tw-text-xs">
                                         {{ $item->meter_number }}
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="h6 tw-text-xs">
+                                    <div class="h6 tw-font-semibold tw-text-xs">
                                         {{ $item->meterRequest->request->operator->name }}
                                     </div>
                                     <div class="d-flex tw-gap-2 tw-text-xs">
