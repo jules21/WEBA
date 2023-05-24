@@ -72,6 +72,34 @@
 
                     </div>
                 </li>
+                @auth('client')
+                    <li class="nav-item dropdown">
+                        <a class="nav-link tw-text-l tw-font-semibold dropdown-toggle" href="#" role="button"
+                           data-toggle="dropdown"
+                           aria-expanded="false">
+                            {{ auth('client')->user()->name ?? ''}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right tw-shadow tw-rounded">
+                            <a class="dropdown-item tw-text-lg" href="{{route('home')}}">
+                                <span class="ti ti-smart-home tw-text-[20px]"></span>
+                                {{ __('Dashboard') }}
+                            </a>
+                            <a class="dropdown-item tw-text-lg" href="{{route('client.profile')}}">
+                                <span class="ti ti-user tw-text-[20px]"></span>
+                                @lang('app.profile')
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                <span class="ti ti-logout tw-text-[20px]"></span>
+                                @lang('app.logout')
+                            </a>
+                            <form id="logout-form" action="{{route('client.logout')}}" method="POST" class="d-none">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                @endauth
             </ul>
         </div>
     </div>
