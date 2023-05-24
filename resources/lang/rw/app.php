@@ -99,5 +99,7 @@ return [
     "select_operator"=>"Hitamo usaba",
     "continue"=>"Komeza",
     "close"=>"Funga",
+    "pay"=>"Ishyura",
+    "view_billings"=>"Reba Fagitire",
 
 ];

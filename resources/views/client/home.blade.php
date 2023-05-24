@@ -86,17 +86,17 @@
                         </div>
                         <div>
                             <div>
-                                Balance Due: <span class="text-primary font-weight-bold">{{ number_format($item->billings_sum_balance??0) }} RWF</span>
+                                @lang('app.balance_due:') <span class="text-primary font-weight-bold">{{ number_format($item->billings_sum_balance??0) }} RWF</span>
                             </div>
                             <div class="btn-group btn-group-sm mt-1">
                                 @if($item->billings_sum_balance>0)
                                     <a href="" class="btn btn-accent">
-                                        Pay {{ number_format($item->billings_sum_balance??0) }}
+                                        @lang('app.pay') {{ number_format($item->billings_sum_balance??0) }}
                                     </a>
                                 @endif
                                 <a href="{{ route('client.billings', ['search'=>$item->subscription_number]) }}"
                                    class="btn btn-outline-primary">
-                                    View Billings
+                                    @lang('app.view_billings')
                                 </a>
                             </div>
                         </div>

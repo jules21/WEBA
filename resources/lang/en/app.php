@@ -99,5 +99,7 @@
         "select_operator"=>"Select Operator",
         "continue"=>"Continue",
         "close"=>"Close",
+        "pay"=>"Pay",
+        "view_billings"=>"View Billings",
 
     ];
