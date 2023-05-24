@@ -65,9 +65,9 @@
         <div
             class="card card-body tw-rounded-lg tw-col-span-2 border">
             <div class="mb-4">
-                <h4>Operator Overview</h4>
+                <h4>@lang('app.operator_overview')</h4>
                 <p class="card-text">
-                    Billing overview by operators
+                    @lang('app.billing_overview_by_operators')
                 </p>
             </div>
 

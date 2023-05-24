@@ -2,6 +2,7 @@
 return [
     "English" => "English",
     "Kinyarwanda"=>"Kinyarwanda",
+    "register"=>"Iyandikishe",
     "login"=>"Injira",
     "account_login"=>"Injira muri konte yawe",
     "welcome_back_to_our_system!"=>"Murakaza neza kuri sisitemu yacu!",
@@ -44,5 +45,8 @@ return [
     "Select_village"=>"Hitamo Umudugudu",
     "confirm_password"=>"Emeza ijambo ry'ibanga",
     "create_account"=>"Fungura konti",
+    "remember_this_device"=>"Ibuka iki gikoresho",
+    "sign_in"=>"Injira",
+    "email"=>"Imeri",
 
 ];

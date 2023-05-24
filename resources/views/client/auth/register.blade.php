@@ -1,5 +1,5 @@
 @extends('client.layout.guest')
-@section('title', 'Register')
+@section('title', trans('auth.register'))
 @section('content')
     <div class=" bg-transparent tw-mt-20 overflow-hidden">
         <div class="row">

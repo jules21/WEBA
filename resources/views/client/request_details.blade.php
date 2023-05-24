@@ -15,7 +15,7 @@
 @section('content')
     <div class="card card-body tw-rounded-lg">
        <div class="d-flex justify-content-between mb-4">
-           <h4 class="mb-0">Request Details</h4>
+           <h4 class="mb-0">@lang('app.request_details')</h4>
            <span class="text-muted tw-text-sm">{{ $request->created_at->format('d M Y') }}</span>
        </div>
         @if($request->status==\App\Constants\Status::PENDING && $request->customer_initiated)
@@ -47,7 +47,7 @@
                   </div>--}}
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
-                    <label for="name" class="font-weight-bold">Water Usage:</label>
+                    <label for="name" class="font-weight-bold">@lang('app.water_usage'):</label>
                     <div class="form-control-plaintext py-0">
                         {{ $request->waterUsage->name }}
                     </div>
@@ -56,7 +56,7 @@
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
                     <label class="font-weight-bold">
-                        Number of Meters Requested:
+                       @lang('app.number_of_meters_requested:')
                     </label>
                     <div class="form-control-plaintext py-0">
                         <span class="tw-bg-accent/20 py-1 px-2 tw-text-primary font-weight-bold rounded-pill">{{ $request->meter_qty }}</span>
@@ -73,7 +73,7 @@
             </div>
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
-                    <label class="font-weight-bold">UPI Attachment:</label>
+                    <label class="font-weight-bold">@lang('app.UPI_attachment:')</label>
                     <div>
                         <a href="{{ $request->upi_attachment_url }}" class="btn btn-sm btn-accent"
                            target="_blank">
@@ -85,7 +85,7 @@
                                 <path d="M7 11l5 5l5 -5"></path>
                                 <path d="M12 4l0 12"></path>
                             </svg>
-                            Download UPI
+                            @lang('app.download_UPI')
                         </a>
                     </div>
                 </div>
@@ -93,7 +93,7 @@
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
                     <div class="font-weight-bold">
-                        Will the new connection cross a road?
+                        @lang('app.will_the_new_connection_cross_a_road?')
                     </div>
                     <span class="tw-bg-accent/20 font-weight-bold tw-text-accent px-2 py-1 rounded-pill">
                                         {{ $request->new_connection_crosses_road? 'Yes' : 'No' }}
@@ -102,7 +102,7 @@
             </div>
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
-                    <label class="font-weight-bold">Road Type:</label>
+                    <label class="font-weight-bold">@lang('app.road_type:')</label>
                     <div class="form-control-plaintext py-0">
                         {{ $request->road_type??'N/A' }}
                     </div>
@@ -111,7 +111,7 @@
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
                     <div class="font-weight-bold">
-                        Will you buy the equipments by yourself?
+                        @lang('app.will_you_buy_the_equipments_by_yourself?')
                     </div>
                     <span class="tw-bg-accent/20 font-weight-bold tw-text-accent px-2 py-1 rounded-pill">
                                         {{ $request->equipment_payment? 'Yes' : 'No' }}
@@ -121,7 +121,7 @@
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
                     <div class="font-weight-bold">
-                        Will you dig the pipeline by yourself?
+                        @lang('app.will_you_dig_the_pipeline_by_yourself?')
                     </div>
                     <span class="tw-bg-accent/20 font-weight-bold tw-text-accent px-2 py-1 rounded-pill">
                                         {{ $request->digging_pipeline? 'Yes' : 'No' }}
@@ -131,7 +131,7 @@
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
                     <label class="font-weight-bold">
-                        Address:
+                        @lang('app.address'):
                     </label>
                     <div class="form-control-plaintext py-0">
                         {{ $request->address }}
@@ -141,7 +141,7 @@
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
                     <label class="font-weight-bold">
-                        Operator:
+                        @lang('app.operator'):
                     </label>
                     <div class="form-control-plaintext py-0">
                         {{ $request->operator->name }}
@@ -151,7 +151,7 @@
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
                     <label class="font-weight-bold">
-                        Operating area:
+                        @lang('app.operating_area:')
                     </label>
                     <div class="form-control-plaintext py-0">
                         {{ $request->operationArea->name }}
@@ -162,7 +162,7 @@
 
         <div class="row">
             <div class="col-lg-6">
-                <label class="font-weight-bold d-block">Pipe will cross:</label>
+                <label class="font-weight-bold d-block">@lang('app.pipe_will_cross:')</label>
                 <div class="row">
                     @forelse($request->pipeCrosses as $item)
                         <div class="col-lg-6 my-2">
@@ -181,7 +181,7 @@
                     @empty
 
                         <div class="col-12">
-                            <strong class="text-info"> No data found</strong>
+                            <strong class="text-info"> @lang('app.no_data_found')</strong>
                         </div>
 
                     @endforelse
@@ -189,7 +189,7 @@
             </div>
             <div class="col-lg-12">
                 <div class="form-group">
-                    <label class="font-weight-bold">Description:</label>
+                    <label class="font-weight-bold">@lang('app.description:')</label>
                     <div class="form-control-plaintext py-0">
                         {{ $request->description }}
                     </div>

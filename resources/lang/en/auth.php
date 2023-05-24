@@ -2,7 +2,8 @@
 return [
     "English" => "English",
     "Kinyarwanda"=>"Kinyarwanda",
-    "login"=>"Login Page",
+    "register"=>"Register",
+    "login"=>"Login",
     "account_login"=>"Account Login",
     "welcome_back_to_our_system!"=>"Welcome back to our system!",
     "please_enter_your_login_details_to_access_your_account."=>"Please enter your login details to access your account.",
@@ -45,5 +46,8 @@ return [
     "Select_village"=>"Select Village",
     "confirm_password"=>"Confirm Password",
     "create_account"=>"Create Account",
+    "remember_this_device"=>"Remember this device",
+    "sign_in"=>"Sign In",
+    "email"=>"Email",
 
 ];
