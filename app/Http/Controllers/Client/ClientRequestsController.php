@@ -103,7 +103,7 @@ class ClientRequestsController extends Controller
         DB::commit();
         return redirect()
             ->route('home')
-            ->with('success', 'Your request has been submitted successfully');
+            ->with('success', trans('app.your_request_has_been_submitted_successfully'));
 
     }
 
