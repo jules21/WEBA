@@ -70,7 +70,7 @@
         "view_your_bills"=>"View your bills",
         "payments"=>"Payments",
         "view_your_payments_history"=>"View your payments history",
-        "operator_overview"=>"Operator Overview",
+        "operator_overview"=>"Operator Billing Overview",
         "billing_overview_by_operators"=>"Billing overview by operators",
         "all_requests"=>"All Requests",
         "details"=>"Details",

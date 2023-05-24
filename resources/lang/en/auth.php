@@ -49,5 +49,6 @@ return [
     "remember_this_device"=>"Remember this device",
     "sign_in"=>"Sign In",
     "email"=>"Email",
+    "failed"=>"These credentials do not match our records.",
 
 ];

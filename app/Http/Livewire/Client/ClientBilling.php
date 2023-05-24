@@ -22,7 +22,7 @@ class ClientBilling extends Component
     {
 //        sleep(3);
         $billings = Billing::query()
-            ->with(['meterRequest.request.operator', 'user'])
+            ->with(['meterRequest.request.operator', 'user','history.paymentMapping.account.paymentServiceProvider'])
             ->whereHas('meterRequest', function (Builder $builder) {
                 $builder->whereHas('request', function (Builder $builder) {
                     $builder->whereHas('customer', function (Builder $builder) {

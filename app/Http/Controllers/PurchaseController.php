@@ -38,7 +38,7 @@ class PurchaseController extends Controller
         $startDate = \request('start_date');
         $endDate = \request('end_date');
             $data = Purchase::query()
-                ->with(['supplier','movementDetails.item.packagingUnit'])
+                ->with(['supplier','movementDetails.item.packagingUnit','movementDetails.item.stock.operationArea'])
                 ->where('operation_area_id', '=', auth()->user()->operation_area)
                 ->withCount('movementDetails')
                 ->where(function (Builder $builder) {
@@ -92,7 +92,7 @@ class PurchaseController extends Controller
                 ->make(true);
         }
 
-        if (request()->is_download == true && ! request()->ajax()) {
+        if (request()->is_download && ! request()->ajax()) {
             return $this->exportDataToExcel($data->get());
         }
 
@@ -371,6 +371,7 @@ class PurchaseController extends Controller
     public function getItems()
     {
         return Item::query()
+            ->with('stock.operationArea')
             ->where('operator_id', '=', auth()->user()->operator_id)
             ->orderBy('name')
             ->get();

@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants\Permission;
+use App\Models\District;
 use App\Models\Operator;
 use App\Models\PaymentConfiguration;
 use Illuminate\Database\Eloquent\Builder;
@@ -79,5 +80,13 @@ function myOperators()
         })
         ->limit(5)
         ->latest()
+        ->get();
+}
+
+function getDistrictsToRequestConnection()
+{
+    return District::query()
+        ->whereHas('operationAreas')
+        ->orderBy('name')
         ->get();
 }

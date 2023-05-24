@@ -76,4 +76,9 @@ class Billing extends Model implements Auditable
     {
         return $this->hasMany(Payment::class, 'billing_id', 'id');
     }
+
+    public function getAmountPaidAttribute()
+    {
+        return $this->history->sum('amount');
+    }
 }
