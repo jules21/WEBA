@@ -13,7 +13,7 @@
             <button class="btn rounded tw-bg-accent  tw-font-semibold hover:tw-bg-accent hover:tw-text-white "
                     type="button" data-toggle="modal" data-target="#exampleModal">
                 <span class="ti ti-plus"></span>
-                New Connection
+                @lang('app.new_connection')
             </button>
         </x-slot>
 
@@ -38,7 +38,7 @@
                 </svg>
             </div>
             <div class="card-text  d-flex justify-content-center align-items-center flex-column mt-4">
-                <h5 class="text-center small font-weight-bolder">Total Requests</h5>
+                <h5 class="text-center small font-weight-bolder">@lang('app.total_requests')</h5>
                 <h4>{{ $customerOverview->totalRequests }}</h4>
             </div>
         </div>
@@ -56,7 +56,7 @@
             </div>
             <div class="card-text  d-flex justify-content-center align-items-center flex-column mt-4">
                 <h5 class="text-center small font-weight-bolder">
-                    Water Connections
+                    @lang('app.water_connections')
                 </h5>
                 <h4>{{ $customerOverview->totalConnections}} </h4>
             </div>
@@ -91,12 +91,12 @@
                             <div class="btn-group btn-group-sm mt-1">
                                 @if($item->billings_sum_balance>0)
                                     <a href="" class="btn btn-accent">
-                                        Pay {{ number_format($item->billings_sum_balance??0) }}
+                                        @lang('app.pay') {{ number_format($item->billings_sum_balance??0) }}
                                     </a>
                                 @endif
                                 <a href="{{ route('client.billings', ['search'=>$item->subscription_number]) }}"
                                    class="btn btn-outline-primary">
-                                    View Billings
+                                    @lang('app.view_billings')
                                 </a>
                             </div>
                         </div>
@@ -106,8 +106,8 @@
 
             <div class="d-flex justify-content-between flex-column flex-lg-row tw-gap-2">
                 <div>
-                    Showing {{ $operatorData->firstItem() }} to {{ $operatorData->lastItem() }}
-                    of {{ $operatorData->total() }} entries
+                    @lang('app.showing') {{ $operatorData->firstItem() }} @lang('app.to') {{ $operatorData->lastItem() }}
+                    @lang('app.of') {{ $operatorData->total() }} @lang('app.entries')
                 </div>
                 <div>
                     {{ $operatorData->links() }}

@@ -3,7 +3,7 @@
         <x-layouts.breadcrumb>
 
             <x-layouts.breadcrumb-item>
-                Billing
+                @lang('app.billing')
             </x-layouts.breadcrumb-item>
 
             <x-slot name="actions">
@@ -16,7 +16,7 @@
          style="background-image: url({{ asset('images/bg_logo.png') }});">
         <div class="d-flex justify-content-between mb-3 align-items-center">
             <h4 class="mb-0">
-                Billing
+                @lang('app.billing')
                 <div wire:loading>
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </div>
@@ -34,7 +34,7 @@
 
                 <input type="text" wire:model.debounce="search"
                        class="tw-bg-gray-50 border tw-border-gray-300 tw-outline-0 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring focus:tw-ring-offset-2 focus:tw-ring-accent focus:tw-border-accent tw-block tw-w-full tw-pl-10 tw-p-2.5  "
-                       placeholder="Search..." required>
+                       placeholder="{{__('app.search...')}}" required>
             </div>
         </div>
 
@@ -46,13 +46,13 @@
                              data-target="#collapseOne{{$item->id}}" aria-controls="collapseOne{{$item->id}}">
                             <div class="row">
                                 <div class="col-lg-4">
-                                    <div class="font-weight-bold">Subscription #:</div>
+                                    <div class="font-weight-bold">@lang('app.subscription_#:')</div>
                                     <div class="tw-text-xs">
                                         {{ $item->subscription_number }}
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
-                                    <div class="font-weight-bold">Meter Number:</div>
+                                    <div class="font-weight-bold">@lang('app.meter_number'):</div>
                                     <div class="tw-text-xs">
                                         {{ $item->meter_number }}
                                     </div>
@@ -69,7 +69,7 @@
                                         </span>
                                         </div>
                                         <div>
-                                            Remain:
+                                            @lang('app.remain'):
                                             <span class="text-primary font-weight-bold">
                                             {{ number_format($item->balance) }} RWF
                                         </span>
@@ -84,22 +84,22 @@
                          aria-labelledby="headingOne"
                          data-parent="#accordionExample">
                         <div class="card-body">
-                            <h6 class="text-primary font-weight-bolder">Billing Details</h6>
+                            <h6 class="text-primary font-weight-bolder">@lang('app.billing_details')</h6>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <div class="font-weight-normal">Starting Index:</div>
+                                    <div class="font-weight-normal">@lang('app.starting_index'):</div>
                                     <div class="tw-text-xs text-muted">
                                         {{ number_format($item->starting_index) }}
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="font-weight-normal">Last Index:</div>
+                                    <div class="font-weight-normal">@lang('app.last_index'):</div>
                                     <div class="tw-text-xs text-muted">
                                         {{ number_format($item->last_index) }}
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="font-weight-normal">Done By:</div>
+                                    <div class="font-weight-normal">@lang('app.done_by'):</div>
                                     <div class="tw-text-xs text-muted">
                                         {{ $item->user->name }}
                                     </div>
@@ -107,23 +107,23 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-4">
-                                    <div class="font-weight-normal">Operating area:</div>
+                                    <div class="font-weight-normal">@lang('app.operating_area:')</div>
                                     <div class="tw-text-xs text-muted">
                                         {{ $item->meterRequest->request->operationArea->name }}
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="font-weight-normal">Comment:</div>
+                                    <div class="font-weight-normal">@lang('app.comment:')</div>
                                     <div class="tw-text-xs text-muted">
                                         {{ $item->comment }}
                                     </div>
                                 </div>
                             </div>
-                            <h6 class="text-primary font-weight-bolder mt-3">Payment History</h6>
+                            <h6 class="text-primary font-weight-bolder mt-3">@lang('app.payment_history')</h6>
 
                             @if($item->history->isEmpty())
                                 <div class="tw-text-center  tw-mt-5 alert alert-info">
-                                    No payment made yet, after payment you will see the history here
+                                    @lang('app.no_payment_made_yet_after_payment_you_will_see_the_history_here')
                                 </div>
                             @endif
 

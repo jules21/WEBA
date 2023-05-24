@@ -3,7 +3,7 @@
         <x-layouts.breadcrumb>
 
             <x-layouts.breadcrumb-item>
-                Payments
+                @lang('app.payments')
             </x-layouts.breadcrumb-item>
 
             <x-slot name="actions">
@@ -16,7 +16,7 @@
          style="background-image: url({{ asset('images/bg_logo.png') }});">
         <div class="d-flex justify-content-between mb-3 align-items-center">
             <h4 class="mb-0">
-                Payments
+                @lang('app.payments')
                 <div wire:loading>
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </div>
@@ -33,7 +33,7 @@
                 </div>
                 <input type="text" wire:model="search"
                        class="tw-bg-gray-50 border tw-border-gray-300 tw-outline-0 tw-text-gray-900 tw-text-sm tw-rounded-lg focus:tw-ring focus:tw-ring-offset-2 focus:tw-ring-accent focus:tw-border-accent tw-block tw-w-full tw-pl-10 tw-p-2.5  "
-                       placeholder="Search..." required>
+                       placeholder="{{__('app.search...')}}" required>
             </div>
 
         </div>
@@ -48,12 +48,12 @@
                                 <div class="col-lg-4">
                                     <div class="d-flex flex-column tw-gap-1">
                                         <div class="">
-                                            <span class="text-muted">Code:</span>
+                                            <span class="text-muted">@lang('app.code:')</span>
                                             <span
                                                 class="tw-text-xs tw-font-medium">{{ $item->payment_reference }}</span>
                                         </div>
                                         <div>
-                                            <span class="text-muted">Payment Type:</span>
+                                            <span class="text-muted">@lang('app.Payment Type:')</span>
                                             <span class="tw-text-xs tw-font-medium">{{ $item->type }}</span>
                                         </div>
                                     </div>
@@ -62,7 +62,7 @@
                                 <div class="col-lg-4">
                                     <div class="d-flex flex-column tw-gap-1">
                                         <div>
-                                            <span class="text-muted">Amount to pay:</span>
+                                            <span class="text-muted">@lang('app.amount_to_pay:')</span>
                                             <span class="text-primary font-weight-bold">
                                             {{ number_format($item->amount) }} RWF
                                         </span>
@@ -96,19 +96,19 @@
                          data-parent="#accordionExample">
                         <div class="card-body">
                             <div class="mb-3">
-                                <div class="font-weight-normal">Operating area:</div>
+                                <div class="font-weight-normal">@lang('app.operating_area:')</div>
                                 <div class="tw-text-xs text-muted">
                                     {{ $item->request->operationArea->name }}
                                 </div>
                             </div>
 
                             <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="mb-0">Payment History</h6>
+                                <h6 class="mb-0">@lang('app.payment_history')</h6>
                             </div>
 
                             @if($item->paymentHistories->isEmpty())
                                 <div class="tw-text-center  tw-mt-5 alert alert-info">
-                                    No payment made yet, after payment you will see the history here
+                                    @lang('app.no_payment_made_yet_after_payment_you_will_see_the_history_here')
                                 </div>
                             @endif
 
@@ -140,8 +140,8 @@
 
         <div class="d-flex mt-4 align-items-center flex-column flex-md-row justify-content-between ">
             <div>
-                Showing {{ $payments->firstItem() }} to {{ $payments->lastItem() }} out of {{ $payments->total() }}
-                items
+                @lang('app.showing') {{ $payments->firstItem() }} @lang('app.to') {{ $payments->lastItem() }} @lang('app.out_of') {{ $payments->total() }}
+                @lang('app.items')
             </div>
             <div>{{ $payments->links() }}</div>
         </div>
