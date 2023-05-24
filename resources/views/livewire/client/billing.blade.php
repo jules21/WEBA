@@ -45,35 +45,36 @@
                         <div class="tw-cursor-pointer  text-left" data-toggle="collapse"
                              data-target="#collapseOne{{$item->id}}" aria-controls="collapseOne{{$item->id}}">
                             <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="font-weight-bold">@lang('app.subscription_#:')</div>
+                                <div class="col-lg-3">
+                                    <div class="h6 tw-text-xs">@lang('app.subscription_#:')</div>
                                     <div class="tw-text-xs">
                                         {{ $item->subscription_number }}
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="font-weight-bold">@lang('app.meter_number'):</div>
+                                <div class="col-lg-3">
+                                    <div class="h6 tw-text-xs">@lang('app.meter_number'):</div>
                                     <div class="tw-text-xs">
                                         {{ $item->meter_number }}
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="font-weight-bold">
+                                <div class="col-lg-6">
+                                    <div class="h6 tw-text-xs">
                                         {{ $item->meterRequest->request->operator->name }}
                                     </div>
                                     <div class="d-flex tw-gap-2 tw-text-xs">
                                         <div>
-                                            Paid:
+                                            Cubic Meters:
                                             <span class="text-primary font-weight-bold">
-                                            {{ number_format($item->amountPaid) }} RWF
+                                            {{ number_format($item->cubicMeter) }}
                                         </span>
                                         </div>
                                         <div>
-                                            @lang('app.remain'):
+                                            Amount:
                                             <span class="text-primary font-weight-bold">
-                                            {{ number_format($item->balance) }} RWF
+                                            {{ number_format($item->amount) }} RWF
                                         </span>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -99,11 +100,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="font-weight-normal">@lang('app.done_by'):</div>
+                                    <div class="font-weight-normal">Balance:</div>
                                     <div class="tw-text-xs text-muted">
-                                        {{ $item->user->name }}
+                                        {{ number_format($item->balance) }} RWF
                                     </div>
                                 </div>
+
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-4">
@@ -118,6 +120,12 @@
                                         {{ $item->comment }}
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="font-weight-normal">@lang('app.done_by'):</div>
+                                    <div class="tw-text-xs text-muted">
+                                        {{ $item->user->name }}
+                                    </div>
+                                </div>
                             </div>
                             <h6 class="text-primary font-weight-bolder mt-3">@lang('app.payment_history')</h6>
 
@@ -127,20 +135,20 @@
                                 </div>
                             @endif
 
-                            <ul class="tw-relative border-left tw-border-l-2 tw-border-accent dark:tw-border-gray-700 tw-list-none ">
+                            <ul class="tw-relative border-left tw-border-l-2 tw-border-accent  tw-list-none ">
                                 @foreach($item->history as $history)
                                     <li class="border-bottom tw-mb-4 tw-border-b-2 tw-border-b-gray-200 tw-ml-2 last:tw-border-b-0">
                                         <div
                                             class="tw-absolute tw-w-3 tw-h-3 tw-bg-accent tw-rounded-full tw-mt-1.5 tw--left-1.5 border tw-border tw-border-white"></div>
                                         <time
-                                            class="tw-mb-1 tw-text-sm tw-font-normal tw-leading-none tw-text-gray-400 dark:tw-text-gray-500">
+                                            class="tw-mb-1 tw-text-sm tw-font-normal tw-leading-none tw-text-gray-400">
                                             {{ $history->created_at->format('d M Y') }}
                                         </time>
-                                        <h3 class="tw-text-sm tw-font-semibold tw-text-gray-900 dark:tw-text-white">
+                                        <h3 class="tw-text-sm tw-font-semibold tw-text-gray-900 ">
                                             {{number_format($history->amount)}} RWF
                                         </h3>
-                                        <p class="tw-mb-1 tw-text-xs tw-font-normal tw-text-gray-500 dark:tw-text-gray-400">
-                                            {{ $history->paymentMapping->account->paymentServiceProvider->name }}
+                                        <p class="tw-mb-1 tw-text-xs tw-font-normal tw-text-gray-500">
+                                            {{ $history->paymentMapping? $history->paymentMapping->account->paymentServiceProvider->name:$history->source }}
                                         </p>
 
                                     </li>

@@ -81,4 +81,9 @@ class Billing extends Model implements Auditable
     {
         return $this->history->sum('amount');
     }
+
+    public function getCubicMetersAttribute()
+    {
+        return $this->last_index - $this->starting_index;
+    }
 }
