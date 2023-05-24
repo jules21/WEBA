@@ -48,5 +48,6 @@ return [
     "remember_this_device"=>"Ibuka iki gikoresho",
     "sign_in"=>"Injira",
     "email"=>"Imeri",
+    "failed"=>"Ijambo ry'ibanga cyangwa imeri ntibaho",
 
 ];

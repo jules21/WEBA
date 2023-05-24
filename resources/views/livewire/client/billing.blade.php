@@ -23,7 +23,8 @@
             </h4>
             <div class="tw-relative">
                 <div class="tw-absolute tw-inset-y-0 tw-left-0 tw-flex tw-items-center tw-pl-3 tw-pointer-events-none">
-                    <svg aria-hidden="true" class="tw-w-5 tw-h-5 tw-text-gray-500" fill="currentColor" viewBox="0 0 20 20"
+                    <svg aria-hidden="true" class="tw-w-5 tw-h-5 tw-text-gray-500" fill="currentColor"
+                         viewBox="0 0 20 20"
                          xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
                               d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
@@ -64,7 +65,7 @@
                                         <div>
                                             Paid:
                                             <span class="text-primary font-weight-bold">
-                                            {{ number_format($item->amount) }} RWF
+                                            {{ number_format($item->amountPaid) }} RWF
                                         </span>
                                         </div>
                                         <div>
@@ -78,10 +79,12 @@
                             </div>
                         </div>
                     </div>
-                    <div id="collapseOne{{$item->id}}" class="collapse" aria-labelledby="headingOne"
+                    <div id="collapseOne{{$item->id}}"
+                         class="collapse {{$loop->first && \Illuminate\Support\Str::of($search)->startsWith('SN') ?'show':''}}"
+                         aria-labelledby="headingOne"
                          data-parent="#accordionExample">
                         <div class="card-body">
-                            <h6>Billing Details</h6>
+                            <h6 class="text-primary font-weight-bolder">Billing Details</h6>
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="font-weight-normal">Starting Index:</div>
@@ -116,6 +119,34 @@
                                     </div>
                                 </div>
                             </div>
+                            <h6 class="text-primary font-weight-bolder mt-3">Payment History</h6>
+
+                            @if($item->history->isEmpty())
+                                <div class="tw-text-center  tw-mt-5 alert alert-info">
+                                    No payment made yet, after payment you will see the history here
+                                </div>
+                            @endif
+
+                            <ul class="tw-relative border-left tw-border-l-2 tw-border-accent dark:tw-border-gray-700 tw-list-none ">
+                                @foreach($item->history as $history)
+                                    <li class="border-bottom tw-mb-4 tw-border-b-2 tw-border-b-gray-200 tw-ml-2 last:tw-border-b-0">
+                                        <div
+                                            class="tw-absolute tw-w-3 tw-h-3 tw-bg-accent tw-rounded-full tw-mt-1.5 tw--left-1.5 border tw-border tw-border-white"></div>
+                                        <time
+                                            class="tw-mb-1 tw-text-sm tw-font-normal tw-leading-none tw-text-gray-400 dark:tw-text-gray-500">
+                                            {{ $history->created_at->format('d M Y') }}
+                                        </time>
+                                        <h3 class="tw-text-sm tw-font-semibold tw-text-gray-900 dark:tw-text-white">
+                                            {{number_format($history->amount)}} RWF
+                                        </h3>
+                                        <p class="tw-mb-1 tw-text-xs tw-font-normal tw-text-gray-500 dark:tw-text-gray-400">
+                                            {{ $history->paymentMapping->account->paymentServiceProvider->name }}
+                                        </p>
+
+                                    </li>
+                                @endforeach
+                            </ul>
+
                         </div>
                     </div>
                 </div>
@@ -124,7 +155,8 @@
 
         <div class="d-flex mt-4 align-items-center flex-column flex-md-row justify-content-between ">
             <div>
-                Showing {{ $billings->firstItem() }} to {{ $billings->lastItem() }} out of {{ $billings->total() }} items
+                Showing {{ $billings->firstItem() }} to {{ $billings->lastItem() }} out of {{ $billings->total() }}
+                items
             </div>
             <div>{{ $billings->links() }}</div>
         </div>

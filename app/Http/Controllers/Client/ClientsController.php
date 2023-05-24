@@ -29,10 +29,6 @@ class ClientsController extends Controller
 {
     public function home()
     {
-        $districts = District::query()
-            ->whereHas('operationAreas')
-            ->orderBy('name')
-            ->get();
 
         $docNumber = auth('client')->user()->doc_number;
 
@@ -51,20 +47,18 @@ class ClientsController extends Controller
         })->sum('balance');
 
 
-        $operatorData = Operator::select('operators.name', DB::raw('SUM(billings.balance) as total_balance'), 'billings.subscription_number')
-            ->join('requests', 'operators.id', '=', 'requests.operator_id')
-            ->join('meter_requests', 'requests.id', '=', 'meter_requests.request_id')
-            ->join('billings', 'meter_requests.subscription_number', '=', 'billings.subscription_number')
-            ->join('customers', 'operators.id', '=', 'customers.operator_id')
-            ->where(DB::raw("customers.doc_number"), "=", $docNumber)
-            ->groupBy('billings.subscription_number', 'operators.name')
+        $operatorData = MeterRequest::query()
+           ->withSum('billings', 'balance')
+            ->with(['request.operator'])
+            ->whereHas('request.customer', function (Builder $builder) use ($docNumber) {
+                $builder->where('doc_number', '=', $docNumber);
+            })
             ->paginate(5);
 
 
         $customerOverview = new CustomerOverview($totalRequests, $totalWaterConnections, $totalAmountDue);
 
         return view('client.home', [
-            'districts' => $districts,
             'customerOverview' => $customerOverview,
             'operatorData' => $operatorData
         ]);
