@@ -11,7 +11,7 @@
         <div class="row mb-3">
             <!--begin::Label-->
             <label class="col-lg-4 tw-font-semibold text-muted">
-                Owner Name:
+                @lang('app.owner_name:')
             </label>
             <!--end::Label-->
             <!--begin::Col-->
@@ -27,7 +27,7 @@
         <div class="row mb-3">
             <!--begin::Label-->
             <label class="col-lg-4 tw-font-semibold text-muted">
-                Bill Number:
+                @lang('app.bill_number')
             </label>
             <!--end::Label-->
 
@@ -44,7 +44,7 @@
         <div class="row mb-3">
             <!--begin::Label-->
             <label class="col-lg-4 tw-font-semibold text-muted">
-                Amount:
+                @lang('app.amount:')
             </label>
             <!--end::Label-->
             <!--begin::Col-->
@@ -61,15 +61,15 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="phone">Phone Number</label>
+                        <label for="phone">@lang('app.phone_number')</label>
                         <div class="d-flex align-items-center">
                             <input type="text" class="form-control @error('phone') is-invalid @enderror"
                                    id="phone" wire:model="phone"
-                                   placeholder="Phone Number">
+                                   placeholder="{{__('app.phone_number')}}">
                             <button
                                 class="flex-nowrap flex-shrink-0 ml-2 btn btn-accent font-weight-bold d-inline-flex align-items-center tw-gap-2 text-white"
                                 wire:click="payBill">
-                                Make Payment
+                                @lang('app.make_payment')
                             </button>
                         </div>
                         @error('phone') <span
