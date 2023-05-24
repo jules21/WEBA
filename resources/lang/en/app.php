@@ -88,5 +88,16 @@
         "pipe_will_cross:"=>"Pipe will cross:",
         "no_data_found"=>"No data found",
         "description:"=>"Description:",
+        "showing"=>"Showing",
+        "to"=>"to",
+        "of"=>"of",
+        "entries"=>"entries",
+        "new_connection"=>"New Connection",
+        "total_requests"=>"Total Requests",
+        "balance_due:"=>"Balance Due:",
+        "select_district"=>"Select District",
+        "select_operator"=>"Select Operator",
+        "continue"=>"Continue",
+        "close"=>"Close",
 
     ];
