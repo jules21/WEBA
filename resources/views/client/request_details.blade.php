@@ -184,15 +184,15 @@
         </div>
 
         @if(!$request->equipment_payment)
-            <h6 class="text-primary font-weight-bold mt-4">Materials</h6>
+            <h6 class="text-primary font-weight-bold mt-4">@lang('app.materials')</h6>
             <div class="table-responsive border rounded-lg">
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th class="border-top-0 text-muted text-uppercase">Name</th>
-                        <th class="border-top-0 text-muted text-uppercase">Price</th>
-                        <th class="border-top-0 text-muted text-uppercase">Qty</th>
-                        <th class="border-top-0 text-muted text-uppercase">Total</th>
+                        <th class="border-top-0 text-muted text-uppercase">@lang('app.name')</th>
+                        <th class="border-top-0 text-muted text-uppercase">@lang('app.price')</th>
+                        <th class="border-top-0 text-muted text-uppercase">@lang('app.qty')</th>
+                        <th class="border-top-0 text-muted text-uppercase">@lang('app.total')</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -214,14 +214,14 @@
         @endif
 
         <div class="mt-4">
-            <h6 class="text-primary font-weight-bold">Assigned Meters</h6>
+            <h6 class="text-primary font-weight-bold">@lang('app.assigned_meters')</h6>
             <div class="table-responsive border rounded-lg">
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th class="border-top-0 text-muted text-uppercase">Name</th>
-                        <th class="border-top-0 text-muted text-uppercase">Meter Number</th>
-                        <th class="border-top-0 text-muted text-uppercase">Subscription Number</th>
+                        <th class="border-top-0 text-muted text-uppercase">@lang('app.name')</th>
+                        <th class="border-top-0 text-muted text-uppercase">@lang('app.meter_number')</th>
+                        <th class="border-top-0 text-muted text-uppercase">@lang('app.subscription_number')</th>
                     </tr>
                     </thead>
                     <tbody>

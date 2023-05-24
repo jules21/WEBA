@@ -3,8 +3,7 @@
     @if(is_null($paymentDetails))
         <div class="alert alert-danger d-flex align-items-center tw-gap-2">
             <i class="ti ti-circle-check tw-text-[24px]"></i>
-            No payment details found for bill number <strong>{{ $billNumber }}</strong> provided, please check your
-            bill number and try again
+           @lang('app.no_payment_details_found_for_bill_number') <strong>{{ $billNumber }}</strong> @lang('app.provided'), @lang('app.please_check_your_bill_number_and_try_again')
         </div>
     @else
         <!--begin::Card body-->

@@ -43,7 +43,7 @@
         <div class="modal-content tw-rounded-md border-0">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    New Connection
+                    @lang('app.new_connection')
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">
@@ -56,9 +56,9 @@
                     <div class="tw-my-6">
 
                         <div class="d-flex justify-content-between">
-                            <label for="district">District</label>
+                            <label for="district">@lang('app.district')</label>
                             <div class="d-none align-items-center" id="loader">
-                                <strong>Loading...</strong>
+                                <strong>@lang('app.loading...')</strong>
                                 <div class="spinner-border spinner-border-sm ml-auto" role="status"
                                      aria-hidden="true"></div>
                             </div>
@@ -66,27 +66,27 @@
                         <select required
                                 class="form-control focus:tw-ring tw-ring-primary focus:tw-ring-offset-2"
                                 id="district" name="district">
-                            <option value="">Select District</option>
+                            <option value="">@lang('app.select_district')</option>
                             @foreach(getDistrictsToRequestConnection() as $district)
                                 <option value="{{ $district->id }}">{{ $district->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="tw-my-6">
-                        <label for="operator_id">Operator</label>
+                        <label for="operator_id">@lang('app.operator')</label>
                         <select required
                                 class="form-control focus:tw-ring tw-ring-primary focus:tw-ring-offset-2"
                                 id="operator_id" name="op_id">
-                            <option value="">Select Operator</option>
+                            <option value="">@lang('app.select_operator')</option>
 
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer bg-light">
                     <button type="submit" class="btn btn-primary" id="btn-create-request">
-                        Continue <i class="ti ti-arrow-right"></i>
+                        @lang('app.continue') <i class="ti ti-arrow-right"></i>
                     </button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('app.close')</button>
                 </div>
             </form>
         </div>

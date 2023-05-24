@@ -76,8 +76,8 @@
 
         <div class="d-flex justify-content-between flex-column flex-lg-row tw-gap-2 mt-4">
             <div>
-                Showing {{ $recentRequests->firstItem() }} to {{ $recentRequests->lastItem() }}
-                of {{ $recentRequests->total() }} entries
+                @lang('app.showing') {{ $recentRequests->firstItem() }} @lang('app.to') {{ $recentRequests->lastItem() }}
+                @lang('app.of') {{ $recentRequests->total() }} @lang('app.entries')
             </div>
             <div>
                 {{ $recentRequests->links() }}
