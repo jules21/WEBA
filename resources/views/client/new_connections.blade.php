@@ -7,12 +7,12 @@
 
         <x-layouts.breadcrumb-item>
             <a href="" class="text-muted text-decoration-none">
-                Requests
+                {{__('app.request')}}
             </a>
         </x-layouts.breadcrumb-item>
 
         <x-layouts.breadcrumb-item>
-            New Request
+            {{__('app._new_connection')}}
         </x-layouts.breadcrumb-item>
 
     </x-layouts.breadcrumb>
@@ -22,11 +22,11 @@
 @section('content')
     <div class="card card-body h-100 tw-rounded-md">
         <h4>
-            {{ isset($request)?'Edit':'Request' }} New Connection
+            {{ isset($request)?'Edit':trans('app.request') }} @lang('app._new_connection')
         </h4>
         <div class="tw-text-sm alert alert-info d-flex align-items-center tw-gap-2">
-            <i class="ti ti-info-circle tw-text-[24px]"></i> Fill the form below to request new connection At
-            <strong>{{ $operator->name }} </strong> in <strong>{{ $operationArea->district->name }}</strong> District.
+            <i class="ti ti-info-circle tw-text-[24px]"></i> @lang('app.fill_the_form_below_to_request_new_connection_at')
+            <strong>{{ $operator->name }} </strong> @lang('app.in') <strong>{{ $operationArea->district->name }}</strong> @lang('app.district.')
         </div>
 
         <form
@@ -42,11 +42,11 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="water_usage_id">
-                            Water Usage
+                            @lang('app.water_usage')
                         </label>
                         <select name="water_usage_id" id="water_usage_id" class="form-control select2" required
                                 style="width:100% !important;">
-                            <option value="">Select Request Type</option>
+                            <option value="">@lang('app.please_select')</option>
                             @foreach($waterUsage as $requestType)
                                 <option
                                     {{ old('water_usage_id',$request->water_usage_id??'') == $requestType->id ? 'selected' : '' }}
@@ -60,7 +60,7 @@
                 <div class="col-lg-6">
                     <div class="form-group">
                         <label for="meter_qty">
-                            How many meters do you need?
+                            @lang('app.how_many_meters_do_you_need?')
                         </label>
                         <input type="number" required
                                value="{{ old('meter_qty',$request->meter_qty??"") }}" min="1"
@@ -79,13 +79,13 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="upi_attachment">UPI Attachment </label>
+                        <label for="upi_attachment">@lang('app.UPI_attachment') </label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="upi_attachment"
                                    {{ isset($request)?'':'required'  }}
                                    accept=".pdf,image/jpeg,image/png,image/jpg"
                                    name="upi_attachment">
-                            <label class="custom-file-label tw-truncate" for="upi_attachment">Choose file</label>
+                            <label class="custom-file-label tw-truncate" for="upi_attachment">@lang('app.choose_file')</label>
                         </div>
                     </div>
                 </div>
@@ -94,10 +94,10 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="sector_id">Sector </label>
+                        <label for="sector_id">@lang('app.sector') </label>
                         <select name="sector_id" id="sector_id" class="form-control select2" required
                                 style="width:100% !important;">
-                            <option value="">Select Sector</option>
+                            <option value="">@lang('app.select_sector')</option>
                             @foreach($sectors as $item)
                                 <option
                                     {{ isset($request) && $request->sector_id == $item->id ? 'selected' : '' }}
@@ -108,10 +108,10 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="cell_id">Cell </label>
+                        <label for="cell_id">@lang('app.cell') </label>
                         <select name="cell_id" id="cell_id" class="form-control select2" required
                                 style="width:100% !important;">
-                            <option value="">Select Cell</option>
+                            <option value="">@lang('app.select_cell')</option>
                         </select>
                     </div>
                 </div>
@@ -120,16 +120,16 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="village_id">Village </label>
+                        <label for="village_id">@lang('app.village') </label>
                         <select name="village_id" id="village_id" class="form-control select2"
                                 style="width:100% !important;">
-                            <option value="">Select Village</option>
+                            <option value="">@lang('app.select_village')</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="description">Description</label>
+                        <label for="description">@lang('app.description')</label>
                         <textarea name="description" id="description" rows="3"
                                   class="form-control">{{ isset($request)?$request->description:'' }}</textarea>
                     </div>
@@ -137,7 +137,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <label for="cross_road">New connection will cross the road</label>
+                    <label for="cross_road">@lang('app.new_connection_will_cross_the_road')</label>
                     <div class="form-group">
                         <div>
                             <div class="custom-control custom-radio custom-control-inline">
@@ -147,7 +147,7 @@
                                     required
                                     class="custom-control-input">
                                 <label class="custom-control-label" for="new_connection_crosses_road1">
-                                    Yes
+                                    @lang('app.yes')
                                 </label>
                             </div>
                             <div class="custom-control custom-radio custom-control-inline">
@@ -156,7 +156,7 @@
                                     id="new_connection_crosses_road2" value="0" name="new_connection_crosses_road"
                                     required
                                     class="custom-control-input">
-                                <label class="custom-control-label" for="new_connection_crosses_road2">No</label>
+                                <label class="custom-control-label" for="new_connection_crosses_road2">@lang('app.no')</label>
                             </div>
                         </div>
                         <label id="new_connection_crosses_road-error" class="error"
@@ -168,9 +168,9 @@
                 <div class="col-lg-6">
                     <div class="form-group" id="roadTypeContainer"
                          style="display: {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'block' : 'none' }}">
-                        <label for="road_type">Road Type</label>
+                        <label for="road_type">@lang('app.road_type')</label>
                         <select name="road_type" id="road_type" class="form-control" required>
-                            <option value="">Select Road Type</option>
+                            <option value="">@lang('app.select_road_type')</option>
                             @foreach($roadTypes as $roadType)
                                 <option
                                     {{ isset($request) && $request->road_type == $roadType ? 'selected' : '' }}
@@ -185,7 +185,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label for="road_cross_types">
-                            Where will the water pipe cross ?
+                            @lang('app.where_will_the_water_pipe_cross_?')
                         </label>
                         <div class="row">
                             @foreach($roadCrossTypes as $item)
@@ -209,7 +209,7 @@
             <div class="row">
 
                 <div class="col-lg-6">
-                    <label>Will you dig a water pipe by yourself?</label>
+                    <label>@lang('app.will_you_dig_a_water_pipe_by_yourself_?')</label>
                     <div class="form-group">
                         <div>
                             <div class="custom-control custom-radio custom-control-inline">
@@ -219,7 +219,7 @@
                                     id="customRadioInline1" value="1" name="digging_pipeline"
                                     class="custom-control-input">
                                 <label class="custom-control-label" for="customRadioInline1">
-                                    Yes
+                                    @lang('app.yes')
                                 </label>
                             </div>
                             <div class="custom-control custom-radio custom-control-inline">
@@ -228,7 +228,7 @@
                                     required
                                     id="customRadioInline2" value="0" name="digging_pipeline"
                                     class="custom-control-input">
-                                <label class="custom-control-label" for="customRadioInline2">No</label>
+                                <label class="custom-control-label" for="customRadioInline2">@lang('app.no')</label>
                             </div>
                         </div>
                         <label id="digging_pipeline-error" class="error" for="digging_pipeline"></label>
@@ -239,7 +239,7 @@
 
                 <div class="col-lg-6">
                     <label>
-                        Do You want to pay for the materials yourself by submitting an EBM invoice ?
+                        @lang('app.do_you_want_to_pay_for_the_materials_yourself_by_submitting_an_EBM_invoice_?')
                     </label>
                     <div class="form-group">
                         <div>
@@ -250,7 +250,7 @@
                                     id="equipment_payment1" value="1" name="equipment_payment"
                                     class="custom-control-input">
                                 <label class="custom-control-label" for="equipment_payment1">
-                                    Yes
+                                    @lang('app.yes')
                                 </label>
                             </div>
                             <div class="custom-control custom-radio custom-control-inline">
@@ -259,7 +259,7 @@
                                     required
                                     id="equipment_payment2" value="0" name="equipment_payment"
                                     class="custom-control-input">
-                                <label class="custom-control-label" for="equipment_payment2">No</label>
+                                <label class="custom-control-label" for="equipment_payment2">@lang('app.no')</label>
                             </div>
                         </div>
                         <label id="equipment_payment-error" class="error" for="equipment_payment"></label>
@@ -275,8 +275,8 @@
                         <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
                         <path d="M9 12l2 2l4 -4"></path>
                     </svg>
-                    {{ isset($request)?($request->return_back_status==\App\Constants\Status::RETURN_BACK?'Re-Submit':'Update'):'Submit' }}
-                    Request
+                    {{ isset($request)?($request->return_back_status==\App\Constants\Status::RETURN_BACK?'Re-Submit':'Update'):trans('app.submit') }}
+                    @lang('app.request')
                 </button>
             </div>
         </form>
