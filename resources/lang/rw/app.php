@@ -94,7 +94,7 @@ return [
     "entries"=>"byinjijwe",
     "new_connection"=>"Saba Bushya",
     "total_requests"=>"Umubare w'Ubusabe Bwose",
-    "balance_due:"=>"Umubare w'amafaranga:",
+    "balance_due:"=>"Umwenda:",
     "select_district"=>"Hitamo Akarere",
     "select_operator"=>"Hitamo usaba",
     "continue"=>"Komeza",
