@@ -24,15 +24,23 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold {{ request()->routeIs('help')?'active-link':'' }}"
+                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold {{ request()->routeIs('help')?'active-link':'' }}" target="_blank"
                        href="{{ route('help') }}">
                         <span>@lang('app.help')</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold {{ request()->routeIs('faq')?'active-link':'' }}"
+                    <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold {{ request()->routeIs('faq')?'active-link':'' }}" target="_blank"
                        href="{{ route('faq') }}">
                         <span>FAQ</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex tw-gap-1 align-items-center btn btn-accent btn-sm text-white px-4 tw-rounded-sm tw-font-semibold " target="_blank"
+                       href="{{ route('check-bills') }}">
+                        <span>
+                            @lang('app.pay_now')
+                        </span>
                     </a>
                 </li>
                 <li class="nav-item dropdown">
@@ -62,14 +70,7 @@
 
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link d-flex tw-gap-1 align-items-center btn btn-accent btn-sm text-white px-4 tw-rounded-sm tw-font-semibold " target="_blank"
-                       href="{{ route('check-bills') }}">
-                        <span>
-                            @lang('app.pay_now')
-                        </span>
-                    </a>
-                </li>
+
                 @auth('client')
                     <li class="nav-item dropdown">
                         <a class="nav-link tw-text-l tw-font-semibold dropdown-toggle" href="#" role="button"
