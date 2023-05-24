@@ -63,17 +63,18 @@
                                     </div>
                                     <div class="d-flex tw-gap-2 tw-text-xs">
                                         <div>
-                                            Paid:
+                                            Cubic Meters:
                                             <span class="text-primary font-weight-bold">
-                                            {{ number_format($item->amountPaid) }} RWF
+                                            {{ number_format($item->cubicMeter) }}  m <sup>3</sup>
                                         </span>
                                         </div>
                                         <div>
-                                            @lang('app.remain'):
+                                            Amount:
                                             <span class="text-primary font-weight-bold">
-                                            {{ number_format($item->balance) }} RWF
+                                            {{ number_format($item->amount) }} RWF
                                         </span>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -99,11 +100,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="font-weight-normal">@lang('app.done_by'):</div>
+                                    <div class="font-weight-normal">
+                                        Balance:
+                                    </div>
                                     <div class="tw-text-xs text-muted">
-                                        {{ $item->user->name }}
+                                        {{ number_format($item->balance) }} RWF
                                     </div>
                                 </div>
+
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-4">
@@ -116,6 +120,12 @@
                                     <div class="font-weight-normal">@lang('app.comment:')</div>
                                     <div class="tw-text-xs text-muted">
                                         {{ $item->comment }}
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="font-weight-normal">@lang('app.done_by'):</div>
+                                    <div class="tw-text-xs text-muted">
+                                        {{ $item->user->name }}
                                     </div>
                                 </div>
                             </div>
@@ -140,7 +150,7 @@
                                             {{number_format($history->amount)}} RWF
                                         </h3>
                                         <p class="tw-mb-1 tw-text-xs tw-font-normal tw-text-gray-500">
-                                            {{ $history->paymentMapping? $history->paymentMapping->account->paymentServiceProvider->name:'N/A' }}
+                                            {{ $history->paymentMapping? $history->paymentMapping->account->paymentServiceProvider->name:$history->source }}
                                         </p>
 
                                     </li>
