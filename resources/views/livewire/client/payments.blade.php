@@ -106,9 +106,6 @@
                                 <h6 class="mb-0">Payment History</h6>
                             </div>
 
-
-
-
                             @if($item->paymentHistories->isEmpty())
                                 <div class="tw-text-center  tw-mt-5 alert alert-info">
                                     No payment made yet, after payment you will see the history here
@@ -134,7 +131,6 @@
                                     </li>
                                 @endforeach
                             </ul>
-
 
                         </div>
                     </div>

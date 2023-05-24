@@ -2,7 +2,7 @@
     {{ $attributes->class(['navbar navbar-expand-lg navbar-dark  border-bottom tw-bg-no-repeat tw-bg-center tw-bg-cover m-0']) }}
     style="background-image: url({{ asset('images/aside_bg.png') }})">
     <div class="lg:tw-px-20 container-fluid">
-        <a class="navbar-brand" href="{{ url('/home') }}">
+        <a class="navbar-brand" href="{{ url('/') }}">
             <img src="{{ asset('images/logo.png') }}" class="tw-h-10" alt=""/>
         </a>
         <button x-data="{open:false}" @click="open=!open" class="navbar-toggler shadow-none rounded-0 border-0"
@@ -22,14 +22,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link d-flex tw-gap-1 align-items-center btn btn-accent btn-sm text-dark px-4 rounded-sm tw-font-semibold "
-                       href="{{ route('check-bills') }}">
-                        <span>
-                            @lang('app.pay_now')
-                        </span>
-                    </a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link d-flex tw-gap-1 align-items-center tw-text-l tw-font-semibold {{ request()->routeIs('help')?'active-link':'' }}"
                        href="{{ route('help') }}">
@@ -68,6 +61,14 @@
                         @endif
 
                     </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex tw-gap-1 align-items-center btn btn-accent btn-sm text-white px-4 tw-rounded-sm tw-font-semibold " target="_blank"
+                       href="{{ route('check-bills') }}">
+                        <span>
+                            @lang('app.pay_now')
+                        </span>
+                    </a>
                 </li>
                 @auth('client')
                     <li class="nav-item dropdown">
