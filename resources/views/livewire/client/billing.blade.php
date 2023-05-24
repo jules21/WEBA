@@ -45,27 +45,27 @@
                         <div class="tw-cursor-pointer  text-left" data-toggle="collapse"
                              data-target="#collapseOne{{$item->id}}" aria-controls="collapseOne{{$item->id}}">
                             <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="font-weight-bold">@lang('app.subscription_#:')</div>
+                                <div class="col-lg-3">
+                                    <div class="h6 tw-text-xs">@lang('app.subscription_#:')</div>
                                     <div class="tw-text-xs">
                                         {{ $item->subscription_number }}
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="font-weight-bold">@lang('app.meter_number'):</div>
+                                <div class="col-lg-3">
+                                    <div class="h6 tw-text-xs">@lang('app.meter_number'):</div>
                                     <div class="tw-text-xs">
                                         {{ $item->meter_number }}
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="font-weight-bold">
+                                <div class="col-lg-6">
+                                    <div class="h6 tw-text-xs">
                                         {{ $item->meterRequest->request->operator->name }}
                                     </div>
                                     <div class="d-flex tw-gap-2 tw-text-xs">
                                         <div>
                                             Cubic Meters:
                                             <span class="text-primary font-weight-bold">
-                                            {{ number_format($item->cubicMeter) }}  m <sup>3</sup>
+                                            {{ number_format($item->cubicMeter) }}
                                         </span>
                                         </div>
                                         <div>
@@ -100,9 +100,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
-                                    <div class="font-weight-normal">
-                                        Balance:
-                                    </div>
+                                    <div class="font-weight-normal">Balance:</div>
                                     <div class="tw-text-xs text-muted">
                                         {{ number_format($item->balance) }} RWF
                                     </div>
