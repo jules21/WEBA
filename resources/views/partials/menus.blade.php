@@ -97,7 +97,7 @@
 </svg>
                     </span>
                 <span class="menu-text">
-                        @lang('backend.billing')
+                        @lang('backend.payments')
                     </span>
             </a>
         </li>
