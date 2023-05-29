@@ -157,5 +157,6 @@ return [
     "will_you_dig_a_water_pipe_by_yourself_?"=>"Uzicukurira umuyoboro w'Amazi ?",
     "submit"=>"Ohereza",
     "your_request_has_been_submitted_successfully"=>"Ubusabe bwawe bwoherejwe neza",
+    "my_connections"=>"Amazi yanjye",
 
 ];
