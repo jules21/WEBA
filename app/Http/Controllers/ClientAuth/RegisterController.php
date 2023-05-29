@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ClientAuth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterClientRequest;
 use App\Models\Client;
+use App\Models\Customer;
 use App\Models\DocumentType;
 use App\Models\LegalType;
 use App\Models\Province;
@@ -16,9 +17,12 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Validator;
 
 use Illuminate\Http\Request;
+
 class RegisterController extends Controller
 {
     /*
@@ -54,24 +58,24 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
         $request = new RegisterClientRequest();
-        return Validator::make($data,$request->rules(),$request->messages());
+        return Validator::make($data, $request->rules(), $request->messages());
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param array $data
      * @return Client
      */
     protected function create(array $data)
     {
-        return Client::create([
+        return Client::query()->create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
@@ -111,6 +115,41 @@ class RegisterController extends Controller
     protected function guard()
     {
         return Auth::guard('client');
+    }
+
+
+    public function getClient($idType, $id)
+    {
+        return Client::query()
+            ->where([
+                ['document_type_id', '=', $idType],
+                ['doc_number', '=', $id],
+            ])->first();
+    }
+    public function fetchIdentificationFromNIDA()
+    {
+        $id = request('id');
+        $idType = request('id_type');
+
+        $client = $this->getClient($idType, $id);
+
+        if (!is_null($client)) {
+            return \response()->json([
+                'content' => 'Client already exists in our system please login or reset your password.',
+                'status' => 400,
+            ]);
+        }
+
+        $url = config('services.CLMS_NIDA_URL') . "?id=$id";
+        $response = Http::get($url);
+        if ($response->status() !== ResponseAlias::HTTP_OK) {
+            return response()->json([
+                'message' => 'Failed to fetch data from NIDA',
+                'errors' => $response->json(),
+            ], ResponseAlias::HTTP_BAD_REQUEST);
+        }
+
+        return json_decode($response->body(), true);
     }
 
 //    public function register(RegisterClientRequest $request)

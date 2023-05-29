@@ -10,7 +10,8 @@
                     </div>
                     <h2>@lang('auth.create_an_account')</h2>
                     <p class="text-1">
-                        @lang('auth.welcome_to_our_system_we_excited_that_you_interested_in_creating_an_account_with_us.') <br>
+                        @lang('auth.welcome_to_our_system_we_excited_that_you_interested_in_creating_an_account_with_us.')
+                        <br>
                         <br>
                         @lang('auth.by_creating_an_account')
                         {{--                To get started, please fill out the registration form below.--}}
@@ -19,7 +20,8 @@
                         @lang('auth.if_you_already_created_an_account_with_us_please_click_the_button_below_to_log_in.')
                     </p>
                     <div class="form-left-last mb-4">
-                        <a href="{{ route('client.login') }}" class="btn btn-outline-light">@lang('auth.login_to_your_account')
+                        <a href="{{ route('client.login') }}"
+                           class="btn btn-outline-light">@lang('auth.login_to_your_account')
                         </a>
                     </div>
                 </div>
@@ -30,33 +32,8 @@
                         @csrf
                         <h2>@lang('auth.register_form')</h2>
                         <div class="row">
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="name">@lang('auth.name')</label>
-                                    <input type="text" name="name" id="name" class="form-control" required
-                                           value="{{ old('name') }}"/>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="phone">@lang('auth.phone_number')</label>
-                                    <input type="tel" name="phone" id="phone" class="form-control" required
-                                           value="{{ old('phone') }}"/>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="email">@lang('auth.email_address.')</label>
-                                    <input type="email" name="email" id="email" class="form-control" required
-                                           value="{{ old('email') }}"/>
-                                    <span class="invalid-feedback small"></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4">
+
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group">
                                     <label for="legal_type_id">@lang('auth.legal_type')</label>
                                     <select name="legal_type_id" id="legal_type_id" class="form-control" required>
@@ -69,7 +46,7 @@
                                     <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group">
                                     <label for="document_type_id">@lang('auth.document_type')</label>
                                     <select name="document_type_id" id="document_type_id" class="form-control" required>
@@ -82,7 +59,7 @@
                                     <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group">
                                     <label for="doc_number">@lang('auth.document_number')</label>
                                     <div class="d-flex flex-shrink-0">
@@ -100,9 +77,33 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="form-group">
+                                    <label for="name">@lang('auth.name')</label>
+                                    <input type="text" name="name" id="name" class="form-control" required
+                                           value="{{ old('name') }}"/>
+                                    <span class="invalid-feedback small"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="form-group">
+                                    <label for="phone">@lang('auth.phone_number')</label>
+                                    <input type="tel" name="phone" id="phone" class="form-control" required
+                                           value="{{ old('phone') }}"/>
+                                    <span class="invalid-feedback small"></span>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6">
+                                <div class="form-group">
+                                    <label for="email">@lang('auth.email_address.')</label>
+                                    <input type="email" name="email" id="email" class="form-control" required
+                                           value="{{ old('email') }}"/>
+                                    <span class="invalid-feedback small"></span>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group">
                                     <label for="province_id">@lang('auth.province')</label>
                                     <select name="province_id" id="province_id" class="form-control" required>
@@ -115,7 +116,7 @@
                                     <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group">
                                     <label for="district_id">@lang('auth.district')</label>
                                     <select name="district_id" id="district_id" class="form-control" required>
@@ -124,7 +125,7 @@
                                     <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group">
                                     <label for="sector_id">@lang('auth.sector')</label>
                                     <select name="sector_id" id="sector_id" class="form-control" required>
@@ -133,9 +134,7 @@
                                     <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group">
                                     <label for="cell_id">@lang('auth.cell')</label>
                                     <select name="cell_id" id="cell_id" class="form-control" required>
@@ -144,7 +143,7 @@
                                     <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4 col-md-6">
                                 <div class="form-group">
                                     <label for="village_id">@lang('auth.village')</label>
                                     <select name="village_id" id="village_id" class="form-control">
@@ -155,14 +154,14 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="password">@lang('auth.password')</label>
                                     <input type="password" name="password" id="password" class="form-control" required/>
                                     <span class="invalid-feedback small"></span>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="password-confirm">@lang('auth.confirm_password')</label>
                                     <input type="password" name="password_confirmation" id="password-confirm"
@@ -187,10 +186,14 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     {!! JsValidator::formRequest(App\Http\Requests\RegisterClientRequest::class,'#register-client') !!}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
 
+        let $districtId = $('#district_id');
+
         function getDistricts(provinceId, selectedDistrictId) {
-            let districtId = $('#district_id');
+            let districtId = $districtId;
             districtId.empty();
             districtId.append('<option value="">Select District</option>');
 
@@ -207,8 +210,10 @@
             });
         }
 
+        let $sectorId = $('#sector_id');
+
         function getSectors(districtId, selectedSectorId) {
-            let sectorId = $('#sector_id');
+            let sectorId = $sectorId;
             sectorId.empty();
             sectorId.append('<option value="">Select Sector</option>');
 
@@ -281,10 +286,10 @@
         $('#province_id').on('change', function (e) {
             getDistricts($(this).val());
         });
-        $('#district_id').on('change', function (e) {
+        $districtId.on('change', function (e) {
             getSectors($(this).val());
         });
-        $('#sector_id').on('change', function (e) {
+        $sectorId.on('change', function (e) {
             getCells($(this).val());
         });
 
@@ -293,22 +298,20 @@
         let $inputDocNumber = $docNumber;
         let $documentTypeId = $('#document_type_id');
         let $legalTypeId = $('#legal_type_id');
+        let globalDocNumber = '';
 
-
-        $(document).on("submit", '#register-client', function () {
+        let $form = $('#register-client');
+        $form.on("submit", function (e) {
+            e.preventDefault();
+            if (!$form.valid()) {
+                return false;
+            }
             //add spinner to button
-            const btn = $('input[type="submit"]');
+            let btn = $form.find('button[type="submit"]');
             btn.attr('disabled', true);
             btn.val('Please wait...');
-
-            btn.addClass('spinner-border spinner-border-sm');
-
-            //remove spinner after 3 seconds
-            setTimeout(function () {
-                btn.removeClass('spinner-border spinner-border-sm');
-                btn.attr('disabled', false);
-                btn.val('Register');
-            }, 3000);
+            $form.find('input, select, textarea').prop('disabled', false);
+            e.target.submit();
         });
 
 
@@ -316,6 +319,95 @@
             getDocumentTypes($(this).val());
             $documentTypeId.trigger('change');
         });
+
+        let $btnCheckIdDetails = $('#btnCheckIdDetails');
+        let $name = $('#name');
+        $documentTypeId.on('change', function () {
+            let docTypeId = $(this).val();
+            $name.val("");
+            if (docTypeId === "{{ config('app.NATIONAL_ID') }}") {
+                $inputDocNumber.attr('maxlength', '16');
+                $name.attr('disabled', true);
+                $btnCheckIdDetails.show();
+            } else {
+                $inputDocNumber.attr('maxlength', '21');
+                $name.attr('disabled', false);
+                $btnCheckIdDetails.hide();
+            }
+        });
+
+        $docNumber.on('keyup', function () {
+            if (globalDocNumber !== $(this).val()) {
+                $('#name').val("");
+            }
+            if ($documentTypeId.val() === "{{ config('app.NATIONAL_ID') }}") {
+                if ($(this).val().length === 16) {
+                    $btnCheckIdDetails.trigger('click');
+                }
+            }
+        });
+
+        $btnCheckIdDetails.on('click', function () {
+            let docNumber = $inputDocNumber.val();
+            let legalTypeId = $legalTypeId.val();
+            let documentTypeId = $documentTypeId.val();
+            if (docNumber && legalTypeId && documentTypeId) {
+                let url = "{{ route("fetch-identification-from-nida") }}?id=" + docNumber + "&id_type=" + documentTypeId;
+                $inputDocNumber.attr('disabled', true);
+                $legalTypeId.attr('disabled', true);
+                $documentTypeId.attr('disabled', true);
+
+                globalDocNumber = docNumber;
+
+                let btn = $(this);
+                btn.attr('disabled', true);
+                btn.addClass('spinner spinner-white spinner-right');
+
+                $.ajax({
+                    url: url,
+                    method: "get",
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.documentNumber) {
+                            let surnames = response.surnames;
+                            let foreName = response.foreName;
+                            if (surnames || foreName) {
+                                $name.val((surnames ? surnames + " " : '') + (foreName ? foreName : ''));
+                            }
+                        } else if (response.content && response.status) {
+                            Swal.fire({
+                                title: 'Error',
+                                text: response.content,
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: "Something went wrong, please try again later",
+                                icon: 'error',
+                                confirmButtonText: 'Ok'
+                            });
+                        }
+                    }, error: function (response) {
+                        Swal.fire({
+                            title: "Error",
+                            icon: "error",
+                            text: "Unable to check id details, try again"
+                        });
+                    },
+                    complete: function () {
+                        btn.attr('disabled', false);
+                        btn.removeClass('spinner spinner-white spinner-right');
+                        $inputDocNumber.prop("disabled", false);
+                        $legalTypeId.prop("disabled", false);
+                        $documentTypeId.prop("disabled", false);
+                    }
+                });
+            }
+
+        });
+
     </script>
 @endsection
 

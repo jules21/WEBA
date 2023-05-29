@@ -158,5 +158,6 @@
         "do_you_want_to_pay_for_the_materials_yourself_by_submitting_an_EBM_invoice_?"=>"Urashaka kwiyishyurira ibikoresho unatanga inyemezabuguzi ya EBM ?",
         "submit"=>"Submit",
         "your_request_has_been_submitted_successfully"=>"Your request has been submitted successfully",
+        'my_connections'=>'My Connections',
 
     ];
