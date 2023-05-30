@@ -103,7 +103,7 @@ class ClientRequestsController extends Controller
         DB::commit();
         return redirect()
             ->route('home')
-            ->with('success', 'Your request has been submitted successfully');
+            ->with('success', trans('app.your_request_has_been_submitted_successfully'));
 
     }
 
@@ -138,7 +138,7 @@ class ClientRequestsController extends Controller
             ->orderByDesc('id')
             ->first();
 
-        $request->load(['customer', 'operator', 'operationArea', 'requestType', 'waterUsage', 'pipeCrosses.pipeCross']);
+        $request->load(['customer', 'operator', 'operationArea', 'requestType', 'waterUsage', 'pipeCrosses.pipeCross','meterNumbers.item.stock','items.item']);
         return view('client.request_details', [
             'request' => $request,
             'lastReview' => $lastReview

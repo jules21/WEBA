@@ -21,7 +21,7 @@ class ValidateReviewRequest extends FormRequest
     {
         return [
             'status' => ['required', 'string'],
-            'attachment' => ['nullable', 'file', 'mimes:pdf,jpeg,jpg', 'max:1024'],
+            'attachment' => ['nullable', 'file', 'mimes:pdf,jpeg,jpg,png,PNG', 'max:1024'],
             'comment' => ['required', 'string', 'max:500'],
         ];
     }

@@ -13,9 +13,8 @@
             <button class="btn rounded tw-bg-accent  tw-font-semibold hover:tw-bg-accent hover:tw-text-white "
                     type="button" data-toggle="modal" data-target="#exampleModal">
                 <span class="ti ti-plus"></span>
-                New Connection
+                @lang('app.new_connection')
             </button>
-
         </x-slot>
 
     </x-layouts.breadcrumb>
@@ -39,7 +38,7 @@
                 </svg>
             </div>
             <div class="card-text  d-flex justify-content-center align-items-center flex-column mt-4">
-                <h5 class="text-center small font-weight-bolder">Total Requests</h5>
+                <h5 class="text-center small font-weight-bolder">@lang('app.total_requests')</h5>
                 <h4>{{ $customerOverview->totalRequests }}</h4>
             </div>
         </div>
@@ -57,32 +56,49 @@
             </div>
             <div class="card-text  d-flex justify-content-center align-items-center flex-column mt-4">
                 <h5 class="text-center small font-weight-bolder">
-                    Water Connections
+                    @lang('app.water_connections')
                 </h5>
                 <h4>{{ $customerOverview->totalConnections}} </h4>
             </div>
         </div>
         <div
             class="card card-body tw-rounded-lg tw-col-span-2 border">
-            <div class="mb-4">
-                <h4>Operator Overview</h4>
-                <p class="card-text">
-                    Billing overview by operators
-                </p>
+            <div class="mb-4 d-flex flex-column flex-lg-row justify-content-between align-items-start">
+                <div>
+                    <h4>@lang('app.operator_overview')</h4>
+                    <p class="card-text">
+                        @lang('app.billing_overview_by_operators')
+                    </p>
+                </div>
+                <div class="p-2" style="border: 1px dashed silver">
+                    Total Balance Due <span class="text-primary font-weight-bold">{{ number_format($operatorData->sum('balance')) }} RWF</span>
+                </div>
             </div>
 
-            <div class="list-group mb-3 border-top-0">
+            <div class="list-group list-group-flush mb-3">
                 @foreach($operatorData as $item)
-                    <div class="list-group-item d-flex justify-content-between">
+                    <div class="list-group-item d-flex flex-column flex-lg-row justify-content-between">
                         <div class="d-flex">
-                            <img src="{{ $item->logo_url }}" alt="" class="tw-h-10">
                             <div>
-                                <div>{{ $item->name }}</div>
-                                <div class="text-muted tw-text-sm mt-1">{{ $item->subscription_number }}</div>
+                                <div>{{ $item->request->operator->name }}</div>
+                                <div class="text-muted tw-text-sm mt-2">{{ $item->subscription_number }}</div>
                             </div>
                         </div>
                         <div>
-                            Balance Due: <span class="text-primary font-weight-bold">{{ number_format($item->total_balance) }} RWF</span>
+                            <div>
+                                Balance Due: <span class="text-primary font-weight-bold">{{ number_format($item->balance??0) }} RWF</span>
+                            </div>
+                            <div class="btn-group btn-group-sm mt-1">
+                                @if($item->billings_sum_balance>0)
+                                    <a href="" class="btn btn-accent">
+                                        @lang('app.pay') {{ number_format($item->billings_sum_balance??0) }}
+                                    </a>
+                                @endif
+                                <a href="{{ route('client.billings', ['search'=>$item->subscription_number]) }}"
+                                   class="btn btn-outline-primary">
+                                    @lang('app.view_billings')
+                                </a>
+                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -90,8 +106,8 @@
 
             <div class="d-flex justify-content-between flex-column flex-lg-row tw-gap-2">
                 <div>
-                    Showing {{ $operatorData->firstItem() }} to {{ $operatorData->lastItem() }}
-                    of {{ $operatorData->total() }} entries
+                    @lang('app.showing') {{ $operatorData->firstItem() }} @lang('app.to') {{ $operatorData->lastItem() }}
+                    @lang('app.of') {{ $operatorData->total() }} @lang('app.entries')
                 </div>
                 <div>
                     {{ $operatorData->links() }}
@@ -121,61 +137,6 @@
         </div>--}}
 
 
-    <!-- Modal -->
-    <div class=" modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
-            <div class="modal-content tw-rounded-md border-0">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                        New Connection
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">
-                            <i class="ti ti-x"></i>
-                        </span>
-                    </button>
-                </div>
-                <form action="{{ route('client.connection-new') }}">
-                    <div class="modal-body">
-                        <div class="tw-my-6">
-
-                            <div class="d-flex justify-content-between">
-                                <label for="district">District</label>
-                                <div class="d-none align-items-center" id="loader">
-                                    <strong>Loading...</strong>
-                                    <div class="spinner-border spinner-border-sm ml-auto" role="status"
-                                         aria-hidden="true"></div>
-                                </div>
-                            </div>
-                            <select required
-                                    class="form-control tw-shadow focus:tw-ring tw-ring-primary focus:tw-ring-offset-2"
-                                    id="district" name="district">
-                                <option value="">Select District</option>
-                                @foreach($districts as $district)
-                                    <option value="{{ $district->id }}">{{ $district->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="tw-my-6">
-                            <label for="operator_id">Operator</label>
-                            <select required
-                                    class="form-control tw-shadow focus:tw-ring tw-ring-primary focus:tw-ring-offset-2"
-                                    id="operator_id" name="op_id">
-                                <option value="">Select Operator</option>
-
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer bg-light">
-                        <button type="submit" class="btn btn-primary" id="btn-create-request">
-                            Continue <i class="ti ti-arrow-right"></i>
-                        </button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
 @endsection
 @section('scripts')
@@ -257,29 +218,7 @@
                     },
                 });
     */
-            $('#district').on('change', function () {
-                let districtId = $(this).val();
-                $('#loader').removeClass('d-none')
-                    .addClass('d-flex');
-                $.ajax({
-                    url: '{{ route('get-operators-by-district') }}',
-                    type: 'GET',
-                    data: {
-                        district_id: districtId
-                    },
-                    success: function (response) {
-                        let options = '<option value="">Select Operator</option>';
-                        $.each(response, function (index, value) {
-                            options += '<option value="' + value.id + '">' + value.name + '</option>';
-                        });
-                        $('#operator_id').html(options);
-                    },
-                    complete: function () {
-                        $('#loader').removeClass('d-flex')
-                            .addClass('d-none');
-                    }
-                });
-            });
+
         });
     </script>
 @endsection

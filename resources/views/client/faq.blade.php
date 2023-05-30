@@ -5,11 +5,10 @@
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 <h4 class="my-4 text-white">
-                    Frequently Asked Questions
+                    @lang('app.frequently_asked_questions')
                 </h4>
                 <p class="tw-text-gray-300">
-                    This is a list of frequently asked questions about the system. If you have any other questions,
-                    please contact us.
+                    @lang('app.faq_description')
                 </p>
                 <div class="accordion" id="accordionExample">
                     @foreach($faqs as $item)

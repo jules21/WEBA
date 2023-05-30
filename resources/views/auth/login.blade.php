@@ -3,7 +3,7 @@
 <!--begin::Head-->
 <head>
     <meta charset="utf-8"/>
-    <title>Login</title>
+    <title>@lang('auth.login')</title>
     <meta name="description" content="Login page example"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <!--begin::Fonts-->
@@ -26,7 +26,7 @@
             <h3 class="text-center py-1 tw-text-accent">
                 CMS
                 <small class="tw-text-xs font-weight-bold">RWSS</small>
-                <span class="text-white">Login</span>
+                <span class="text-white">@lang('auth.login')</span>
             </h3>
             <div class="card lg:tw-p-10 border-0 card-body tw-rounded-sm">
                 <div class="d-flex justify-content-center align-items-center">
@@ -39,11 +39,11 @@
                     <div class="mb-4">
                         <label for="email"
                                class="form-label tw-text-[14px] text-dark tw-opacity-60 tw-leading-[21px] font-weight-normal">
-                            Email Address
+                            @lang('auth.email_address')
                         </label>
                         <input
                             class="form-control tw-py-6 tw-rounded-sm tw-border-[#AAAAAA]  tw-text-[14px] @error('email') is-invalid @enderror"
-                            type="email" id="email" placeholder="Email" value="{{ old('email') }}" name="email"
+                            type="email" id="email" placeholder="{{__('auth.email')}}" value="{{ old('email') }}" name="email"
                             required
                             autocomplete="off" autofocus/>
                         @error('email')
@@ -54,11 +54,11 @@
                     </div>
                     <div class="mb-4">
                         <label for="password"
-                               class="form-label  tw-text-[14px] text-dark tw-opacity-60 tw-leading-[21px] font-weight-normal">Password</label>
+                               class="form-label  tw-text-[14px] text-dark tw-opacity-60 tw-leading-[21px] font-weight-normal">@lang('auth.password')</label>
                         <input
                             class="form-control  tw-rounded-sm tw-border-[#AAAAAA] tw-py-6  tw-text-[14px] @error('password') is-invalid @enderror"
                             type="password" id="password"
-                            placeholder="Password" name="password" required autocomplete="off"/>
+                            placeholder="{{__('auth.password')}}" name="password" required autocomplete="off"/>
                         @error('password')
                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -74,13 +74,13 @@
                             <label
                                 class="custom-control-label tw-text-xs lg:tw-text-sm text-dark tw-leading-[21px] font-weight-normal"
                                 for="remember">
-                                Remember this device
+                                @lang('auth.remember_this_device')
                             </label>
                         </div>
                         <div>
                             <a href=""
                                class="text-primary tw-text-xs lg:tw-text-sm text-decoration-none tw-leading-[21px] font-weight-normal  text-primary">
-                                Forgot password ?
+                                @lang('auth.forgot_password') ?
                             </a>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                     <div class="my-2">
                         <button type="submit"
                                 class="btn btn-accent tw-font-semibold tw-py-4 w-100  tw-text-[14px] text-white tw-rounded-sm hover:tw-ring-2 tw-ring-accent tw-ring-offset-2">
-                            Sign In
+                            @lang('auth.sign_in')
                         </button>
                     </div>
                 </form>

@@ -5,11 +5,10 @@
         <div class="row justify-content-center">
             <div class="col-lg-9">
                 <h4 class="my-4 text-white">
-                    Help
+                    @lang('app.help')
                 </h4>
                 <p class="tw-text-gray-300">
-                    Here you can find some help about the system and how to use it.
-                    You can download the user manual from here.
+                    @lang('app.help_description')
                 </p>
                 <div class="card shadow-sm tw-rounded-lg border-0 shadow-none">
                     <div class="card-body">

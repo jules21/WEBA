@@ -1,6 +1,6 @@
 <div {{ $attributes->class(['card mb-4 card-body tw-rounded-lg']) }}>
     <h4>
-        My Operators
+        @lang('app.my_connections')
     </h4>
 
 
@@ -30,7 +30,7 @@
         @empty
             <li class="media d-block tw-w-full">
                 <div class="alert alert-info">
-                    No operators found.
+                    @lang('app.no_data_found')
                 </div>
             </li>
         @endforelse

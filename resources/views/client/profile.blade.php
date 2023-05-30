@@ -1,18 +1,18 @@
         @extends('client.layout.auth')
 
-        @section('title',"New Request")
+        @section('title',trans('app.new_request'))
 
         @section('breadcrumbs')
-            <x-layouts.breadcrumb page-title="New Request">
+            <x-layouts.breadcrumb page-title="{{__('app.new_request')}}">
 
                 <x-layouts.breadcrumb-item>
                     <a href="" class="text-muted text-decoration-none">
-                        User
+                        @lang('app.user')
                     </a>
                 </x-layouts.breadcrumb-item>
 
                 <x-layouts.breadcrumb-item>
-                    Profile
+                    @lang('app.profile')
                 </x-layouts.breadcrumb-item>
 
             </x-layouts.breadcrumb>
@@ -52,7 +52,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Full Name</h6>
+                                            <h6 class="mb-0">@lang('app.full_name')</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             {{auth('client')->user()->name}}
@@ -61,7 +61,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Email</h6>
+                                            <h6 class="mb-0">@lang('app.email')</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             {{auth('client')->user()->email}}
@@ -70,7 +70,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Phone</h6>
+                                            <h6 class="mb-0">@lang('app.phone')</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             {{auth('client')->user()->phone}}
@@ -79,7 +79,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Identity</h6>
+                                            <h6 class="mb-0">@lang('app.identity')</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             {{auth('client')->user()->legalType->name}}
@@ -88,7 +88,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Identity Number</h6>
+                                            <h6 class="mb-0">@lang('app.identity_number')</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             {{auth('client')->user()->documentType->name}}:
@@ -98,7 +98,7 @@
                                     <hr>
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <h6 class="mb-0">Address</h6>
+                                            <h6 class="mb-0">@lang('app.address')</h6>
                                         </div>
                                         <div class="col-sm-9 text-secondary">
                                             {{optional(auth('client')->user()->province)->name}},
@@ -110,7 +110,7 @@
                                     <div class="row">
                                         <div class="col-sm-12">
 {{--                                            <a class="btn btn-info " id="edit-profile-btn" href="#">Edit</a>--}}
-                                            <a class="btn btn-primary text-white" id="change-password-btn" href="#">Change Password</a>
+                                            <a class="btn btn-primary text-white" id="change-password-btn" href="#">@lang('app.change_password')</a>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +125,7 @@
                                         @method('PUT')
                                         <div class="row mb-3">
                                             <div class="col-sm-3">
-                                                <h6 class="mb-0">Full Name</h6>
+                                                <h6 class="mb-0">@lang('app.full_name')</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
                                                 <input type="text" class="form-control" value={{auth('client')->user()->name}}>
@@ -133,7 +133,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-sm-3">
-                                                <h6 class="mb-0">Email</h6>
+                                                <h6 class="mb-0">@lang('app.email')</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
                                                 <input type="text" class="form-control" value={{auth('client')->user()->email}} disabled>
@@ -141,7 +141,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-sm-3">
-                                                <h6 class="mb-0">Phone</h6>
+                                                <h6 class="mb-0">@lang('app.phone')</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
                                                 <input type="text" class="form-control" value={{auth('client')->user()->phone}} disabled>
@@ -149,7 +149,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-sm-3">
-                                                <h6 class="mb-0">Province</h6>
+                                                <h6 class="mb-0">@lang('app.profile')</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
                                                 <input type="text" class="form-control" value={{auth('client')->user()->province->name}} disabled>
@@ -157,7 +157,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-sm-3">
-                                                <h6 class="mb-0">District</h6>
+                                                <h6 class="mb-0">@lang('app.district')</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
                                                 <input type="text" class="form-control" value={{auth('client')->user()->district->name}} disabled>
@@ -165,7 +165,7 @@
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-sm-3">
-                                                <h6 class="mb-0">Sector</h6>
+                                                <h6 class="mb-0">@lang('app.sector')</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
                                                 <input type="text" class="form-control" value={{auth('client')->user()->sector->name}} disabled>
@@ -174,7 +174,7 @@
                                         <div class="row">
                                             <div class="col-sm-3"></div>
                                             <div class="col-sm-9 text-secondary">
-                                                <input type="submit" class="btn btn-primary px-4" value="Save Changes">
+                                                <input type="submit" class="btn btn-primary px-4" value="{{__('app.save_changes')}}">
                                             </div>
                                         </div>
                                     </form>
@@ -192,30 +192,30 @@
                                             {{-- @include('partials._alerts') --}}
                                             <!--end::Alert-->
                                             <div class="form-group row">
-                                                <label class="col-xl-3 col-lg-3 col-form-label text-alert">Current Password</label>
+                                                <label class="col-xl-3 col-lg-3 col-form-label text-alert">@lang('app.current_password')</label>
                                                 <div class="col-lg-9 col-xl-6">
-                                                    <input type="password" class="form-control form-control-lg form-control-solid mb-2" name="current_password" placeholder="Current password">
+                                                    <input type="password" class="form-control form-control-lg form-control-solid mb-2" name="current_password" placeholder="{{__('app.current_password')}}">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-xl-3 col-lg-3 col-form-label text-alert">New Password</label>
+                                                <label class="col-xl-3 col-lg-3 col-form-label text-alert">@lang('app.new_password')</label>
                                                 <div class="col-lg-9 col-xl-6">
-                                                    <input type="password" class="form-control form-control-lg form-control-solid" name="new_password" placeholder="New password">
+                                                    <input type="password" class="form-control form-control-lg form-control-solid" name="new_password" placeholder="{{__('app.new_password')}}">
                                                 </div>
                                             </div>
                                             <div class="form-group row">
-                                                <label class="col-xl-3 col-lg-3 col-form-label text-alert">Verify Password</label>
+                                                <label class="col-xl-3 col-lg-3 col-form-label text-alert">@lang('app.verify_password')</label>
                                                 <div class="col-lg-9 col-xl-6">
-                                                    <input type="password" class="form-control form-control-lg form-control-solid" name="new_confirm_password" placeholder="Verify password">
+                                                    <input type="password" class="form-control form-control-lg form-control-solid" name="new_confirm_password" placeholder="{{__('app.verify_password')}}">
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <div>
-                                                    <button type="submit" class="btn btn-success mr-2">Change Password</button>
-                                                    <button type="reset" class="btn btn-secondary">Clear</button>
+                                                    <button type="submit" class="btn btn-success mr-2">@lang('app.change_password')</button>
+                                                    <button type="reset" class="btn btn-secondary">@lang('app.clear')</button>
                                                 </div>
                                                 <div>
-                                                <button type="button" class="btn btn-danger" id="cancel-password-btn">Cancel</button>
+                                                <button type="button" class="btn btn-danger" id="cancel-password-btn">@lang('app.cancel')</button>
                                             </div>
                                         </div>
                                     </form>

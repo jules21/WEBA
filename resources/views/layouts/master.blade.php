@@ -142,7 +142,7 @@
                                     data-menu-toggle="click" aria-haspopup="true">
                                     <a href="javascript:void(0);" class="d-flex align-items-center">
                                         <span class="menu-text text-muted" style="font-size: 1.6rem">
-                                            <span> CMS RWSS System</span>
+                                            <span> @lang('backend.cms_rwss_system')</span>
                                             @if(Helper::isOperator() || Helper::hasOperationArea())
                                                 | <small
                                                     class="ml-1 p-2 text-primary rounded-sm badge bg-light-primary">{{auth()->user()->operator->name ?? ""}}</small>
@@ -172,18 +172,18 @@
                     <div class="topbar">
                         <div class="dropdown show">
                             <!--begin::Toggle-->
-                            <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" aria-expanded="true">
-                                <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M4 5h7"></path>
-                                        <path d="M9 3v2c0 4.418 -2.239 8 -5 8"></path>
-                                        <path d="M5 9c0 2.144 2.952 3.908 6.7 4"></path>
-                                        <path d="M12 20l4 -9l4 9"></path>
-                                        <path d="M19.1 18h-6.2"></path>
-                                    </svg>
-                                </div>
-                            </div>
+{{--                            <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" aria-expanded="true">--}}
+{{--                                <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">--}}
+{{--                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">--}}
+{{--                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
+{{--                                        <path d="M4 5h7"></path>--}}
+{{--                                        <path d="M9 3v2c0 4.418 -2.239 8 -5 8"></path>--}}
+{{--                                        <path d="M5 9c0 2.144 2.952 3.908 6.7 4"></path>--}}
+{{--                                        <path d="M12 20l4 -9l4 9"></path>--}}
+{{--                                        <path d="M19.1 18h-6.2"></path>--}}
+{{--                                    </svg>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                             <!--end::Toggle-->
                             <!--begin::Dropdown-->
                             <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-right" style="position: absolute; transform: translate3d(-117px, 65px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="bottom-end">
