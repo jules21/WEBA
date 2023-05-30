@@ -1,6 +1,6 @@
         @extends('client.layout.auth')
 
-        @section('title',trans('app.new_request'))
+        @section('title',trans('app.profile'))
 
         @section('breadcrumbs')
             <x-layouts.breadcrumb page-title="{{__('app.new_request')}}">

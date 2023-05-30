@@ -155,9 +155,9 @@
         "select_road_type"=>"Select Road Type",
         "where_will_the_water_pipe_cross_?"=>"Where will the water pipe cross ?",
         "will_you_dig_a_water_pipe_by_yourself_?"=>"Will you dig a water pipe by yourself ?",
-        "do_you_want_to_pay_for_the_materials_yourself_by_submitting_an_EBM_invoice_?"=>"Urashaka kwiyishyurira ibikoresho unatanga inyemezabuguzi ya EBM ?",
+        "do_you_want_to_pay_for_the_materials_yourself_by_submitting_an_EBM_invoice_?"=>"Do you want to pay for the materials yourself by submitting an EBM invoice ?",
         "submit"=>"Submit",
         "your_request_has_been_submitted_successfully"=>"Your request has been submitted successfully",
-        'my_connections'=>'My Connections',
+        "all_rights_reserved_by_RURA"=>"© Copyright 2023, All Rights Reserved by RURA",
 
     ];
