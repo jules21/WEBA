@@ -33,7 +33,7 @@
             </div>
         </main>
     </div>
-    <p class="text-center tw-text-gray-500  py-4  mb-0">© Copyright 2023, All Rights Reserved by RURA</p>
+    <p class="text-center tw-text-gray-500  py-4  mb-0">@lang('app.all_rights_reserved_by_RURA')</p>
 
 </div>
 
