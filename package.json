@@ -33,6 +33,7 @@
         "alpinejs": "^3.12.0",
         "datatables.net-bs4": "^1.10.24",
         "datatables.net-buttons-bs4": "^1.7.0",
-        "jquery-validation": "^1.19.5"
+        "jquery-validation": "^1.19.5",
+        "sweetalert2": "^11.7.6"
     }
 }

@@ -56,6 +56,8 @@
                     <thead>
                     <tr>
                         <th>#</th>
+                        <th>IKIBAZO</th>
+                        <th>IGISUBIZO</th>
                         <th>Question</th>
                         <th>Answer</th>
                         <th>Action</th>
@@ -66,8 +68,10 @@
                     @foreach($faqs as $key=>$faq)
                         <tr>
                             <td>{{++$key}}</td>
-                            <td>{{$faq->question}}</td>
-                            <td>{{$faq->answer}}</td>
+                            <td>{{trans($faq->question, [], 'kn')}}</td>
+                            <td>{{trans($faq->answer, [], 'kn')}}</td>
+                            <td>{{trans($faq->question)}}</td>
+                            <td>{{trans($faq->answer)}}</td>
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-light-primary btn-sm dropdown-toggle" type="button"
@@ -77,8 +81,10 @@
                                     </button>
                                     <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
                                         <a href="#" data-id="{{$faq->id}}"
-                                           data-question="{{$faq->question}}"
-                                           data-answer="{{$faq->answer}}"
+                                           data-question="{{trans($faq->question)}}"
+                                           data-answer="{{trans($faq->answer)}}"
+                                           data-question_kn="{{trans($faq->question, [], 'kn')}}"
+                                           data-answer_kn="{{trans($faq->answer, [], 'kn')}}"
                                            class="dropdown-item js-edit">Edit</a>
                                         <a href="{{route('admin.faq.delete',$faq->id)}}"
                                            class="dropdown-item js-delete">Delete</a>
@@ -113,12 +119,20 @@
                     <div class="modal-body">
 
                         <div class="form-group">
+                            <label for="question">Ikibazo</label>
+                            <input type="text" name="question_kn" id="question_kn" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="answer">Igisubizo</label>
+                            <textarea name="answer_kn" id="answer+kn" class="form-control"></textarea>
+                        </div>
+                        <div class="form-group">
                             <label for="question">Question</label>
                             <input type="text" name="question" id="question" class="form-control">
                         </div>
 
                         <div class="form-group">
-                            <label for="answer">answer</label>
+                            <label for="answer">Answer</label>
                             <textarea name="answer" id="answer" class="form-control"></textarea>
                         </div>
 
@@ -154,12 +168,23 @@
                     <div class="modal-body">
 
                         <div class="form-group">
+                            <label for="question">Ikibazo</label>
+                            <input type="text" name="question_kn" id="edit_question_kn" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="answer">Igisubizo</label>
+                            <textarea name="answer_kn" id="edit_answer_kn" class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group">
                             <label for="question">Question</label>
                             <input type="text" name="question" id="edit_question" class="form-control">
                         </div>
 
+
                         <div class="form-group">
-                            <label for="answer">answer</label>
+                            <label for="answer">Answer</label>
                             <textarea name="answer" id="edit_answer" class="form-control"></textarea>
                         </div>
 
@@ -208,6 +233,8 @@
             $("#FaqId").val($(this).data('id'));
             $("#edit_question").val($(this).data('question'));
             $("#edit_answer").val($(this).data('answer'));
+            $("#edit_question_kn").val($(this).data('question_kn'));
+            $("#edit_answer_kn").val($(this).data('answer_kn'));
             $('#submissionFormEdit').attr('action', url);
         });
 

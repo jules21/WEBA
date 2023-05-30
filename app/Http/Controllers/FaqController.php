@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Faq;
 use App\Http\Requests\StorefaqRequest;
 use App\Http\Requests\UpdatefaqRequest;
+use Spatie\TranslationLoader\LanguageLine;
 
 class FaqController extends Controller
 {
@@ -18,17 +19,6 @@ class FaqController extends Controller
         $faqs = Faq::query()->orderBy('id','DESC')->get();
         return view('admin.settings.faqs.index',compact('faqs'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -38,32 +28,51 @@ class FaqController extends Controller
     public function store(StorefaqRequest $request)
     {
         $faq = new Faq();
-        $faq->question=$request->question;
-        $faq->answer=$request->answer;
+
+
+        $timestamp = now()->timestamp;
+        $identifier = uniqid();
+        $id = "${identifier}_${timestamp}";
+        $group = "faq";
+
+        $question = $request->question;
+        $answer = $request->answer;
+
+        $question_kn = $request->question_kn;
+        $answer_kn = $request->answer_kn;
+
+        $questionKey = "question_$id";
+
+        LanguageLine::create(
+            [
+                'group' => $group,
+                'key' => $questionKey,
+                'text' => [
+                    'kn' => $question_kn,
+                    'en' => $question,
+                ],
+            ]
+        );
+
+        $answerKey = "answer_$id";
+
+        LanguageLine::create(
+            [
+                'group' => $group,
+                'key' => $answerKey,
+                'text' => [
+                    'kn' => $answer_kn,
+                    'en' => $answer,
+                ],
+            ]
+        );
+
+
+        $faq->question="$group.$questionKey";
+        $faq->answer="$group.$answerKey";
+//        return $faq;
         $faq->save();
         return redirect()->back()->with('success','Faq created Successfully');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Faq  $faq
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Faq $faq)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Faq  $faq
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Faq $faq)
-    {
-        //
     }
 
     /**
@@ -75,10 +84,31 @@ class FaqController extends Controller
      */
     public function update(UpdatefaqRequest $request, Faq $faq)
     {
+
         $faq = Faq::findOrFail($request->input('FaqId'));
-        $faq->question=$request->question;
-        $faq->answer=$request->answer;
-        $faq->save();
+        $question = $request->question;
+        $answer = $request->answer;
+
+        $question_kn = $request->question_kn;
+        $answer_kn = $request->answer_kn;
+
+        $questionKey = \Str::after($faq->question, '.');
+        $answerKey = \Str::after($faq->answer, '.');
+
+        $questionLine = LanguageLine::where('key', $questionKey)->first();
+        $questionLine->text = [
+            'kn' => $question_kn,
+            'en' => $question,
+        ];
+
+        $questionLine->save();
+
+        $answerLine = LanguageLine::where('key', $answerKey)->first();
+        $answerLine->text = [
+            'kn' => $answer_kn,
+            'en' => $answer,
+        ];
+        $answerLine->save();
         return redirect()->back()->with('success','Faq updated Successfully');
     }
 
@@ -92,6 +122,15 @@ class FaqController extends Controller
     {
         try {
             $faq = Faq::find($id);
+            $questionKey = \Str::after($faq->question, '.');
+            $answerKey = \Str::after($faq->answer, '.');
+
+            $questionLine = LanguageLine::where('key', $questionKey)->first();
+            $questionLine->delete();
+
+            $answerLine = LanguageLine::where('key', $answerKey)->first();
+            $answerLine->delete();
+
             $faq->delete();
             return redirect()->back()->with('success','Faq deleted Successfully');
         }catch (\Exception $exception){

@@ -55,6 +55,7 @@ Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('vi
 Route::get('/districts/{province}', [DistrictController::class, 'getByProvince'])->name('districts.province');
 Route::get('/sectors/{district}', [SectorController::class, 'getByDistrict'])->name('sectors.district');
 Route::get('/documents-types/{legalType}', [DocumentTypeController::class, 'getByLegalType'])->name('type-document.get-by-legal-type');
+Route::get('/fetch-nida-id',[RegisterController::class,'fetchIdentificationFromNIDA'])->name('fetch-identification-from-nida');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

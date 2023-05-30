@@ -31,8 +31,8 @@ class BillingController extends Controller
 
         //filter data based on user role
         $user = auth()->user();
-        $query = Billing::query()->with(['meterRequest', 'meterRequest.request', 'meterRequest.request.operator',
-            'user', 'meterRequest.request.customer']);
+        $query = Billing::query()
+            ->with(['meterRequest.request.operator','meterRequest.request.operationArea', 'user', 'meterRequest.request.customer']);
         $query->when($user->operation_area, function ($query) use ($user) {
             $query->whereHas('meterRequest', function ($query) use ($user) {
                 $query->whereHas('request', function ($query) use ($user) {

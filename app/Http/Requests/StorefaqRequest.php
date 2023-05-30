@@ -26,6 +26,8 @@ class StorefaqRequest extends FormRequest
         return [
             'question'=>"required",
             'answer'=>"required",
+            'question_kn'=>"required",
+            'answer_kn'=>"required",
         ];
     }
 }
