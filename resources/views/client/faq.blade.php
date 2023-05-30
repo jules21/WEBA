@@ -23,7 +23,11 @@
                                         aria-expanded="true"
                                         aria-controls="collapseOne">
                                         <h6>
-                                            {{$item->question}}
+                                            @if(app()->getLocale() == 'rw')
+                                                {{trans($item->question, [], 'kn')}}
+                                            @else
+                                                {{trans($item->question)}}
+                                            @endif
                                         </h6>
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              class="icon icon-tabler icon-tabler-plus icon-plus tw-h-4 tw-w-4" width="24" height="24"
@@ -46,7 +50,11 @@
                             <div id="collapseOne{{$item->id}}" class="collapse" aria-labelledby="headingOne"
                                  data-parent="#accordionExample">
                                 <div class="card-body tw-text-gray-700 tw-text-sm tw-tracking-wider">
-                                    {!! $item->answer !!}
+                                    @if(app()->getLocale() == 'rw')
+                                        {{trans($item->answer, [], 'kn')}}
+                                    @else
+                                        {{trans($item->answer)}}
+                                    @endif
                                 </div>
                             </div>
                         </div>
