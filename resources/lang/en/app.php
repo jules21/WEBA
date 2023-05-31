@@ -159,5 +159,7 @@
         "submit"=>"Submit",
         "your_request_has_been_submitted_successfully"=>"Your request has been submitted successfully",
         "all_rights_reserved_by_RURA"=>"© Copyright 2023, All Rights Reserved by RURA",
+        "my_connections"=>"My Connections",
+        "total_balance_due"=>"Total Balance Due:",
 
     ];
