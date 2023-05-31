@@ -71,7 +71,7 @@
                     </p>
                 </div>
                 <div class="p-2" style="border: 1px dashed silver">
-                    Total Balance Due <span class="text-primary font-weight-bold">{{ number_format($operatorData->sum('balance')) }} RWF</span>
+                    @lang('app.total_balance_due') <span class="text-primary font-weight-bold">{{ number_format($operatorData->sum('balance')) }} RWF</span>
                 </div>
             </div>
 

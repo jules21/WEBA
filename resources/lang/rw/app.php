@@ -160,5 +160,6 @@ return [
     "your_request_has_been_submitted_successfully"=>"Ubusabe bwawe bwoherejwe neza",
     "all_rights_reserved_by_RURA"=>"Uburenganzira bwa RURA 2023 burubahirizwa",
     "my_connections"=>"Amazi yanjye",
+    "total_balance_due"=>"Asigaye kwishyurwa yose:",
 
 ];
