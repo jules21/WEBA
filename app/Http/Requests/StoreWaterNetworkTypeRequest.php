@@ -25,6 +25,7 @@ class StoreWaterNetworkTypeRequest extends FormRequest
     {
         return [
             'name' => ['required','unique:water_network_types'],
+            'unit_price' => ['required'],
         ];
     }
 }

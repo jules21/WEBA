@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreWaterNetworkRequest;
 use App\Http\Requests\StoreWaterNetworkTypeRequest;
+use App\Http\Requests\UpdateWaterNetworkTypeRequest;
 use App\Models\WaterNetworkType;
 use Illuminate\Http\Request;
 
@@ -71,7 +72,7 @@ class WaterNetworkTypeController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, WaterNetworkType $waterNetworkType)
+    public function update(UpdateWaterNetworkTypeRequest $request, WaterNetworkType $waterNetworkType)
     {
         $type = WaterNetworkType::findOrFail($request->input('WaterNetworkTypeId'));
         $type->name = $request->name;

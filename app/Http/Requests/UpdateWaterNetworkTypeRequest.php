@@ -25,6 +25,7 @@ class UpdateWaterNetworkTypeRequest extends FormRequest
     {
         return [
             'name' => 'required',
+            'unit_price' => 'required',
         ];
     }
 }
