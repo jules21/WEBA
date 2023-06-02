@@ -298,10 +298,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/export_water_networks', [App\Http\Controllers\WaterNetworkController::class, 'export'])->name('export.water.networks');
 
         //institutions
-        Route::get('/institutions', [App\Http\Controllers\InstitutionController::class, 'index'])->name('institutions');
+        Route::get('/institutions/', [App\Http\Controllers\InstitutionController::class, 'index'])->name('institutions');
         Route::post('/institution/store', [App\Http\Controllers\InstitutionController::class, 'store'])->name('institution.store');
         Route::post('/institution/update', [App\Http\Controllers\InstitutionController::class, 'update'])->name('institution.edit');
         Route::get('/institution/delete/{id}', [App\Http\Controllers\InstitutionController::class, 'destroy'])->name('institution.delete');
+
+        //assign user to institution
+        Route::get('/assign-user/{user_id}', [App\Http\Controllers\AssignUserToInstitutionController::class, 'index'])->name('assign.user');
+        Route::post('/assign-user/store/', [App\Http\Controllers\AssignUserToInstitutionController::class, 'store'])->name('assign.user.store');
+        Route::post('/assign-user/update', [App\Http\Controllers\AssignUserToInstitutionController::class, 'update'])->name('assign.user.edit');
+        Route::get('/assign-user/delete/{id}', [App\Http\Controllers\AssignUserToInstitutionController::class, 'destroy'])->name('assign.user.delete');
 
         //water network statuses
         Route::get('/water_network_statuses', [App\Http\Controllers\WaterNetworkStatusController::class, 'index'])->name('water.network.statuses');
