@@ -27,7 +27,7 @@ class StoreAssignInstitutionToUserRequest extends FormRequest
             "name"=>"required",
             "email"=>"required",
             "phone"=>"required",
-            "password"=>"required",
+//            "password"=>"required",
         ];
     }
 }
