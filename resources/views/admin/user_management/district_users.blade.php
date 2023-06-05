@@ -59,6 +59,7 @@
                         <th>Name</th>
                         <th>Phone</th>
                         <th>Email</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -220,6 +221,7 @@
                     {data: 'name', name: 'name'},
                     {data: 'phone', name: 'phone'},
                     {data: 'email', name: 'email'},
+                    {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
                 "order": [[0, "asc"]],
