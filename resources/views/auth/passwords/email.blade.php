@@ -16,20 +16,22 @@
     <!--end::Page Custom Styles-->
     <!--begin::Global Theme Styles(used by all pages)-->
     <link href="{{ asset('css/master.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ mix('css/tailwind.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css"/>
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="{{ asset('assets/logos/logo.svg') }}"/>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
 <body id="kt_body"
-      class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
+      class="header-fixed admin-bg header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
 <!--begin::Main-->
 <div class="d-flex flex-column flex-root">
     <!--begin::Login-->
     <div class="login login-4 login-signin-on d-flex flex-row-fluid" id="kt_login">
-        <div class="d-flex flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat"
-             style="background-image: url({{ asset('assets/media/bg/bg-3.jpg') }});">
-            <div class="login-form text-center mx-3 pt-7 pl-7 pr-7 pb-35 position-relative overflow-hidden rounded border shadow-xs">
+        <div class="d-flex  admin-bg flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat"
+             >
+            <div class="login-form text-center mx-3  pb-35 position-relative overflow-hidden rounded  ">
                 <!--begin::Login Header-->
                 <div class="d-flex flex-center mb-10">
                     <a href="#">
@@ -38,38 +40,44 @@
                 </div>
                 <!--end::Login Header-->
                 <!--begin::Login Sign in form-->
-                <div class="login-signin">
-                    <div class="mb-10">
-                        <h3>{{ __('Reset Password') }}</h3>
-                        <h4>CMS RWSS</h4>
-                        <div class="text-muted font-weight-bold">Enter your Email to reset password</div>
+                <div class="card lg:tw-p-10 border-0 card-body tw-rounded-sm">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
                     </div>
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                    <div class="">
+                        <div class="mb-10">
+                            <h3>{{ __('Reset Password') }}</h3>
+                            <div class="text-muted font-weight-bold">Enter your Email to reset password</div>
                         </div>
-                    @endif
-                    <form class="form" id="kt_login_signin_form" action="{{ route('password.email') }}" autocomplete="off"
-                          method="post">
-                        @csrf
-                        <div class="form-group mb-5">
-                            <input
-                                class="form-control h-auto form-control-solid py-4 px-8 @error('email') is-invalid @enderror"
-                                type="email" id="email" placeholder="Email" value="{{ old('email') }}" name="email"
-                                required
-                                autocomplete="off" autofocus/>
-                            @error('email')
-                            <span class="invalid-feedback text-left" role="alert">
+                        @if (session('status'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+                        <form class="form" id="kt_login_signin_form" action="{{ route('password.email') }}" autocomplete="off"
+                              method="post">
+                            @csrf
+                            <div class="form-group mb-5">
+                                <input
+                                    class="form-control h-auto form-control-solid  tw-py-4  border px-8 @error('email') is-invalid @enderror"
+                                    type="email" id="email" placeholder="Email" value="{{ old('email') }}" name="email"
+                                    required
+                                    autocomplete="off" autofocus/>
+                                @error('email')
+                                <span class="invalid-feedback text-left" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
-                            @enderror
-                        </div>
-                        <button id="kt_login_signin_submit"
-                                class="btn btn-primary btn-block font-weight-bold py-4 my-3">
-                            {{ __('Send Password Reset Link') }}
-                        </button>
-                    </form>
+                                @enderror
+                            </div>
+                            <button id="kt_login_signin_submit"
+                                    class="btn btn-accent btn-block font-weight-bold py-4 my-3">
+                                {{ __('Send Password Reset Link') }}
+                            </button>
+                        </form>
+                        <a href="{{route('login')}}" class="float-right py-4"> Back to login</a>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

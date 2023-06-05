@@ -417,6 +417,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 });
 
 Auth::routes(['register' => false]);
+//route for reset passwordresetPassword
 
 //ajax routes
 Route::get('/operation-area', [OperationAreaController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
