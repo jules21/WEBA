@@ -265,15 +265,16 @@
             </li>
         @endif
     @endif
+    @if(auth()->user()->canAny(issueManagementPermissions()))
+        <li class="menu-section">
+            <h4 class="menu-text">Issue Management</h4>
+            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+        </li>
 
-    <li class="menu-section">
-        <h4 class="menu-text">Issue Management</h4>
-        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-    </li>
-
-    <li class="menu-item nav-reported-issues {{ request()->routeIs('admin.issues.reported')?'menu-item-active':'' }}">
-        <a href="{{route('admin.issues.reported')}}"
-           class="menu-link">
+        @if(!is_null(auth()->user()->operator_id))
+            <li class="menu-item nav-reported-issues {{ request()->routeIs('admin.issues.reported')?'menu-item-active':'' }}">
+                <a href="{{route('admin.issues.reported')}}"
+                   class="menu-link">
                     <span class="menu-icon svg-icon">
                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-report"
                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -284,9 +285,11 @@
                    <path d="M12 14l0 .01"></path>
                 </svg>
                     </span>
-            <span class="menu-text">Reported Issues</span>
-        </a>
-    </li>
+                    <span class="menu-text">Reported Issues</span>
+                </a>
+            </li>
+        @endif
+    @endif
 
     @if(Helper::hasOperationArea())
         @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems,

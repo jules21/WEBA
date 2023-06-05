@@ -101,4 +101,7 @@ class Permission
     const ManageBankAccounts = 'Manage Bank Accounts';
 
     const ManageSystemAudit = 'Manage System Audit';
+
+    const ViewReportedIssues = 'View Reported Issues';
+    const ManageReportedIssues = 'Manage Reported Issues';
 }
