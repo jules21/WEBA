@@ -96,6 +96,16 @@
                             <!--end::Dropdown Menu-->
                         </div>
                     </div>
+                    <div class="row mb-5">
+                        <div class="col-md-6">
+                            <strong>Total Billed</strong> : 5000 Rwf
+                            <br>
+                            <strong>Total Payments</strong> : 5000 Rwf
+                            <br>
+                            <strong>Total Arreas</strong> : 5000 Rwf
+
+                        </div>
+                    </div>
                     @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
                         <form action="#" id="filter-form">
                             <div class="row">

@@ -2,6 +2,7 @@
 
 namespace App\DataTables;
 
+use App\Constants\Permission;
 use App\Models\Item;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -38,28 +39,33 @@ class ItemsDataTable extends DataTable
                 return '<span class="label label-inline label-light-'.($item->is_active ? 'success' : 'danger').'">'.($item->is_active ? 'Active' : 'Inactive').'</span>';
             })
             ->addColumn('action', function ($item) {
-               return '<div class="btn-group">
-                       <button type="button" class="btn btn-light-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                           Actions
-                      </button>
-                      <div class="dropdown-menu">
-                        <a class="dropdown-item btn-edit" href="#"
-                            data-toggle="modal"
-                            data-target="#edit-item-modal"
-                            data-id="'.$item->id.'"
-                            data-name="'.$item->name.'"
-                            data-description="'.$item->description.'"
-                            data-item_category_id="'.$item->item_category_id.'"
-                            data-packaging_unit_id="'.$item->packaging_unit_id.'"
-                            data-vatable="'.$item->vatable.'"
-                            data-is_active="'.$item->is_active.'"
-                            data-selling_price="'.$item->selling_price.'"
-                            data-vat_rate="'.$item->vat_rate.'"
-                            data-url="'.route('admin.stock.items.update', $item->id).'"
-                            >Edit</a>
-                        <a class="dropdown-item btn-delete" href="#" data-url="'.route('admin.stock.items.destroy', $item->id).'">Delete</a>
-';
+                if (auth()->user()->hasPermissionTo(Permission::ManageItems)) {
+                    return '<div class="btn-group">
+                   <button type="button" class="btn btn-light-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       Actions
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item btn-edit" href="#"
+                        data-toggle="modal"
+                        data-target="#edit-item-modal"
+                        data-id="'.$item->id.'"
+                        data-name="'.$item->name.'"
+                        data-description="'.$item->description.'"
+                        data-item_category_id="'.$item->item_category_id.'"
+                        data-packaging_unit_id="'.$item->packaging_unit_id.'"
+                        data-vatable="'.$item->vatable.'"
+                        data-is_active="'.$item->is_active.'"
+                        data-selling_price="'.$item->selling_price.'"
+                        data-vat_rate="'.$item->vat_rate.'"
+                        data-url="'.route('admin.stock.items.update', $item->id).'"
+                        >Edit</a>
+                    <a class="dropdown-item btn-delete" href="#" data-url="'.route('admin.stock.items.destroy', $item->id).'">Delete</a>
+                </div>';
+                }
             })
+
+// Add the $column to your DataTables configuration
+
             ->rawColumns(['action', 'item_category_id', 'packaging_unit_id', 'vatable', 'is_active']);
     }
 
