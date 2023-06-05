@@ -21,7 +21,6 @@ use Illuminate\Support\Carbon;
  * @property bool $is_active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static Builder|PaymentServiceProviderAccount newModelQuery()
  * @method static Builder|PaymentServiceProviderAccount newQuery()
  * @method static Builder|PaymentServiceProviderAccount query()
@@ -34,18 +33,14 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PaymentServiceProviderAccount whereOperationAreaId($value)
  * @method static Builder|PaymentServiceProviderAccount wherePaymentServiceProviderId($value)
  * @method static Builder|PaymentServiceProviderAccount whereUpdatedAt($value)
- *
  * @property int|null $ledger_no
- *
  * @method static Builder|PaymentServiceProviderAccount whereLedgerNo($value)
- *
  * @property string|null $opening_date
  * @property string|null $closing_date
  * @property-read \App\Models\PaymentServiceProvider $paymentServiceProvider
- *
  * @method static Builder|PaymentServiceProviderAccount whereClosingDate($value)
  * @method static Builder|PaymentServiceProviderAccount whereOpeningDate($value)
- *
+ * @property-read \App\Models\OperationArea|null $operationArea
  * @mixin Eloquent
  */
 class PaymentServiceProviderAccount extends Model

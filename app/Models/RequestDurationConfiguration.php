@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $processing_days
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|RequestDurationConfiguration newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RequestDurationConfiguration newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RequestDurationConfiguration query()
@@ -26,16 +25,13 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|RequestDurationConfiguration whereProcessingDays($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RequestDurationConfiguration whereRequestTypeId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RequestDurationConfiguration whereUpdatedAt($value)
- *
  * @property int $operation_area_id
  * @property bool $is_active
  * @property-read \App\Models\OperationArea $operationArea
  * @property-read \App\Models\Operator $operator
  * @property-read \App\Models\RequestType $requestType
- *
  * @method static \Illuminate\Database\Eloquent\Builder|RequestDurationConfiguration whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RequestDurationConfiguration whereOperationAreaId($value)
- *
  * @mixin \Eloquent
  */
 class RequestDurationConfiguration extends Model

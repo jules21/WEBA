@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Database\Factories\RoadCrossTypeFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|RoadCrossType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RoadCrossType newQuery()
@@ -21,7 +20,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|RoadCrossType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoadCrossType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RoadCrossType whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class RoadCrossType extends Model

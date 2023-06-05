@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Database\Factories\WaterUsageFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterUsage newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WaterUsage newQuery()
@@ -21,7 +20,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|WaterUsage whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterUsage whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterUsage whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class WaterUsage extends Model

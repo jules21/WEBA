@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetworkType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetworkType newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetworkType query()
@@ -20,7 +19,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetworkType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetworkType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetworkType whereUpdatedAt($value)
- *
+ * @property string|null $unit_price
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BillCharge> $billCharges
+ * @property-read int|null $bill_charges_count
+ * @method static \Illuminate\Database\Eloquent\Builder|WaterNetworkType whereUnitPrice($value)
  * @mixin \Eloquent
  */
 class WaterNetworkType extends Model

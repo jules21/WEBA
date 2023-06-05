@@ -20,7 +20,6 @@ use Illuminate\Support\Carbon;
  * @property string|null $narration
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static Builder|PaymentHistory newModelQuery()
  * @method static Builder|PaymentHistory newQuery()
  * @method static Builder|PaymentHistory query()
@@ -33,7 +32,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PaymentHistory wherePaymentMappingId($value)
  * @method static Builder|PaymentHistory wherePspReferenceNumber($value)
  * @method static Builder|PaymentHistory whereUpdatedAt($value)
- *
+ * @property-read \App\Models\PaymentMapping $mapping
+ * @property-read \App\Models\PaymentDeclaration $paymentDeclaration
  * @mixin Eloquent
  */
 class PaymentHistory extends Model

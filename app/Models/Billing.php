@@ -25,7 +25,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string $balance
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static Builder|Billing newModelQuery()
  * @method static Builder|Billing newQuery()
  * @method static Builder|Billing query()
@@ -40,15 +39,18 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|Billing whereUnitPrice($value)
  * @method static Builder|Billing whereUpdatedAt($value)
  * @method static Builder|Billing whereUserId($value)
- *
  * @property string|null $comment
  * @property string|null $attachment
  * @property-read MeterRequest|null $meterRequest
  * @property-read User $user
- *
  * @method static Builder|Billing whereAttachment($value)
  * @method static Builder|Billing whereComment($value)
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read mixed $amount_paid
+ * @property-read mixed $cubic_meters
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $history
+ * @property-read int|null $history_count
  * @mixin Eloquent
  */
 class Billing extends Model implements Auditable

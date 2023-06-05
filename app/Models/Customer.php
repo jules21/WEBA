@@ -33,7 +33,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property int $document_type_id
  * @property-read DocumentType $documentType
  * @property-read LegalType $legalType
- *
  * @method static CustomerFactory factory(...$parameters)
  * @method static Builder|Customer newModelQuery()
  * @method static Builder|Customer newQuery()
@@ -52,7 +51,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|Customer whereSectorId($value)
  * @method static Builder|Customer whereUpdatedAt($value)
  * @method static Builder|Customer whereVillageId($value)
- *
  * @property-read \App\Models\Cell|null $cell
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MeterRequest> $connections
  * @property-read int|null $connections_count
@@ -70,9 +68,12 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read int|null $notifications_count
  * @property-read \App\Models\OperationArea $operationArea
  * @property-read \App\Models\Operator|null $operator
- *
  * @method static Builder|Customer whereOperatorId($value)
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MeterRequest> $connections
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Request> $requests
  * @mixin Eloquent
  */
 class Customer extends Model implements Auditable

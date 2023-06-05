@@ -27,7 +27,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property bool $is_active
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static ItemFactory factory(...$parameters)
  * @method static Builder|Item newModelQuery()
  * @method static Builder|Item newQuery()
@@ -43,16 +42,17 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|Item whereUpdatedAt($value)
  * @method static Builder|Item whereVatRate($value)
  * @method static Builder|Item whereVatable($value)
- *
  * @property-read \App\Models\ItemCategory $category
  * @property-read \App\Models\PackagingUnit $packagingUnit
  * @property-read \App\Models\Stock|null $stock
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $stockMovements
  * @property-read int|null $stock_movements_count
  * @property int|null $operator_id
- *
  * @method static Builder|Item whereOperatorId($value)
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read int $qty
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $stockMovements
  * @mixin Eloquent
  */
 class Item extends Model implements Auditable

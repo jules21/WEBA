@@ -23,7 +23,6 @@ use Illuminate\Support\Facades\Storage;
  * @property string|null $delivery_date
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static Builder|RequestDelivery newModelQuery()
  * @method static Builder|RequestDelivery newQuery()
  * @method static Builder|RequestDelivery query()
@@ -36,11 +35,13 @@ use Illuminate\Support\Facades\Storage;
  * @method static Builder|RequestDelivery whereId($value)
  * @method static Builder|RequestDelivery whereRequestId($value)
  * @method static Builder|RequestDelivery whereUpdatedAt($value)
- *
  * @property-read Collection<int, RequestDeliveryDetail> $details
  * @property-read int|null $details_count
  * @property-read Request $request
- *
+ * @property string|null $delivery_note
+ * @property-read Collection<int, \App\Models\RequestDeliveryDetail> $details
+ * @property-read string|null $deliver_note_url
+ * @method static Builder|RequestDelivery whereDeliveryNote($value)
  * @mixin Eloquent
  */
 class RequestDelivery extends Model

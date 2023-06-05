@@ -15,7 +15,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property int $quantity
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Stock newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Stock newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Stock query()
@@ -25,11 +24,11 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereQuantity($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Stock whereUpdatedAt($value)
- *
  * @property-read mixed $operator
  * @property-read \App\Models\Item $item
  * @property-read \App\Models\OperationArea $operationArea
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
  * @mixin \Eloquent
  */
 class Stock extends Model implements Auditable

@@ -23,7 +23,6 @@ use Illuminate\Support\Carbon;
  * @property string $subscription_number
  * @property string $last_index
  * @property string $balance
- *
  * @method static Builder|MeterRequest newModelQuery()
  * @method static Builder|MeterRequest newQuery()
  * @method static Builder|MeterRequest query()
@@ -36,22 +35,22 @@ use Illuminate\Support\Carbon;
  * @method static Builder|MeterRequest whereStatus($value)
  * @method static Builder|MeterRequest whereSubscriptionNumber($value)
  * @method static Builder|MeterRequest whereUpdatedAt($value)
- *
  * @property int|null $item_category_id
  * @property int|null $item_id
  * @property-read \App\Models\Billing|null $billing
  * @property-read \App\Models\Request $request
- *
  * @method static Builder|MeterRequest whereItemCategoryId($value)
  * @method static Builder|MeterRequest whereItemId($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $deliveryItems
  * @property-read int|null $delivery_items_count
  * @property-read \App\Models\Item|null $item
  * @property-read \App\Models\ItemCategory|null $itemCategory
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $stockMovementDetails
  * @property-read int|null $stock_movement_details_count
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Billing> $billings
+ * @property-read int|null $billings_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $deliveryItems
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $stockMovementDetails
  * @mixin Eloquent
  */
 class MeterRequest extends Model

@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $operator_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Database\Factories\WaterNetworkFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork newQuery()
@@ -27,17 +26,16 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereOperatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork wherePopulationCovered($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereUpdatedAt($value)
- *
  * @property int|null $water_network_type_id
  * @property int|null $operation_area_id
  * @property-read \App\Models\Operator $operator
- *
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereWaterNetworkTypeId($value)
- *
  * @property-read \App\Models\OperationArea|null $operationArea
  * @property-read \App\Models\WaterNetworkType|null $waterNetworkType
- *
+ * @property int|null $water_network_status_id
+ * @property-read \App\Models\WaterNetworkStatus|null $waterNetworkStatus
+ * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereWaterNetworkStatusId($value)
  * @mixin \Eloquent
  */
 class WaterNetwork extends Model
