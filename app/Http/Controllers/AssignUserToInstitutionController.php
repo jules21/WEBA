@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreAssignInstitutionToUserRequest;
 use App\Http\Requests\UpdateAssignInstitutionToUserRequest;
+use App\Jobs\MailRegisteredUser;
 use App\Models\Institution;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -28,7 +29,9 @@ class AssignUserToInstitutionController extends Controller
         $user->email = $request->email;
         $user->phone = $request->phone;
         $user->status = 'active';
-        $user->password = bcrypt($request['password']);
+        $password = \Helper::generatePassword();
+        $user->fill(['password' => bcrypt($password)])->save();
+        $this->dispatch(new MailRegisteredUser($user->email, $password, $user->name, $user->phone));
 //        dd($user);
         $user->save();
         return redirect()->back()->with('success','User Assigned Successfully');
@@ -40,6 +43,7 @@ class AssignUserToInstitutionController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
+        $user->status = $request->status;
 //        dd($user);
         $user->save();
         return redirect()->back()->with('success','User Updated Successfully');

@@ -39,4 +39,8 @@ class Sector extends Model
     {
         return $this->hasMany(Cell::class);
     }
+    public function district(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(District::class);
+    }
 }
