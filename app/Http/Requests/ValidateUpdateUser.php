@@ -29,6 +29,7 @@ class ValidateUpdateUser extends FormRequest
             'operation_area' => 'nullable',
 //            'institution_id' => 'required_if:operator_id,==,null',
             'institution_id' => 'nullable',
+            'district_id' => 'nullable',
         ];
     }
 

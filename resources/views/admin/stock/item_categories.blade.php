@@ -35,14 +35,16 @@
         <div class="card card-custom">
             <div class="card-header flex-wrap">
                 <h3 class="card-title">Categories</h3>
-                <div class="card-toolbar">
-                    <a href="javascript:void(0)" class="btn btn-light-primary"
-                       data-toggle="modal"
-                       data-target="#addModal" >
-                        <i class="la la-plus"></i>
-                        New Category
-                    </a>
-                </div>
+               @can(\App\Constants\Permission::ManageItemCategories)
+                    <div class="card-toolbar">
+                        <a href="javascript:void(0)" class="btn btn-light-primary"
+                           data-toggle="modal"
+                           data-target="#addModal" >
+                            <i class="la la-plus"></i>
+                            New Category
+                        </a>
+                    </div>
+               @endcan
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -78,22 +80,24 @@
                                             <a href="{{route('admin.stock.item-categories.items', encryptId($category->id))}}" class="dropdown-item">
                                                 Items
                                             </a>
-                                            <div class="dropdown-divider"></div>
+                                            @can(\App\Constants\Permission::ManageItemCategories)
+                                                <div class="dropdown-divider"></div>
 
-                                            <a href="#" class=" edit-btn dropdown-item "
-                                               data-toggle="modal"
-                                               data-target="#user_category_edit_modal"
-                                               data-name="{{$category->name}}"
-                                               data-is_meter="{{$category->is_meter}}"
-                                               data-is_active="{{$category->is_active}}"
-                                               data-id="{{$category->id}}"
-                                               data-url="{{ route('admin.stock.item-categories.update', encryptId($category->id)) }}">
-                                                Edit
-                                            </a>
-                                            <a class="delete_btn dropdown-item"
-                                               data-url="{{route('admin.stock.item-categories.destroy', encryptId($category->id)) }}">
-                                                Delete
-                                            </a>
+                                                <a href="#" class=" edit-btn dropdown-item "
+                                                   data-toggle="modal"
+                                                   data-target="#user_category_edit_modal"
+                                                   data-name="{{$category->name}}"
+                                                   data-is_meter="{{$category->is_meter}}"
+                                                   data-is_active="{{$category->is_active}}"
+                                                   data-id="{{$category->id}}"
+                                                   data-url="{{ route('admin.stock.item-categories.update', encryptId($category->id)) }}">
+                                                    Edit
+                                                </a>
+                                                <a class="delete_btn dropdown-item"
+                                                   data-url="{{route('admin.stock.item-categories.destroy', encryptId($category->id)) }}">
+                                                    Delete
+                                                </a>
+                                            @endcan
                                         </div>
                                     </div>
                                 </td>

@@ -21,7 +21,7 @@ class StockMovementController extends Controller
     {
 
         $user = auth()->user();
-        $data = StockMovement::with('item', 'operationArea.operator','item.packagingUnit')->select('stock_movements.*');
+        $data = StockMovement::with('item', 'operationArea.operator','item.packagingUnit','item.stock.operationArea')->select('stock_movements.*');
         $data->when($user->operator_id, function ($query) use ($user) {
             $query->whereHas('operationArea', function ($query) use ($user) {
                 $query->where('operator_id', $user->operator_id);

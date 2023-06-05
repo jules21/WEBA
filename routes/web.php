@@ -227,6 +227,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/users/change-password', [App\Http\Controllers\ProfileController::class, 'changePasswordForm'])->name('user.change.password');
         Route::post('/users/update-password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('user.update.password');
 
+        //assign district to user
+        Route::post('/users/assign-district/{user_id}', [App\Http\Controllers\UserController::class, 'assignDistrict'])->name('users.assign.district.store');
+
         //user manual
         Route::get('/users/user-manual/', [App\Http\Controllers\UserManualController::class, 'userManualForAdmins'])->name('user.manual.admin');
 
