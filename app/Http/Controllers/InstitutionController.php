@@ -17,7 +17,7 @@ class InstitutionController extends Controller
     {
         $institutions = Institution::query()->orderBy('id', 'DESC')->get();
 
-        return view('admin.settings.institutions', compact('institutions'));
+        return view('admin.settings.institution.institutions', compact('institutions'));
     }
 
     /**

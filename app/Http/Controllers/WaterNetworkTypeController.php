@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreWaterNetworkRequest;
+use App\Http\Requests\StoreWaterNetworkTypeRequest;
+use App\Http\Requests\UpdateWaterNetworkTypeRequest;
 use App\Models\WaterNetworkType;
 use Illuminate\Http\Request;
 
@@ -32,12 +35,13 @@ class WaterNetworkTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreWaterNetworkTypeRequest $request)
     {
         $type = new WaterNetworkType();
         $type->name = $request->name;
+        $type->unit_price = $request->unit_price;
         $type->save();
 
         return redirect()->back()->with('sucess', 'Water Network Type Created Successfully');
@@ -66,12 +70,13 @@ class WaterNetworkTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, WaterNetworkType $waterNetworkType)
+    public function update(UpdateWaterNetworkTypeRequest $request, WaterNetworkType $waterNetworkType)
     {
         $type = WaterNetworkType::findOrFail($request->input('WaterNetworkTypeId'));
         $type->name = $request->name;
+        $type->unit_price = $request->unit_price;
         $type->save();
 
         return redirect()->back()->with('sucess', 'Water Network Type Updated Successfully');
@@ -80,7 +85,7 @@ class WaterNetworkTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(WaterNetworkType $waterNetworkType, $id)
     {

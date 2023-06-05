@@ -61,6 +61,7 @@
                     <tr>
                         <th>#</th>
                         <th>Name</th>
+                        <th>Unit Price</th>
                         <th>Created At</th>
                         @if(auth()->user()->is_super_admin)
                             <th>Action</th>
@@ -73,6 +74,7 @@
                         <tr>
                             <td>{{++$key}}</td>
                             <td>{{$type->name}}</td>
+                            <td>{{$type->unit_price}}</td>
                             <td>{{$type->created_at}}</td>
                             @if(auth()->user()->is_super_admin)
                                 <td>
@@ -85,6 +87,7 @@
                                         <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
                                             <a href="#" data-id="{{$type->id}}"
                                                data-name="{{$type->name}}"
+                                               data-unit-price="{{$type->unit_price}}"
                                                class="dropdown-item js-edit">Edit</a>
                                             <a href="{{route('admin.water.network.type.delete',$type->id)}}"
                                                class="dropdown-item js-delete">Delete</a>
@@ -122,6 +125,11 @@
                             <input type="text" name="name" id="name" class="form-control" required/>
                         </div>
 
+                        <div class="form-group">
+                            <label for="name">Unit Price</label>
+                            <input type="number" name="unit_price" id="unit_price" class="form-control" required/>
+                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <div class="btn-group">
@@ -156,6 +164,11 @@
                         <div class="form-group">
                             <label for="name">Name</label>
                             <input type="text" id="edit_name" name="name" class="form-control" required/>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Unit Price</label>
+                            <input type="number" name="unit_price" id="edit_unit_price" class="form-control" required/>
                         </div>
 
                     </div>
@@ -197,6 +210,7 @@
             var url = $(this).data('url');
             $("#WaterNetworkTypeId").val($(this).data('id'));
             $("#edit_name").val($(this).data('name'));
+            $("#edit_unit_price").val($(this).data('unit-price'));
             $('#submissionFormEdit').attr('action', url);
         });
 
