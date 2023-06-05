@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\traits\TruncateTable;
+use Database\Seeders\Traits\TruncateTable;
 use Illuminate\Database\Seeder;
 
 class ProvincesTableSeeder extends Seeder
