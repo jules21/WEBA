@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\IssueReportDetail
@@ -14,33 +18,37 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $user_id
  * @property string $user_type
  * @property string $description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\IssueReport $issueReport
- * @property-read Model|\Eloquent $user
- * @method static \Illuminate\Database\Eloquent\Builder|IssueReportDetail newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|IssueReportDetail newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|IssueReportDetail query()
- * @method static \Illuminate\Database\Eloquent\Builder|IssueReportDetail whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|IssueReportDetail whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|IssueReportDetail whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|IssueReportDetail whereIssueReportId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|IssueReportDetail whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|IssueReportDetail whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|IssueReportDetail whereUserType($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read IssueReport $issueReport
+ * @property-read Model|Eloquent $user
+ * @method static Builder|IssueReportDetail newModelQuery()
+ * @method static Builder|IssueReportDetail newQuery()
+ * @method static Builder|IssueReportDetail query()
+ * @method static Builder|IssueReportDetail whereCreatedAt($value)
+ * @method static Builder|IssueReportDetail whereDescription($value)
+ * @method static Builder|IssueReportDetail whereId($value)
+ * @method static Builder|IssueReportDetail whereIssueReportId($value)
+ * @method static Builder|IssueReportDetail whereUpdatedAt($value)
+ * @method static Builder|IssueReportDetail whereUserId($value)
+ * @method static Builder|IssueReportDetail whereUserType($value)
+ * @property-read User $client
+ * @property-read Model|Eloquent $model
+ * @mixin Eloquent
  */
 class IssueReportDetail extends Model
 {
-    use HasFactory;
+
 
     public function issueReport(): BelongsTo
     {
         return $this->belongsTo(IssueReport::class);
     }
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\MorphTo
+    public function model(): MorphTo
     {
-        return $this->morphTo('user');
+        return $this->morphTo('model', 'user_type', 'user_id');
     }
+
+
 }

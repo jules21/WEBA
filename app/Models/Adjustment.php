@@ -56,6 +56,11 @@ use Storage;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereAttachment($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereReturnBackStatus($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $items
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $movementDetails
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
  * @mixin \Eloquent
  */
 class Adjustment extends Model implements Auditable

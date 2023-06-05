@@ -58,7 +58,21 @@
                 </div>
             </a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link tw-rounded-xl hover:tw-bg-primary hover:tw-text-white tw-text-lg d-flex align-items-center tw-gap-1 {{ request()->routeIs('client.issues-reported')?'tw-bg-primary/90 tw-text-white':'' }}"
+               href="{{ route('client.issues-reported') }}">
+                <div
+                    class="d-flex justify-content-center align-items-center tw-h-12 tw-w-12 bg-primary text-white rounded-circle flex-shrink-0">
+                    <i class="ti ti-message-report tw-text-[24px]"></i>
+                </div>
+                <div>
+                    <div>Issues Report</div>
+                    <div class="tw-text-xs">
+                        View your reported issues
+                    </div>
+                </div>
+            </a>
+        </li>
 
 
     </ul>

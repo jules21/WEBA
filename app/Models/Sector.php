@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
  * @mixin \Eloquent
  */
 class Sector extends Model
