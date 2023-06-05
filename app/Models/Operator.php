@@ -72,12 +72,8 @@ use Storage;
  * @property string|null $prefix
  * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
- * @property-read Collection<int, \App\Models\Customer> $customers
- * @property-read Collection<int, \App\Models\OperationArea> $operationAreas
  * @property-read Collection<int, \App\Models\Request> $requests
  * @property-read int|null $requests_count
- * @property-read Collection<int, \App\Models\Stock> $stocks
- * @property-read Collection<int, \App\Models\User> $users
  * @method static Builder|Operator wherePrefix($value)
  * @mixin Eloquent
  */

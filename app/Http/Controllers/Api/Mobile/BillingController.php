@@ -9,6 +9,7 @@ use App\Models\BillCharge;
 use App\Models\Billing;
 use App\Models\MeterRequest;
 use App\Models\Payment;
+use App\Models\WaterNetworkType;
 use App\Notifications\PaymentNotification;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
@@ -85,10 +86,10 @@ class BillingController extends Controller
             } else {
                 $starting_index = $meterRequest->last_index;
             }
-            $charge = BillCharge::query()->where('operation_area_id', $meterRequest->request->operation_area_id)
-                ->where('water_network_type_id', $meterRequest->request->waterNetwork->water_network_type_id)
-                ->first();
-            if (!$charge) {
+
+            $billingAmount = WaterNetworkType::query()
+                ->find($meterRequest->request->waterNetwork->water_network_type_id)->unit_price;
+            if (!$billingAmount) {
                 return response()->json([
                     'action' => 0,
                     'message' => 'No charge found,Please contact admin',
@@ -105,7 +106,7 @@ class BillingController extends Controller
             $bill->last_index = $request->indexNumber;
             $bill->starting_index = $starting_index;
             $bill->user_id = auth()->user()->id;
-            $bill->unit_price = $charge->unit_price;
+            $bill->unit_price = $billingAmount;
             $bill->comment = $request->comment;
             $bill->amount = $bill->unit_price * ($bill->last_index - $bill->starting_index);
             $bill->balance = $bill->unit_price * ($bill->last_index - $bill->starting_index);

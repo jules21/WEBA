@@ -39,6 +39,9 @@ class Status
     const RE_SUBMITTED = 'Re-Submitted';
     const PAID = "Paid";
 
+    const REVIEWED = "Reviewed";
+    const RESOLVED = "Resolved";
+
 
     public static function getRequestStatuses(): array
     {

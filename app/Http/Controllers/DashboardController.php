@@ -33,10 +33,29 @@ class DashboardController extends Controller
      */
     public function level1Dashboard()
     {
-        $totalOperators = Operator::count();
-        $totalOperationAreas = OperationArea::count('district_id');
-        $totalMeters = MeterRequest::count();
-        $totalCustomers = Customer::query()->wherehas('connections')->count('doc_number');
+        $totalOperators = Operator::query()
+            ->when(auth()->user()->district_id, function (Builder $query) {
+                $query->whereHas('operationAreas', function (Builder $query) {
+                    $query->where('district_id', auth()->user()->district_id);
+                });
+            })->count();
+        $totalOperationAreas = OperationArea::query()
+            ->when(auth()->user()->district_id, function (Builder $query) {
+                $query->where('district_id', auth()->user()->district_id);
+            })->count('district_id');
+        $totalMeters = MeterRequest::when(auth()->user()->district_id, function (Builder $query) {
+            $query->whereHas('request', function (Builder $query) {
+                $query->where('district_id', auth()->user()->district_id);
+            });
+        })->count();
+
+        $totalCustomers = Customer::query()->wherehas('connections', function ($query) {
+            $query->when(auth()->user()->district_id, function (Builder $query) {
+                $query->whereHas('request', function (Builder $query) {
+                    $query->where('district_id', auth()->user()->district_id);
+                });
+            });
+        })->count('doc_number');
         $consumptionPerMonth = $this->getConsumedWater();
         $topOperators = $this->getTopOperators();
         $consumerPerOperators = $this->getOperatorConsumers();
@@ -141,7 +160,11 @@ class DashboardController extends Controller
         $operatorId = auth()->user()->operator_id;
         $operationAreaId = auth()->user()->operation_area_id;
         $billings = Billing::query()
-            ->when($operatorId, function ($query) use ($operatorId) {
+            ->when(auth()->user()->district_id, function ($query) {
+                return $query->whereHas('meterRequest.request', function ($query) {
+                    return $query->where('district_id', auth()->user()->district_id);
+                });
+            })->when($operatorId, function ($query) use ($operatorId) {
                 return $query->whereHas('meterRequest.request', function ($query) use ($operatorId) {
                     return $query->where('operator_id', $operatorId);
                 });
@@ -168,7 +191,9 @@ class DashboardController extends Controller
             ->join('requests', 'requests.operator_id', '=', 'operators.id')
             ->join('meter_requests', 'meter_requests.request_id', '=', 'requests.id')
             ->join('billings', 'billings.subscription_number', '=', 'meter_requests.subscription_number')
-            ->select(\DB::raw('SUM(billings.last_index-starting_index) as consumed_water, operators.id, operators.name,operators.logo,operators.address'))
+            ->when(auth()->user()->district_id, function ($query) {
+                return $query->where('requests.district_id', auth()->user()->district_id);
+            })->select(\DB::raw('SUM(billings.last_index-starting_index) as consumed_water, operators.id, operators.name,operators.logo,operators.address'))
             ->groupByRaw('operators.id,operators.name')
             ->orderBy('consumed_water', 'desc')
             ->limit(5)
@@ -189,7 +214,13 @@ class DashboardController extends Controller
     private function getOperatorConsumers()
     {
         $customers = Customer::query()
-            ->whereHas('connections')
+            ->whereHas('connections', function ($query) {
+                $query->whereHas('request', function ($query) {
+                    $query->when(auth()->user()->district_id, function ($query) {
+                        return $query->where('district_id', auth()->user()->district_id);
+                    });
+                });
+            })
             ->join('operators', 'operators.id', '=', 'customers.operator_id')
             ->select(\DB::raw('count(operators.id) as total,operators.name,customers.operator_id'))
             ->groupBy('customers.operator_id', 'operators.name')
@@ -207,7 +238,12 @@ class DashboardController extends Controller
 
     public function getRecentFiveMothPayment()
     {
-       $billings = Payment::query()
+        $billings = Payment::query()
+            ->when(auth()->user()->district_id, function ($query) {
+                return $query->whereHas('billing.meterRequest.request', function ($query) {
+                    return $query->where('district_id', auth()->user()->district_id);
+                });
+            })
             ->whereDate('created_at', '>=', date('Y-m-d', strtotime('-5 months')))
             ->select(\DB::raw('sum(amount) as amount, extract("MONTH" FROM created_at) as month, extract("YEAR" FROM created_at) as year'))
             ->groupByRaw('extract("MONTH" FROM created_at),extract("YEAR" FROM created_at)')

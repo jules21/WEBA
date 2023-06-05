@@ -21,6 +21,7 @@ trait HasStatusColor
             case strtolower(Status::APPROVED):
             case strtolower(Status::PAID):
             case strtolower(Status::DELIVERED):
+            case strtolower(Status::RESOLVED):
             case strtolower(BalanceType::CREDIT):
                 return 'success';
             case strtolower(Status::RETURN_BACK):
@@ -30,6 +31,7 @@ trait HasStatusColor
             case strtolower(BalanceType::DEBIT):
                 return 'danger';
             case strtolower(Status::METER_ASSIGNED):
+            case strtolower(Status::REVIEWED):
                 return 'accent';
             default:
                 return 'secondary';

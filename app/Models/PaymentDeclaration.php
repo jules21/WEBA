@@ -44,6 +44,8 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read int|null $audits_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentHistory> $paymentHistories
  * @property-read int|null $payment_histories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentHistory> $paymentHistories
  * @mixin Eloquent
  */
 class PaymentDeclaration extends Model implements Auditable
