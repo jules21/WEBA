@@ -46,6 +46,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read \App\Models\ChartAccount $paymentLedger
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read \App\Models\OperationArea $operationArea
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @mixin Eloquent
  */
 class Expense extends Model implements Auditable
