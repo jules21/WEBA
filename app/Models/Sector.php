@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
  * @mixin \Eloquent
  */
 class Sector extends Model
@@ -37,5 +38,9 @@ class Sector extends Model
     public function cells(): HasMany
     {
         return $this->hasMany(Cell::class);
+    }
+    public function district(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(District::class);
     }
 }

@@ -59,7 +59,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Phone</th>
-                        <th>Created At</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -71,7 +71,11 @@
                             <td>{{$institution->name}}</td>
                             <td>{{$institution->email}}</td>
                             <td>{{$institution->phone}}</td>
-                            <td>{{$institution->created_at}}</td>
+                            @if($institution->status === 'active')
+                                <td><span class="badge badge-success">Active</span></td>
+                            @else
+                                <td><span class="badge badge-danger">Inactive</span></td>
+                            @endif
                             <td>
                                 <div class="dropdown">
                                     <button class="btn btn-light-primary btn-sm dropdown-toggle" type="button"
@@ -133,11 +137,7 @@
                                     <input type="text" name="phone" class="form-control" aria-describedby="emailHelp"
                                            placeholder="Phone">
                                 </div>
-                                <div class="col-md-12 form-group">
-                                    <label>Password</label>
-                                    <input type="text" name="password" class="form-control" aria-describedby="emailHelp"
-                                           placeholder="Password">
-                                </div>
+
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -182,6 +182,15 @@
                             <div class="form-group">
                                 <label for="name">Phone</label>
                                 <input type="text" name="phone" id="edit_phone" class="form-control" required/>
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <label>Status</label>
+                                <select name="status" id="edit_status" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
                             </div>
 
                         </div>

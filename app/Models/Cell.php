@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
  * @mixin \Eloquent
  */
 class Cell extends Model
@@ -37,5 +38,10 @@ class Cell extends Model
     public function villages(): HasMany
     {
         return $this->hasMany(Village::class);
+    }
+
+    public function sector(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Sector::class);
     }
 }

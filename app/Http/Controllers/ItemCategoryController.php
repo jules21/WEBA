@@ -34,7 +34,7 @@ class ItemCategoryController extends Controller
             abort(403);
         }
 
-        $items = Item::query()
+        $items = Item::with('category', 'packagingUnit','stock','stock.operationArea')
             ->where('item_category_id', $itemCategory->id)
             ->where('operator_id', auth()->user()->operator_id)
             ->select('items.*')->with('category', 'packagingUnit');

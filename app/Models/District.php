@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OperationArea> $operationAreas
  * @property-read int|null $operation_areas_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Sector> $sectors
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OperationArea> $operationAreas
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Sector> $sectors
  * @mixin \Eloquent
  */
 class District extends Model

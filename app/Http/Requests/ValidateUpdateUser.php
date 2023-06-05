@@ -27,7 +27,9 @@ class ValidateUpdateUser extends FormRequest
             'status' => 'nullable',
             //            'phone' => 'nullable|regex:/^[07][0-9]{9}$/|unique:users,telephone,'.request()->route()->parameter('user_id'),
             'operation_area' => 'nullable',
-            'institution_id' => 'required_if:operator_id,==,null',
+//            'institution_id' => 'required_if:operator_id,==,null',
+            'institution_id' => 'nullable',
+            'district_id' => 'nullable',
         ];
     }
 
