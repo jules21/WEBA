@@ -21,6 +21,7 @@ class BillingResource extends JsonResource
         } elseif ($this->balance < $this->amount) {
             $status = 'Partial';
         }
+
         if (now()->diffInDays($this->created_at) > 30 && $this->balance >0) {
             $status = 'Overdue';
         }
