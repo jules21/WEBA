@@ -463,7 +463,7 @@
                         tooltip: {
                             y: {
                                 formatter: function (val) {
-                        return " RWF"+ val.toLocaleString()
+                        return "RWF"+ val.toLocaleString()
                     }
                 }
                 }
