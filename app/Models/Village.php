@@ -29,4 +29,10 @@ use Illuminate\Database\Eloquent\Model;
 class Village extends Model
 {
     use HasFactory;
+    protected $guarded = [];
+
+    public function cell(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Cell::class);
+    }
 }

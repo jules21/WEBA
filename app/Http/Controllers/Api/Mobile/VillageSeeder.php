@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace App\Http\Controllers\Api\Mobile;
 
 use Illuminate\Database\Seeder;
 
