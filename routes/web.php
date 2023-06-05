@@ -55,7 +55,7 @@ Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('vi
 Route::get('/districts/{province}', [DistrictController::class, 'getByProvince'])->name('districts.province');
 Route::get('/sectors/{district}', [SectorController::class, 'getByDistrict'])->name('sectors.district');
 Route::get('/documents-types/{legalType}', [DocumentTypeController::class, 'getByLegalType'])->name('type-document.get-by-legal-type');
-Route::get('/fetch-nida-id',[RegisterController::class,'fetchIdentificationFromNIDA'])->name('fetch-identification-from-nida');
+Route::get('/fetch-nida-id', [RegisterController::class, 'fetchIdentificationFromNIDA'])->name('fetch-identification-from-nida');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -228,7 +228,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
     });
     Route::prefix('settings')->group(function () {
-
         //request types
         Route::get('/request_types', [App\Http\Controllers\RequestTypeController::class, 'index'])->name('request.types');
         Route::post('/request_type/store', [App\Http\Controllers\RequestTypeController::class, 'store'])->name('request.type.store');
@@ -401,6 +400,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::group(['prefix' => 'audits'], function () {
         Route::get('/audits', [AuditingController::class, 'index'])->name('audits.index');
         Route::get('/audits-from/{start}/to/{end}', [AuditingController::class, 'customAudits'])->name('audits.custom');
+    });
+
+    Route::group(['prefix' => 'issues', 'as' => 'issues.'], function () {
+        Route::get('/reported', [\App\Http\Controllers\IssueReportController::class, 'reportedIssues'])
+            ->name('reported');
     });
 
 });

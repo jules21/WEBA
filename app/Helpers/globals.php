@@ -55,6 +55,10 @@ function isOperator(): bool
 {
     return auth()->check() && auth()->user()->operator_id != null && auth()->user()->operation_area == null;
 }
+function isNotOperator(): bool
+{
+    return !isOperator();
+}
 
 function isOperatorOrSuperAdmin(): bool
 {

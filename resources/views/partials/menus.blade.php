@@ -12,7 +12,7 @@
             <span class="menu-text">@lang('backend.dashboard')</span>
         </a>
     </li>
-    @can(\App\Constants\Permission::ManageOperators)
+    @if(auth()->user()->can(\App\Constants\Permission::ManageOperators) && isNotOperator())
         <li class="menu-item nav-operators">
             <a href="{{route('admin.operator.index')}}" class="menu-link">
                <span class="svg-icon menu-icon">
@@ -25,7 +25,7 @@
                 <span class="menu-text">@lang('backend.operators')</span>
             </a>
         </li>
-    @endcan
+    @endif
     @if( auth()->user()->can(\App\Constants\Permission::ManageCustomers) && auth()->user()->operator_id )
         <li class="menu-item nav-customers">
             <a href="{{route('admin.customers.index')}}" class="menu-link">
@@ -102,7 +102,6 @@
             </a>
         </li>
     @endif
-
 
     @if(auth()->user()->canAny(requestPermissions()))
         <li class="menu-item menu-item-submenu nav-request-management" aria-haspopup="true" data-menu-toggle="hover">
@@ -266,6 +265,28 @@
             </li>
         @endif
     @endif
+
+    <li class="menu-section">
+        <h4 class="menu-text">Issue Management</h4>
+        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+    </li>
+
+    <li class="menu-item nav-reported-issues {{ request()->routeIs('admin.issues.reported')?'menu-item-active':'' }}">
+        <a href="{{route('admin.issues.reported')}}"
+           class="menu-link">
+                    <span class="menu-icon svg-icon">
+                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-report"
+                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                   <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4"></path>
+                   <path d="M12 8l0 3"></path>
+                   <path d="M12 14l0 .01"></path>
+                </svg>
+                    </span>
+            <span class="menu-text">Reported Issues</span>
+        </a>
+    </li>
 
     @if(Helper::hasOperationArea())
         @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems,
@@ -672,18 +693,18 @@
                             </a>
                         </li>
                     @endcan
-{{--                    @if(auth()->user()->operator_id)--}}
-{{--                        @can('Manage Water Networks')--}}
-{{--                            <li class="menu-item nav-water-networks" aria-haspopup="true">--}}
-{{--                                <a href="{{ route('admin.water.networks') }}" class="menu-link">--}}
-{{--                                    <i class="menu-bullet menu-bullet-dot">--}}
-{{--                                        <span></span>--}}
-{{--                                    </i>--}}
-{{--                                    <span class="menu-text">Water Networks</span>--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
-{{--                        @endcan--}}
-{{--                    @endif--}}
+                    {{--                    @if(auth()->user()->operator_id)--}}
+                    {{--                        @can('Manage Water Networks')--}}
+                    {{--                            <li class="menu-item nav-water-networks" aria-haspopup="true">--}}
+                    {{--                                <a href="{{ route('admin.water.networks') }}" class="menu-link">--}}
+                    {{--                                    <i class="menu-bullet menu-bullet-dot">--}}
+                    {{--                                        <span></span>--}}
+                    {{--                                    </i>--}}
+                    {{--                                    <span class="menu-text">Water Networks</span>--}}
+                    {{--                                </a>--}}
+                    {{--                            </li>--}}
+                    {{--                        @endcan--}}
+                    {{--                    @endif--}}
                     @can('Manage Water Network Types')
                         <li class="menu-item nav-water-network-types" aria-haspopup="true">
                             <a href="{{ route('admin.water.network.types') }}" class="menu-link">
@@ -747,31 +768,33 @@
                         @endcan
                     @endif
 
-                        @can('Manage User Manual')
-                            <li class="menu-item nav-faqs" aria-haspopup="true">
-                                <a href="{{ route('admin.user.manuals') }}" class="menu-link">
-                                    <i class="menu-bullet menu-bullet-dot">
-                                        <span></span>
-                                    </i>
-                                    <span class="menu-text">User Manuals</span>
-                                </a>
-                            </li>
-                        @endcan
+                    @can('Manage User Manual')
+                        <li class="menu-item nav-faqs" aria-haspopup="true">
+                            <a href="{{ route('admin.user.manuals') }}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">User Manuals</span>
+                            </a>
+                        </li>
+                    @endcan
 
                 </ul>
             </div>
         </li>
     @endcanany
     @can(\App\Constants\Permission::ManageSystemAudit)
-    <li class="menu-section">
-        <h4 class="menu-text">Audits</h4>
-        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-    </li>
+        <li class="menu-section">
+            <h4 class="menu-text">Audits</h4>
+            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+        </li>
         <li class="menu-item nav-audits">
             <a href="{{route('admin.audits.index')}}"
                class="menu-link">
                 <span class="svg-icon menu-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history" width="24"
+                       height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                       stroke-linecap="round" stroke-linejoin="round">
                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                        <path d="M12 8l0 4l2 2"></path>
                        <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path>
