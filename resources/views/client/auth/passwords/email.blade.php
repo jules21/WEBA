@@ -2,8 +2,8 @@
 @section('title', 'Reset password')
 @section('content')
     <div class="tw-mt-20 tw-rounded-xl overflow-hidden">
-        <div class="row">
-            <div class="col-md-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-xl-4 col-lg-5">
                 <div class="text-white p-4">
                     <div class="d-flex justify-content-center align-items-center">
                         <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
@@ -18,7 +18,7 @@
                     <a href="{{ route('client.login') }}" class="btn btn-outline-light tw-mt-10">{{__('auth.login_here')}}</a>
                 </div>
             </div>
-            <div class="col-md-7 bg-white card-body tw-rounded-xl">
+            <div class="col-md-6 col-xl-4 col-lg-5 bg-white card-body tw-rounded-xl">
                 <form class="p-4" action="{{ url('/client/password/email') }}" method="post"  autocomplete="off">
                     @csrf
                     <h2 class="text-primary font-weight-bolder mb-5">{{__('auth.reset_password')}}</h2>
@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="form-group row mt-4">
-                        <div class="col-md-8 col-md-offset-4">
+                        <div class="col-md-10 col-md-offset-2">
                             <button type="submit" class="btn btn-primary  tw-rounded-md">
                                 {{__('auth.send_password_reset_link')}}
                             </button>

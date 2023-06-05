@@ -361,7 +361,9 @@
 
                 let btn = $(this);
                 btn.attr('disabled', true);
-                btn.addClass('spinner spinner-white spinner-right');
+                btn.html(`<div class="spinner-border spinner-border-sm" role="status">
+                                <span class="sr-only">Loading...</span>
+                        </div>`);
 
                 $.ajax({
                     url: url,
@@ -398,7 +400,7 @@
                     },
                     complete: function () {
                         btn.attr('disabled', false);
-                        btn.removeClass('spinner spinner-white spinner-right');
+                        btn.html('Check');
                         $inputDocNumber.prop("disabled", false);
                         $legalTypeId.prop("disabled", false);
                         $documentTypeId.prop("disabled", false);
