@@ -23,7 +23,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property int|null $operator_id
- *
  * @method static SupplierFactory factory(...$parameters)
  * @method static Builder|Supplier newModelQuery()
  * @method static Builder|Supplier newQuery()
@@ -38,9 +37,9 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|Supplier whereOperatorId($value)
  * @method static Builder|Supplier wherePhoneNumber($value)
  * @method static Builder|Supplier whereUpdatedAt($value)
- *
  * @property-read \App\Models\Operator|null $operator
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
  * @mixin Eloquent
  */
 class Supplier extends Model implements Auditable

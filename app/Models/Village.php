@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $cell_id
- *
  * @method static \Database\Factories\VillageFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Village newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Village newQuery()
@@ -23,7 +22,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Village whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Village whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Village whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class Village extends Model

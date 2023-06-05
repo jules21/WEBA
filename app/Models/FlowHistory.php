@@ -24,7 +24,6 @@ use Illuminate\Support\Facades\Storage;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Model|Eloquent $model
- *
  * @method static Builder|FlowHistory newModelQuery()
  * @method static Builder|FlowHistory newQuery()
  * @method static Builder|FlowHistory query()
@@ -37,13 +36,13 @@ use Illuminate\Support\Facades\Storage;
  * @method static Builder|FlowHistory whereType($value)
  * @method static Builder|FlowHistory whereUpdatedAt($value)
  * @method static Builder|FlowHistory whereUserId($value)
- *
  * @property bool $is_comment
  * @property-read string $status_color
  * @property-read User $user
- *
  * @method static Builder|FlowHistory whereIsComment($value)
- *
+ * @property string|null $attachment
+ * @property-read mixed $attachment_url
+ * @method static Builder|FlowHistory whereAttachment($value)
  * @mixin Eloquent
  */
 class FlowHistory extends Model

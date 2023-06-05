@@ -25,7 +25,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property int $user_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static Builder|Expense newModelQuery()
  * @method static Builder|Expense newQuery()
  * @method static Builder|Expense query()
@@ -40,13 +39,13 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|Expense wherePaymentLedger($value)
  * @method static Builder|Expense whereUpdatedAt($value)
  * @method static Builder|Expense whereUserId($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
  * @property-read \App\Models\ChartAccount $expenseCategory
  * @property-read \App\Models\ChartAccount $expenseLedger
  * @property-read \App\Models\ChartAccount $paymentLedger
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read \App\Models\OperationArea $operationArea
  * @mixin Eloquent
  */
 class Expense extends Model implements Auditable

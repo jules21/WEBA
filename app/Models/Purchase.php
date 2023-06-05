@@ -29,7 +29,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property string $status Pending,Approved
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static Builder|Purchase newModelQuery()
  * @method static Builder|Purchase newQuery()
  * @method static Builder|Purchase query()
@@ -42,7 +41,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|Purchase whereStatus($value)
  * @method static Builder|Purchase whereSupplierId($value)
  * @method static Builder|Purchase whereUpdatedAt($value)
- *
  * @property string|null $subtotal
  * @property string|null $tax_amount
  * @property string|null $tax_net_amount
@@ -55,12 +53,20 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read Collection<int, StockMovement> $movements
  * @property-read int|null $movements_count
  * @property-read Supplier $supplier
- *
  * @method static Builder|Purchase whereSubtotal($value)
  * @method static Builder|Purchase whereTaxAmount($value)
  * @method static Builder|Purchase whereTaxNetAmount($value)
  * @method static Builder|Purchase whereTotal($value)
- *
+ * @property string|null $attachment
+ * @property string|null $return_back_status
+ * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\User $createdBy
+ * @property-read Collection<int, \App\Models\FlowHistory> $flowHistories
+ * @property-read Collection<int, \App\Models\StockMovementDetail> $movementDetails
+ * @property-read Collection<int, \App\Models\StockMovement> $movements
+ * @method static Builder|Purchase whereAttachment($value)
+ * @method static Builder|Purchase whereReturnBackStatus($value)
  * @mixin Eloquent
  */
 class Purchase extends Model implements Auditable

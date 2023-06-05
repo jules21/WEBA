@@ -215,7 +215,7 @@ class DashboardController extends Controller
     {
         $customers = Customer::query()
             ->whereHas('connections', function ($query) {
-                $query->whereHas('meterRequest.request', function ($query) {
+                $query->whereHas('request', function ($query) {
                     $query->when(auth()->user()->district_id, function ($query) {
                         return $query->where('district_id', auth()->user()->district_id);
                     });

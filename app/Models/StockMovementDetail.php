@@ -23,7 +23,6 @@ use Illuminate\Support\Carbon;
  * @property string $model_type
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static Builder|StockMovementDetail newModelQuery()
  * @method static Builder|StockMovementDetail newQuery()
  * @method static Builder|StockMovementDetail query()
@@ -37,22 +36,22 @@ use Illuminate\Support\Carbon;
  * @method static Builder|StockMovementDetail whereType($value)
  * @method static Builder|StockMovementDetail whereUnitPrice($value)
  * @method static Builder|StockMovementDetail whereUpdatedAt($value)
- *
  * @property string|null $vat
  * @property-read mixed $total
  * @property-read \App\Models\Item $item
  * @property-read Model|\Eloquent $model
- *
  * @method static Builder|StockMovementDetail whereVat($value)
- *
  * @property string|null $adjustment_type increase or decrease
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $deliveryItems
  * @property-read int|null $delivery_items_count
  * @property-read mixed $delivered_items
  * @property-read mixed $remaining_items
- *
  * @method static Builder|StockMovementDetail whereAdjustmentType($value)
- *
+ * @property string|null $description
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $deliveryItems
+ * @property-read mixed $total_vat_amount
+ * @property-read mixed $vat_amount
+ * @method static Builder|StockMovementDetail whereDescription($value)
  * @mixin Eloquent
  */
 class StockMovementDetail extends Model

@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
  * @property-read int|null $villages_count
- *
  * @method static \Database\Factories\CellFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Cell newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Cell newQuery()
@@ -26,10 +25,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Cell whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cell whereSectorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Cell whereUpdatedAt($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
  * @mixin \Eloquent
  */
 class Cell extends Model

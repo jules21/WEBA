@@ -19,7 +19,6 @@ use Illuminate\Support\Carbon;
  * @property string|null $client_secret
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static Builder|PaymentServiceProvider newModelQuery()
  * @method static Builder|PaymentServiceProvider newQuery()
  * @method static Builder|PaymentServiceProvider query()
@@ -30,14 +29,16 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PaymentServiceProvider whereIp($value)
  * @method static Builder|PaymentServiceProvider whereName($value)
  * @method static Builder|PaymentServiceProvider whereUpdatedAt($value)
- *
  * @property bool $is_active
- *
  * @method static Builder|PaymentServiceProvider whereIsActive($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentServiceProviderAccount> $accounts
  * @property-read int|null $accounts_count
- *
+ * @property int|null $clms_id
+ * @property bool $supports_payment
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentServiceProviderAccount> $accounts
+ * @property-read \App\Models\PaymentType $paymentType
+ * @method static Builder|PaymentServiceProvider whereClmsId($value)
+ * @method static Builder|PaymentServiceProvider whereSupportsPayment($value)
  * @mixin Eloquent
  */
 class PaymentServiceProvider extends Model

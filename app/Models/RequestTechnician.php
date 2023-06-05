@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $address
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|RequestTechnician newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RequestTechnician newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RequestTechnician query()
@@ -28,7 +27,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|RequestTechnician wherePhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RequestTechnician whereRequestId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RequestTechnician whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class RequestTechnician extends Model

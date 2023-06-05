@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
  * @property-read int|null $cells_count
- *
  * @method static \Database\Factories\SectorFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Sector newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Sector newQuery()
