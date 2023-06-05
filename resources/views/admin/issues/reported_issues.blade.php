@@ -107,7 +107,9 @@
                             @endforeach
 
                             <div class="d-flex align-items-start">
-                                @if($item->status!=\App\Constants\Status::RESOLVED)
+                                @if($item->status!=\App\Constants\Status::RESOLVED
+                                    && auth()->user()->can(\App\Constants\Permission::ManageReportedIssues)
+                                     && isForOperationArea())
                                     <button class="mt-2 btn btn-primary  btn-sm font-weight-bolder js-reply"
                                             data-status="{{ucfirst( $item->status) }}"
                                             data-url="{{ route('admin.issues.reply',encryptId($item->id)) }}"
