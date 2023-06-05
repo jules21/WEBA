@@ -137,4 +137,9 @@ class User extends Authenticatable implements Auditable
     {
         return $this->morphMany(IssueReportDetail::class, 'user');
     }
+
+    public function district(): BelongsTo
+    {
+        return $this->belongsTo(District::class);
+    }
 }

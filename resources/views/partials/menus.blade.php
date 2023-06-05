@@ -506,7 +506,8 @@
 
     @endcanany
 
-    @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles, \App\Constants\Permission::ManagePermissions])
+    @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles,
+    \App\Constants\Permission::ManagePermissions, \App\Constants\Permission::ManageDistrictUsers,])
         <li class="menu-section">
             <h4 class="menu-text">System Users Section</h4>
             <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -562,6 +563,16 @@
                                     <span></span>
                                 </i>
                                 <span class="menu-text">Permissions</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can(\App\Constants\Permission::ManageDistrictUsers)
+                        <li class="menu-item nav-district-users" aria-haspopup="true">
+                            <a href="{{ route('admin.users.index') }}?type=district" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">District Users</span>
                             </a>
                         </li>
                     @endcan

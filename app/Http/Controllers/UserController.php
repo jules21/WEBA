@@ -15,15 +15,19 @@ use App\Models\UserFlowHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Yajra\DataTables\Services\DataTable;
 
 class UserController extends Controller
 {
     const FILE_PATH = 'public/files/users';
 
-    public function index()
+    public function index(Request $request)
     {
         $operator_id = auth()->user()->operator_id;
         $data = User::with(['permissions', 'roles', 'operator', 'institution', 'operationArea']);
+        if ($request->input('type') =="district") {
+            $data = $data->has('district');
+        }
         $data->when($operator_id, function ($query) use ($operator_id) {
             return $query->where('operator_id', $operator_id);
         });
@@ -31,7 +35,86 @@ class UserController extends Controller
         $dataTable = new UserDataTable($data);
         $operationAreas = OperationArea::query()->where('operator_id', $operator_id)->get();
 
+        if ($request->input('type') =="district") {
+            return $dataTable->render('admin.user_management.district_users', ['operators' => Operator::all(), 'operationAreas' => $operationAreas]);
+        }
+
         return $dataTable->render('admin.user_management.users', ['operators' => Operator::all(), 'operationAreas' => $operationAreas]);
+    }
+
+    public function districtUsers($data){
+        return \DataTables::of($data)
+            ->addColumn('district', function ($item) {
+                return $item->district ? $item->district->name : '-';
+            })
+            ->editColumn('name', function ($item) {
+                return '<div>
+                            <div class="font-weight-bold">'.$item->name.'</div>
+                            <div class="text-muted mt-1">'.
+                    ($item->institution ? optional($item->institution)->name :
+                        (! $item->operator ? '-' : (optional($item->operator)->name.
+                            ($item->operationArea ? '/ '.optional($item->operationArea)->name : ''))))
+                    .'</div>
+                        </div>';
+            })
+            ->editColumn('phone', function ($item) {
+                return $item->phone ? $item->phone : '-';
+            })
+            ->editColumn('roles', function ($item) {
+                if (count($item->roles) > 0) {
+                    $roles = '';
+                    foreach ($item->roles as $key => $role) {
+                        if ($key == 0) {
+                            $roles .= \Str::slug($role->name);
+                        } else {
+                            $roles .= ','.\Str::slug($role->name);
+                        }
+                    }
+
+                    return '<a href="#" class="label label-info label-inline" data-toggle="tooltip" data-trigger="focus" data-html="true" title='.$roles.'>
+                                    '.count($item->roles).'
+                                </a>';
+                } else {
+                    return '-';
+                }
+
+            })
+            ->editColumn('status', function ($item) {
+                if ($item->status == 'active') {
+                    return '
+                    <span class="badge badge-success">Active</span>';
+                } else {
+                    return '
+                 <span class="badge badge-danger">Inactive</span>
+                    ';
+
+                }
+            })
+            ->addColumn('action', function ($item) {
+                return '<div class="btn-group">
+                                <button type="button" class="btn btn-light-primary btn-sm dropdown-toggle" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">Actions
+                                </button>
+                                <div class="dropdown-menu" style="">
+                                    <a class="dropdown-item" href="'.route('admin.user.add.roles', $item->id).'">Manage Roles</a>
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="edit-btn dropdown-item "
+                                       data-toggle="modal"
+                                       data-target="#edit-user-model"
+                                       data-name="'.$item->name.'"
+                                       data-email="'.$item->email.'"
+                                       data-phone="'.$item->phone.'"
+                                       data-gender="'.$item->gender.'"
+                                       data-id="'.$item->id.'"
+                                       data-operator="'.$item->operator_id.'"
+                                       data-national_id="'.$item->national_id.'"
+                                       data-institution="'.$item->institution_id.'"
+                                       data-status="'.$item->status.'"
+                                       data-url="'.route('admin.users.update', $item->id).'"> Edit</a>';
+
+            })
+            ->rawColumns(['action', 'roles', 'status', 'phone', 'operator', 'name', 'district']);
     }
 
     public function store(ValidateUser $request)
@@ -87,15 +170,12 @@ class UserController extends Controller
         $this->sendSMS($user, $message);
     }
 
-    public function getUsersByBranch(Request $request)
+    public function assignDistrict(User $user, Request $request)
     {
-        $branches = $request->branches;
-        if ($branches) {
-            return User::whereIn('operator_id', $branches)->get();
-        }
-
-        return [];
+        $user->district()->create(['district_id' => $request->district_id]);
+        return redirect()->back()->with('success', 'Districts assigned successfully');
     }
+
 
     protected static function storeFile($request, $paramName)
     {
@@ -116,21 +196,11 @@ class UserController extends Controller
         $action = $user->is_active ? 'Deactivate' : 'Activate';
         $user->is_active = ! $user->is_active;
         $user->save();
-//        $this->saveUserHistory($user, \request('reason'), $action);
 
         return redirect()->back()->with('success', "{$user->email} {$action}d successfully");
     }
 
-//    public function saveUserHistory($user, $reason, $action)
-//    {
-//        $flow = new UserFlowHistory();
-//        $flow->user_id = $user->id;
-//        $flow->reason = $reason;
-//        $flow->action = $action;
-//        $flow->done_by = auth()->user()->id;
-//        $flow->done_at = Carbon::now();
-//        $flow->save();
-//    }
+
 
     protected function sendSMS(User $user, $message = null): void
     {
