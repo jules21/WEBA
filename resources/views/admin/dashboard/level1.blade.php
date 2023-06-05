@@ -249,7 +249,7 @@
 
             <!--end::Dashboard-->
         </div>
-
+        @if(auth()->user()->district_id==null)
             <div class="row mt-5 mb-5">
                 <div class="col-md-12">
                     <div class="card card-body rounded shadow-sm border-0 h-100">
@@ -259,6 +259,7 @@
                 </div>
                 <!--end::Dashboard-->
             </div>
+        @endif
         <!--end::Container-->
     </div>
 

@@ -38,4 +38,9 @@ class Cell extends Model
     {
         return $this->hasMany(Village::class);
     }
+
+    public function sector(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Sector::class);
+    }
 }
