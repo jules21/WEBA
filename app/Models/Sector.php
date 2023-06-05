@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
  * @property-read int|null $cells_count
- *
  * @method static \Database\Factories\SectorFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Sector newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Sector newQuery()
@@ -26,10 +25,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Sector whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Sector whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Sector whereUpdatedAt($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
  * @mixin \Eloquent
  */
 class Sector extends Model

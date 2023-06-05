@@ -25,7 +25,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read string $status_color
- *
  * @method static Builder|PaymentDeclaration newModelQuery()
  * @method static Builder|PaymentDeclaration newQuery()
  * @method static Builder|PaymentDeclaration query()
@@ -39,10 +38,12 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|PaymentDeclaration whereStatus($value)
  * @method static Builder|PaymentDeclaration whereType($value)
  * @method static Builder|PaymentDeclaration whereUpdatedAt($value)
- *
  * @property-read \App\Models\PaymentConfiguration $paymentConfig
  * @property-read \App\Models\Request|null $request
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentHistory> $paymentHistories
+ * @property-read int|null $payment_histories_count
  * @mixin Eloquent
  */
 class PaymentDeclaration extends Model implements Auditable

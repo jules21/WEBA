@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Database\Factories\PaymentTypeFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentType newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentType newQuery()
@@ -21,13 +20,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentType whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentType whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentType whereUpdatedAt($value)
- *
  * @property string|null $name_kin
  * @property bool $is_active
- *
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentType whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentType whereNameKin($value)
- *
  * @mixin \Eloquent
  */
 class PaymentType extends Model

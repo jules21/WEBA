@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Database\Factories\PackagingUnitFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|PackagingUnit newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PackagingUnit newQuery()
@@ -23,7 +22,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|PackagingUnit whereIsActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PackagingUnit whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PackagingUnit whereUpdatedAt($value)
- *
  * @mixin \Eloquent
  */
 class PackagingUnit extends Model

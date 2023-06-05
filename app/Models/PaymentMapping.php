@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $payment_configuration_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMapping newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMapping newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMapping query()
@@ -22,10 +21,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMapping wherePaymentConfigurationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMapping wherePspAccountId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|PaymentMapping whereUpdatedAt($value)
- *
  * @property-read \App\Models\PaymentServiceProviderAccount $account
  * @property-read \App\Models\PaymentConfiguration $paymentConfiguration
- *
+ * @property bool $is_active
+ * @method static \Illuminate\Database\Eloquent\Builder|PaymentMapping whereIsActive($value)
  * @mixin \Eloquent
  */
 class PaymentMapping extends Model

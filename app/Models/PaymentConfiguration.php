@@ -20,7 +20,6 @@ use Illuminate\Support\Carbon;
  * @property float $amount
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @method static Builder|PaymentConfiguration newModelQuery()
  * @method static Builder|PaymentConfiguration newQuery()
  * @method static Builder|PaymentConfiguration query()
@@ -32,20 +31,17 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PaymentConfiguration wherePaymentTypeId($value)
  * @method static Builder|PaymentConfiguration whereRequestTypeId($value)
  * @method static Builder|PaymentConfiguration whereUpdatedAt($value)
- *
  * @property int $operation_area_id
  * @property bool $is_active
  * @property-read OperationArea $operationArea
  * @property-read Operator $operator
  * @property-read PaymentType $paymentType
  * @property-read RequestType $requestType
- *
  * @method static Builder|PaymentConfiguration whereIsActive($value)
  * @method static Builder|PaymentConfiguration whereOperationAreaId($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentMapping> $mappings
  * @property-read int|null $mappings_count
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentMapping> $mappings
  * @mixin Eloquent
  */
 class PaymentConfiguration extends Model

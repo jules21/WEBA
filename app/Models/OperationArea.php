@@ -22,7 +22,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\District|null $district
  * @property-read \App\Models\Operator $operator
- *
  * @method static \Database\Factories\OperationAreaFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea newQuery()
@@ -36,10 +35,15 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereOperatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereUpdatedAt($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChartAccount> $chartOfAccounts
  * @property-read int|null $chart_of_accounts_count
- *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BillCharge> $billCharges
+ * @property-read int|null $bill_charges_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChartAccount> $chartOfAccounts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
  * @mixin \Eloquent
  */
 class OperationArea extends Model implements Auditable

@@ -44,7 +44,6 @@ use Storage;
  * @property-read Province|null $province
  * @property-read Sector|null $sector
  * @property-read Village|null $village
- *
  * @method static OperatorFactory factory(...$parameters)
  * @method static Builder|Operator newModelQuery()
  * @method static Builder|Operator newQuery()
@@ -64,14 +63,22 @@ use Storage;
  * @method static Builder|Operator whereSectorId($value)
  * @method static Builder|Operator whereUpdatedAt($value)
  * @method static Builder|Operator whereVillageId($value)
- *
  * @property-read Collection<int, \App\Models\Customer> $customers
  * @property-read int|null $customers_count
  * @property-read Collection<int, \App\Models\Stock> $stocks
  * @property-read int|null $stocks_count
  * @property-read Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
- *
+ * @property string|null $prefix
+ * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read Collection<int, \App\Models\Customer> $customers
+ * @property-read Collection<int, \App\Models\OperationArea> $operationAreas
+ * @property-read Collection<int, \App\Models\Request> $requests
+ * @property-read int|null $requests_count
+ * @property-read Collection<int, \App\Models\Stock> $stocks
+ * @property-read Collection<int, \App\Models\User> $users
+ * @method static Builder|Operator wherePrefix($value)
  * @mixin Eloquent
  */
 class Operator extends Model implements Auditable

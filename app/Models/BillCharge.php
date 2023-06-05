@@ -15,7 +15,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property int $operation_area_id
  * @property string $unit_price
- *
  * @method static \Database\Factories\BillChargeFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|BillCharge newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|BillCharge newQuery()
@@ -26,10 +25,13 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static \Illuminate\Database\Eloquent\Builder|BillCharge whereUnitPrice($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BillCharge whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|BillCharge whereWaterNetworkTypeId($value)
- *
  * @property-read \App\Models\OperationArea $operationArea
  * @property-read \App\Models\WaterNetworkType $waterNetworkType
- *
+ * @property int|null $operator_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\Operator|null $operator
+ * @method static \Illuminate\Database\Eloquent\Builder|BillCharge whereOperatorId($value)
  * @mixin \Eloquent
  */
 class BillCharge extends Model implements Auditable

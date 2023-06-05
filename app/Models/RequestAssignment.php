@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $user
- *
  * @method static \Illuminate\Database\Eloquent\Builder|RequestAssignment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RequestAssignment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RequestAssignment query()
@@ -25,7 +24,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|RequestAssignment whereRequestId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RequestAssignment whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RequestAssignment whereUserId($value)
- *
  * @mixin \Eloquent
  */
 class RequestAssignment extends Model

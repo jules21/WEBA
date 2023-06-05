@@ -23,7 +23,6 @@ use Storage;
  * @property int|null $approved_by
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment query()
@@ -35,7 +34,6 @@ use Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereOperationAreaId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereUpdatedAt($value)
- *
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
  * @property-read int|null $flow_histories_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $items
@@ -43,7 +41,21 @@ use Storage;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
  * @property-read int|null $movements_count
  * @property-read \App\Models\OperationArea $operationArea
- *
+ * @property string|null $attachment
+ * @property string|null $return_back_status
+ * @property-read \App\Models\User|null $approvedBy
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read int|null $audits_count
+ * @property-read \App\Models\User $createdBy
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
+ * @property-read string $id_encrypted
+ * @property-read string $status_color
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $items
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $movementDetails
+ * @property-read int|null $movement_details_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
+ * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereAttachment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereReturnBackStatus($value)
  * @mixin \Eloquent
  */
 class Adjustment extends Model implements Auditable
