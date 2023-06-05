@@ -51,8 +51,22 @@
         </div>
         <div class="card-body">
             <!--begin: Datatable-->
-            <div class="table-responsive">
-                {{ $dataTable->table(['class' => 'table table-head-custom border table-head-solid table-hover'], true) }}
+            <div class="table-responsive my-3">
+                <table class="table table-head-custom border table-head-solid table-hover dataTable">
+                    <thead>
+                    <tr>
+                        <th>District</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
             </div>
 
         </div>
@@ -190,6 +204,42 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js" integrity="sha512-k2GFCTbp9rQU412BStrcD/rlwv1PYec9SNrkbQlo6RZCf75l6KcC3UwDY8H5n5hl4v77IDtIPwOk9Dqjs/mMBQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
 
+        $(document).ready(function () {
+            let dataTable = $('.dataTable').DataTable({
+                processing: true,
+                serverSide: true,
+                //route with type district parameter
+                ajax: "{{ route('admin.users.index') }}?type=district",
+                columns: [
+                    {data: 'district', name: 'district',
+                        render: function (data, type, row) {
+                            return data ? data : 'N/A';
+                        }
+                    },
+
+                    {data: 'name', name: 'name'},
+                    {data: 'phone', name: 'phone'},
+                    {data: 'email', name: 'email'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                ],
+                "order": [[0, "asc"]],
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                    "lengthMenu": "Display _MENU_ records per page",
+                    "infoEmpty": "No records available",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "search": "Search:",
+                }
+            });
+        });
+
+
         $('.nav-user-managements').addClass('menu-item-active  menu-item-open');
 
         @if(request()->has('type') && request()->get('type') == 'district')
@@ -211,42 +261,6 @@
             modal.find('form').attr('action', href)
         })
 
-        $(document).on('change', '.operator_id', function () {
-            let operatorId = $(this).val();
-            if (operatorId !== '') {
-                getOperationArea(Array.from(operatorId));
-                $('.institution_container').css('display', 'none')
-                $('[name="institution_id"]').val('');
-            } else {
-                $('.institution_container').css('display', 'block')
-                $('.operation_area_id').empty();
-                $('.operation_area_id').append('<option value="">Select Operation Area</option>');
-            }
-        });
-        const getOperationArea = (operatorId, selected =null) => {
-            const url = "{{ route('get-operation-areas') }}";
-            const operatrionArea = selected ? selected : null;
-            if (operatorId !== null){
-                console.log(operatorId)
-                $.ajax({
-                    url: url,
-                    type: 'GET',
-                    data: {operator_id: operatorId},
-                    success: function (data) {
-                        $('.operation_area_id').empty();
-                        $('.operation_area_id').append('<option value="">Select Operation Area</option>');
-                        $.each(data[0], function (key, value) {
-                            if (operatrionArea !== null && operatrionArea === value.id) {
-                                $('.operation_area_id').append('<option value="' + value.id + '" selected>' + value.name + '</option>');
-                            }
-                            $('.operation_area_id').append('<option value="' + value.id + '">' + value.name + '</option>');
-                        });
-                        $('.operation_area_id').select2();
-                    }
-                });
-            }
-
-        };
     </script>
 
     @endsection

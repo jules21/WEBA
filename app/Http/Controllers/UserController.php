@@ -24,7 +24,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $operator_id = auth()->user()->operator_id;
-        $data = User::with(['permissions', 'roles', 'operator', 'institution', 'operationArea']);
+        $data = User::with(['permissions', 'roles', 'operator', 'institution', 'operationArea','district']);
         if ($request->input('type') =="district") {
             $data = $data->has('district');
         }
@@ -50,11 +50,6 @@ class UserController extends Controller
             ->editColumn('name', function ($item) {
                 return '<div>
                             <div class="font-weight-bold">'.$item->name.'</div>
-                            <div class="text-muted mt-1">'.
-                    ($item->institution ? optional($item->institution)->name :
-                        (! $item->operator ? '-' : (optional($item->operator)->name.
-                            ($item->operationArea ? '/ '.optional($item->operationArea)->name : ''))))
-                    .'</div>
                         </div>';
             })
             ->editColumn('phone', function ($item) {
