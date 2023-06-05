@@ -459,7 +459,14 @@
                         },
                         xaxis: {
                             categories: Object.keys(data),
-                        }
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: function (val) {
+                        return val.toLocaleString() + "\u33A5"
+                    }
+                }
+                }
                     };
 
                     var chart = new ApexCharts(document.querySelector("#chart"), options);
