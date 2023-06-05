@@ -52,7 +52,7 @@ class OperatorController extends Controller
 
                     $deleteBtn = '';
                     if ($row->operation_areas_count == 0) {
-                        $deleteBtn = '  <a class="dropdown-item js-delete" href="'.route('admin.operator.delete', encryptId($row->id)).'">
+                        $deleteBtn = '  <a class="dropdown-item js-delete" href="' . route('admin.operator.delete', encryptId($row->id)) . '">
                                                          <i class="fas fa-trash"></i>
                                                          <span class="ml-2">Delete</span>
                                         </a>';
@@ -60,14 +60,14 @@ class OperatorController extends Controller
                     $opAreaBtn = '';
 
                     if (auth()->user()->can(Permission::ManageOperationAreas)) {
-                        $opAreaBtn = '<a class="dropdown-item" href="'.route('admin.operator.area-of-operation.index', encryptId($row->id)).'">
+                        $opAreaBtn = '<a class="dropdown-item" href="' . route('admin.operator.area-of-operation.index', encryptId($row->id)) . '">
                                          <i class="fas fa-map"></i>
                                          <span class="ml-2">Area of Operations</span>
                                       </a>';
                     }
 
                     if (auth()->user()->can(Permission::ManageOperatorUsers)) {
-                        $opAreaBtn .= '<a class="dropdown-item" href="'.route('admin.operator.users', encryptId($row->id)).'">
+                        $opAreaBtn .= '<a class="dropdown-item" href="' . route('admin.operator.users', encryptId($row->id)) . '">
                                          <i class="fas fa-users"></i>
                                          <span class="ml-2">Users</span>
                                       </a>';
@@ -78,19 +78,20 @@ class OperatorController extends Controller
                                     Options
                                  </button>
                                  <div class="dropdown-menu border">
-                                        '.$opAreaBtn.'
-                                        <a class="dropdown-item" href="'.route('admin.operator.details-page', encryptId($row->id)).'">
+                                        ' . $opAreaBtn . '
+                                        <a class="dropdown-item" href="' . route('admin.operator.details-page', encryptId($row->id)) . '">
                                          <i class="fas fa-info-circle "></i>
                                          <span class="ml-2">Details</span>
                                      </a>
                                      <a class="dropdown-item js-edit"
-                                      data-address="'.$row->address.'"
-                                      data-logo="'.$row->logo_url.'"
-                                      href="'.route('admin.operator.update', encryptId($row->id)).'">
+                                      data-address="' . $row->address . '"
+                                      data-prefix="' . $row->prefix . '"
+                                      data-logo="' . $row->logo_url . '"
+                                      href="' . route('admin.operator.update', encryptId($row->id)) . '">
                                          <i class="fas fa-edit"></i>
                                          <span class="ml-2">Edit</span>
                                      </a>
-                                        '.$deleteBtn.'
+                                        ' . $deleteBtn . '
 
                                  </div>
                             </div>';
@@ -142,6 +143,7 @@ class OperatorController extends Controller
             'cell_id' => $data['cell_id'],
             'village_id' => $data['village_id'],
             'address' => $details['address'],
+            'prefix' => $data['prefix'],
         ]);
 
         if ($request->ajax()) {
@@ -169,8 +171,8 @@ class OperatorController extends Controller
 
         if ($request->file('logo')) {
 
-            if (! is_null($operator->logo)) {
-                Storage::delete(Operator::LOGO_PATH.$operator->logo);
+            if (!is_null($operator->logo)) {
+                Storage::delete(Operator::LOGO_PATH . $operator->logo);
             }
             $path = $request->file('logo')->store(Operator::LOGO_PATH);
             $data['logo'] = basename($path);
@@ -216,7 +218,7 @@ class OperatorController extends Controller
         ];
 
         $response = Http::withHeaders($headers)
-            ->post(config('app.CLMS_URL').'/api/v1/cms-rwss/get-operator-details', $body);
+            ->post(config('app.CLMS_URL') . '/api/v1/cms-rwss/get-operator-details', $body);
         if ($response->status() == 200) {
             return $response->json();
         }
@@ -236,7 +238,7 @@ class OperatorController extends Controller
         $operationAreaId = request('operation_area_id');
 
         return (new OperatorsExport($startDate, $endDate, $districtId, $operationAreaId))
-            ->download('operators-'.$now.'.xlsx');
+            ->download('operators-' . $now . '.xlsx');
     }
 
     public function details(Operator $operator)

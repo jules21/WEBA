@@ -22,6 +22,7 @@ class UpdateOperatorRequest extends FormRequest
         return [
             'address' => ['required', 'string', 'max:255'],
             'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,svg,webp', 'max:1048'],
+            'prefix' => ['required', 'unique:operators,prefix,' . $this->route('operator')->id, 'string', 'max:2', 'min:2'],
         ];
     }
 }

@@ -30,6 +30,7 @@ use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OperatorUserController;
 use App\Http\Controllers\PaymentServiceProviderAccountController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReplyIssueReportController;
 use App\Http\Controllers\RequestAssignmentController;
 use App\Http\Controllers\RequestDeliveryController;
 use App\Http\Controllers\RequestReviewController;
@@ -412,6 +413,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     Route::group(['prefix' => 'issues', 'as' => 'issues.'], function () {
         Route::get('/reported', [IssueReportController::class, 'reportedIssues'])
             ->name('reported');
+        Route::put('/{issueReport}/reply', [ReplyIssueReportController::class, 'replyIssue'])
+            ->name('reply');
     });
 
 });

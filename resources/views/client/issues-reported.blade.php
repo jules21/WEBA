@@ -102,8 +102,6 @@
 
     <script>
         let operators = @json($operators);
-        console.log(operators);
-
         $(function () {
             $('#addNewBtn').on('click', function () {
                 $('#newIssueModal').modal();

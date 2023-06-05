@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasEncryptId;
 use App\Traits\HasStatusColor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,7 +41,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class IssueReport extends Model
 {
-    use HasStatusColor;
+    use HasStatusColor, HasEncryptId;
 
     public function details(): HasMany
     {
@@ -54,6 +55,11 @@ class IssueReport extends Model
 
     public function operatingArea(): BelongsTo
     {
-        return $this->belongsTo(OperationArea::class,'operation_area_id');
+        return $this->belongsTo(OperationArea::class, 'operation_area_id');
+    }
+
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class);
     }
 }
