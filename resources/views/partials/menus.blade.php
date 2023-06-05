@@ -291,7 +291,7 @@
         @endif
     @endif
 
-    @if(Helper::hasOperationArea())
+    @if(Helper::isOperator())
         @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems,
         \App\Constants\Permission::ManageStocks,
         \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment,
@@ -303,7 +303,7 @@
                 <h4 class="menu-text">Stock Management Section</h4>
                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
             </li>
-            @canany([\App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
+            @canany([\App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn, \App\Constants\Permission::ViewStockIn])
                 <li class="menu-item menu-item-submenu nav-purchases" aria-haspopup="true" data-menu-toggle="hover">
                     <a href="javascript:" class="menu-link menu-toggle">
                     <span class="svg-icon menu-icon">
@@ -339,6 +339,7 @@
                                         </a>
                                     </li>
                                 @endcan
+                                    @can(\App\Constants\Permission::ApproveStockIn)
                                 <li class="menu-item nav-my-purchases" aria-haspopup="true">
                                     <a href="{{route('admin.purchases.index')}}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
@@ -349,6 +350,7 @@
                     </span>
                                     </a>
                                 </li>
+                                    @endcan
                             @endif
                             <li class="menu-item nav-all-purchases" aria-haspopup="true">
                                 <a href="{{route('admin.purchases.index',['type'=>'all'])}}" class="menu-link">
@@ -509,7 +511,8 @@
 
     @endcanany
 
-    @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles, \App\Constants\Permission::ManagePermissions])
+    @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles,
+    \App\Constants\Permission::ManagePermissions, \App\Constants\Permission::ManageDistrictUsers,])
         <li class="menu-section">
             <h4 class="menu-text">System Users Section</h4>
             <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -565,6 +568,16 @@
                                     <span></span>
                                 </i>
                                 <span class="menu-text">Permissions</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can(\App\Constants\Permission::ManageDistrictUsers)
+                        <li class="menu-item nav-district-users" aria-haspopup="true">
+                            <a href="{{ route('admin.users.index') }}?type=district" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">District Users</span>
                             </a>
                         </li>
                     @endcan

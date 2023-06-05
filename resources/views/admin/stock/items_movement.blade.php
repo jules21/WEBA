@@ -35,6 +35,17 @@
     <div class="card card-body mb-5">
         <form action="#" id="filter-form">
             <div class="row">
+                @unless(Helper::hasOperationArea())
+                    <div class="col-md-3 form-group">
+                        <label for="operation_area">Operation Area</label>
+                        <select name="operation_area_id[]" id="operation_area" class="form-control select2"
+                                data-placeholder="Select Operation Area" multiple="multiple">
+                            @foreach($operationAreas as $operationArea)
+                                <option value="{{ $operationArea->id }}">{{ $operationArea->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endunless
                 <div class="col-md-3 form-group">
                     <label for="type">Type</label>
                     <select name="type[]" id="type" class="form-control select2"
@@ -153,9 +164,15 @@
             });
         };
         const initData = () => {
+            const operationAreaId = "{{ request()->get('operation_area_id') ? implode(',', request()->get('operation_area_id')) : '' }}";
             const itemCategoryId = "{{ request()->get('item_category_id') ? implode(',', request()->get('item_category_id')) : '' }}";
             const itemId = "{{ request()->get('item_id') ? implode(',', request()->get('item_id')) : '' }}";
             const selectedType = "{{ request()->get('type') ? implode(',', request()->get('type')) : '' }}";
+
+            if (operationAreaId !== '') {
+                $('#operation_area').val(operationAreaId.split(',')).trigger('change');
+            }
+
             if (itemCategoryId !== '') {
                 $('#item_category').val(itemCategoryId.split(',')).trigger('change')
 

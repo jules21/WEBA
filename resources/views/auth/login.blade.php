@@ -78,7 +78,7 @@
                             </label>
                         </div>
                         <div>
-                            <a href=""
+                            <a href="{{ route('password.request')}}"
                                class="text-primary tw-text-xs lg:tw-text-sm text-decoration-none tw-leading-[21px] font-weight-normal  text-primary">
                                 @lang('auth.forgot_password') ?
                             </a>

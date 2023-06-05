@@ -104,4 +104,9 @@ class Permission
 
     const ViewReportedIssues = 'View Reported Issues';
     const ManageReportedIssues = 'Manage Reported Issues';
+    const ManageDistrictUsers = 'Manage District Users';
+
+    const ViewStockIn = 'View Stock In';
+    const ViewItems = 'View Items';
+    const ViewItemCategories = 'View Item Categories';
 }

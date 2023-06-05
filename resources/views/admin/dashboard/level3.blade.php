@@ -337,7 +337,7 @@
                         <div class="card-body d-flex flex-column px-0" style="position: relative;">
                             @foreach($topOperators as $row)
                                 <!--begin::Items-->
-                                <div class="flex-grow-1 card-spacer-x">
+                                <div class="mb-5 card-spacer-x">
                                     <!--begin::Item-->
                                     <div class="d-flex align-items-center justify-content-between mb-2">
                                         <div class="d-flex align-items-center mr-2">
@@ -459,7 +459,14 @@
                         },
                         xaxis: {
                             categories: Object.keys(data),
-                        }
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: function (val) {
+                        return "RWF"+ val.toLocaleString()
+                    }
+                }
+                }
                     };
 
                     var chart = new ApexCharts(document.querySelector("#chart"), options);
