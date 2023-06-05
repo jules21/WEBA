@@ -27,7 +27,7 @@ class ItemController extends Controller
         }
         $items = Item::query()
             ->where('operator_id', auth()->user()->operator_id)
-            ->select('items.*')->with('category', 'packagingUnit');
+            ->select('items.*')->with('category', 'packagingUnit','stock.operationArea');
         $dataTable = new ItemsDataTable($items);
 
         return $dataTable->render('admin.stock.items', [

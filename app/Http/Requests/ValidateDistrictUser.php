@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreAssignInstitutionToUserRequest extends FormRequest
+class ValidateDistrictUser extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,13 +21,16 @@ class StoreAssignInstitutionToUserRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            "name"=>"required",
-            "email"=>"required",
-            "phone"=>"required",
-//            "password"=>"required",
+            'name' => 'required',
+            'email' => 'nullable|email|unique:users',
+            'phone' => [
+                'required', 'unique:users',
+                app()->environment('production') ? 'regex:/^[07][0-9]{9}$/' : 'max:20',
+            ],
+            'district_id' => 'required',
         ];
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\HasStatusColor;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -38,10 +40,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class IssueReport extends Model
 {
-    use HasFactory;
+    use HasStatusColor;
 
     public function details(): HasMany
     {
         return $this->hasMany(IssueReportDetail::class);
+    }
+
+    public function operator(): BelongsTo
+    {
+        return $this->belongsTo(Operator::class);
+    }
+
+    public function operatingArea(): BelongsTo
+    {
+        return $this->belongsTo(OperationArea::class,'operation_area_id');
     }
 }

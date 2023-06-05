@@ -50,6 +50,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read \App\Models\ChartAccount $debitLedger
  * @property-read \App\Models\ChartAccount $debitLegderGroup
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @mixin Eloquent
  */
 class JournalEntry extends Model implements Auditable

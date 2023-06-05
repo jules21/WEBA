@@ -24,6 +24,9 @@ class UserDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables($query)
+            ->addColumn('district', function ($item) {
+                return $item->district ? $item->district->name : '-';
+            })
             ->editColumn('name', function ($item) {
                 return '<div>
                             <div class="font-weight-bold">'.$item->name.'</div>
@@ -88,10 +91,11 @@ class UserDataTable extends DataTable
                                        data-national_id="'.$item->national_id.'"
                                        data-institution="'.$item->institution_id.'"
                                        data-status="'.$item->status.'"
+                                        data-district="'.$item->district_id.'"
                                        data-url="'.route('admin.users.update', $item->id).'"> Edit</a>';
 
             })
-            ->rawColumns(['action', 'roles', 'status', 'phone', 'operator', 'name']);
+            ->rawColumns(['action', 'roles', 'status', 'phone', 'operator', 'name', 'district']);
     }
 
     /**
