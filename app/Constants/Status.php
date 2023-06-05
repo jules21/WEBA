@@ -61,4 +61,9 @@ class Status
     {
         return [self::APPROVED, self::METER_ASSIGNED, self::PARTIALLY_DELIVERED, self::DELIVERED];
     }
+
+    public static function issueStatues(): array
+    {
+        return [self::PENDING, self::REVIEWED, self::RESOLVED];
+    }
 }

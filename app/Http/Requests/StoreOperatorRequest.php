@@ -23,6 +23,7 @@ class StoreOperatorRequest extends FormRequest
             'operator_details' => ['required', 'json'],
             'cell_id' => ['required', 'exists:cells,id'],
             'village_id' => ['nullable', 'exists:villages,id'],
+            'prefix' => ['required', 'unique:operators,prefix', 'string', 'max:2', 'min:2'],
         ];
     }
 
