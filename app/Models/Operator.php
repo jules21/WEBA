@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasInitials;
 use Database\Factories\OperatorFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -79,9 +80,9 @@ use Storage;
  */
 class Operator extends Model implements Auditable
 {
-    use HasFactory, \OwenIt\Auditing\Auditable;
+    use HasFactory, \OwenIt\Auditing\Auditable,HasInitials;
 
-    protected $appends = ['logo_url'];
+    protected $appends = ['logo_url','initials'];
 
     const LOGO_PATH = 'operators/logos/';
 
@@ -166,4 +167,6 @@ class Operator extends Model implements Auditable
             ])
             ->first();
     }
+
+
 }
