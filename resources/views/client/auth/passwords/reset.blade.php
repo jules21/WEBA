@@ -2,8 +2,8 @@
 @section('title', 'Reset password')
 @section('content')
     <div class="tw-mt-20 tw-rounded-xl overflow-hidden">
-        <div class="row">
-            <div class="col-md-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
                 <div class="text-white p-4">
                     <div class="d-flex justify-content-center align-items-center">
                         <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
@@ -14,7 +14,7 @@
                     </p>
                 </div>
             </div>
-            <div class="col-md-7 bg-white card-body tw-rounded-xl">
+            <div class="col-md-6 col-lg-5 bg-white card-body tw-rounded-xl">
                 <form class="p-4" action="{{ url('/client/password/reset') }}" method="post" autocomplete="off">
                     @csrf
                     <input type="hidden" name="token" value="{{ $token }}">

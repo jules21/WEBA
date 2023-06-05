@@ -57,6 +57,7 @@ class PaymentDeclaration extends Model implements Auditable
 
     public function generateReferenceNumber($prefix = 'CMS', $length = 8): string
     {
+
         $number = str_pad($this->id, $length, '0', STR_PAD_LEFT);
         $ref = $prefix.$number;
         $this->payment_reference = $ref;

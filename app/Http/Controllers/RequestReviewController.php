@@ -20,6 +20,7 @@ use Throwable;
 
 class RequestReviewController extends Controller
 {
+
     /**
      * @throws Throwable
      */
@@ -33,7 +34,6 @@ class RequestReviewController extends Controller
         $previousStatus = $request->getPreviousStatus();
         // update request
         $this->updateRequest($request, $status);
-
 
         // save review
         $this->saveHistory($request, $data['comment'], $status);
