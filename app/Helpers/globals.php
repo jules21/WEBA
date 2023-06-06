@@ -100,5 +100,9 @@ function issueManagementPermissions(): array
 return [
         Permission::ViewReportedIssues,
         Permission::ManageReportedIssues,
+
+    Permission::ViewIssuesReporting,
+    Permission::ManageIssuesReporting,
+
     ];
 }

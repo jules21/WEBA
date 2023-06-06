@@ -16,6 +16,7 @@ class IssuesReported extends Component
     public function render()
     {
         $issues = IssueReport::with(['details.model', 'operator', 'operatingArea'])
+            ->where('client_id','=',auth('client')->id())
             ->latest()
             ->paginate(10);
 

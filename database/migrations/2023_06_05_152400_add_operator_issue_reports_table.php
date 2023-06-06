@@ -14,7 +14,7 @@ class AddOperatorIssueReportsTable extends Migration
     public function up()
     {
         Schema::table('issue_reports', function (Blueprint $table) {
-            $table->foreignIdFor(\App\Models\Operator::class)->constrained();
+            $table->foreignIdFor(\App\Models\Operator::class)->nullable()->constrained();
         });
     }
 

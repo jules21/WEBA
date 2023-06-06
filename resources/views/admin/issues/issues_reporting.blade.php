@@ -56,11 +56,11 @@
         </div>
         <div class="accordion accordion-solid accordion-panel accordion-svg-toggle" id="accordionExample8">
 
-            @for($i=1;$i<10;$i++)
+            @foreach($issueReports as $issue)
                 <div class="card">
                     <div class="card-header" id="headingOne8">
                         <div class="card-title align-items-start collapsed" data-toggle="collapse"
-                             data-target="#collapseOne{{$i}}">
+                             data-target="#collapseOne{{$issue->id}}">
                           <span class="svg-icon mr-3">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                  width="24px"
@@ -88,70 +88,61 @@
                                            class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">
                                             {{ auth()->user()->name }}
                                         </a>
-                                        <span class="text-muted font-size-sm">
-                                        {{ auth()->user()->created_at->diffForHumans()??now()->addMinutes(rand(1,10))->diffForHumans()}}
-                                    </span>
+                                        <span class="text-muted font-size-sm">{{ $issue->created_at->diffForHumans() }}</span>
                                     </div>
                                 </div>
                                 <div class="small">
-                                    CSPs and embedded SVGs Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                    Commodi
-                                    dolore id nihil? Accusamus at eum non
+                                    {{ $issue->title }}
                                 </div>
                             </div>
-                            <span class="small label label-inline label-light-primary rounded-pill">Pending</span>
+                            <span class="small label label-inline label-light-{{$issue->statusColor}} rounded-pill">
+                            {{ucfirst( $issue->status) }}
+                            </span>
                         </div>
                     </div>
-                    <div id="collapseOne{{$i}}" class="collapse " data-parent="#accordionExample8">
+                    <div id="collapseOne{{$issue->id}}" class="collapse " data-parent="#accordionExample8">
                         <div class="card-body">
-                            <div class="p-4 bg-light my-2 rounded">
-                                Bootstrap “spinners” can be used to show the loading state in your projects. They’re
-                                built
-                                only with HTML and CSS, meaning you don’t need any JavaScript to create them. You will,
-                                however, need some custom JavaScript to toggle their visibility. Their appearance,
-                                alignment, and sizing can be easily customized with our amazing utility classes.
-                            </div>
-                            <div class="d-flex align-items-start">
 
-                                <button class="mt-2 btn btn-primary  btn-sm font-weight-bolder js-reply">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         class="icon icon-tabler icon-tabler-messages"
-                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                         stroke="currentColor"
-                                         fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path
-                                            d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10"></path>
-                                        <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2"></path>
-                                    </svg>
-                                    Reply
-                                </button>
-                                @if($i%2==0)
-                                    <div class="ml-3 p-4 bg-light-primary my-2 rounded">
-                                <span class="text-primary">
-                                    {{ now()->diffForHumans() }}
-                                </span>
-                                        <div>
-                                            Bootstrap “spinners” can be used to show the loading state in your projects.
-                                            They’re
-                                            built
-                                            only with HTML and CSS, meaning you don’t need any JavaScript to create
-                                            them. You
-                                            will,
-                                            however, need some custom JavaScript to toggle their visibility. Their
-                                            appearance,
-                                            alignment, and sizing can be easily customized with our amazing utility
-                                            classes........
-                                        </div>
+                            @foreach($issue->details as $detail)
+                                <div
+                                    class="p-4 bg-{{$detail->user_type==\App\Models\User::class?'light-success':'light'}} my-2 rounded">
+                                    <div class="font-weight-bolder mb-3">
+                                        <span class="font-weight-bolder">{{$detail->model->name}}</span> ,
+                                        <span class="text-primary">{{ $detail->created_at->diffForHumans() }}</span>
                                     </div>
-                                @endif
-
-                            </div>
+                                    <div class="">
+                                        {{$detail->description}}
+                                    </div>
+                                </div>
+                            @endforeach
+                                <div class="d-flex align-items-start">
+                                    @if($issue->status!=\App\Constants\Status::RESOLVED
+                                        && auth()->user()->can(\App\Constants\Permission::ManageIssuesReporting)
+                                         && isForOperationArea())
+                                        <button class="mt-2 btn btn-primary  btn-sm font-weight-bolder js-reply"
+                                                data-status="{{ucfirst( $issue->status) }}"
+                                                data-url="{{ route('admin.issues.issues.reporting.reply',encryptId($issue->id)) }}"
+                                                data-id="{{$issue->id}}">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 class="icon icon-tabler icon-tabler-messages"
+                                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                 stroke="currentColor"
+                                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                <path
+                                                    d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10"></path>
+                                                <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2"></path>
+                                            </svg>
+                                            Reply
+                                        </button>
+                                    @endif
+                                </div>
                         </div>
                     </div>
                 </div>
-            @endfor
+            @endforeach
         </div>
+
 
     </div>
 
@@ -172,19 +163,6 @@
                     </div>
 
                     <div class="modal-body">
-
-                        <div class="form-group">
-                            <label for="district_id">
-                                District:
-                            </label>
-                            <select name="district_id" id="district_id" class="form-control" aria-describedby="EmailHelp" required>
-                                <option value="">Please Select District</option>
-                                @foreach(App\Models\District::all() as $district)
-                                    <option value="{{$district->id}}">{{$district->name}}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
 
                         <div class="form-group">
                             <label for="title">
@@ -218,7 +196,7 @@
     <div class="modal fade" id="replyModal" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="#" method="post" id="submissionForm"
+            <form action="{{route('admin.issues.issues.reporting.reply',$issue->id)}}" method="post" id="submissionForm"
                   class="submissionForm" enctype="multipart/form-data">
                 @csrf
                 {{--                <input type="hidden" value="0" id="issue_report_id" name="issue_report_id">--}}
@@ -231,6 +209,16 @@
                     </div>
 
                     <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="status">Mark issue as:</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value="">Please Select</option>
+                                @foreach(\App\Constants\Status::issueStatues() as $item)
+                                    <option value="{{$item}}">{{$item}}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
                         <div class="form-group">
                             <label for="description">
