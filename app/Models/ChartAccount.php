@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|ChartAccount whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, ChartAccount> $children
  * @property-read \Illuminate\Database\Eloquent\Collection<int, ChartAccount> $children
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, ChartAccount> $children
  * @mixin \Eloquent
  */
 class ChartAccount extends Model

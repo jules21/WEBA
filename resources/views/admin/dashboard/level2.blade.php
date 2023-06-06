@@ -461,6 +461,13 @@
                         },
                         xaxis: {
                             categories: Object.keys(data),
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: function (val) {
+                                    return val.toLocaleString() + "\u33A5"
+                                }
+                            }
                         }
                     };
 

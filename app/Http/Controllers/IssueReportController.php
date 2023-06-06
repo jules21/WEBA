@@ -10,7 +10,13 @@ class IssueReportController extends Controller
 
     public function reportedIssues()
     {
-        return view('admin.issues.reported_issues');
+        $issues = IssueReport::query()
+            ->with(['details.model', 'operator', 'operatingArea','client'])
+            ->latest()
+            ->paginate(10);
+        return view('admin.issues.reported_issues', [
+            'issues' => $issues
+        ]);
     }
 
     /**

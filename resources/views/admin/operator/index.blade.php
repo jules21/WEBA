@@ -266,6 +266,15 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="prefix" class="form-label font-weight-bold">
+                                                    Prefix
+                                                </label>
+                                                <input type="text" class="form-control" id="prefix"
+                                                       name="prefix"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -319,6 +328,12 @@
                             <label for="edit_address">Address</label>
                             <input type="text" class="form-control" id="edit_address" name="address" value="">
                         </div>
+
+                        <div class="form-group">
+                            <label for="edit_prefix">Prefix</label>
+                            <input type="text" class="form-control" id="edit_prefix" name="prefix" value="">
+                        </div>
+
                     </div>
                     <div class="modal-footer bg-light">
                         <button type="submit" class="btn btn-primary">
@@ -655,6 +670,7 @@
                 $('#logoBg').css('background-image', 'url(' + $(this).data('logo') + ')');
 
                 $('#edit_address').val($(this).data('address'));
+                $('#edit_prefix').val($(this).data('prefix'));
 
                 $('#editForm').attr('action', url);
                 $('#editModal').modal('show');
@@ -677,7 +693,9 @@
 
             $('#editForm').on('submit', function (e) {
                 e.preventDefault();
-
+                if (!$(this).valid()) {
+                    return;
+                }
 
                 let btn = $(this).find('button[type="submit"]');
                 btn.prop('disabled', true)

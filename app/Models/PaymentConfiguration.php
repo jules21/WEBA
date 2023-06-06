@@ -42,6 +42,7 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentMapping> $mappings
  * @property-read int|null $mappings_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentMapping> $mappings
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentMapping> $mappings
  * @mixin Eloquent
  */
 class PaymentConfiguration extends Model
