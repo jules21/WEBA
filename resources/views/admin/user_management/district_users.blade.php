@@ -20,6 +20,9 @@
                         <li class="breadcrumb-item">
                             <a class="text-muted">Users Management</a>
                         </li>
+                        <li class="breadcrumb-item">
+                            <a class="text-muted">District Users</a>
+                        </li>
                     </ul>
                     <!--end::Breadcrumb-->
                 </div>
@@ -35,7 +38,7 @@
         <div class="flex-wrap card-header">
             <div class="card-title">
                 <h3 class="kt-portlet__head-title">
-                    Users
+                    District Users
                 </h3>
             </div>
             <div class="card-toolbar">
