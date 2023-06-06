@@ -84,7 +84,7 @@
                             <input id="password-confirm" type="password" class="form-control mb-4 tw-py-6" name="password_confirmation" required autocomplete="new-password">
                         </div>
                         <button id="kt_login_signin_submit"
-                                class="btn btn-accent btn-block font-weight-bold py-4 my-9">
+                                class="btn btn-accent tw-text-[14px] btn-block font-weight-bold py-4 my-9">
                             {{ __('Reset Password') }}
                         </button>
                     </form>
