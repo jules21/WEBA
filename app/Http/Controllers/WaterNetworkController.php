@@ -15,92 +15,75 @@ class WaterNetworkController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
         $user = auth()->user();
 
+        $startDate = request('start_date');
+        $endDate = request('end_date');
+        $operation_area_id = request('operation_area_id');
+        $water_network_type_id = request('water_network_type_id');
+        $operators = Operator::all();
+        $operationAreas = OperationArea::query()->findMany($operation_area_id);
         if ($user->is_super_admin) {
-            $startDate = request('start_date');
-            $endDate = request('end_date');
-            $operation_area_id = request('operation_area_id');
-            $water_network_type_id = request('water_network_type_id');
 
-            $operators = Operator::all();
-            $operationAreas = OperationArea::query()->findMany($operation_area_id);
             $waterNetworks = WaterNetwork::with('operator', 'waterNetworkType', 'operationArea', 'waterNetworkStatus')
-                ->when(! empty($startDate), function (Builder $builder) use ($startDate) {
+                ->when(request('area'), function (Builder $builder) {
+                    $builder->where('operation_area_id', '=', decryptId(request('area')));
+                })
+                ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
                     $builder->whereDate('created_at', '>=', $startDate);
                 })
-                ->when(! empty($endDate), function (Builder $builder) use ($endDate) {
+                ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
                     $builder->whereDate('created_at', '<=', $endDate);
                 })
-                ->when(! empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
+                ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
                     $builder->whereIn('operation_area_id', $operation_area_id);
                 })
-                ->when(! empty($water_network_type_id), function (Builder $builder) use ($water_network_type_id) {
+                ->when(!empty($water_network_type_id), function (Builder $builder) use ($water_network_type_id) {
                     $builder->where('water_network_type_id', $water_network_type_id);
                 })
                 ->orderBy('id', 'DESC')
                 ->get();
 
-            $Areas = OperationArea::query()
-                ->when(isOperator(), function (Builder $builder) {
-                    $builder->where('operator_id', '=', auth()->user()->operator_id);
-                })
-                ->when(isForOperationArea(), function (Builder $builder) {
-                    $builder->where('id', '=', auth()->user()->operation_area);
-                })
-                ->get();
-
-            return view('admin.settings.water_networks', compact('waterNetworks', 'operators', 'operationAreas','Areas'));
         } else {
-            $startDate = request('start_date');
-            $endDate = request('end_date');
-            $operation_area_id = request('operation_area_id');
-            $water_network_type_id = request('water_network_type_id');
 
-            $operators = Operator::all();
-            $operationAreas = OperationArea::query()->findMany($operation_area_id);
-            $waterNetworks = WaterNetwork::query()->where('operator_id', '=', auth()->user()->operator_id)->with('operator', 'waterNetworkType', 'operationArea', 'waterNetworkStatus')
-                ->when(! empty($startDate), function (Builder $builder) use ($startDate) {
+            $waterNetworks = WaterNetwork::query()
+                ->where('operator_id', '=', auth()->user()->operator_id)
+                ->with('operator', 'waterNetworkType', 'operationArea', 'waterNetworkStatus')
+                ->when(request('area'), function (Builder $builder) {
+                    $builder->where('operation_area_id', '=', decryptId(request('area')));
+                })
+                ->when(!empty($startDate), function (Builder $builder) use ($startDate) {
                     $builder->whereDate('created_at', '>=', $startDate);
                 })
-                ->when(! empty($endDate), function (Builder $builder) use ($endDate) {
+                ->when(!empty($endDate), function (Builder $builder) use ($endDate) {
                     $builder->whereDate('created_at', '<=', $endDate);
                 })
-                ->when(! empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
+                ->when(!empty($operation_area_id), function (Builder $builder) use ($operation_area_id) {
                     $builder->whereIn('operation_area_id', $operation_area_id);
                 })
-                ->when(! empty($water_network_type_id), function (Builder $builder) use ($water_network_type_id) {
+                ->when(!empty($water_network_type_id), function (Builder $builder) use ($water_network_type_id) {
                     $builder->where('water_network_type_id', $water_network_type_id);
                 })
                 ->orderBy('id', 'DESC')
                 ->get();
 
-            $Areas = OperationArea::query()
-                ->when(isOperator(), function (Builder $builder) {
-                    $builder->where('operator_id', '=', auth()->user()->operator_id);
-                })
-                ->when(isForOperationArea(), function (Builder $builder) {
-                    $builder->where('id', '=', auth()->user()->operation_area);
-                })
-                ->get();
-
-            return view('admin.settings.water_networks', compact('waterNetworks', 'operators', 'operationAreas','Areas'));
         }
+        $Areas = OperationArea::query()
+            ->when(isOperator(), function (Builder $builder) {
+                $builder->where('operator_id', '=', auth()->user()->operator_id);
+            })
+            ->when(isForOperationArea(), function (Builder $builder) {
+                $builder->where('id', '=', auth()->user()->operation_area);
+            })
+            ->get();
+        $operationArea = OperationArea::query()->find(decryptId(request('area', 0)));
+        return view('admin.settings.water_networks', compact('waterNetworks', 'operators', 'operationAreas', 'Areas','operationArea'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -119,7 +102,7 @@ class WaterNetworkController extends Controller
         if (auth()->user()->is_super_admin == 'true') {
             $waterNetwork->operator_id = $request->operator_id;
         } else {
-        $waterNetwork->operator_id = auth()->user()->operator_id;
+            $waterNetwork->operator_id = auth()->user()->operator_id;
         }
 //        return $waterNetwork;
         $waterNetwork->save();
@@ -164,7 +147,7 @@ class WaterNetworkController extends Controller
         if (auth()->user()->is_super_admin == 'true') {
             $waterNetwork->operator_id = $request->operator_id;
         } else {
-        $waterNetwork->operator_id = auth()->user()->operator_id;
+            $waterNetwork->operator_id = auth()->user()->operator_id;
         }
 //        return $waterNetwork;
         $waterNetwork->save();
