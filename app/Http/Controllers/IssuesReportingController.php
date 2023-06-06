@@ -19,6 +19,12 @@ class IssuesReportingController extends Controller
     {
 
         $issueReports = IssueReport::with('details.model', 'operator')
+            ->when(isForOperationArea(), function (Builder $builder) {
+                $builder->where('operator_id', auth()->user()->operator_id);
+            })
+            ->when(!isOperator() && isDistrict(), function (Builder $builder) {
+                $builder->where('district_id', auth()->user()->operator->district_id);
+            })
             ->whereNotNull('user_id')
             ->whereNull('client_id')
             ->latest()
