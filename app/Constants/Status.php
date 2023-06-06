@@ -64,6 +64,6 @@ class Status
 
     public static function issueStatues(): array
     {
-        return [self::PENDING, self::REVIEWED, self::RESOLVED];
+        return [self::REVIEWED, self::RESOLVED];
     }
 }
