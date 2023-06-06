@@ -55,6 +55,7 @@ function isOperator(): bool
 {
     return auth()->check() && auth()->user()->operator_id != null && auth()->user()->operation_area == null;
 }
+
 function isNotOperator(): bool
 {
     return !isOperator();
@@ -97,12 +98,15 @@ function getDistrictsToRequestConnection()
 
 function issueManagementPermissions(): array
 {
-return [
+    return [
         Permission::ViewReportedIssues,
         Permission::ManageReportedIssues,
-
-    Permission::ViewIssuesReporting,
-    Permission::ManageIssuesReporting,
-
+        Permission::CreateOperatorIssue,
+        Permission::ManageOperatorIssues,
     ];
+}
+
+function isDistrict(): bool
+{
+    return auth()->check() && auth()->user()->district_id != null;
 }

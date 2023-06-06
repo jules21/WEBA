@@ -44,11 +44,14 @@
             <h6>
                 Issues Reporting List
             </h6>
-            <button type="button" class="btn btn-primary btn-sm js-add" data-toggle="modal"
-                    data-target="#exampleModalLong">
-                <i class="flaticon2-plus"></i>
-                Add New Issue
-            </button>
+            @if(auth()->user()->can(\App\Constants\Permission::CreateOperatorIssue)  && isOperator())
+                <button type="button" class="btn btn-primary btn-sm js-add" data-toggle="modal"
+                        data-target="#exampleModalLong">
+                    <i class="flaticon2-plus"></i>
+                    Add New Issue
+                </button>
+            @endif
+
         </div>
         <div class="accordion accordion-solid accordion-panel accordion-svg-toggle" id="accordionExample8">
 
@@ -82,7 +85,8 @@
                                             <a href="#"
                                                class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">
                                                 {{ auth()->user()->name }}
-                                                <span class="text-muted font-size-sm">{{ $issue->created_at->diffForHumans() }}</span>
+                                                <span
+                                                    class="text-muted font-size-sm">{{ $issue->created_at->diffForHumans() }}</span>
                                             </a>
                                             <div>
                                                 {{ $issue->operator->name }}
@@ -117,9 +121,9 @@
                             @endforeach
                             <div class="d-flex align-items-start">
                                 @if($issue->status!=\App\Constants\Status::RESOLVED
-                                    && !is_null(auth()->user()->district_id)
-                                    && auth()->user()->can(\App\Constants\Permission::ManageIssuesReporting)
-                                     && isForOperationArea())
+                                    && auth()->user()->district_id==$issue->district_id
+                                    && auth()->user()->can(\App\Constants\Permission::ManageOperatorIssues)
+                                    )
                                     <button class="mt-2 btn btn-primary  btn-sm font-weight-bolder js-reply"
                                             data-status="{{ucfirst( $issue->status) }}"
                                             data-url="{{ route('admin.issues.issues.reporting.reply',encryptId($issue->id)) }}"
