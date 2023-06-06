@@ -161,8 +161,11 @@ class BillingController extends Controller
             return $this->exportBilling($billings->get());
         }
         $datatable = new BillingDataTable($billings);
+        $totalAmount = $billings->sum('amount');
+        $totalBalance = $billings->sum('balance');
 
-        return $datatable->render('admin.billings.customer_bills', compact('customer'));
+
+        return $datatable->render('admin.billings.customer_bills', compact('customer', 'totalAmount', 'totalBalance'));
     }
 
     // meter billings

@@ -98,11 +98,12 @@
                     </div>
                     <div class="row mb-5">
                         <div class="col-md-6">
-                            <strong>Total Billed</strong> : 5000 Rwf
+                            <strong>Total Billed</strong> : {{ number_format($totalAmount,2) ?? 0 }} Rwf
                             <br>
-                            <strong>Total Payments</strong> : 5000 Rwf
+                            <strong>Total Payments</strong> : {{ number_format(($totalAmount-$totalBalance),2) ?? 0 }} Rwf
                             <br>
-                            <strong>Total Arreas</strong> : 5000 Rwf
+                            <strong>Remaing Balance to be paid
+                            </strong> : {{ number_format($totalBalance,2) ?? 0 }} Rwf
 
                         </div>
                     </div>
