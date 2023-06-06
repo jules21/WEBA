@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title','Reported Issues')
+@section('title','Issues Reporting')
 
 @section('page-header')
     <div class="subheader py-2 py-lg-4 subheader-solid shadow-none border-bottom border-bottom-secondary"
@@ -12,7 +12,7 @@
                 <div class="d-flex align-items-baseline mr-5">
                     <!--begin::Page Title-->
                     <h5 class="text-dark font-weight-bold my-2 mr-5">
-                        Reported Issues
+                        Issues Reporting
                     </h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
@@ -24,7 +24,7 @@
                         </li>
                         <li class="breadcrumb-item">
                             <a class="text-muted">
-                                Reported Issues
+                                Issues Reporting
                             </a>
                         </li>
                     </ul>
@@ -40,9 +40,20 @@
 
 @section('content')
     <div class="">
-        <h4 class="mb-10">
-            Reported Issues
-        </h4>
+        <div class="card-header flex-wrap d-flex justify-content-between border-2 pt-6 pb-0">
+            <div class="card-title">
+                <h3 class="card-label">Issues Reporting List</h3>
+            </div>
+            <div class="card-toolbar ">
+                <!-- Button trigger modal-->
+                <button type="button" class="btn btn-light-primary js-add" data-toggle="modal"
+                        data-target="#exampleModalLong">
+                    <i class="flaticon2-plus"></i>
+                    Add New Issue
+                </button>
+                <!-- Modal-->
+            </div>
+        </div>
         <div class="accordion accordion-solid accordion-panel accordion-svg-toggle" id="accordionExample8">
 
             @for($i=1;$i<10;$i++)
@@ -130,7 +141,7 @@
                                             however, need some custom JavaScript to toggle their visibility. Their
                                             appearance,
                                             alignment, and sizing can be easily customized with our amazing utility
-                                            classes...........
+                                            classes........
                                         </div>
                                     </div>
                                 @endif
@@ -144,21 +155,83 @@
 
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header  border-0">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                        Add a Reply
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        &times;
-                    </button>
-                </div>
-                <form action="">
-                    @csrf
+    <!-- Modal add -->
+    <div class="modal fade" id="addModal" data-backdrop="static" tabindex="-1" role="dialog"
+         aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="{{route('admin.issues.issue.reporting.store')}}" method="post" id="submissionForm"
+                  class="submissionForm" enctype="multipart/form-data">
+                @csrf
+{{--                <input type="hidden" value="0" id="issue_report_id" name="issue_report_id">--}}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add New Issue</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+
                     <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="district_id">
+                                District:
+                            </label>
+                            <select name="district_id" id="district_id" class="form-control" aria-describedby="EmailHelp" required>
+                                <option value="">Please Select District</option>
+                                @foreach(App\Models\District::all() as $district)
+                                    <option value="{{$district->id}}">{{$district->name}}</option>
+                                @endforeach
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="title">
+                                Title:
+                            </label>
+                            <input type="text" name="title" class="form-control" aria-describedby="emailHelp"
+                                   placeholder="Enter title">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">
+                                Description:
+                            </label>
+                            <textarea class="form-control" placeholder="Type a question here" name="description" rows="5" id="description"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- /.modal-content -->
+        </div>
+    </div>
+
+    <!-- Modal reply-->
+    <div class="modal fade" id="replyModal" data-backdrop="static" tabindex="-1" role="dialog"
+         aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="#" method="post" id="submissionForm"
+                  class="submissionForm" enctype="multipart/form-data">
+                @csrf
+                {{--                <input type="hidden" value="0" id="issue_report_id" name="issue_report_id">--}}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Reply</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+
                         <div class="form-group">
                             <label for="description">
                                 Description:
@@ -166,23 +239,37 @@
                             <textarea class="form-control" placeholder="Type a reply here" name="description" rows="5" id="description"></textarea>
                         </div>
                     </div>
-                    <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-primary">
-                            Save Reply
-                        </button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                    <div class="modal-footer">
+                        <div class="btn-group">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
+            <!-- /.modal-content -->
         </div>
     </div>
 @endsection
 
 @section('scripts')
+
+    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
+    <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+    {!! JsValidator::formRequest(\App\Http\Requests\IssueReportingRequest::class,'.submissionForm') !!}
+{{--    {!! JsValidator::formRequest(\App\Http\Requests\UpdateBillChargeRequest::class,'.submissionFormEdit') !!}--}}
+
     <script>
 
         $('.nav-issues-managements').addClass('menu-item-active  menu-item-open');
-        $('.nav-reported-issues').addClass('menu-item-active');
+        $('.nav-issues-reporting').addClass('menu-item-active');
+
+        $(function () {
+            $(document).on('click', '.js-add', function () {
+                $('#addModal').modal();
+            });
+        });
 
         $(function () {
             $(document).on('click', '.js-reply', function () {
