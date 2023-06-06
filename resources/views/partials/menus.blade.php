@@ -265,14 +265,17 @@
             </li>
         @endif
     @endif
+    @if(auth()->user()->canAny(issueManagementPermissions()))
+        <li class="menu-section">
+            <h4 class="menu-text">Issue Management</h4>
+            <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+        </li>
 
-    <li class="menu-section">
-        <h4 class="menu-text">Issue Management Section</h4>
-        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
-    </li>
-    <li class="menu-item menu-item-submenu nav-issues-managements" aria-haspopup="true" data-menu-toggle="hover">
-        <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <span class="menu-icon svg-icon">
+        @if(!is_null(auth()->user()->operator_id))
+            <li class="menu-item nav-reported-issues {{ request()->routeIs('admin.issues.reported')?'menu-item-active':'' }}">
+                <a href="{{route('admin.issues.reported')}}"
+                   class="menu-link">
+                    <span class="menu-icon svg-icon">
                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-report"
                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                             fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -282,63 +285,13 @@
                    <path d="M12 14l0 .01"></path>
                 </svg>
                     </span>
-            <span class="menu-text">Issue Management</span>
-            <i class="menu-arrow"></i>
-        </a>
-        <div class="menu-submenu">
-            <i class="menu-arrow"></i>
-            <ul class="menu-subnav">
-                <li class="menu-item menu-item-parent" aria-haspopup="true">
-                            <span class="menu-link">
-                                <span class="menu-text">User Management</span>
-                            </span>
-                </li>
+                    <span class="menu-text">Reported Issues</span>
+                </a>
+            </li>
+        @endif
+    @endif
 
-                    <li class="menu-item nav-reported-issues" aria-haspopup="true">
-                        <a href="{{ route('admin.issues.reported') }}" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">Reported Issues</span>
-                        </a>
-                    </li>
-
-                    <li class="menu-item nav-issues-reporting" aria-haspopup="true">
-                        <a href="{{ route('admin.issues.issues.reporting') }}" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">Issues Reporting</span>
-                        </a>
-                    </li>
-
-            </ul>
-        </div>
-    </li>
-
-{{--    <li class="menu-section">--}}
-{{--        <h4 class="menu-text">Issue Management</h4>--}}
-{{--        <i class="menu-icon ki ki-bold-more-hor icon-md"></i>--}}
-{{--    </li>--}}
-
-{{--    <li class="menu-item nav-reported-issues {{ request()->routeIs('admin.issues.reported')?'menu-item-active':'' }}">--}}
-{{--        <a href="{{route('admin.issues.reported')}}"--}}
-{{--           class="menu-link">--}}
-{{--                    <span class="menu-icon svg-icon">--}}
-{{--                       <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-message-report"--}}
-{{--                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"--}}
-{{--                            fill="none" stroke-linecap="round" stroke-linejoin="round">--}}
-{{--                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
-{{--                   <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4"></path>--}}
-{{--                   <path d="M12 8l0 3"></path>--}}
-{{--                   <path d="M12 14l0 .01"></path>--}}
-{{--                </svg>--}}
-{{--                    </span>--}}
-{{--            <span class="menu-text">Reported Issues</span>--}}
-{{--        </a>--}}
-{{--    </li>--}}
-
-    @if(Helper::hasOperationArea())
+    @if(Helper::isOperator())
         @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems,
         \App\Constants\Permission::ManageStocks,
         \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment,
@@ -350,7 +303,7 @@
                 <h4 class="menu-text">Stock Management Section</h4>
                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
             </li>
-            @canany([\App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
+            @canany([\App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn, \App\Constants\Permission::ViewStockIn])
                 <li class="menu-item menu-item-submenu nav-purchases" aria-haspopup="true" data-menu-toggle="hover">
                     <a href="javascript:" class="menu-link menu-toggle">
                     <span class="svg-icon menu-icon">
@@ -386,6 +339,7 @@
                                         </a>
                                     </li>
                                 @endcan
+                                    @can(\App\Constants\Permission::ApproveStockIn)
                                 <li class="menu-item nav-my-purchases" aria-haspopup="true">
                                     <a href="{{route('admin.purchases.index')}}" class="menu-link">
                                         <i class="menu-bullet menu-bullet-dot">
@@ -396,6 +350,7 @@
                     </span>
                                     </a>
                                 </li>
+                                    @endcan
                             @endif
                             <li class="menu-item nav-all-purchases" aria-haspopup="true">
                                 <a href="{{route('admin.purchases.index',['type'=>'all'])}}" class="menu-link">
@@ -556,7 +511,8 @@
 
     @endcanany
 
-    @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles, \App\Constants\Permission::ManagePermissions])
+    @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles,
+    \App\Constants\Permission::ManagePermissions, \App\Constants\Permission::ManageDistrictUsers,])
         <li class="menu-section">
             <h4 class="menu-text">System Users Section</h4>
             <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -612,6 +568,16 @@
                                     <span></span>
                                 </i>
                                 <span class="menu-text">Permissions</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can(\App\Constants\Permission::ManageDistrictUsers)
+                        <li class="menu-item nav-district-users" aria-haspopup="true">
+                            <a href="{{ route('admin.users.index') }}?type=district" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">District Users</span>
                             </a>
                         </li>
                     @endcan

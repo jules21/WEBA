@@ -39,6 +39,9 @@ class Status
     const RE_SUBMITTED = 'Re-Submitted';
     const PAID = "Paid";
 
+    const REVIEWED = "Reviewed";
+    const RESOLVED = "Resolved";
+
 
     public static function getRequestStatuses(): array
     {
@@ -57,5 +60,10 @@ class Status
     public static function approvalStatuses(): array
     {
         return [self::APPROVED, self::METER_ASSIGNED, self::PARTIALLY_DELIVERED, self::DELIVERED];
+    }
+
+    public static function issueStatues(): array
+    {
+        return [self::PENDING, self::REVIEWED, self::RESOLVED];
     }
 }

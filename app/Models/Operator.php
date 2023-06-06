@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasInitials;
 use Database\Factories\OperatorFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
@@ -72,20 +73,16 @@ use Storage;
  * @property string|null $prefix
  * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
- * @property-read Collection<int, \App\Models\Customer> $customers
- * @property-read Collection<int, \App\Models\OperationArea> $operationAreas
  * @property-read Collection<int, \App\Models\Request> $requests
  * @property-read int|null $requests_count
- * @property-read Collection<int, \App\Models\Stock> $stocks
- * @property-read Collection<int, \App\Models\User> $users
  * @method static Builder|Operator wherePrefix($value)
  * @mixin Eloquent
  */
 class Operator extends Model implements Auditable
 {
-    use HasFactory, \OwenIt\Auditing\Auditable;
+    use HasFactory, \OwenIt\Auditing\Auditable,HasInitials;
 
-    protected $appends = ['logo_url'];
+    protected $appends = ['logo_url','initials'];
 
     const LOGO_PATH = 'operators/logos/';
 
@@ -170,4 +167,6 @@ class Operator extends Model implements Auditable
             ])
             ->first();
     }
+
+
 }

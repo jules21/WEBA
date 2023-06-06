@@ -275,7 +275,7 @@ class RequestsController extends Controller
         $flowHistories = $request->flowHistories->where('is_comment', '=', false);
 
         $requestItems = $request->items()
-            ->with('item')
+            ->with('item.stock.operationArea')
             ->get();
 
         $items = Item::query()

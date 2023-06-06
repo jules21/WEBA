@@ -28,6 +28,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Village> $villages
  * @mixin \Eloquent
  */
 class Cell extends Model

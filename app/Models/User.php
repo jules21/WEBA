@@ -81,6 +81,13 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Collection<int, \App\Models\IssueReportDetail> $issueDetails
  * @property-read int|null $issue_details_count
  * @property-read \App\Models\OperationArea|null $operationArea
+ * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read Collection<int, \App\Models\Billing> $bills
+ * @property-read Collection<int, \App\Models\IssueReportDetail> $issueDetails
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
+ * @property-read Collection<int, Permission> $permissions
+ * @property-read Collection<int, Role> $roles
+ * @property-read Collection<int, PersonalAccessToken> $tokens
  * @mixin Eloquent
  */
 class User extends Authenticatable implements Auditable
@@ -136,5 +143,10 @@ class User extends Authenticatable implements Auditable
     public function issueDetails(): MorphMany
     {
         return $this->morphMany(IssueReportDetail::class, 'user');
+    }
+
+    public function district(): BelongsTo
+    {
+        return $this->belongsTo(District::class);
     }
 }

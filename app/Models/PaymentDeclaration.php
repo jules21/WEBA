@@ -56,11 +56,13 @@ class PaymentDeclaration extends Model implements Auditable
 
     const PARTIALLY_PAID = 'partially paid';
 
-    public function generateReferenceNumber($prefix = 'CMS', $length = 8): string
+    public function generateReferenceNumber($prefix = 'CMS', $length = 4): string
     {
 
         $number = str_pad($this->id, $length, '0', STR_PAD_LEFT);
-        $ref = $prefix.$number;
+        $paddedDistrict = str_pad($this->request->district_id, 2, 0, STR_PAD_LEFT);
+        $operatorPrefix = $this->request->operator->prefix;
+        $ref = $prefix . $operatorPrefix . $paddedDistrict . $number;
         $this->payment_reference = $ref;
         $this->save();
 

@@ -190,6 +190,47 @@
                 </div>
             </div>
         </div>
+        {{--Assign district modal--}}
+        <div data-backdrop="static" class="modal fade" id="assign-district-model" tabindex="-1" role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Assign District</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <form class="kt-form" id="assign-district-form" action=""
+                          method="POST" enctype="multipart/form-data">
+                        {{csrf_field()}}
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label for="operation_area">District</label>
+                                    <select class="form-control form-control-sm" name="district_id" id="district_id">
+                                        <option value="">Select District</option>
+                                        @foreach(\App\Models\District::all() as $district)
+                                            <option value="{{$district->id}}">{{$district->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><span
+                                    class="la la-close"></span> Close
+                            </button>
+                            <button type="submit" class="btn btn-primary"><span class="la la-check-circle-o"></span>
+                                Confirm
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 @stop
 
@@ -203,7 +244,12 @@
     <script>
 
         $('.nav-user-managements').addClass('menu-item-active  menu-item-open');
+        //if request has type parameter of district , use nav-districts as active
+        @if(request()->has('type') && request()->get('type') == 'district')
+        $('.nav-district-users').addClass('menu-item-active');
+        @else
         $('.nav-all-users').addClass('menu-item-active');
+        @endif
 
         $('#edit-user-model').on('show.bs.modal',function (event) {
             var button = $(event.relatedTarget);
@@ -216,6 +262,14 @@
             $("#operation_area").val($(button).data("operation_area"));
             console.log($(button).data("operation_area"));
             $('#edit-user-form').attr("action", $(this).data('url'));
+            var modal = $(this);
+            modal.find('form').attr('action', href)
+        })
+        $('#assign-district-model').on('show.bs.modal',function (event) {
+            var button = $(event.relatedTarget);
+            var href = button.data('href');
+            $("#district_id").val($(button).data("district"));
+            $('#assign-district-form').attr("action", $(this).data('url'));
             var modal = $(this);
             modal.find('form').attr('action', href)
         })

@@ -6,6 +6,7 @@ use App\Http\Controllers\AuditingController;
 use App\Http\Controllers\CashMovementController;
 use App\Http\Controllers\CellController;
 use App\Http\Controllers\ChartAccountController;
+use App\Http\Controllers\Client\ClientIssuesController;
 use App\Http\Controllers\Client\ClientRequestsController;
 use App\Http\Controllers\Client\ClientsController;
 use App\Http\Controllers\ClientAuth\ForgotPasswordController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IssueReportController;
 use App\Http\Controllers\ItemCategoryController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\JournalEntryController;
@@ -28,6 +30,7 @@ use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\OperatorUserController;
 use App\Http\Controllers\PaymentServiceProviderAccountController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReplyIssueReportController;
 use App\Http\Controllers\RequestAssignmentController;
 use App\Http\Controllers\RequestDeliveryController;
 use App\Http\Controllers\RequestReviewController;
@@ -36,6 +39,8 @@ use App\Http\Controllers\RequestTechnicianController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\UserManualController;
+use App\Http\Livewire\CheckBills;
+use App\Http\Livewire\Client\IssuesReported;
 use App\Http\Livewire\Client\Payments;
 use Illuminate\Support\Facades\Route;
 
@@ -47,7 +52,7 @@ Route::get('/help', [ClientsController::class, 'help'])->name('help');
 Route::get('/faq', [ClientsController::class, 'faq'])->name('faq');
 Route::get('/set-language/{locale}', [HomeController::class, 'setLanguage'])->name('lang.switch');
 Route::get('/get-operator-by-district', [HomeController::class, 'getOperatorsByDistrict'])->name('get-operators-by-district');
-Route::get('/check-bills', \App\Http\Livewire\CheckBills::class)->name('check-bills');
+Route::get('/check-bills', CheckBills::class)->name('check-bills');
 
 
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
@@ -222,6 +227,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/users/reset-password/{user_id}', [App\Http\Controllers\UserController::class, 'resetPassword'])->name('users.reset.password');
         Route::get('/users/change-password', [App\Http\Controllers\ProfileController::class, 'changePasswordForm'])->name('user.change.password');
         Route::post('/users/update-password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('user.update.password');
+
+        //assign district to user
+        Route::post('/users/assign-district/{user_id}', [App\Http\Controllers\UserController::class, 'assignDistrict'])->name('users.assign.district.store');
 
         //user manual
         Route::get('/users/user-manual/', [App\Http\Controllers\UserManualController::class, 'userManualForAdmins'])->name('user.manual.admin');
@@ -403,15 +411,16 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     });
 
     Route::group(['prefix' => 'issues', 'as' => 'issues.'], function () {
-        Route::get('/reported', [\App\Http\Controllers\IssueReportController::class, 'reportedIssues'])
+        Route::get('/reported', [IssueReportController::class, 'reportedIssues'])
             ->name('reported');
-        Route::get('/issue-reporting',[App\Http\Controllers\IssuesReportingContrller::class,'reportingIssues'])->name('issues.reporting');
-        Route::post('/issue-reporting/store',[App\Http\Controllers\IssuesReportingContrller::class,'store'])->name('issue.reporting.store');
+        Route::put('/{issueReport}/reply', [ReplyIssueReportController::class, 'replyIssue'])
+            ->name('reply');
     });
 
 });
 
 Auth::routes(['register' => false]);
+//route for reset passwordresetPassword
 
 //ajax routes
 Route::get('/operation-area', [OperationAreaController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
@@ -455,6 +464,8 @@ Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
         Route::get('/payments', Payments::class)->name('payments');
 
         Route::get('/requests', [ClientsController::class, 'requests'])->name('requests');
+        Route::get('/issues', [ClientIssuesController::class, 'index'])->name('issues-reported');
+        Route::post('/issues', [ClientIssuesController::class, 'store'])->name('client-issues.store');
 
     });
 
