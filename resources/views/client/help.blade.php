@@ -42,7 +42,7 @@
                                             <!--begin::Title-->
                                             <a href=""
                                                class="text-dark text-hover-primary text-decoration-none tw-text-sm mr-3 tw-font-medium">
-                                                {{$item->title}}
+                                                {{trans($item->title, [], app()->getLocale())}}
                                             </a>
                                             <!--end::Title-->
                                             <!--begin::Label-->
@@ -60,13 +60,13 @@
                                                     <polyline points="7 11 12 16 17 11"></polyline>
                                                     <line x1="12" y1="4" x2="12" y2="16"></line>
                                                 </svg>
-                                                <span>Download</span>
+                                                <span>{{__('app.download')}}</span>
                                             </a>
                                             <!--end::Label-->
                                         </div>
                                         <!--end::Content-->
                                         <!--begin::Text-->
-                                        <span class="text-muted fw-semibold tw-text-sm">{{$item->description}}</span>
+                                        <span class="text-muted fw-semibold tw-text-sm">{{trans($item->description,[],app()->getLocale())}}</span>
                                         <!--end::Text-->
                                     </div>
                                     <!--end::Section-->

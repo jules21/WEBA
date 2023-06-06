@@ -25,8 +25,12 @@ class UpdateUserManualRequest extends FormRequest
     {
         return [
             "title"=>"required",
-//            "file"=>"required",
+            "file"=>"nullable",
             "description"=>"required",
+
+            "title_kn"=>"required",
+            "file_kn"=>"nullable",
+            "description_kn"=>"required",
             "for_admin"=>"required",
         ];
     }

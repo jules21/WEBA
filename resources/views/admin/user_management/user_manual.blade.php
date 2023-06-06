@@ -80,7 +80,7 @@
                                             <!--end: Icon-->
                                             <!--begin: Title-->
                                             <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg">
-                                                {{$manual->title}}.pdf
+                                                {{trans($manual->title,[],app()->getLocale())}}.pdf
                                             </a>
                                             <!--end: Title-->
                                         </div>
