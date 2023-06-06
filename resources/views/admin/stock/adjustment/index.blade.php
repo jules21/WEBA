@@ -32,6 +32,43 @@
 @endsection
 @section('content')
     <div class="">
+
+        <div class="card card-body mb-4">
+            <form action="#" id="filter-form">
+                <div class="row">
+                    @unless(Helper::hasOperationArea())
+                        <div class="col-md-3 form-group">
+                            <label for="operation_area">Operation Area</label>
+                            <select name="operation_area_id[]" id="operation_area" class="form-control select2"
+                                    data-placeholder="Select Operation Area" multiple="multiple">
+                                @foreach($operationAreas ?? [] as $operationArea)
+                                    <option value="{{ $operationArea->id }}">{{ $operationArea->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endunless
+                    <div class="col-md-3">
+                            <div class="form-group">
+
+                                <label for="from_date">From Date</label>
+                                <input type="date" name="from_date" id="from_date" class="form-control " placeholder="From Date" value="{{request()->get('from_date')}}">
+                            </div>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label for="to_date">To Date</label>
+                        <input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" value="{{request()->get('to_date')}}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-sm mr-2">
+                            <i class="la la-search"></i>
+                            Filter</button>
+                        <a href="{{route('admin.stock.adjustments.index')}}" class="btn btn-outline-dark btn-sm"> clear search</a>
+                    </div>
+                </div>
+            </form>
+        </div>
         <div class="card card-custom">
             <div class="card-header flex-wrap">
 
@@ -180,6 +217,7 @@
     {!! JsValidator::formRequest(App\Http\Requests\UpdateAdjustmentRequest::class,'#edit-adjustment-form') !!}
     <script>
         $(document).ready(function () {
+            initData();
             $('.nav-stock-managements').addClass('menu-item-open menu-item-here');
             $('.nav-stock-adjustments').addClass('menu-item-open menu-item-here');
             const currentRoute = @JSON(Route::currentRouteName());
@@ -224,6 +262,13 @@
             let url = "{!! $newUrl !!}";
             $(this).attr("href",url);
         });
+
+        const initData = () => {
+            const operationAreaId = "{{ request()->get('operation_area_id') ? implode(',', request()->get('operation_area_id')) : '' }}";
+            if (operationAreaId !== '') {
+                $('#operation_area').val(operationAreaId.split(',')).trigger('change');
+            }
+        };
     </script>
 
 

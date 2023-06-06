@@ -31,6 +31,65 @@
         </div>
     </div>
 
+    @if(request('type')=='all')
+        <div class="card card-body mb-4">
+            <form action="#" id="filter-form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input type="hidden" name="type" value="all">
+                            <label for="from_date">From Date</label>
+                            <input type="date" name="from_date" id="from_date" class="form-control " placeholder="From Date" value="{{request()->get('from_date')}}">
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <label for="to_date">To Date</label>
+                        <input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" value="{{request()->get('to_date')}}">
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="supplier_id">Supplier</label>
+                        <select name="supplier_id" id="supplier_id" class="form-control select">
+                            <option value="">Select Supplier</option>
+                            @foreach(\App\Models\Supplier::all() as $supplier)
+                                <option value="{{$supplier->id}}" {{request()->get('supplier_id') == $supplier->id ? 'selected' : ''}}>{{$supplier->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="status">Status</label>
+                        <select name="status" id="status" class="form-control select">
+                            <option value="">Select Status</option>
+                            @foreach(\App\Constants\Status::stockStatuses() as $key => $status)
+                                <option value="{{$status}}" {{request()->get('status') == $status ? 'selected' : ''}}>{{$status}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 form-group">
+                        <label for="item_id">Item</label>
+                        <select name="item_id" id="item_id" class="form-control select2">
+                            <option value="">Select Item</option>
+                            @foreach(\App\Models\Item::all() as $item)
+                                <option value="{{$item->id}}" {{request()->get('item_id') == $item->id ? 'selected' : ''}}>{{$item->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-sm mr-2">
+                            <i class="la la-search"></i>
+                            Filter</button>
+                        <a href="{{route('admin.purchases.index')}}?type=all" class="btn btn-outline-dark btn-sm"> clear search</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    @endif
 
     <div class="card tw-shadow-sm border tw-border-gray-300">
         <div class="card-body">
@@ -57,15 +116,6 @@
                         <!--end::Dropdown Menu-->
                     </div>
                 @endif
-
-                {{--    @if( auth()->user()->can(\App\Constants\Permission::StockInItems) && auth()->user()->operation_area)
-
-                        <a href="{{ route('admin.purchases.create') }}" class="btn btn-primary btn-sm rounded">
-                            <i class="flaticon2-plus-1"></i>
-                            Add New
-                        </a>
-
-                    @endif--}}
             </div>
 
 

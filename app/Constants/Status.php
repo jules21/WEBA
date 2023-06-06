@@ -66,4 +66,9 @@ class Status
     {
         return [self::PENDING, self::REVIEWED, self::RESOLVED];
     }
+
+    public static function stockStatuses(): array
+    {
+        return [self::PENDING, self::SUBMITTED, self::APPROVED, self::REJECTED, self::CANCELLED, Self::RETURN_BACK];
+    }
 }
