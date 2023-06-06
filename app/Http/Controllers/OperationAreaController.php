@@ -39,16 +39,20 @@ class OperationAreaController extends Controller
                                                     Options
                                                  </button>
                                                  <div class="dropdown-menu border">
-                                                 <a class="dropdown-item" href="'.route('admin.operator.operator-area-users', encryptId($row->id)).'">
+                                                 <a class="dropdown-item" href="' . route('admin.operator.operator-area-users', encryptId($row->id)) . '">
                                                          <i class="fas fa-users"></i>
                                                          <span class="ml-2">Users</span>
                                                       </a>
+                                                 <a class="dropdown-item" href="' . route('admin.water.networks', ['area' => encryptId($row->id)]) . '">
+                                                         <i class="fas fa-users"></i>
+                                                         <span class="ml-2">Water Networks</span>
+                                                      </a>
                                                       <div class="dropdown-divider"></div>
-                                                     <a class="dropdown-item js-edit" href="'.route('admin.operator.area-of-operation.show', encryptId($row->id)).'">
+                                                     <a class="dropdown-item js-edit" href="' . route('admin.operator.area-of-operation.show', encryptId($row->id)) . '">
                                                          <i class="fas fa-edit"></i>
                                                          <span class="ml-2">Edit</span>
                                                      </a>
-                                                     <a class="dropdown-item js-delete" href="'.route('admin.operator.area-of-operation.destroy', encryptId($row->id)).'">
+                                                     <a class="dropdown-item js-delete" href="' . route('admin.operator.area-of-operation.destroy', encryptId($row->id)) . '">
                                                          <i class="fas fa-trash"></i>
                                                          <span class="ml-2">Delete</span>
                                                      </a>
