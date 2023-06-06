@@ -25,9 +25,9 @@ class StoreSupplierRequest extends FormRequest
     {
         return [
             'operator_id' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:255',
-            'email' => 'nullable|string|email|max:255',
+            'name' => 'required|string|max:255|unique:suppliers',
+            'phone_number' => 'required|string|max:255|unique:suppliers',
+            'email' => 'nullable|string|email|max:255|unique:suppliers',
             'address' => 'required|string|max:255',
             'contact_name' => 'required|string|max:255',
             'contact_email' => 'nullable|string|max:255',
@@ -43,6 +43,9 @@ class StoreSupplierRequest extends FormRequest
             'email.required' => 'Please enter an email',
             'address.required' => 'Please enter an address',
             'contact_name.required' => 'Please enter a contact name',
+            'name.unique' => 'This name already exist',
+            'phone_number.unique' => 'Phone number already exist',
+            'email.unique' => 'Email already exist',
         ];
     }
 }
