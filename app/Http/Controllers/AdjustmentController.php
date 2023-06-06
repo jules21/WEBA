@@ -11,6 +11,7 @@ use App\Http\Requests\ValidateAdjustmentItemRequest;
 use App\Http\Requests\ValidateReviewRequest;
 use App\Models\Adjustment;
 use App\Models\Item;
+use App\Models\OperationArea;
 use App\Models\Request;
 use App\Models\Stock;
 use App\Traits\GetClassName;
@@ -33,6 +34,14 @@ class AdjustmentController extends Controller
     {
         $user = auth()->user();
         $query = $this->extracted($user);
+        //from date
+        $query->when((request()->has('from_date') && request()->filled('from_date')), function ($query) {
+            $query->whereDate('created_at', '>=', request()->from_date);
+        });
+        //to date
+        $query->when((request()->has('to_date') && request()->filled('to_date')), function ($query) {
+            $query->whereDate('created_at', '<=', request()->to_date);
+        });
         $adjustments = $query->get();
 
         //export
@@ -41,7 +50,10 @@ class AdjustmentController extends Controller
         }
 
 
-        return view('admin.stock.adjustment.index',['adjustments' => $adjustments, 'title' => 'All Adjustments']);
+        return view('admin.stock.adjustment.index',
+            ['adjustments' => $adjustments,
+                'title' => 'All Adjustments',
+                'operationAreas' => $user->operator_id ? OperationArea::query()->where('operator_id', $user->operator_id)->get() : OperationArea::query()->get(),]);
     }
 
     public function myTasks()
