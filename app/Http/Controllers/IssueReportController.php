@@ -12,6 +12,7 @@ class IssueReportController extends Controller
     {
         $issues = IssueReport::query()
             ->with(['details.model', 'operator', 'operatingArea','client'])
+            ->whereUserId(null)
             ->latest()
             ->paginate(10);
         return view('admin.issues.reported_issues', [

@@ -134,6 +134,21 @@
             @endforeach
         </div>
 
+        <div class="mt-3">
+            {{ $issues->links() }}
+        </div>
+
+        @if($issues->count()==0)
+            <div class="alert alert-info alert-custom py-2">
+                <div class="alert-icon">
+                    <i class="flaticon2-information"></i>
+                </div>
+                <div class="alert-text">
+                    No issues reported yet.
+                </div>
+            </div>
+        @endif
+
     </div>
 
     <!-- Modal -->
