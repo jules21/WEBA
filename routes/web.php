@@ -411,16 +411,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
     });
 
     Route::group(['prefix' => 'issues', 'as' => 'issues.'], function () {
-        Route::get('/reported', [IssueReportController::class, 'reportedIssues'])
+        Route::get('/reported', [\App\Http\Controllers\IssueReportController::class, 'reportedIssues'])
             ->name('reported');
         Route::put('/{issueReport}/reply', [ReplyIssueReportController::class, 'replyIssue'])
             ->name('reply');
+        Route::get('/issue-reporting',[App\Http\Controllers\IssuesReportingContrller::class,'reportingIssues'])->name('issues.reporting');
+        Route::post('/issue-reporting/store',[App\Http\Controllers\IssuesReportingContrller::class,'store'])->name('issue.reporting.store');
     });
 
 });
 
 Auth::routes(['register' => false]);
-//route for reset passwordresetPassword
 
 //ajax routes
 Route::get('/operation-area', [OperationAreaController::class, 'getOperationAreasByOperators'])->name('get-operation-areas');
