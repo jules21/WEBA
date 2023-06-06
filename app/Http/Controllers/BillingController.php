@@ -33,6 +33,16 @@ class BillingController extends Controller
         $user = auth()->user();
         $query = Billing::query()
             ->with(['meterRequest.request.operator','meterRequest.request.operationArea', 'user', 'meterRequest.request.customer']);
+        //if auth user is has district_id then filter data based on district_id
+        $query->when($user->district_id, function ($query) use ($user) {
+            $query->whereHas('meterRequest', function ($query) use ($user) {
+                $query->whereHas('request', function ($query) use ($user) {
+                    $query->whereHas('operationArea', function ($query) use ($user) {
+                        $query->where('district_id', $user->district_id);
+                    });
+                });
+            });
+        });
         $query->when($user->operation_area, function ($query) use ($user) {
             $query->whereHas('meterRequest', function ($query) use ($user) {
                 $query->whereHas('request', function ($query) use ($user) {

@@ -27,6 +27,11 @@ class OperatorController extends Controller
         $operationAreaId = request('operation_area_id');
 
         $data = Operator::with(['legalType'])
+            ->when(auth()->user()->district_id, function ($query){
+                return $query->whereHas('operationAreas', function ($query){
+                    return $query->where('district_id', auth()->user()->district_id);
+                });
+            })
             ->when($startDate, function ($query) use ($startDate) {
                 return $query->whereDate('created_at', '>=', $startDate);
             })

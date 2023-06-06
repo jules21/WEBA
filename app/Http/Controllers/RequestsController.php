@@ -64,6 +64,14 @@ class RequestsController extends Controller
             ->when(!is_null($customerId), function (Builder $query) use ($customerId) {
                 return $query->where('customer_id', '=', decryptId($customerId));
             })
+
+            //if user has district_id then show only that district requests
+            ->when(auth()->user()->district_id, function (Builder $query) {
+                return $query->whereHas('operationArea', function (Builder $query) {
+                    $query->where('district_id', '=', auth()->user()->district_id);
+                });
+            })
+
             ->when(auth()->user()->operator_id, function (Builder $query) {
                 return $query->where('operator_id', '=', auth()->user()->operator_id);
             })
