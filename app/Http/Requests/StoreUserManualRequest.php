@@ -13,7 +13,7 @@ class StoreUserManualRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->check();
+        return true;
     }
 
     /**
@@ -27,6 +27,9 @@ class StoreUserManualRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'file' => ['required_if:id,0', 'file', 'mimes:pdf'],
             'description' => ['required', 'string'],
+            'title_kn' => ['required', 'string', 'max:255'],
+            'file_kn' => ['required_if:id,0', 'file', 'mimes:pdf'],
+            'description_kn' => ['required', 'string'],
             'for_admin' => ['required', 'boolean'],
         ];
     }
@@ -35,6 +38,7 @@ class StoreUserManualRequest extends FormRequest
     {
         return [
             'file.required_if' => 'The file field is required.',
+            'file_kn.required_if' => 'The file field is required.',
         ];
     }
 }

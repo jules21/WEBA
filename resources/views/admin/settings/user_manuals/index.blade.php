@@ -56,9 +56,14 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>File</th>
-                        <th>Title</th>
-                        <th>Description</th>
+                        <th>File(ENG)</th>
+                        <th>Title(ENG)</th>
+                        <th>Description(ENG)</th>
+
+                        <th>Title(KINY)</th>
+                        <th>Description(KINY)</th>
+                        <th>File(KINY)</th>
+
                         <th>For Admins</th>
                         <th>Action</th>
                     </tr>
@@ -73,8 +78,16 @@
                                     Download
                                 </a>
                             </td>
-                            <td>{{$manual->title}}</td>
-                            <td>{{$manual->description}}</td>
+                            <td>{{trans($manual->title)}}</td>
+                            <td>{{trans($manual->description)}}</td>
+
+                            <td>{{trans($manual->title,[],'kn')}}</td>
+                            <td>{{trans($manual->description,[],'kn')}}</td>
+                            <td>
+                                <a class="btn btn-light-primary btn-sm rounded-pill" href="{{route('admin.user.manuals.download',$manual->slug)}}" target="_blank">
+                                    Download
+                                </a>
+                            </td>
                             <td>
                                 @if($manual->for_admin)
                                     <span class="label label-inline label-light-success font-weight-bold">Yes</span>
@@ -90,9 +103,11 @@
                                     </button>
                                     <div class="dropdown-menu " aria-labelledby="dropdownMenuButton">
                                         <a href="#" data-id="{{$manual->id}}"
-                                           data-title="{{$manual->title}}"
-                                           data-description="{{$manual->description}}"
+                                           data-title="{{trans($manual->title)}}"
+                                           data-description="{{trans($manual->description)}}"
                                            data-file="{{$manual->file}}"
+                                             data-title_kn="{{trans($manual->title,[],'kn')}}"
+                                             data-description_kn="{{trans($manual->description,[],'kn')}}"
                                              data-for_admin="{{$manual->for_admin}}"
                                            class="dropdown-item js-edit">Edit</a>
                                         <a href="{{route('admin.user.manual.delete',$manual->id)}}"
@@ -113,7 +128,7 @@
 
     <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <form action="{{route('admin.user.manual.store')}}" method="post" id="submissionForm" class="submissionForm"
                   enctype="multipart/form-data">
                 @csrf
@@ -127,23 +142,51 @@
                     </div>
 
                     <div class="modal-body">
-
-                        <div class="form-group">
-                            <label for="file">File</label>
-                            <div class="custom-file">
-                                <input type="file" name="file" class="custom-file-input" id="file">
-                                <label class="custom-file-label" for="file">Choose file</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="file">File(ENGLISH)</label>
+                                    <div class="custom-file">
+                                        <input type="file" name="file" class="custom-file-input" id="file">
+                                        <label class="custom-file-label" for="file">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="file">File(KINYARWANDA)</label>
+                                    <div class="custom-file">
+                                        <input type="file" name="file_kn" class="custom-file-input" id="file_kn">
+                                        <label class="custom-file-label" for="file">Choose file</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" name="title" id="title" class="form-control">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="title">Title(ENGLISH)</label>
+                                    <input type="text" name="title" id="title" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="title">Title(KINYARWANDA)</label>
+                                <input type="text" name="title_kn" id="title_kn" class="form-control">
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea name="description" id="description" class="form-control"></textarea>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="description">Description(ENGLISH)</label>
+                                    <textarea name="description" id="description" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="description">Description(KINYARWANDA)</label>
+                                <textarea name="description_kn" id="description_kn" class="form-control"></textarea>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -174,7 +217,7 @@
 
     <div class="modal fade" id="modalUpdate" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <form action="{{route('admin.user.manual.edit')}}" method="post" id="submissionFormEdit"
                   class="submissionForm" enctype="multipart/form-data">
                 @csrf
@@ -189,19 +232,50 @@
 
                     <div class="modal-body">
 
-                        <div class="form-group">
-                            <label for="file">File</label>
-                            <input type="file" name="file" id="edit_file" class="form-control">
+                        <div class="row">
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="file">File (ENGLISH)</label>
+                                    <input type="file" name="file" id="edit_file" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="file">File (KINYARWANDA)</label>
+                                    <input type="file" name="file_kn" id="edit_file_kn" class="form-control">
+                                </div>
+                            </div>
+                            </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="title">Title (ENGLISH)</label>
+                                    <input type="text" name="title" id="edit_title" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Title (KINYARWANDA)</label>
+                                    <input type="text" name="title_kn" id="edit_title_kn" class="form-control">
+                                </div>
+                            </div>
+
                         </div>
 
-                        <div class="form-group">
-                            <label for="title">Title</label>
-                            <input type="text" name="title" id="edit_title" class="form-control">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea name="description" id="edit_description" class="form-control"></textarea>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea name="description" id="edit_description" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="description">Description(KINYARWANDA)</label>
+                                <textarea name="description_kn" id="edit_description_kn" class="form-control"></textarea>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -235,8 +309,9 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest(\App\Http\Requests\StoreUserManualRequest::class,'.submissionForm') !!}
-    {!! JsValidator::formRequest(\App\Http\Requests\UpdateUserManualRequest::class,'.submissionFormEdit') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\StoreUserManualRequest::class,'#submissionForm') !!}
+    {!! JsValidator::formRequest(\App\Http\Requests\UpdateUserManualRequest::class,'#submissionFormEdit') !!}
+
 
     <script>
 
@@ -261,6 +336,9 @@
             $("#UserManualId").val($(this).data('id'));
             $("#edit_title").val($(this).data('title'));
             $("#edit_description").val($(this).data('description'));
+
+            $("#edit_title_kn").val($(this).data('title_kn'));
+            $("#edit_description_kn").val($(this).data('description_kn'));
             //for admin
             if ($(this).data('for_admin') == 1) {
                 $("input[name='for_admin'][value='1']").prop('checked', true);
