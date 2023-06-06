@@ -417,6 +417,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
             ->name('reply');
         Route::get('/issue-reporting', [App\Http\Controllers\IssuesReportingContrller::class, 'reportingIssues'])->name('issues.reporting');
         Route::post('/issue-reporting/store', [App\Http\Controllers\IssuesReportingContrller::class, 'store'])->name('issue.reporting.store');
+        Route::put('/issue-reporting/reply/{id}', [App\Http\Controllers\IssuesReportingContrller::class, 'reply'])
+            ->name('issues.reporting.reply');
     });
 
 });
