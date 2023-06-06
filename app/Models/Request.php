@@ -123,29 +123,14 @@ use Storage;
  * @property bool $customer_initiated
  * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
- * @property-read Collection<int, \App\Models\RequestDelivery> $deliveries
- * @property-read Collection<int, \App\Models\RequestDeliveryDetail> $deliveryDetails
- * @property-read Collection<int, \App\Models\FlowHistory> $flowHistories
- * @property-read Collection<int, \App\Models\StockMovementDetail> $items
- * @property-read Collection<int, \App\Models\MeterRequest> $meterNumbers
  * @property-read \App\Models\OperationArea|null $operatingArea
  * @property-read \App\Models\OperationArea|null $operationArea
- * @property-read Collection<int, \App\Models\PaymentDeclaration> $paymentDeclarations
  * @property-read Collection<int, \App\Models\RequestPipeCross> $pipeCrosses
  * @property-read int|null $pipe_crosses_count
- * @property-read Collection<int, \App\Models\RequestAssignment> $requestAssignments
  * @method static Builder|Request operatorCustomer()
  * @method static Builder|Request whereCustomerInitiated($value)
  * @method static Builder|Request whereReturnBackStatus($value)
- * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
- * @property-read Collection<int, \App\Models\RequestDelivery> $deliveries
- * @property-read Collection<int, \App\Models\RequestDeliveryDetail> $deliveryDetails
- * @property-read Collection<int, \App\Models\FlowHistory> $flowHistories
- * @property-read Collection<int, \App\Models\StockMovementDetail> $items
- * @property-read Collection<int, \App\Models\MeterRequest> $meterNumbers
- * @property-read Collection<int, \App\Models\PaymentDeclaration> $paymentDeclarations
- * @property-read Collection<int, \App\Models\RequestPipeCross> $pipeCrosses
- * @property-read Collection<int, \App\Models\RequestAssignment> $requestAssignments
+
  * @mixin Eloquent
  */
 class Request extends Model implements Auditable
