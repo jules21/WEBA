@@ -62,15 +62,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
  * @property-read \App\Models\User $createdBy
- * @property-read Collection<int, \App\Models\FlowHistory> $flowHistories
- * @property-read Collection<int, \App\Models\StockMovementDetail> $movementDetails
- * @property-read Collection<int, \App\Models\StockMovement> $movements
- * @method static Builder|Purchase whereAttachment($value)
- * @method static Builder|Purchase whereReturnBackStatus($value)
- * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
- * @property-read Collection<int, \App\Models\FlowHistory> $flowHistories
- * @property-read Collection<int, \App\Models\StockMovementDetail> $movementDetails
- * @property-read Collection<int, \App\Models\StockMovement> $movements
  * @mixin Eloquent
  */
 class Purchase extends Model implements Auditable
@@ -129,5 +120,9 @@ class Purchase extends Model implements Auditable
     public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function operationArea(){
+        return $this->belongsTo(OperationArea::class, 'operation_area_id');
     }
 }
