@@ -50,7 +50,7 @@
                             <div class="text-muted font-weight-bold">Enter your Email to reset password</div>
                         </div>
                         @if (session('status'))
-                            <div class="alert alert-success" role="alert">
+                            <div class="alert alert-accent" role="alert">
                                 {{ session('status') }}
                             </div>
                         @endif
@@ -70,14 +70,13 @@
                                 @enderror
                             </div>
                             <button id="kt_login_signin_submit"
-                                    class="btn btn-accent btn-block font-weight-bold py-4 my-3">
+                                    class="btn btn-accent tw-text-[14px] btn-block font-weight-bold py-4 my-3">
                                 {{ __('Send Password Reset Link') }}
                             </button>
                         </form>
                         <a href="{{route('login')}}" class="float-right py-4"> Back to login</a>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
