@@ -16,6 +16,8 @@
     <!--end::Page Custom Styles-->
     <!--begin::Global Theme Styles(used by all pages)-->
     <link href="{{ asset('css/master.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ mix('css/tailwind.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css"/>
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="{{ asset('assets/logos/logo.svg') }}"/>
 </head>
@@ -27,9 +29,9 @@
 <div class="d-flex flex-column flex-root">
     <!--begin::Login-->
     <div class="login login-4 login-signin-on d-flex flex-row-fluid" id="kt_login">
-        <div class="d-flex flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat"
-             style="background-image: url({{ asset('assets/media/bg/bg-3.jpg') }});">
-            <div class="login-form text-center mx-3 pt-7 pl-7 pr-7 pb-35 position-relative overflow-hidden rounded border shadow-xs">
+        <div class="d-flex admin-bg flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat"
+             >
+            <div class="login-form text-center mx-3 pb-35 position-relative overflow-hidden rounded  ">
                 <!--begin::Login Header-->
                 <div class="d-flex flex-center mb-10">
                     <a href="#">
@@ -38,10 +40,13 @@
                 </div>
                 <!--end::Login Header-->
                 <!--begin::Login Sign in form-->
+                <div class="card  border-0 card-body tw-rounded-sm">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
+                    </div>
                 <div class="login-signin">
-                    <div class="mb-10">
+                    <div class="mb-6">
                         <h3>{{ __('Reset Password') }}</h3>
-                        <h4>CMS RWSS</h4>
                     </div>
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -55,7 +60,7 @@
 
                         <div class="form-group">
                             <label class="text-left d-block" for="email">{{ __('E-Mail Address') }}</label>
-                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
+                            <input id="email" type="email" class="form-control tw-py-6 @error('email') is-invalid @enderror" name="email" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
 
                             @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -66,7 +71,7 @@
 
                         <div class="form-group">
                             <label for="password" class="text-left d-block">{{ __('Password') }}</label>
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                            <input id="password" type="password" class="form-control tw-py-6 @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
 
                             @error('password')
                             <span class="invalid-feedback" role="alert">
@@ -76,10 +81,10 @@
                         </div>
                         <div class="form-group">
                             <label class="text-left d-block" for="password-confirm">{{ __('Confirm Password') }}</label>
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            <input id="password-confirm" type="password" class="form-control mb-4 tw-py-6" name="password_confirmation" required autocomplete="new-password">
                         </div>
                         <button id="kt_login_signin_submit"
-                                class="btn btn-primary btn-block font-weight-bold py-4 my-3">
+                                class="btn btn-accent btn-block font-weight-bold py-4 my-9">
                             {{ __('Reset Password') }}
                         </button>
                     </form>
@@ -88,6 +93,7 @@
         </div>
     </div>
     <!--end::Login-->
+</div>
 </div>
 <!--end::Main-->
 <!--begin::Global Config(global config for global JS scripts)-->

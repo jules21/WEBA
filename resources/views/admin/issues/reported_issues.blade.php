@@ -45,11 +45,11 @@
         </h4>
         <div class="accordion accordion-solid accordion-panel accordion-svg-toggle" id="accordionExample8">
 
-            @for($i=1;$i<10;$i++)
+            @foreach($issues as $item)
                 <div class="card">
                     <div class="card-header" id="headingOne8">
                         <div class="card-title align-items-start collapsed" data-toggle="collapse"
-                             data-target="#collapseOne{{$i}}">
+                             data-target="#collapseOne{{$item->id}}">
                           <span class="svg-icon mr-3">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                  width="24px"
@@ -69,77 +69,69 @@
                         </span>
                             <div class="card-label">
                                 <div class="d-flex align-items-center">
-                                    <div class="symbol symbol-circle symbol-20 mr-3">
-                                        <img alt="Pic" src="{{ asset('assets/media/users/300_12.jpg') }}">
-                                    </div>
+
                                     <div>
                                         <a href="#"
                                            class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">
-                                            {{ auth()->user()->name }}
+                                            {{$item->client->name}}
                                         </a>
-                                        <span class="text-muted font-size-sm">
-                                        {{ auth()->user()->created_at->diffForHumans()??now()->addMinutes(rand(1,10))->diffForHumans()}}
-                                    </span>
+                                        <span
+                                            class="text-muted font-size-sm">{{ $item->created_at->diffForHumans() }}</span>
                                     </div>
                                 </div>
                                 <div class="small">
-                                    CSPs and embedded SVGs Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                    Commodi
-                                    dolore id nihil? Accusamus at eum non
+                                    {{ $item->title }}
+                                </div>
+                                <div>
+                                    {{ $item->operatingArea->name }}
                                 </div>
                             </div>
-                            <span class="small label label-inline label-light-primary rounded-pill">Pending</span>
+                            <span class="small label label-inline label-light-{{$item->statusColor}} rounded-pill">
+                            {{ucfirst( $item->status) }}
+                            </span>
                         </div>
                     </div>
-                    <div id="collapseOne{{$i}}" class="collapse " data-parent="#accordionExample8">
+                    <div id="collapseOne{{$item->id}}" class="collapse " data-parent="#accordionExample8">
                         <div class="card-body">
-                            <div class="p-4 bg-light my-2 rounded">
-                                Bootstrap “spinners” can be used to show the loading state in your projects. They’re
-                                built
-                                only with HTML and CSS, meaning you don’t need any JavaScript to create them. You will,
-                                however, need some custom JavaScript to toggle their visibility. Their appearance,
-                                alignment, and sizing can be easily customized with our amazing utility classes.
-                            </div>
-                            <div class="d-flex align-items-start">
-
-                                <button class="mt-2 btn btn-primary  btn-sm font-weight-bolder js-reply">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                         class="icon icon-tabler icon-tabler-messages"
-                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                         stroke="currentColor"
-                                         fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path
-                                            d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10"></path>
-                                        <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2"></path>
-                                    </svg>
-                                    Reply
-                                </button>
-                                @if($i%2==0)
-                                    <div class="ml-3 p-4 bg-light-primary my-2 rounded">
-                                <span class="text-primary">
-                                    {{ now()->diffForHumans() }}
-                                </span>
-                                        <div>
-                                            Bootstrap “spinners” can be used to show the loading state in your projects.
-                                            They’re
-                                            built
-                                            only with HTML and CSS, meaning you don’t need any JavaScript to create
-                                            them. You
-                                            will,
-                                            however, need some custom JavaScript to toggle their visibility. Their
-                                            appearance,
-                                            alignment, and sizing can be easily customized with our amazing utility
-                                            classes.
-                                        </div>
+                            @foreach($item->details as $detail)
+                                <div
+                                    class="p-4 bg-{{$detail->user_type==\App\Models\User::class?'light-success':'light'}} my-2 rounded">
+                                    <div class="font-weight-bolder mb-3">
+                                        <span class="font-weight-bolder">{{$detail->model->name}}</span> ,
+                                        <span class="text-primary">{{ $detail->created_at->diffForHumans() }}</span>
                                     </div>
-                                @endif
+                                    <div class="">
+                                        {{$detail->description}}
+                                    </div>
+                                </div>
+                            @endforeach
 
+                            <div class="d-flex align-items-start">
+                                @if($item->status!=\App\Constants\Status::RESOLVED
+                                    && auth()->user()->can(\App\Constants\Permission::ManageReportedIssues)
+                                     && isForOperationArea())
+                                    <button class="mt-2 btn btn-primary  btn-sm font-weight-bolder js-reply"
+                                            data-status="{{ucfirst( $item->status) }}"
+                                            data-url="{{ route('admin.issues.reply',encryptId($item->id)) }}"
+                                            data-id="{{$item->id}}">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="icon icon-tabler icon-tabler-messages"
+                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                             stroke="currentColor"
+                                             fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path
+                                                d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10"></path>
+                                            <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2"></path>
+                                        </svg>
+                                        Reply
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
-            @endfor
+            @endforeach
         </div>
 
     </div>
@@ -156,18 +148,29 @@
                         &times;
                     </button>
                 </div>
-                <form action="">
+                <form action="" id="issueForm" method="post">
                     @csrf
+                    @method('put')
                     <div class="modal-body">
+                        <div class="form-group">
+                            <label for="status">Mark issue as:</label>
+                            <select name="status" id="status" class="form-control">
+                                <option value=""></option>
+                                @foreach(\App\Constants\Status::issueStatues() as $item)
+                                    <option value="{{$item}}">{{$item}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label for="description">
                                 Description:
                             </label>
-                            <textarea class="form-control" placeholder="Type a reply here" name="description" rows="5" id="description"></textarea>
+                            <textarea class="form-control" placeholder="Type a reply here" name="description" rows="5"
+                                      id="description"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="button" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary">
                             Save Reply
                         </button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -179,11 +182,31 @@
 @endsection
 
 @section('scripts')
+
+    <script src="{{asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
+    {!! JsValidator::formRequest(\App\Http\Requests\StoreReplyIssueRequest::class,'#issueForm') !!}
+
     <script>
         $(function () {
+            let $issueForm = $('#issueForm');
             $(document).on('click', '.js-reply', function () {
                 $('#replyModal').modal();
+                $('#status').val($(this).data('status'));
+                $issueForm.attr('action', $(this).data('url'));
             });
+
+            $issueForm.on('submit', function (e) {
+                e.preventDefault();
+                let btn = $(this).find('[type="submit"]');
+                if (!$(this).valid()) {
+                    return false;
+                }
+                btn.prop('disabled', true)
+                    .addClass('spinner spinner-white spinner-right');
+
+                e.target.submit();
+            });
+
         });
     </script>
 @endsection

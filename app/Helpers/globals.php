@@ -94,3 +94,11 @@ function getDistrictsToRequestConnection()
         ->orderBy('name')
         ->get();
 }
+
+function issueManagementPermissions(): array
+{
+return [
+        Permission::ViewReportedIssues,
+        Permission::ManageReportedIssues,
+    ];
+}

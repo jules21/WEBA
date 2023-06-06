@@ -102,10 +102,11 @@ class Permission
 
     const ManageSystemAudit = 'Manage System Audit';
 
+    const ViewReportedIssues = 'View Reported Issues';
+    const ManageReportedIssues = 'Manage Reported Issues';
     const ManageDistrictUsers = 'Manage District Users';
 
     const ViewStockIn = 'View Stock In';
     const ViewItems = 'View Items';
     const ViewItemCategories = 'View Item Categories';
-
 }
