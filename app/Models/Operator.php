@@ -80,9 +80,9 @@ use Storage;
  */
 class Operator extends Model implements Auditable
 {
-    use HasFactory, \OwenIt\Auditing\Auditable,HasInitials;
+    use HasFactory, \OwenIt\Auditing\Auditable, HasInitials;
 
-    protected $appends = ['logo_url','initials'];
+    protected $appends = ['logo_url', 'initials'];
 
     const LOGO_PATH = 'operators/logos/';
 
@@ -166,6 +166,11 @@ class Operator extends Model implements Auditable
                 ['operator_id', '=', $this->id]
             ])
             ->first();
+    }
+
+    public function issues(): hasMany
+    {
+        return $this->hasMany(IssueReport::class, 'operator_id');
     }
 
 

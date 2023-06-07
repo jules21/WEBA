@@ -271,7 +271,7 @@
             <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
         </li>
 
-        @if(!is_null(auth()->user()->operator_id))
+        @if(auth()->user()->canSeeCustomerIssues())
             <li class="menu-item nav-reported-issues {{ request()->routeIs('admin.issues.reported')?'menu-item-active':'' }}">
                 <a href="{{route('admin.issues.reported')}}"
                    class="menu-link">

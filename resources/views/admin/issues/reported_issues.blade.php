@@ -40,9 +40,31 @@
 
 @section('content')
     <div class="">
-        <h4 class="mb-10">
-            Reported Issues
-        </h4>
+        <div class="d-flex justify-content-between align-items-center mb-6">
+            <h4 class="mb-0">
+                Reported Issues
+            </h4>
+            @if(auth()->user()->canFilterIssues())
+                <form action="" class="form-inline">
+                    <select name="operator" id="operator" class="form-control form-control-sm mr-2">
+                        <option value="">All Operators</option>
+                        @foreach($operators as $operator)
+                            <option value="{{ $operator->id }}"
+                                {{ request()->get('operator') == $operator->id ? 'selected' : '' }}>
+                                {{ $operator->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <select name="area" id="area" class="form-control form-control-sm">
+                        <option value="">All Operating Areas</option>
+                    </select>
+                    <button class="btn btn-primary btn-sm ml-2">
+                        Filter
+                        <i class="fa fa-filter"></i>
+                    </button>
+                </form>
+            @endif
+        </div>
         <div class="accordion accordion-solid accordion-panel accordion-svg-toggle" id="accordionExample8">
 
             @foreach($issues as $item)
@@ -75,15 +97,16 @@
                                            class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">
                                             {{$item->client->name}}
                                         </a>
+                                        <small>reported an issue</small>
                                         <span
                                             class="text-muted font-size-sm">{{ $item->created_at->diffForHumans() }}</span>
                                     </div>
                                 </div>
-                                <div class="small">
+                                <div class="small my-2">
                                     {{ $item->title }}
                                 </div>
-                                <div>
-                                    {{ $item->operatingArea->name }}
+                                <div class="small text-muted">
+                                    {{ $item->operator->name }} - {{ $item->operatingArea->name }}
                                 </div>
                             </div>
                             <span class="small label label-inline label-light-{{$item->statusColor}} rounded-pill">
@@ -202,6 +225,7 @@
     {!! JsValidator::formRequest(\App\Http\Requests\StoreReplyIssueRequest::class,'#issueForm') !!}
 
     <script>
+        let operators = @json($operators->toArray());
         $(function () {
             let $issueForm = $('#issueForm');
             $(document).on('click', '.js-reply', function () {
@@ -221,6 +245,30 @@
 
                 e.target.submit();
             });
+
+            let $operator = $('#operator');
+
+            function loadOperatingAreas(operatorId, selectedAreaId = null) {
+                let selectedOperator = operators.find(item => Number(item.id) === Number(operatorId));
+
+                let operatingAreas = selectedOperator.operation_areas;
+                let $operatingArea = $('#area');
+                $operatingArea.empty();
+                $operatingArea.append('<option value="">All Operating Area</option>');
+                operatingAreas.forEach(function (item) {
+                    $operatingArea.append(`<option value="${item.id}">${item.name}</option>`);
+                });
+                if (selectedAreaId) {
+                    $operatingArea.val(selectedAreaId);
+                }
+            }
+
+            $operator.on('change', function () {
+                let operatorId = $(this).val();
+                loadOperatingAreas(operatorId);
+            });
+            $operator.trigger('change');
+            loadOperatingAreas($operator.val(), '{{request('area')}}');
 
         });
     </script>
