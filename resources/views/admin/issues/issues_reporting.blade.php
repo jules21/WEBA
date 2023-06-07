@@ -44,7 +44,7 @@
             <h6>
                 Issues Reporting List
             </h6>
-            @if(auth()->user()->can(\App\Constants\Permission::CreateOperatorIssue)  && isOperator())
+            @if(auth()->user()->can(\App\Constants\Permission::CreateOperatorIssue)  && isForOperationArea())
                 <button type="button" class="btn btn-primary btn-sm js-add" data-toggle="modal"
                         data-target="#exampleModalLong">
                     <i class="flaticon2-plus"></i>
