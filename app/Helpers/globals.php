@@ -110,3 +110,4 @@ function isDistrict(): bool
 {
     return auth()->check() && auth()->user()->district_id != null;
 }
+
