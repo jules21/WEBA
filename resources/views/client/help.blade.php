@@ -42,7 +42,7 @@
                                             <!--begin::Title-->
                                             <a href=""
                                                class="text-dark text-hover-primary text-decoration-none tw-text-sm mr-3 tw-font-medium">
-                                                {{trans($item->title, [], app()->getLocale())}}
+                                                {{trans($item->title, [], (app()->getLocale() == "rw" ? "kn":"en"))}}
                                             </a>
                                             <!--end::Title-->
                                             <!--begin::Label-->
@@ -66,7 +66,7 @@
                                         </div>
                                         <!--end::Content-->
                                         <!--begin::Text-->
-                                        <span class="text-muted fw-semibold tw-text-sm">{{trans($item->description,[],app()->getLocale())}}</span>
+                                        <span class="text-muted fw-semibold tw-text-sm">{{trans($item->description,[],(app()->getLocale() == "rw" ? "kn":"en"))}}</span>
                                         <!--end::Text-->
                                     </div>
                                     <!--end::Section-->

@@ -117,7 +117,7 @@ class UserManualController extends Controller
 
     public function download($slug)
     {
-        $locale = app()->getLocale();
+        $locale = app()->getLocale() == "rw" ? "kn":"en";
         if ($locale == 'kn') {
             $manual = UserManual::query()->where('slug', $slug)->firstOrFail();
             $path = UserManual::USER_MANUALS_PATH . $manual->file_kn;
