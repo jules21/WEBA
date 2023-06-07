@@ -1,6 +1,6 @@
 @if(session()->has('success'))
     <div
-        class="alert alert-custom  my-3 alert-light-accent border-success fade show rounded-sm"
+        class="alert alert-custom  my-3 alert-light-success border-success fade show rounded-sm"
         role="alert">
         <div class="alert-icon">
             <i class="la la-check-circle"></i>

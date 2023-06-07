@@ -40,23 +40,22 @@
 
 @section('content')
     <div class="">
-        <div class="card-header flex-wrap d-flex justify-content-between border-2 pt-6 pb-0">
-            <div class="card-title">
-                <h3 class="card-label">Issues Reporting List</h3>
-            </div>
-            <div class="card-toolbar ">
-                <!-- Button trigger modal-->
-                <button type="button" class="btn btn-light-primary js-add" data-toggle="modal"
+        <div class="d-flex justify-content-between mb-4">
+            <h6>
+                Issues Reporting List
+            </h6>
+            @if(auth()->user()->can(\App\Constants\Permission::CreateOperatorIssue)  && isOperator())
+                <button type="button" class="btn btn-primary btn-sm js-add" data-toggle="modal"
                         data-target="#exampleModalLong">
                     <i class="flaticon2-plus"></i>
                     Add New Issue
                 </button>
-                <!-- Modal-->
-            </div>
+            @endif
+
         </div>
         <div class="accordion accordion-solid accordion-panel accordion-svg-toggle" id="accordionExample8">
 
-            @foreach($issueReports as $issue)
+            @forelse($issueReports as $issue)
                 <div class="card">
                     <div class="card-header" id="headingOne8">
                         <div class="card-title align-items-start collapsed" data-toggle="collapse"
@@ -80,15 +79,20 @@
                         </span>
                             <div class="card-label">
                                 <div class="d-flex align-items-center">
-                                    <div class="symbol symbol-circle symbol-20 mr-3">
-                                        <img alt="Pic" src="{{ asset('assets/media/users/300_12.jpg') }}">
-                                    </div>
+
                                     <div>
-                                        <a href="#"
-                                           class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">
-                                            {{ auth()->user()->name }}
-                                        </a>
-                                        <span class="text-muted font-size-sm">{{ $issue->created_at->diffForHumans() }}</span>
+                                        <div>
+                                            <a href="#"
+                                               class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">
+                                                {{ auth()->user()->name }}
+                                                <span
+                                                    class="text-muted font-size-sm">{{ $issue->created_at->diffForHumans() }}</span>
+                                            </a>
+                                            <div>
+                                                {{ $issue->operator->name }}
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="small">
@@ -105,7 +109,7 @@
 
                             @foreach($issue->details as $detail)
                                 <div
-                                    class="p-4 bg-{{$detail->user_type==\App\Models\User::class?'light-success':'light'}} my-2 rounded">
+                                    class="p-4 bg-{{$detail->district_id==auth()->user()->district_id && !is_null($detail->district_id)?'light-success':'light'}} my-2 rounded">
                                     <div class="font-weight-bolder mb-3">
                                         <span class="font-weight-bolder">{{$detail->model->name}}</span> ,
                                         <span class="text-primary">{{ $detail->created_at->diffForHumans() }}</span>
@@ -115,32 +119,39 @@
                                     </div>
                                 </div>
                             @endforeach
-                                <div class="d-flex align-items-start">
-                                    @if($issue->status!=\App\Constants\Status::RESOLVED
-                                        && auth()->user()->can(\App\Constants\Permission::ManageIssuesReporting)
-                                         && isForOperationArea())
-                                        <button class="mt-2 btn btn-primary  btn-sm font-weight-bolder js-reply"
-                                                data-status="{{ucfirst( $issue->status) }}"
-                                                data-url="{{ route('admin.issues.issues.reporting.reply',encryptId($issue->id)) }}"
-                                                data-id="{{$issue->id}}">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                 class="icon icon-tabler icon-tabler-messages"
-                                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                                 stroke="currentColor"
-                                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                <path
-                                                    d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10"></path>
-                                                <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2"></path>
-                                            </svg>
-                                            Reply
-                                        </button>
-                                    @endif
-                                </div>
+                            <div class="d-flex align-items-start">
+                                @if($issue->status!=\App\Constants\Status::RESOLVED
+                                    && auth()->user()->district_id==$issue->district_id
+                                    && auth()->user()->can(\App\Constants\Permission::ManageOperatorIssues)
+                                    )
+                                    <button class="mt-2 btn btn-primary  btn-sm font-weight-bolder js-reply"
+                                            data-status="{{ucfirst( $issue->status) }}"
+                                            data-url="{{ route('admin.issues.issues.reporting.reply',encryptId($issue->id)) }}"
+                                            data-id="{{$issue->id}}">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="icon icon-tabler icon-tabler-messages"
+                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                             stroke="currentColor"
+                                             fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path
+                                                d="M21 14l-3 -3h-7a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1h9a1 1 0 0 1 1 1v10"></path>
+                                            <path d="M14 15v2a1 1 0 0 1 -1 1h-7l-3 3v-10a1 1 0 0 1 1 -1h2"></path>
+                                        </svg>
+                                        Reply
+                                    </button>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="alert alert-info">
+                    <div class="alert-text">
+                        No issues reported yet. You can report issues by clicking on the button above.
+                    </div>
+                </div>
+            @endforelse
         </div>
 
 
@@ -153,7 +164,7 @@
             <form action="{{route('admin.issues.issue.reporting.store')}}" method="post" id="submissionForm"
                   class="submissionForm" enctype="multipart/form-data">
                 @csrf
-{{--                <input type="hidden" value="0" id="issue_report_id" name="issue_report_id">--}}
+                {{--                <input type="hidden" value="0" id="issue_report_id" name="issue_report_id">--}}
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Add New Issue</h4>
@@ -176,15 +187,14 @@
                             <label for="description">
                                 Description:
                             </label>
-                            <textarea class="form-control" placeholder="Type a question here" name="description" rows="5" id="description"></textarea>
+                            <textarea class="form-control" placeholder="Type a question here" name="description"
+                                      rows="5" id="description"></textarea>
                         </div>
                     </div>
 
-                    <div class="modal-footer">
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-primary">Save</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </form>
@@ -196,10 +206,9 @@
     <div class="modal fade" id="replyModal" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.issues.issues.reporting.reply',$issue->id)}}" method="post" id="submissionForm"
-                  class="submissionForm" enctype="multipart/form-data">
+            <form action="" method="post" id="replyForm" enctype="multipart/form-data">
                 @csrf
-                {{--                <input type="hidden" value="0" id="issue_report_id" name="issue_report_id">--}}
+                @method('PUT')
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Reply</h4>
@@ -224,15 +233,14 @@
                             <label for="description">
                                 Description:
                             </label>
-                            <textarea class="form-control" placeholder="Type a reply here" name="description" rows="5" id="description"></textarea>
+                            <textarea class="form-control" placeholder="Type a reply here" name="description" rows="5"
+                                      id="description"></textarea>
                         </div>
                     </div>
 
                     <div class="modal-footer">
-                        <div class="btn-group">
-                            <button type="submit" class="btn btn-primary">Save</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </form>
@@ -246,7 +254,8 @@
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     <script type="text/javascript" src="{{ url('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
     {!! JsValidator::formRequest(\App\Http\Requests\IssueReportingRequest::class,'.submissionForm') !!}
-{{--    {!! JsValidator::formRequest(\App\Http\Requests\UpdateBillChargeRequest::class,'.submissionFormEdit') !!}--}}
+    {!! JsValidator::formRequest(\App\Http\Requests\StoreReplyIssueRequest::class,'#replyForm') !!}
+    {{--    {!! JsValidator::formRequest(\App\Http\Requests\UpdateBillChargeRequest::class,'.submissionFormEdit') !!}--}}
 
     <script>
 
@@ -257,12 +266,27 @@
             $(document).on('click', '.js-add', function () {
                 $('#addModal').modal();
             });
-        });
-
-        $(function () {
+            let $replyForm = $('#replyForm');
             $(document).on('click', '.js-reply', function () {
+                let url = $(this).data('url');
+                $replyForm.attr('action', url);
                 $('#replyModal').modal();
             });
+
+            $replyForm.on('submit', function (e) {
+                e.preventDefault();
+                let form = $(this);
+                if (!form.valid())
+                    return;
+                let btn = form.find("input[type='submit']");
+                btn.prop('disabled', true)
+                    .addClass('spinner spinner-right spinner-white');
+                e.target.submit();
+            });
+
+
         });
+
+
     </script>
 @endsection
