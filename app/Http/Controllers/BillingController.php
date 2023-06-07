@@ -127,10 +127,16 @@ class BillingController extends Controller
         }
 
         $datatable = new BillingDataTable($query);
+        $operators = Operator::query()
+            ->when($user->district_id, function ($query) use ($user) {
+                $query->whereHas('operationAreas', function ($query) use ($user) {
+                    $query->where('district_id', $user->district_id);
+                });
+            });
 
         return $datatable->render('admin.billings.index',
             [
-                'operators' => Operator::query()->get(),
+                'operators' => $operators->get(),
                 'operationAreas' => $user->operator_id ?
                     OperationArea::query()->where('operator_id', $user->operator_id)->get()
                     : [],
