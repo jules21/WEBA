@@ -107,10 +107,17 @@ class BillingDataTable extends DataTable
      */
     protected function getColumns()
     {
-        return [
+        $columns = [
             'id' => ['title' => '#', 'searchable' => false, 'render' => function () {
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
+
+            $columns[] =Column::make('operator_name')
+                ->title('Operator'),
+
+            Column::make('operation_area')
+                ->title('District'),
+
             Column::make('customer_name')
                 ->name('meterRequest.request.customer.name')
                 ->title('Customer Name'),
@@ -137,6 +144,8 @@ class BillingDataTable extends DataTable
                 ->title(''),
 
         ];
+//        dd($columns[2]);
+        return $columns;
 
     }
 

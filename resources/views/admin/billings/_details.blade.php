@@ -10,14 +10,20 @@
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
-                <label class="font-weight-bolder" for="starting_index">Starting Index</label>
+                <label class="font-weight-bolder" for="starting_index">Previous Index</label>
                 <div class="form-control-plaintext"> {{ $billing->starting_index }}</div>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
-                <label class="font-weight-bolder" for="last_index">Last Index</label>
+                <label class="font-weight-bolder" for="last_index">Current Index</label>
                 <div class="form-control-plaintext"> {{ $billing->last_index }}</div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="form-group">
+                <label class="font-weight-bolder" for="last_index">Consumption</label>
+                <div class="form-control-plaintext"> {{ $billing->last_index - $billing->starting_index }}</div>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
@@ -52,7 +58,7 @@
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="form-group">
-                <label class="font-weight-bolder" for="balance">Balance</label>
+                <label class="font-weight-bolder" for="balance">Outstanding</label>
                 <div class="form-control-plaintext"> {{ $billing->balance .'RWF' }}</div>
             </div>
         </div>
