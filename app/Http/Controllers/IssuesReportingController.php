@@ -23,7 +23,7 @@ class IssuesReportingController extends Controller
                 $builder->where('operator_id', auth()->user()->operator_id);
             })
             ->when(!isOperator() && isDistrict(), function (Builder $builder) {
-                $builder->where('district_id', auth()->user()->operator->district_id);
+                $builder->where('district_id', auth()->user()->district_id);
             })
             ->whereNotNull('user_id')
             ->whereNull('client_id')

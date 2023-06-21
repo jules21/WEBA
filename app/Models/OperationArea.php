@@ -41,13 +41,8 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read int|null $audits_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BillCharge> $billCharges
  * @property-read int|null $bill_charges_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChartAccount> $chartOfAccounts
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BillCharge> $billCharges
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChartAccount> $chartOfAccounts
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @mixin \Eloquent
  */
 class OperationArea extends Model implements Auditable
@@ -84,5 +79,10 @@ class OperationArea extends Model implements Auditable
     public function users(): HasMany
     {
         return $this->hasMany(User::class, 'operation_area');
+    }
+
+    public function issues(): hasMany
+    {
+        return $this->hasMany(IssueReport::class, 'operation_area_id');
     }
 }
