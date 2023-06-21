@@ -59,9 +59,9 @@
                 @endunless
                 @unless(Helper::hasOperationArea())
                     <div class="col-md-3 form-group">
-                        <label for="operation_area">Operation Area</label>
+                        <label for="operation_area">District</label>
                         <select name="operation_area_id[]" id="operation_area" class="form-control select2"
-                                data-placeholder="Select Operation Area" multiple="multiple">
+                                data-placeholder="Select District" multiple="multiple">
                             @foreach($operationAreas  ?? [] as $operationArea)
                                 <option value="{{ $operationArea->id }}">{{ $operationArea->name }}</option>
                             @endforeach
@@ -178,7 +178,7 @@
                 }
                 else {
                     $('#operation_area').empty();
-                    $('#operation_area').append('<option value="">Select Operation Area</option>');
+                    $('#operation_area').append('<option value="">Select District</option>');
                 }
             });
             $(document).on('change','#operation_area',function (e) {
@@ -218,7 +218,7 @@
                 success: function (data) {
 
                     $('#operation_area').empty();
-                    $('#operation_area').append('<option value="">Select Operation Area</option>');
+                    $('#operation_area').append('<option value="">Select District</option>');
                     $.each(data, function (key, value) {
                         if (operationArea && operationArea.includes(value.id.toString())) {
                             $('#operation_area').append('<option value="' + value.id + '" selected>' + value.name + '</option>');

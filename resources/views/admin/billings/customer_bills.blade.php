@@ -102,7 +102,7 @@
                             <br>
                             <strong>Total Payments</strong> : {{ number_format(($totalAmount-$totalBalance),2) ?? 0 }} Rwf
                             <br>
-                            <strong>Remaing Balance to be paid
+                            <strong>Remaining Balance to be paid
                             </strong> : {{ number_format($totalBalance,2) ?? 0 }} Rwf
 
                         </div>

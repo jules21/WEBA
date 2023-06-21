@@ -111,7 +111,7 @@ class PaymentDeclarationDataTable extends DataTable
                 ->name('request.operator.name'),
 
             Column::make('operation_area')
-                ->title('Operation Area')
+                ->title('District')
                 ->name('request.operationArea.name'),
 
             Column::make('customer')
