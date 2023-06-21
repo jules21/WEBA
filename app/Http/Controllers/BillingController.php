@@ -133,6 +133,9 @@ class BillingController extends Controller
                     $query->where('district_id', $user->district_id);
                 });
             });
+        $totalAmount = $query->sum('amount');
+        $totalBalance = $query->sum('balance');
+        $totalPayment = $totalAmount-$totalBalance;
 
         return $datatable->render('admin.billings.index',
             [
@@ -145,6 +148,10 @@ class BillingController extends Controller
                 'operation_area_id' => $operation_area_id,
                 'customer_field_officer_id' => $customer_field_officer_id,
                 'query' => $query->get(),
+                'totalAmount' => $totalAmount,
+                'totalBalance' => $totalBalance,
+                'totalPayment' => $totalPayment,
+
 
             ]);
     }
