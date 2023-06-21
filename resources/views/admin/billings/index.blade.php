@@ -146,110 +146,77 @@
         @endif
     </div>
 
-    <nav class="my-4 d-flex flex-row-reverse nav" id="nav-tab">
-        <button class="btn btn-sm btn-primary active mr-2" data-toggle="tab" id="nav-summary-tab" data-target="#nav-summary">Summary
-        </button>
-        <button class="btn btn-sm btn-success  mr-2" data-toggle="tab" id="nav-billings-tab" data-target="#nav-billings" type="button"
-                role="tab" aria-controls="nav-billings" aria-selected="false">Billings
-        </button>
-    </nav>
-
-    <div class="tab-content">
-        <div class="tab-pane fade show active" id="nav-billings">
-            <div class="card shadow-none border">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-5">
-                        <h3 class="mb-3">
-                            @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
-                                {{ $customer->name ?? '' }}
-                            @else
-                                Customers
-                            @endif
-                            Billing</h3>
-                        <!--begin::Dropdown-->
-                        <div class="dropdown dropdown-inline mr-2">
-                            {{--                            @if ($requests->count() > 0)--}}
-                            <button type="button"
-                                    class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="la la-download"></i>Export
-                            </button>
-                            {{--                            @endif--}}
-                            <!--begin::Dropdown Menu-->
-                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                <ul class="nav flex-column nav-hover">
-                                    <li class="nav-item export-doc">
-                                        <a href="#" class="nav-link" target="_blank" id="excel">
-                                            <i class="nav-icon la la-file-excel-o"></i>
-                                            <span class="nav-text">Excel</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!--end::Dropdown Menu-->
-                        </div>
-                        <!--end::Dropdown-->
+    <div class="card shadow-none border">
+        <div class="card-body">
+            <div class="d-flex justify-content-between mb-5">
+                <h3 class="mb-3">
+                    @if(Str::contains(Route::currentRouteName(), 'admin.billings.customer'))
+                        {{ $customer->name ?? '' }}
+                    @else
+                        Customers
+                    @endif
+                    Billing</h3>
+                <!--begin::Dropdown-->
+                <div class="dropdown dropdown-inline mr-2">
+                    {{--                            @if ($requests->count() > 0)--}}
+                    <button type="button"
+                            class="btn btn-sm btn-light-primary font-weight-bolder dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="la la-download"></i>Export
+                    </button>
+                    {{--                            @endif--}}
+                    <!--begin::Dropdown Menu-->
+                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                        <ul class="nav flex-column nav-hover">
+                            <li class="nav-item export-doc">
+                                <a href="#" class="nav-link" target="_blank" id="excel">
+                                    <i class="nav-icon la la-file-excel-o"></i>
+                                    <span class="nav-text">Excel</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="table-responsive">
-                        {{$dataTable->table(['class' => 'table table-head-custom border table-head-solid table-hover'])}}
-                    </div>
-
+                    <!--end::Dropdown Menu-->
                 </div>
-
+                <!--end::Dropdown-->
             </div>
-        </div>
-        <div class="tab-pane fade" id="nav-summary">
-            <div class="card card-body">
-                <h2>Billings Summary</h2>
-                <div class="row">
-                    <div class="d-flex flex-wrap">
-                        <!--begin::Col-->
-                        <div class="border border-dashed border-gray-300 w-150px rounded my-3 p-4 me-6">
-                    <span class="fs-1 fw-bold text-gray-800 lh-1">
-                        <span data-kt-countup="true" data-kt-countup-value="6,840" data-kt-countup-prefix="$" class="counted" data-kt-initialized="1">$6,840</span>
-                        <i class="ki-duotone ki-arrow-up fs-1 text-success"><span class="path1"></span><span class="path2"></span></i>                    </span>
-                            <span class="fs-6 fw-semibold text-muted d-block lh-1 pt-2">Net Earnings</span>
-                        </div>
-                        <!--end::Col-->
 
-                        <!--begin::Col-->
-                        <div class="border border-dashed border-gray-300 w-125px rounded my-3 p-4 me-6">
-                    <span class="fs-1 fw-bold text-gray-800 lh-1">
-                        <span class="counted" data-kt-countup="true" data-kt-countup-value="16" data-kt-initialized="1">16</span>%
-                        <i class="ki-duotone ki-arrow-down fs-1 text-danger"><span class="path1"></span><span class="path2"></span></i>                    </span>
-                            <span class="fs-6 fw-semibold text-muted d-block lh-1 pt-2">Change</span>
+                <div class="d-flex flex-wrap">
+                    <!--begin::Stats-->
+                    <div class="border border-primary border-dashed rounded py-3 px-3 mb-3" style="border-style: dashed !important;">
+                        <div class="fs-4 fw-bold text-gray-700">
+                            <span class="w-75px">{{ number_format($totalAmount,2) ?? 0 }} Rwf</span>
                         </div>
-                        <!--end::Col-->
-
-                        <!--begin::Col-->
-                        <div class="border border-dashed border-gray-300 w-150px rounded my-3 p-4 me-6">
-                    <span class="fs-1 fw-bold text-gray-800 lh-1">
-                        <span data-kt-countup="true" data-kt-countup-value="1,240" data-kt-countup-prefix="$" class="counted" data-kt-initialized="1">$1,240</span>
-                        <span class="text-primary">--</span>
-                    </span>
-                            <span class="fs-6 fw-semibold text-muted d-block lh-1 pt-2">Fees</span>
-                        </div>
-                        <!--end::Col-->
+                        <div class="fw-semibold text-muted">Total Billed</div>
                     </div>
+                    <!--end::Stats-->
+
+                    <!--begin::Stats-->
+                    <div class="border border-warning border-dashed rounded py-3 px-3 mx-4 mb-3" style="border-style: dashed !important;">
+                        <div class="fs-4 fw-bold text-gray-700">
+                            <span class="w-50px">{{ number_format(($totalAmount-$totalBalance),2) ?? 0 }} Rwf</span>
+                        </div>
+                        <div class="fw-semibold text-muted">Total Payments</div>
+                    </div>
+                    <!--end::Stats-->
+
+                    <!--begin::Stats-->
+                    <div class="border border-danger border-dashed rounded py-3 px-3 mb-3" style="border-style: dashed !important;">
+                        <div class="fs-4 fw-bold text-gray-700">
+                            <span class="w-50px">{{ number_format($totalBalance,2) ?? 0 }} Rwf</span>
+                        </div>
+                        <div class="fw-semibold text-muted">Total Arreas</div>
+                    </div>
+                    <!--end::Stats-->
                 </div>
-                <div class="row my-4">
-                    <div class="col-md-4">
-                        <span class="text-dark font-weight-bolder">Total Billed</span> : {{ number_format($totalAmount,2) ?? 0 }} Rwf
-                        <br>
-                        <span class="text-dark font-weight-bolder">Total Payments</span> : {{ number_format(($totalAmount-$totalBalance),2) ?? 0 }} Rwf
-                        <br>
-                        <span class="text-dark font-weight-bolder">Remaining Balance to be paid
-                        </span> : {{ number_format($totalBalance,2) ?? 0 }} Rwf
 
-                    </div>
-                    <div class="col-md-8">
-                        <div id="chart"></div>
-                    </div>
-                </div>
+            <div class="table-responsive">
+                {{$dataTable->table(['class' => 'table table-head-custom border table-head-solid table-hover'])}}
             </div>
+
         </div>
+
     </div>
-
     <div id="modal" class="modal">
         <div class="modal-dialog modal-lg modal-content">
             <div id="modal-body"></div>
