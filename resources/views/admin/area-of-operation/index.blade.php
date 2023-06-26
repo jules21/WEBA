@@ -98,6 +98,12 @@
                       method="post" id="formSave">
                     @csrf
                     <input type="hidden" value="0" id="id" name="id"/>
+                    <input type="hidden" id="license_number" name="license_number"/>
+                    <input type="hidden" id="valid_from" name="valid_from"/>
+                    <input type="hidden" id="valid_to" name="valid_to"/>
+                    <input type="hidden" id="valid_to" name="valid_to"/>
+                    <input type="hidden" value="Active" id="status" name="status"/>
+
                     <div class="modal-body">
 
                         <div class="form-group">
@@ -197,6 +203,7 @@
                             .flatMap(function (item) {
                                 return item.area_of_operations
                                     .map(function (newItem) {
+                                        console.log(newItem);
                                         return {
                                             id: newItem.district_id,
                                             name: newItem.district_name,
@@ -215,8 +222,8 @@
                         $('#addModal').modal();
                     },
                     error: function (response) {
-                        let message = response.responseJSON.message ?? 'Unable to fetch area of operations, please try again later';
-                        let status = response.status;
+                        let message = response?.responseJSON?.message ?? 'Unable to fetch area of operations, please try again later';
+                        let status = response?.status;
                         Swal.fire({
                             icon: Number(status) === 422 ? "warning" : "error",
                             title: Number(status) === 422 ? "Oops" : "Error",
