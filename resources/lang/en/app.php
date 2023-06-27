@@ -17,7 +17,7 @@
         "login"=>"Login",
         "logout"=>"Logout",
         "profile"=>"Profile",
-        "register"=>"Register",
+        "register"=>"Customer Register",
         "features"=>"CMS Features",
         "more_than"=>" More than",
         "private_water_operators"=>"+ Private Water Operators",

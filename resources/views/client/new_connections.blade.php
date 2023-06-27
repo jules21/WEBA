@@ -17,8 +17,6 @@
 
     </x-layouts.breadcrumb>
 @endsection
-
-
 @section('content')
     <div class="card card-body h-100 tw-rounded-md">
         <h4>
@@ -26,7 +24,8 @@
         </h4>
         <div class="tw-text-sm alert alert-info d-flex align-items-center tw-gap-2">
             <i class="ti ti-info-circle tw-text-[24px]"></i> @lang('app.fill_the_form_below_to_request_new_connection_at')
-            <strong>{{ $operator->name }} </strong> @lang('app.in') <strong>{{ $operationArea->district->name }}</strong> @lang('app.district.')
+            <strong>{{ $operator->name }} </strong> @lang('app.in')
+            <strong>{{ $operationArea->district->name }}</strong> @lang('app.district.')
         </div>
 
         <form
@@ -85,7 +84,8 @@
                                    {{ isset($request)?'':'required'  }}
                                    accept=".pdf,image/jpeg,image/png,image/jpg"
                                    name="upi_attachment">
-                            <label class="custom-file-label tw-truncate" for="upi_attachment">@lang('app.choose_file')</label>
+                            <label class="custom-file-label tw-truncate"
+                                   for="upi_attachment">@lang('app.choose_file')</label>
                         </div>
                     </div>
                 </div>
@@ -156,7 +156,8 @@
                                     id="new_connection_crosses_road2" value="0" name="new_connection_crosses_road"
                                     required
                                     class="custom-control-input">
-                                <label class="custom-control-label" for="new_connection_crosses_road2">@lang('app.no')</label>
+                                <label class="custom-control-label"
+                                       for="new_connection_crosses_road2">@lang('app.no')</label>
                             </div>
                         </div>
                         <label id="new_connection_crosses_road-error" class="error"
