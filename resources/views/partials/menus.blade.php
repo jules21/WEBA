@@ -1,3 +1,7 @@
+@php
+    $data=badgesCounts();
+@endphp
+
 <ul class="menu-nav">
     <li class="menu-item nav-dashboard">
         <a href="{{route('admin.dashboard')}}" class="menu-link">
@@ -130,12 +134,13 @@
                                          :route="route('admin.requests.create')"/>
                         @endcan
                         @can(\App\Constants\Permission::AssignRequest)
-                            <x-menu-item title="Pending Requests" item-class="nav-pending-requests" :count="badgesCounts()['pending_requests']"
+                            <x-menu-item title="Pending Requests" item-class="nav-pending-requests"
+                                         :count="$data['pending_requests']"
                                          :route="route('admin.requests.new')"/>
                             <x-menu-item title="Assigned Requests" item-class="nav-assigned-requests"
                                          :route="route('admin.requests.assigned')"/>
                         @endcan
-                        <x-menu-item title="My Tasks" item-class="nav-my-tasks"  :count="badgesCounts()['my_tasks_requests']"
+                        <x-menu-item title="My Tasks" item-class="nav-my-tasks" :count="$data['requests_tasks']"
                                      :route="route('admin.requests.my-tasks')"/>
                         @can(\App\Constants\Permission::ManageItemDelivery)
                             <x-menu-item title="Item Delivery" item-class="nav-item-delivery"
@@ -364,16 +369,9 @@
                                     </li>
                                 @endcan
                                 @can(\App\Constants\Permission::ApproveStockIn)
-                                    <li class="menu-item nav-my-purchases" aria-haspopup="true">
-                                        <a href="{{route('admin.purchases.index')}}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot">
-                                                <span></span>
-                                            </i>
-                                            <span class="menu-text">
-                        @lang('backend.my_tasks')
-                    </span>
-                                        </a>
-                                    </li>
+                                    <x-menu-item item-class="nav-my-purchases" :route="route('admin.purchases.index')"
+                                                 :title="__('backend.my_tasks')" :count="$data['purchases_tasks']">
+                                    </x-menu-item>
                                 @endcan
                             @endif
                             <li class="menu-item nav-all-purchases" aria-haspopup="true">
