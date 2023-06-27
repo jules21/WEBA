@@ -324,7 +324,7 @@
         \App\Constants\Permission::ManageSuppliers,
         \App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
             <li class="menu-section">
-                <h4 class="menu-text">Stock Management Section</h4>
+                <h4 class="menu-text">Operation And Maintenance Section</h4>
                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
             </li>
             @canany([\App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn, \App\Constants\Permission::ViewStockIn])
@@ -400,7 +400,7 @@
                     data-menu-toggle="hover">
                     <a href="javascript:;" class="menu-link menu-toggle">
                         <i class="menu-icon flaticon2-cube"></i>
-                        <span class="menu-text">@lang('backend.stock_management')</span>
+                        <span class="menu-text">OPM Management</span>
                         <i class="menu-arrow"></i>
                     </a>
                     <div class="menu-submenu">
@@ -408,7 +408,7 @@
                         <ul class="menu-subnav">
                             <li class="menu-item menu-item-parent" aria-haspopup="true">
                             <span class="menu-link">
-                                <span class="menu-text">@lang('backend.stock_management')</span>
+                                <span class="menu-text">OPM Management</span>
                             </span>
                             </li>
                             @can(\App\Constants\Permission::ManageItemCategories)

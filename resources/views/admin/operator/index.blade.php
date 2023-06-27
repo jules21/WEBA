@@ -266,15 +266,6 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="prefix" class="form-label font-weight-bold">
-                                                    Prefix
-                                                </label>
-                                                <input type="text" class="form-control" id="prefix"
-                                                       name="prefix"/>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -329,10 +320,7 @@
                             <input type="text" class="form-control" id="edit_address" name="address" value="">
                         </div>
 
-                        <div class="form-group">
-                            <label for="edit_prefix">Prefix</label>
-                            <input type="text" class="form-control" id="edit_prefix" name="prefix" value="">
-                        </div>
+
 
                     </div>
                     <div class="modal-footer bg-light">

@@ -25,6 +25,10 @@ class StoreOperationAreaRequest extends FormRequest
             'contact_person_name' => ['required', 'string', 'max:255'],
             'contact_person_phone' => ['required', 'string', 'max:50'],
             'contact_person_email' => ['nullable', 'email', 'max:100'],
+            'license_number' => ['required'],
+            'valid_from' => ['required', 'date'],
+            'valid_to' => ['required', 'date'],
+            'status' => ['required', 'string', 'max:255'],
         ];
     }
 

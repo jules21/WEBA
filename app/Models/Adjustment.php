@@ -6,10 +6,17 @@ use App\Constants\Permission;
 use App\Constants\Status;
 use App\Traits\GetClassName;
 use App\Traits\HasStatusColor;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Carbon;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Models\Audit;
 use Storage;
 
 /**
@@ -21,47 +28,39 @@ use Storage;
  * @property int $operation_area_id
  * @property int $created_by
  * @property int|null $approved_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment query()
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereApprovedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereOperationAreaId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|Adjustment newModelQuery()
+ * @method static Builder|Adjustment newQuery()
+ * @method static Builder|Adjustment query()
+ * @method static Builder|Adjustment whereApprovedBy($value)
+ * @method static Builder|Adjustment whereCreatedAt($value)
+ * @method static Builder|Adjustment whereCreatedBy($value)
+ * @method static Builder|Adjustment whereDescription($value)
+ * @method static Builder|Adjustment whereId($value)
+ * @method static Builder|Adjustment whereOperationAreaId($value)
+ * @method static Builder|Adjustment whereStatus($value)
+ * @method static Builder|Adjustment whereUpdatedAt($value)
+ * @property-read Collection<int, FlowHistory> $flowHistories
  * @property-read int|null $flow_histories_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $items
+ * @property-read Collection<int, StockMovementDetail> $items
  * @property-read int|null $items_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
+ * @property-read Collection<int, StockMovement> $movements
  * @property-read int|null $movements_count
- * @property-read \App\Models\OperationArea $operationArea
+ * @property-read OperationArea $operationArea
  * @property string|null $attachment
  * @property string|null $return_back_status
- * @property-read \App\Models\User|null $approvedBy
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read User|null $approvedBy
+ * @property-read Collection<int, Audit> $audits
  * @property-read int|null $audits_count
- * @property-read \App\Models\User $createdBy
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
+ * @property-read User $createdBy
  * @property-read string $id_encrypted
  * @property-read string $status_color
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $items
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $movementDetails
+ * @property-read Collection<int, StockMovementDetail> $movementDetails
  * @property-read int|null $movement_details_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereAttachment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Adjustment whereReturnBackStatus($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\FlowHistory> $flowHistories
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $items
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $movementDetails
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovement> $movements
- * @mixin \Eloquent
+ * @method static Builder|Adjustment whereAttachment($value)
+ * @method static Builder|Adjustment whereReturnBackStatus($value)
+ * @mixin Eloquent
  */
 class Adjustment extends Model implements Auditable
 {
@@ -92,7 +91,7 @@ class Adjustment extends Model implements Auditable
         return $this->where('id', '=', $id)->firstOrFail();
     }
 
-    public function operationArea(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function operationArea(): BelongsTo
     {
         return $this->belongsTo(OperationArea::class);
     }
@@ -130,17 +129,17 @@ class Adjustment extends Model implements Auditable
             && auth()->user()->can(Permission::CreateAdjustment);
     }
 
-    public function movements(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function movements(): HasMany
     {
         return $this->hasMany(StockMovement::class, 'adjustment_id');
     }
 
-    public function createdBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function createdBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function approvedBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function approvedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
@@ -149,9 +148,10 @@ class Adjustment extends Model implements Auditable
     {
         return $this->morphMany(StockMovementDetail::class, 'model');
     }
+
     public function getAttachment(): ?string
     {
-        return $this->attachment ? Storage::url('public/adjustment/attachments'.$this->attachment) : null;
+        return $this->attachment ? Storage::url('public/adjustment/attachments' . $this->attachment) : null;
     }
 
     public function getIdEncryptedAttribute(): string

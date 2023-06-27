@@ -51,8 +51,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read mixed $cubic_meters
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $history
  * @property-read int|null $history_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Payment> $history
  * @mixin Eloquent
  */
 class Billing extends Model implements Auditable

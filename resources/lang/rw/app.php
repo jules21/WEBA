@@ -17,7 +17,7 @@ return [
     "login"=>"Injira",
     "logout"=>"Gusohoka",
     "profile"=>"Umwirondoro",
-    "register"=>"Kwiyandikisha",
+    "register"=>"kwiyandikisha kubakiriya",
     "features"=>"Ibiranga Sisitemu",
     "more_than"=>"Abarenga",
     "private_water_operators"=>"Abigenga bashinzwe gutanga amazi",
