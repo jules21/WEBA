@@ -60,7 +60,7 @@ class RequestsController extends Controller
         $upi = \request('upi');
 
         $data = AppRequest::query()
-            ->with(['customer', 'requestType', 'operator', 'operationArea','waterUsage'])
+            ->with(['customer', 'requestType', 'operator', 'operationArea', 'waterUsage'])
             ->when(!is_null($customerId), function (Builder $query) use ($customerId) {
                 return $query->where('customer_id', '=', decryptId($customerId));
             })
@@ -71,7 +71,6 @@ class RequestsController extends Controller
                     $query->where('district_id', '=', auth()->user()->district_id);
                 });
             })
-
             ->when(auth()->user()->operator_id, function (Builder $query) {
                 return $query->where('operator_id', '=', auth()->user()->operator_id);
             })
@@ -89,13 +88,12 @@ class RequestsController extends Controller
             })
             //operator_id
             ->when((request()->has('operator_id') && request()->filled('operator_id')), function ($query) {
-                    $query->where('operator_id', request()->operator_id);
-                })
+                $query->where('operator_id', request()->operator_id);
+            })
             //operation_area_id
             ->when((request()->has('operation_area_id') && request()->filled('operation_area_id')), function ($query) {
-                    $query->whereIn('operation_area_id', request()->operation_area_id);
-                })
-
+                $query->whereIn('operation_area_id', request()->operation_area_id);
+            })
             ->when(!is_null($requestType), function (Builder $query) use ($requestType) {
                 return $query->where('request_type_id', '=', $requestType);
             })
@@ -145,7 +143,7 @@ class RequestsController extends Controller
         $customer = !empty($customerId) ? Customer::find(decryptId($customerId)) : null;
 
         //export
-        if (request()->is_download == true && ! \request()->ajax()) {
+        if (request()->is_download == true && !\request()->ajax()) {
             return $this->exportDataToExcel($data->get());
         }
 
@@ -167,13 +165,7 @@ class RequestsController extends Controller
     public function newRequests()
     {
         if (request()->ajax()) {
-            $data = AppRequest::query()
-                ->with(['customer', 'requestType'])
-                ->where([
-                    ['operation_area_id', '=', auth()->user()->operation_area],
-                ])
-                ->whereDoesntHave('requestAssignments')
-                ->select('requests.*');
+            $data = pendingRequestsBuilder()->select('requests.*');
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -427,46 +419,7 @@ class RequestsController extends Controller
     public function myTasks()
     {
         if (request()->ajax()) {
-            $data = AppRequest::query()
-                ->with(['customer', 'requestType'])
-                ->where([
-                    ['operation_area_id', '=', auth()->user()->operation_area],
-                ])
-                ->where(function (Builder $builder) {
-                    $hasPermission = false;
-                    $user = auth()->user();
-
-                    if ($user->can(Permission::ReviewRequest)) {
-                        $hasPermission = true;
-                        $builder
-                            ->where('status', '=', Status::ASSIGNED)
-                            ->whereHas('requestAssignment', fn(Builder $builder) => $builder->where('user_id', '=', auth()->id()));
-                    }
-                    if ($user->can(Permission::CreateRequest)) {
-                        $hasPermission = true;
-                        $builder->orWhere([
-                            ['status', '=', Status::PENDING],
-                            ['customer_initiated', '=', false]
-                        ]);
-                    }
-
-
-                    if ($user->can(Permission::ApproveRequest)) {
-                        $hasPermission = true;
-                        $builder->orWhere('status', '=', Status::PROPOSE_TO_APPROVE);
-                    }
-
-                    if ($user->can(Permission::AssignMeterNumber)) {
-                        $hasPermission = true;
-                        $builder->orWhere('status', '=', Status::APPROVED);
-                    }
-
-                    if ($hasPermission === false) {
-                        $builder->where('requests.id', '=', 0);
-                    }
-
-                })
-                ->whereHas('requestAssignment')
+            $data = myTasksRequestBuilder()
                 ->select('requests.*');
 
             return DataTables::of($data)
@@ -560,4 +513,5 @@ class RequestsController extends Controller
         return $requestsExport
             ->download("requests_$now.xlsx");
     }
+
 }

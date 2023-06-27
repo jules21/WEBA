@@ -13,16 +13,19 @@ class MenuItem extends Component
 
     public string $itemClass = '';
 
+    public ?int $count;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(string $title, string $route, string $itemClass = '')
+    public function __construct(string $title, string $route, string $itemClass = '', int $count = null)
     {
         $this->title = $title;
         $this->route = $route;
         $this->itemClass = $itemClass;
+        $this->count = $count;
     }
 
     /**

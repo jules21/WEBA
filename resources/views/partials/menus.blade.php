@@ -130,12 +130,12 @@
                                          :route="route('admin.requests.create')"/>
                         @endcan
                         @can(\App\Constants\Permission::AssignRequest)
-                            <x-menu-item title="Pending Requests" item-class="nav-pending-requests"
+                            <x-menu-item title="Pending Requests" item-class="nav-pending-requests" :count="badgesCounts()['pending_requests']"
                                          :route="route('admin.requests.new')"/>
                             <x-menu-item title="Assigned Requests" item-class="nav-assigned-requests"
                                          :route="route('admin.requests.assigned')"/>
                         @endcan
-                        <x-menu-item title="My Tasks" item-class="nav-my-tasks"
+                        <x-menu-item title="My Tasks" item-class="nav-my-tasks"  :count="badgesCounts()['my_tasks_requests']"
                                      :route="route('admin.requests.my-tasks')"/>
                         @can(\App\Constants\Permission::ManageItemDelivery)
                             <x-menu-item title="Item Delivery" item-class="nav-item-delivery"
