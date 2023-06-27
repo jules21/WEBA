@@ -58,7 +58,7 @@
                             class="form-control  tw-rounded-md tw-border-[#AAAAAA] tw-py-6  tw-text-[14px] @error('password') is-invalid @enderror"
                             type="password" id="password"
                             placeholder="{{__('auth.password')}}" name="password"  autocomplete="off"/>
-                        <button type="button" class="position-absolute tw-outline-offset-0 focus:tw-outline-0 btn p-0 tw-top-11 tw-right-4 " onclick="showPassword()"><i class="ti ti-eye tw-text-xl"></i></button>
+                        <button type="button" class="position-absolute focus:tw-outline-offset-none focus:tw-outline-none btn p-0 tw-top-10 shadow-none tw-right-4 " onclick="showPassword()"><i class="ti ti-eye tw-text-xl"></i></button>
                         @error('password')
                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -104,10 +104,15 @@
 <script>
     function showPassword() {
         let password = document.getElementById("password");
+        let icon = document.querySelector(".ti");
         if (password.type === "password") {
             password.type = "text";
+            icon.classList.remove("ti-eye");
+            icon.classList.add("ti-eye-off");
         } else {
             password.type = "password";
+            icon.classList.remove("ti-eye-off");
+            icon.classList.add("ti-eye");
         }
 
     }

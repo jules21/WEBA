@@ -25,6 +25,7 @@
         "register_description"=>"Fill out the registration form with your details, provide accurate contact information,  and click the Register button.",
         "payment"=>"Payment",
         "customer_login"=>"Customer Login",
+        "customer_login_description"=>"Enter your registered email or username, input your password, click the Login button to access your account.",
         "payment_description"=>"Enter your registered email or username, input your password, click the Login button to access your account.",
         "steps_new_request"=>"Request New Connection",
         "steps_new_request_description"=>"Click on the New Connection button.Choose the desired district and operator. Fill out the form then click the Submit Request button.",
