@@ -231,6 +231,34 @@
             $newUrl = request()->fullUrlWithQuery($newQueries);
         @endphp
     </div>
+
+    <div class="modal" id="change-indexes-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Change Indexes</h5>
+                </div>
+                <form action="#" id="change-indexes-form" method="post">
+                    @csrf
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label for="previous-index">Previous Index </label>
+                            <input type="text" class="form-control" name="previous_index" id="previous-index" disabled="disabled">
+                        </div>
+                        <div class="form-group">
+                            <label for="current-index">Current Index <span class="text-danger">*</span> </label>
+                            <input type="text" class="form-control" name="current_index" id="current-index" required>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="change-indexes-btn">Save</button>
+                    <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
     {{$dataTable->scripts()}}
@@ -275,6 +303,15 @@
             $(document).on("click", "#excel", function (e) {
                 let url = "{!! $newUrl !!}";
                 $(this).attr("href", url);
+            });
+            $(document).on("click",".btn-change-index", function (e){
+               const url = $(this).attr('data-href');
+               const startingIndex = $(this).attr('data-starting-index');
+                const lastIndex = $(this).attr('data-last-index');
+                $('#previous-index').val(startingIndex);
+                $('#current-index').val(lastIndex);
+                $('#change-indexes-form').attr('action', url);
+                $('#change-indexes-modal').modal('show');
             });
 
             let objToday = new Date(),
@@ -334,7 +371,6 @@
                 }
             });
         };
-
         const getCustomerFieldOfficer = (operatorAreaId) => {
             const url = "{{ route('get-operation-area-officers') }}";
             const customerFieldOfficer = @json($customer_field_officer_id);
@@ -358,6 +394,8 @@
                 }
             });
         };
+
+
 
 
     </script>

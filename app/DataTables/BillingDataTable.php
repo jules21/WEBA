@@ -53,6 +53,15 @@ class BillingDataTable extends DataTable
                 return '<span class="label label-sm label-light-primary label-inline">'.$model->starting_index.'</span>'.' '.'to'.' '.'<span class="label label-sm label-light-primary label-inline py-0">'.$model->last_index.'</span>';
             })
             ->addColumn('action', function ($model) {
+                $change_indexes_btn = auth()->user()->can('Change Meter indexes') ?  '
+                                <a class="dropdown-item btn-change-index" data-toggle="modal" data-target="#change-indexes-modal" href="#"
+                                data-id="'.$model->id.'"
+                                data-starting-index="'.$model->starting_index.'"
+                                data-last-index="'.$model->last_index.'"
+                                data-href="'.route('admin.billings.change-last-index', encryptId($model->id)).'">
+                                    <i class="fas fa-edit"></i>
+                                    <span class="ml-2">Change Indexes</span>
+                                </a>':'';
 //                return '<a href="' . route('admin.billings.show', encryptId($model->id)) . '" class="btn btn-sm btn-clean btn-icon btn-details" title="View details">
 //                            <i class="la la-eye"></i>
 //                        </a>';
@@ -60,7 +69,8 @@ class BillingDataTable extends DataTable
                              <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                 Options
                             </button>
-                            <div class="dropdown-menu border">
+                            <div class="dropdown-menu border">' . $change_indexes_btn . '
+
                                 <a class="dropdown-item btn-details"" href="'.route('admin.billings.show', encryptId($model->id)).'">
                                     <i class="fas fa-info"></i>
                                     <span class="ml-2">Details</span>
