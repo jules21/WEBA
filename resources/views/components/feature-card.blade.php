@@ -22,8 +22,8 @@
         <h5 class="text-center text-primary h6 tw-tracking-widest font-weight-bolder">
             {{ $title }}
         </h5>
-        <p class="text-center tw-text-gray-500 small group-hover:tw-text-white">
+        <a href="{{route('help')}}" class="text-center text-decoration-none tw-text-gray-500 small group-hover:tw-text-white">
             {{ $description }}
-        </p>
+        </a>
     </div>
 </div>

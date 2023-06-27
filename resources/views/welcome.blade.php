@@ -14,17 +14,17 @@
 @section('content')
     <div class="container my-md-3">
         <div class="row ">
-            <div class="col-lg-8 col-md-7 col-xl-7 my-2">
+            <div class="col-lg-7 col-md-7 col-xl-8 my-2">
                 <div>
                     <div class="mb-4">
-                        <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-4xl md:tw-leading-loose font-weight-bolder md:mb-3  ">
+                        <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-3xl md:tw-leading-loose font-weight-bolder md:mb-3  ">
                             {{__('app.CUSTOMER_MANAGEMENT')}}
                         </h1>
                         <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-4xl md:tw-leading-loose font-weight-bolder md:mb-2  ">
                             {{__('app.SYSTEM(CMS)')}}
                         </h1>
                     </div>
-                    <h2 class="mb-4  tw-text-sm md:tw-text-2xl text-accent font-weight-bolder tw-tracking-widest text-uppercase">
+                    <h2 class="mb-4  tw-text-sm md:tw-text-2xl lg:tw-text-2xl text-accent font-weight-bolder tw-tracking-widest text-uppercase">
                         {{__('app.for_rural_water_supply_services')}}
                     </h2>
                 </div>
@@ -78,50 +78,57 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5  col-xl-5 bg-white card-body tw-rounded-xl">
+            <div class="col-md-5 col-lg-5 col-xl-4 ">
+                <div class="card card-body tw-rounded-xl">
+                    <form method="post" id="myform" action="{{ route('client.login') }}" autocomplete="off">
+                        @csrf
+                        <h5 class="text-primary font-weight-bolder mb-3">{{__('auth.login_form')}}</h5>
+                            <p class="">
+                                {{__('auth.please_enter_your_login_details_to_access_your_account.')}}
+                            </p>
 
-                <form class="px-4 py-5" method="post" id="myform" action="{{ route('client.login') }}" autocomplete="off">
-                    @csrf
-                    <h2 class="text-primary font-weight-bolder mb-3">{{__('auth.login_form')}}</h2>
-                    <p class="text-1">
-                        {{__('auth.welcome_back_to_our_system!')}} <br> {{__('auth.please_enter_your_login_details_to_access_your_account.')}}
-                    </p>
+                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <label for="email" class="control-label">{{__('auth.email_address')}}</label>
 
-                    <div class="row my-4 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                        <label for="email" class="col-md-4 control-label">{{__('auth.email_address')}}</label>
-
-                        <div class="col-md-12">
-                            <input id="email" type="email" class="form-control tw-rounded-md {{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" autofocus>
-                            @if ($errors->has('email'))
-                                <span class="invalid-feedback">
+                                <div>
+                                    <input id="email" type="email"
+                                           class="form-control tw-rounded-md {{ $errors->has('email') ? ' is-invalid' : '' }}"
+                                           name="email" value="{{ old('email') }}" autofocus>
+                                    @if ($errors->has('email'))
+                                        <span class="invalid-feedback">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                            @endif
-                        </div>
-                    </div>
+                                    @endif
+                                </div>
+                            </div>
 
-                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                        <label for="password" class="control-label">{{__('auth.password')}}</label>
-                        <div>
-                            <input id="password" type="password" class="form-control tw-rounded-md {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                <label for="password" class="control-label">{{__('auth.password')}}</label>
+                                <div>
+                                    <input id="password" type="password"
+                                           class="form-control tw-rounded-md {{ $errors->has('password') ? ' is-invalid' : '' }}"
+                                           name="password">
 
-                            @if ($errors->has('password'))
-                                <span class="invalid-feedback">
+                                    @if ($errors->has('password'))
+                                        <span class="invalid-feedback">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
-                            @endif
-                        </div>
-                    </div>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="mb-3 ">
+                                <a class="d-block" href="{{ url('/client/password/reset') }}">
+                                    {{__('auth.forgot_your_password?')}}
+                                </a>
+                            </div>
+                            <div class="form-group d-flex flex-column flex-lg-row  align-items-center">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    {{__('auth.login')}}
+                                </button>
+                            </div>
+                    </form>
+                </div>
 
-                    <div class="form-group d-flex flex-column flex-lg-row mt-4 align-items-center">
-                        <button type="submit" class="btn btn-primary mr-lg-3 tw-rounded-md tw-w-full lg:tw-w-auto mb-3 mb-lg-0">
-                            {{__('auth.login')}}
-                        </button>
-                        <a class="d-block" href="{{ url('/client/password/reset') }}">
-                            {{__('auth.forgot_your_password?')}}
-                        </a>
-                    </div>
-                </form>
             </div>
         </div>
 
@@ -130,15 +137,18 @@
         </h3>
         <div class="row">
             <div class="col-sm-6 my-2 col-lg-3">
+                <a>
+
+                </a>
                 <x-feature-card title="{{__('app.registration')}}"
                                 description="{{__('app.register_description')}}">
-{{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt" width="24"--}}
-{{--                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
-{{--                         stroke-linecap="round" stroke-linejoin="round">--}}
-{{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
-{{--                        <path--}}
-{{--                            d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2"></path>--}}
-{{--                    </svg>--}}
+                    {{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt" width="24"--}}
+                    {{--                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
+                    {{--                         stroke-linecap="round" stroke-linejoin="round">--}}
+                    {{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
+                    {{--                        <path--}}
+                    {{--                            d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2"></path>--}}
+                    {{--                    </svg>--}}
                     <h1 class="  mb-0  font-weight-bold">1</h1>
                 </x-feature-card>
             </div>
@@ -146,51 +156,51 @@
                 <x-feature-card title="{{__('app.customer_login')}}"
                                 description="{{__('app.payment_description')}}">
                     <h1 class="font-weight-bold mb-0 tw- ">2</h1>
-{{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash" width="24"--}}
-{{--                         height="24"--}}
-{{--                         viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
-{{--                         stroke-linecap="round"--}}
-{{--                         stroke-linejoin="round">--}}
-{{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
-{{--                        <path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path>--}}
-{{--                        <path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>--}}
-{{--                        <path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2"></path>--}}
-{{--                    </svg>--}}
+                    {{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash" width="24"--}}
+                    {{--                         height="24"--}}
+                    {{--                         viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
+                    {{--                         stroke-linecap="round"--}}
+                    {{--                         stroke-linejoin="round">--}}
+                    {{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
+                    {{--                        <path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path>--}}
+                    {{--                        <path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>--}}
+                    {{--                        <path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2"></path>--}}
+                    {{--                    </svg>--}}
                 </x-feature-card>
             </div>
             <div class="col-sm-6 my-2 col-lg-3">
                 <x-feature-card title="{{__('app.steps_new_request')}}"
                                 description="{{__('app.steps_new_request_description')}}">
-{{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-devices-check"--}}
-{{--                         width="24"--}}
-{{--                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
-{{--                         stroke-linecap="round" stroke-linejoin="round">--}}
-{{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
-{{--                        <path d="M13 15.5v-6.5a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v4"></path>--}}
-{{--                        <path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h7"></path>--}}
-{{--                        <path d="M16 9h2"></path>--}}
-{{--                        <path d="M15 19l2 2l4 -4"></path>--}}
-{{--                    </svg>--}}
+                    {{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-devices-check"--}}
+                    {{--                         width="24"--}}
+                    {{--                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
+                    {{--                         stroke-linecap="round" stroke-linejoin="round">--}}
+                    {{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
+                    {{--                        <path d="M13 15.5v-6.5a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v4"></path>--}}
+                    {{--                        <path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h7"></path>--}}
+                    {{--                        <path d="M16 9h2"></path>--}}
+                    {{--                        <path d="M15 19l2 2l4 -4"></path>--}}
+                    {{--                    </svg>--}}
                     <h1 class="font-weight-bold mb-0 ">3</h1>
                 </x-feature-card>
             </div>
             <div class="col-sm-6 my-2 col-lg-3">
                 <x-feature-card title="{{__('app.steps_bills_payment')}}"
                                 description="{{__('app.steps_bills_payment_description')}}">
-{{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calculator" width="24"--}}
-{{--                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
-{{--                         stroke-linecap="round" stroke-linejoin="round">--}}
-{{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
-{{--                        <path--}}
-{{--                            d="M4 3m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>--}}
-{{--                        <path d="M8 7m0 1a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1z"></path>--}}
-{{--                        <path d="M8 14l0 .01"></path>--}}
-{{--                        <path d="M12 14l0 .01"></path>--}}
-{{--                        <path d="M16 14l0 .01"></path>--}}
-{{--                        <path d="M8 17l0 .01"></path>--}}
-{{--                        <path d="M12 17l0 .01"></path>--}}
-{{--                        <path d="M16 17l0 .01"></path>--}}
-{{--                    </svg>--}}
+                    {{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calculator" width="24"--}}
+                    {{--                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
+                    {{--                         stroke-linecap="round" stroke-linejoin="round">--}}
+                    {{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
+                    {{--                        <path--}}
+                    {{--                            d="M4 3m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>--}}
+                    {{--                        <path d="M8 7m0 1a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1z"></path>--}}
+                    {{--                        <path d="M8 14l0 .01"></path>--}}
+                    {{--                        <path d="M12 14l0 .01"></path>--}}
+                    {{--                        <path d="M16 14l0 .01"></path>--}}
+                    {{--                        <path d="M8 17l0 .01"></path>--}}
+                    {{--                        <path d="M12 17l0 .01"></path>--}}
+                    {{--                        <path d="M16 17l0 .01"></path>--}}
+                    {{--                    </svg>--}}
                     <h1 class="font-weight-bold mb-0 ">4</h1>
                 </x-feature-card>
             </div>

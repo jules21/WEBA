@@ -20,7 +20,7 @@
                         @lang('auth.if_you_already_created_an_account_with_us_please_click_the_button_below_to_log_in.')
                     </p>
                     <div class="form-left-last mb-4">
-                        <a href="{{ route('client.login') }}"
+                        <a href="{{ route('welcome') }}"
                            class="btn btn-outline-light">@lang('auth.login_to_your_account')
                         </a>
                     </div>
