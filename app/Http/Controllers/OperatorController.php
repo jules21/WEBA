@@ -6,10 +6,13 @@ use App\Constants\Permission;
 use App\Exports\OperatorsExport;
 use App\Http\Requests\StoreOperatorRequest;
 use App\Http\Requests\UpdateOperatorRequest;
+use App\Models\Contract;
 use App\Models\LegalType;
+use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\Province;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Http;
 use Storage;
 use Yajra\DataTables\DataTables;
@@ -87,6 +90,10 @@ class OperatorController extends Controller
                                         <a class="dropdown-item" href="' . route('admin.operator.details-page', encryptId($row->id)) . '">
                                          <i class="fas fa-info-circle "></i>
                                          <span class="ml-2">Details</span>
+                                     </a>
+                                     <a class="dropdown-item" href="' . route('admin.operator.contract.index', encryptId($row->id)) . '">
+                                         <i class="fas fa-book-open "></i>
+                                         <span class="ml-2">Contract</span>
                                      </a>
                                      <a class="dropdown-item js-edit"
                                       data-address="' . $row->address . '"
@@ -253,5 +260,19 @@ class OperatorController extends Controller
         return view('admin.operator.details', [
             'operator' => $operator,
         ]);
+    }
+
+    public function contract( Contract $contract,$operation_area_id){
+
+        $areas = OperationArea::query()
+            ->when(isOperator(), function (Builder $builder) {
+                $builder->where('operator_id', '=', auth()->user()->operator_id);
+            })
+            ->when(isForOperationArea(), function (Builder $builder) {
+                $builder->where('id', '=', auth()->user()->operation_area);
+            })
+            ->get();
+        $contract = Contract::find($operation_area_id);
+        return view('admin.operator.contract.index',compact('contract','areas'));
     }
 }
