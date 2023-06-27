@@ -89,6 +89,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/export', [OperatorController::class, 'exportToExcel'])->name('export-to-excel');
 
+        Route::get('/profile', [\App\Http\Controllers\OperatorProfileController::class, 'index'])->name('profile');
+
     });
     Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
         Route::get('/', [CustomerController::class, 'index'])->name('index');
