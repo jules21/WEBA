@@ -544,6 +544,15 @@
 <script>
     $(document).ready(function () {
 
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            todayHighlight: true,
+            orientation: "bottom left",
+            autoclose: true,
+            todayBtn: true,
+            clearBtn: true
+        });
+
 
         $('.my_loader').fadeOut(500);
 

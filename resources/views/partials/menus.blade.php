@@ -609,11 +609,7 @@
             </div>
         </li>
     @endcanany
-    @canany([\App\Constants\Permission::ManageBanks, \App\Constants\Permission::ManageBillCharges, \App\Constants\Permission::ManageRequestType,
-    \App\Constants\Permission::ManagePaymentType, \App\Constants\Permission::ManageDocumentTypes, \App\Constants\Permission::ManagePackagingUnits,
-    \App\Constants\Permission::ManageRoadCrossTypes, \App\Constants\Permission::ManageWaterUsages, \App\Constants\Permission::ManageWaterNetworks,
-     \App\Constants\Permission::ManageWaterNetworkTypes, \App\Constants\Permission::ManageWaterNetwork,
-     \App\Constants\Permission::ManageRequestDurationConfigurations, \App\Constants\Permission::ManagePaymentConfigurations])
+    @canany(settingsPermissions())
         <li class="menu-section">
             <h4 class="menu-text">System Settings</h4>
             <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -651,16 +647,7 @@
                             </a>
                         </li>
                     @endcan
-                    {{--                    @can('Manage Bill Charges')--}}
-                    {{--                        <li class="menu-item nav-bill-charges" aria-haspopup="true">--}}
-                    {{--                            <a href="{{ route('admin.bill.charges') }}" class="menu-link">--}}
-                    {{--                                <i class="menu-bullet menu-bullet-dot">--}}
-                    {{--                                    <span></span>--}}
-                    {{--                                </i>--}}
-                    {{--                                <span class="menu-text">Bill Charges</span>--}}
-                    {{--                            </a>--}}
-                    {{--                        </li>--}}
-                    {{--                    @endcan--}}
+
                     @can('Manage Request Type')
                         <li class="menu-item nav-request-type" aria-haspopup="true">
                             <a href="{{ route('admin.request.types') }}" class="menu-link">
@@ -733,18 +720,7 @@
                             </a>
                         </li>
                     @endcan
-                    {{--                    @if(auth()->user()->operator_id)--}}
-                    {{--                        @can('Manage Water Networks')--}}
-                    {{--                            <li class="menu-item nav-water-networks" aria-haspopup="true">--}}
-                    {{--                                <a href="{{ route('admin.water.networks') }}" class="menu-link">--}}
-                    {{--                                    <i class="menu-bullet menu-bullet-dot">--}}
-                    {{--                                        <span></span>--}}
-                    {{--                                    </i>--}}
-                    {{--                                    <span class="menu-text">Water Networks</span>--}}
-                    {{--                                </a>--}}
-                    {{--                            </li>--}}
-                    {{--                        @endcan--}}
-                    {{--                    @endif--}}
+
                     @can('Manage Water Network Types')
                         <li class="menu-item nav-water-network-types" aria-haspopup="true">
                             <a href="{{ route('admin.water.network.types') }}" class="menu-link">
@@ -762,6 +738,18 @@
                                     <span></span>
                                 </i>
                                 <span class="menu-text">Water Networks</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can(\App\Constants\Permission::ManageClusters)
+                        <li class="menu-item nav-water-networks" aria-haspopup="true">
+                            <a href="{{ route('admin.clusters') }}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">
+                                    Clusters
+                                </span>
                             </a>
                         </li>
                     @endcan

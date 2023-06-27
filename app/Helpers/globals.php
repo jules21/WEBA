@@ -111,3 +111,12 @@ function isDistrict(): bool
     return auth()->check() && auth()->user()->district_id != null;
 }
 
+
+function settingsPermissions(): array
+{
+    return [Permission::ManageBanks, Permission::ManageBillCharges, Permission::ManageRequestType,
+        Permission::ManagePaymentType, Permission::ManageDocumentTypes, Permission::ManagePackagingUnits,
+        Permission::ManageRoadCrossTypes, Permission::ManageWaterUsages, Permission::ManageWaterNetworks,
+        Permission::ManageWaterNetworkTypes, Permission::ManageWaterNetwork,
+        Permission::ManageRequestDurationConfigurations, Permission::ManagePaymentConfigurations, Permission::ManageClusters];
+}
