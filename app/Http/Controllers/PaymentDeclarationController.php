@@ -101,10 +101,17 @@ class PaymentDeclarationController extends Controller
         }
 
         $datatable = new PaymentDeclarationDataTable($query);
+        $operators = Operator::query()
+            ->when($user->district_id, function ($query) use ($user) {
+                $query->whereHas('operationAreas', function ($query) use ($user) {
+                    $query->where('district_id', $user->district_id);
+                });
+            })
+            ->get();
 
         return $datatable->render('admin.payments.declarations',
             [
-                'operators' => Operator::query()->get(),
+                'operators' => $operators,
                 'operationAreas' => $user->operator_id ?
                     OperationArea::query()->where('operator_id', $user->operator_id)->get()
                     : [],

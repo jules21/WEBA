@@ -14,15 +14,15 @@
 @section('content')
     <div class="container my-md-3">
         <div class="row ">
-            <div class="col-lg-8 my-2">
+            <div class="col-lg-8 col-xl-7 my-2">
                 <div>
                     <div class="mb-4">
-                        <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-5xl md:tw-leading-loose font-weight-bolder md:mb-3  tw-tracking-wide">
+                        <h5 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-5xl md:tw-leading-loose font-weight-bolder md:mb-3  ">
                             {{__('app.CUSTOMER_MANAGEMENT')}}
-                        </h1>
-                        <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-5xl md:tw-leading-loose font-weight-bolder md:mb-2  tw-tracking-wide">
+                        </h5>
+                        <h5 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-5xl md:tw-leading-loose font-weight-bolder md:mb-2  ">
                             {{__('app.SYSTEM(CMS)')}}
-                        </h1>
+                        </h5>
                     </div>
                     <h2 class="mb-4  tw-text-sm md:tw-text-2xl text-accent font-weight-bolder tw-tracking-widest text-uppercase">
                         {{__('app.for_rural_water_supply_services')}}
@@ -46,21 +46,21 @@
                                 </svg>
                             </a>
                         @else
-                            <a href="{{route('client.login')}}"
-                               class="btn text-white bg-accent tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
-                                {{__('app.login')}}
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login"
-                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75"
-                                     stroke="currentColor"
-                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path
-                                        d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
-                                    <path d="M20 12h-13l3 -3m0 6l-3 -3"></path>
-                                </svg>
-                            </a>
+{{--                            <a href="{{route('client.login')}}"--}}
+{{--                               class="btn  bg-accent tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">--}}
+{{--                                {{__('app.login')}}--}}
+{{--                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login"--}}
+{{--                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75"--}}
+{{--                                     stroke="currentColor"--}}
+{{--                                     fill="none" stroke-linecap="round" stroke-linejoin="round">--}}
+{{--                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
+{{--                                    <path--}}
+{{--                                        d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>--}}
+{{--                                    <path d="M20 12h-13l3 -3m0 6l-3 -3"></path>--}}
+{{--                                </svg>--}}
+{{--                            </a>--}}
                             <a href="{{route('client.register')}}"
-                               class="btn bg-white tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
+                               class="btn bg-accent text-white tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
                                 {{__('app.register')}}
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-plus"
                                      width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75"
@@ -78,57 +78,51 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 my-2 text-white">
-                <div class="tw-grid tw-grid-cols-2 tw-gap-1 bg-primary">
-                    <x-counter-card title="{{__('app.population_served')}}" :count="$totalCustomers">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-friends" width="24"
-                             height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
-                             stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M7 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                            <path d="M5 22v-5l-1 -1v-4a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4l-1 1v5"></path>
-                            <path d="M17 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                            <path d="M15 22v-4h-2l2 -6a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1l2 6h-2v4"></path>
-                        </svg>
-                    </x-counter-card>
-                    <x-counter-card title="{{__('app.water_connections')}}" :count="$totalWaterConnections">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-affiliate-filled"
-                             width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
-                             fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path
-                                d="M18.5 3a2.5 2.5 0 1 1 -.912 4.828l-4.556 4.555a5.475 5.475 0 0 1 .936 3.714l2.624 .787a2.5 2.5 0 1 1 -.575 1.916l-2.623 -.788a5.5 5.5 0 0 1 -10.39 -2.29l-.004 -.222l.004 -.221a5.5 5.5 0 0 1 2.984 -4.673l-.788 -2.624a2.498 2.498 0 0 1 -2.194 -2.304l-.006 -.178l.005 -.164a2.5 2.5 0 1 1 4.111 2.071l.787 2.625a5.475 5.475 0 0 1 3.714 .936l4.555 -4.556a2.487 2.487 0 0 1 -.167 -.748l-.005 -.164l.005 -.164a2.5 2.5 0 0 1 2.495 -2.336z"
-                                stroke-width="0" fill="currentColor"></path>
-                        </svg>
-                    </x-counter-card>
-                    <x-counter-card title="{{__('app._private_water_operators')}}" :count="$operators->count()">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24"
-                             height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
-                             stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
-                            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
-                        </svg>
-                    </x-counter-card>
-                    <x-counter-card title="{{__('app.water_networks')}}" :count="$totalWaterNetworks">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-topology-bus"
-                             width="24"
-                             height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
-                             stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M14 10a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z"></path>
-                            <path d="M6 10a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z"></path>
-                            <path d="M22 10a2 2 0 1 0 -4 0a2 2 0 0 0 4 0z"></path>
-                            <path d="M2 16h20"></path>
-                            <path d="M4 12v4"></path>
-                            <path d="M12 12v4"></path>
-                            <path d="M20 12v4"></path>
-                        </svg>
-                    </x-counter-card>
+                <div class="col-md-5 col-lg-4  col-xl-5 bg-white card-body tw-rounded-xl">
+
+                    <form class="px-4 py-5" method="post" id="myform" action="{{ route('client.login') }}" autocomplete="off">
+                        @csrf
+                        <h2 class="text-primary font-weight-bolder mb-3">{{__('auth.login_form')}}</h2>
+                        <p class="text-1">
+                            {{__('auth.welcome_back_to_our_system!')}} <br> {{__('auth.please_enter_your_login_details_to_access_your_account.')}}
+                        </p>
+
+                        <div class="row my-4 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <label for="email" class="col-md-4 control-label">{{__('auth.email_address')}}</label>
+
+                            <div class="col-md-12">
+                                <input id="email" type="email" class="form-control tw-rounded-md {{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" autofocus>
+                                @if ($errors->has('email'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <label for="password" class="control-label">{{__('auth.password')}}</label>
+                            <div>
+                                <input id="password" type="password" class="form-control tw-rounded-md {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password">
+
+                                @if ($errors->has('password'))
+                                    <span class="invalid-feedback">
+                                        <strong>{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group d-flex flex-column flex-lg-row mt-4 align-items-center">
+                            <button type="submit" class="btn btn-primary mr-lg-3 tw-rounded-md tw-w-full lg:tw-w-auto mb-3 mb-lg-0">
+                                {{__('auth.login')}}
+                            </button>
+                            <a class="d-block" href="{{ url('/client/password/reset') }}">
+                                {{__('auth.forgot_your_password?')}}
+                            </a>
+                        </div>
+                    </form>
                 </div>
-            </div>
         </div>
 
         <h3 class="text-white font-weight-bold mt-2">

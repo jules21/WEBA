@@ -75,6 +75,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/show/{operator}', [OperatorController::class, 'show'])->name('show');
         Route::get('/operator-details', [OperatorController::class, 'operatorDetails'])->name('details');
         Route::get('/{operator}/details-page', [OperatorController::class, 'details'])->name('details-page');
+//        Route::get('/{operation_area_id}/contract', [OperatorController::class, 'contract'])->name('contract');
 
         Route::get('/{operator}/operation-areas', [OperationAreaController::class, 'index'])->name('area-of-operation.index');
         Route::post('/{operator}/operation-areas', [OperationAreaController::class, 'store'])->name('area-of-operation.store');
@@ -90,6 +91,20 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/export', [OperatorController::class, 'exportToExcel'])->name('export-to-excel');
 
         Route::get('/profile', [\App\Http\Controllers\OperatorProfileController::class, 'index'])->name('profile');
+
+
+        //contract
+        Route::get('/contracts/{operation_area_id}',[App\Http\Controllers\ContractController::class,'index'])->name('contract.index');
+        Route::post('/contracts/store/{operation_area_id}',[App\Http\Controllers\ContractController::class,'store'])->name('contract.store');
+        Route::post('/contracts/edit',[App\Http\Controllers\ContractController::class,'update'])->name('contract.edit');
+        Route::get('/contracts/delete/{id}',[App\Http\Controllers\ContractController::class,'destroy'])->name('contract.delete');
+        Route::get('/contracts/download/{id}',[App\Http\Controllers\ContractController::class,'download'])->name('contracts.download');
+
+        //grace periods
+        Route::get('/grace-periods/{operation_area_id}',[App\Http\Controllers\GracePeriodController::class,'index'])->name('grace.periods.index');
+        Route::post('/grace-period/store/{operation_area_id}',[App\Http\Controllers\GracePeriodController::class,'store'])->name('grace.period.store');
+        Route::post('/grace-period/edit',[App\Http\Controllers\GracePeriodController::class,'update'])->name('grace.period.edit');
+        Route::get('/grace-period/delete/{id}',[App\Http\Controllers\GracePeriodController::class,'destroy'])->name('grace.period.delete');
 
     });
     Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
@@ -399,6 +414,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/{billing}/history', [App\Http\Controllers\BillingController::class, 'history'])->name('history');
         //meter billings
         Route::get('/meter/{meter}/subscription/{subscription}', [App\Http\Controllers\BillingController::class, 'meterBillings'])->name('meter');
+        // changeLastIndex
+        Route::post('/{billing}/change-last-index', [App\Http\Controllers\BillingController::class, 'changeLastIndex'])->name('change-last-index');
     });
     Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
         Route::get('/', [App\Http\Controllers\PaymentDeclarationController::class, 'index'])->name('index');
@@ -473,6 +490,4 @@ Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
         Route::post('/issues', [ClientIssuesController::class, 'store'])->name('client-issues.store');
 
     });
-
-
 });

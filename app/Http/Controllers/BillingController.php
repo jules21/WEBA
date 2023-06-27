@@ -127,10 +127,19 @@ class BillingController extends Controller
         }
 
         $datatable = new BillingDataTable($query);
+        $operators = Operator::query()
+            ->when($user->district_id, function ($query) use ($user) {
+                $query->whereHas('operationAreas', function ($query) use ($user) {
+                    $query->where('district_id', $user->district_id);
+                });
+            });
+        $totalAmount = $query->sum('amount');
+        $totalBalance = $query->sum('balance');
+        $totalPayment = $totalAmount-$totalBalance;
 
         return $datatable->render('admin.billings.index',
             [
-                'operators' => Operator::query()->get(),
+                'operators' => $operators->get(),
                 'operationAreas' => $user->operator_id ?
                     OperationArea::query()->where('operator_id', $user->operator_id)->get()
                     : [],
@@ -139,6 +148,10 @@ class BillingController extends Controller
                 'operation_area_id' => $operation_area_id,
                 'customer_field_officer_id' => $customer_field_officer_id,
                 'query' => $query->get(),
+                'totalAmount' => $totalAmount,
+                'totalBalance' => $totalBalance,
+                'totalPayment' => $totalPayment,
+
 
             ]);
     }
@@ -173,8 +186,11 @@ class BillingController extends Controller
     {
         $billings = Billing::query()->where('meter_number', $meter)->where('subscription_number', $subscription);
         $datatable = new BillingDataTable($billings);
+        $datatable = new BillingDataTable($billings);
+        $totalAmount = $billings->sum('amount');
+        $totalBalance = $billings->sum('balance');
 
-        return $datatable->render('admin.billings.customer_bills', compact('meter'));
+        return $datatable->render('admin.billings.customer_bills', compact('meter', 'subscription', 'totalAmount', 'totalBalance'));
     }
 
     public function download(Billing $billing)
@@ -196,5 +212,14 @@ class BillingController extends Controller
         $history = $billing->history()->get();
 
         return view('admin.billings.history', compact('history'));
+    }
+
+    public function changeLastIndex(Request $request, Billing $billing)
+    {
+        $billing->last_index = $request->current_index;
+        $billing->save();
+        //TODO: update fees too
+
+        return redirect()->back()->with('success', 'Last index changed successfully');
     }
 }
