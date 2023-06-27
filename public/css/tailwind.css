@@ -419,6 +419,14 @@
     font-size: 0.75rem !important;
     line-height: 1rem !important
 }
+.tw-text-3xl {
+    font-size: 1.875rem !important;
+    line-height: 2.25rem !important
+}
+.tw-text-5xl {
+    font-size: 3rem !important;
+    line-height: 1 !important
+}
 .tw-font-medium {
     font-weight: 500 !important
 }
@@ -619,13 +627,25 @@
         padding-left: 5rem !important;
         padding-right: 5rem !important
     }
-    .lg\:tw-text-5xl {
-        font-size: 3rem !important;
-        line-height: 1 !important
+    .lg\:tw-text-3xl {
+        font-size: 1.875rem !important;
+        line-height: 2.25rem !important
     }
     .lg\:tw-text-sm {
         font-size: 0.875rem !important;
         line-height: 1.25rem !important
+    }
+    .lg\:tw-text-4xl {
+        font-size: 2.25rem !important;
+        line-height: 2.5rem !important
+    }
+    .lg\:tw-text-5xl {
+        font-size: 3rem !important;
+        line-height: 1 !important
+    }
+    .lg\:tw-text-2xl {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important
     }
 }
 
