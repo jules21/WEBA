@@ -471,6 +471,4 @@ Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
         Route::post('/issues', [ClientIssuesController::class, 'store'])->name('client-issues.store');
 
     });
-
-
 });

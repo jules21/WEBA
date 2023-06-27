@@ -10,7 +10,7 @@ return [
     "if_you_dont_have_an_account_yet"=>"If you don't have an account yet",
     "please_click_on_the_button_below_to_register."=>"please click on the button below to register.",
     "create_an_account"=>"Create an account",
-    "login_form"=>"Login Form",
+    "login_form"=>"Customer Login ",
     "email_address"=>"E-Mail Address",
     "password"=>"Password",
     "forgot_your_password?"=>"Forgot Your Password?",

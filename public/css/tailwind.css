@@ -270,6 +270,9 @@
     --tw-border-opacity: 1 !important;
     border-color: rgb(166 206 57 / var(--tw-border-opacity)) !important
 }
+.tw-border-accent\/30 {
+    border-color: rgb(166 206 57 / 0.3) !important
+}
 .tw-border-gray-300 {
     --tw-border-opacity: 1 !important;
     border-color: rgb(209 213 219 / var(--tw-border-opacity)) !important
@@ -281,9 +284,6 @@
 .tw-border-white {
     --tw-border-opacity: 1 !important;
     border-color: rgb(255 255 255 / var(--tw-border-opacity)) !important
-}
-.tw-border-accent\/30 {
-    border-color: rgb(166 206 57 / 0.3) !important
 }
 .tw-border-b-gray-200 {
     --tw-border-opacity: 1 !important;
@@ -376,10 +376,6 @@
 .tw-py-6 {
     padding-top: 1.5rem !important;
     padding-bottom: 1.5rem !important
-}
-.tw-py-5 {
-    padding-top: 1.25rem !important;
-    padding-bottom: 1.25rem !important
 }
 .tw-pl-10 {
     padding-left: 2.5rem !important
