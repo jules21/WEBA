@@ -213,4 +213,13 @@ class BillingController extends Controller
 
         return view('admin.billings.history', compact('history'));
     }
+
+    public function changeLastIndex(Request $request, Billing $billing)
+    {
+        $billing->last_index = $request->current_index;
+        $billing->save();
+        //TODO: update fees too
+
+        return redirect()->back()->with('success', 'Last index changed successfully');
+    }
 }

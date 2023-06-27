@@ -397,6 +397,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/{billing}/history', [App\Http\Controllers\BillingController::class, 'history'])->name('history');
         //meter billings
         Route::get('/meter/{meter}/subscription/{subscription}', [App\Http\Controllers\BillingController::class, 'meterBillings'])->name('meter');
+        // changeLastIndex
+        Route::post('/{billing}/change-last-index', [App\Http\Controllers\BillingController::class, 'changeLastIndex'])->name('change-last-index');
     });
     Route::group(['prefix' => 'payments', 'as' => 'payments.'], function () {
         Route::get('/', [App\Http\Controllers\PaymentDeclarationController::class, 'index'])->name('index');
