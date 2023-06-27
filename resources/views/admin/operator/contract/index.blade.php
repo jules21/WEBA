@@ -63,9 +63,6 @@
                     <tr>
                         <th></th>
                         <th>Attachment</th>
-                        @if(auth()->user()->is_super_admin)
-                            <th>Operation Area</th>
-                        @endif
                         <th>Start Date</th>
                         <th>End Date</th>
                         <th>Status</th>
@@ -93,21 +90,21 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">New Category</h4>
+                        <h4 class="modal-title">New Contract</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name">Operation Area</label>
-                            <select name="operation_area_id" id="operation_area_id" class="form-control" required>
-                                <option value="">Select Operation Area</option>
-                                @foreach($areas as $area)
-                                    <option value="{{$area->id}}">{{$area->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+{{--                        <div class="form-group">--}}
+{{--                            <label for="name">Operation Area</label>--}}
+{{--                            <select name="operation_area_id" id="operation_area_id" class="form-control" required>--}}
+{{--                                <option value="">Select Operation Area</option>--}}
+{{--                                @foreach($areas as $area)--}}
+{{--                                    <option value="{{$area->id}}">{{$area->name}}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
 
                         <div class="form-group">
                             <label for="name">Start Date</label>
@@ -153,15 +150,15 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
-                            <label for="name">Operation Area</label>
-                            <select name="operation_area_id" id="edit_operation_area_id" class="form-control" required>
-                                <option value="">Select Operation Area</option>
-                                @foreach($areas as $area)
-                                    <option value="{{$area->id}}">{{$area->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+{{--                        <div class="form-group">--}}
+{{--                            <label for="name">Operation Area</label>--}}
+{{--                            <select name="operation_area_id" id="edit_operation_area_id" class="form-control" required>--}}
+{{--                                <option value="">Select Operation Area</option>--}}
+{{--                                @foreach($areas as $area)--}}
+{{--                                    <option value="{{$area->id}}">{{$area->name}}</option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
 
                         <div class="form-group">
                             <label for="name">Start Date</label>
@@ -221,9 +218,6 @@
                             return '<a href="{{ route('admin.operator.contracts.download', ':id') }}" class="btn btn-primary">Download</a>'
                                 .replace(':id', row.id);
                         }},
-                    @if(auth()->user()->is_super_admin)
-                    {data: 'operation_area_id', name: 'operation_area_id'},
-                    @endif
                     {data: 'start_date', name: 'start_date'},
                     {data: 'end_date', name: 'end_date'},
                     {data: 'status', name: 'status'},
