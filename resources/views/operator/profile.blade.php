@@ -69,7 +69,8 @@
         <div class="col-lg-8">
             <div class="card h-100">
                 <!--begin::Form-->
-                <form class="kt-form kt-form--label-right" method="POST" id="updateProfileForm" enctype="multipart/form-data"
+                <form class="kt-form kt-form--label-right" method="POST" id="updateProfileForm"
+                      enctype="multipart/form-data"
                       action="{{ route('admin.operator.update',encryptId($user->operator_id)) }}">
                     @csrf
                     @method('PUT')
@@ -147,8 +148,7 @@
 
 @section('scripts')
     <script src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js') }}"></script>
-    {{--    {!! $validator->selector('#updateProfileForm') !!}--}}
-    {!! JsValidator::formRequest(\App\Http\Requests\UpdateOperatorRequest::class) !!}
+    {!! $validator->selector('#updateProfileForm') !!}
 
     <script>
         $(function () {

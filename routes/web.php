@@ -13,6 +13,7 @@ use App\Http\Controllers\ClientAuth\ForgotPasswordController;
 use App\Http\Controllers\ClientAuth\LoginController;
 use App\Http\Controllers\ClientAuth\RegisterController;
 use App\Http\Controllers\ClientAuth\ResetPasswordController;
+use App\Http\Controllers\ClusterController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
@@ -94,17 +95,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
 
         //contract
-        Route::get('/contracts/{operation_area_id}',[App\Http\Controllers\ContractController::class,'index'])->name('contract.index');
-        Route::post('/contracts/store/{operation_area_id}',[App\Http\Controllers\ContractController::class,'store'])->name('contract.store');
-        Route::post('/contracts/edit',[App\Http\Controllers\ContractController::class,'update'])->name('contract.edit');
-        Route::get('/contracts/delete/{id}',[App\Http\Controllers\ContractController::class,'destroy'])->name('contract.delete');
-        Route::get('/contracts/download/{id}',[App\Http\Controllers\ContractController::class,'download'])->name('contracts.download');
+        Route::get('/contracts/{operation_area_id}', [App\Http\Controllers\ContractController::class, 'index'])->name('contract.index');
+        Route::post('/contracts/store/{operation_area_id}', [App\Http\Controllers\ContractController::class, 'store'])->name('contract.store');
+        Route::post('/contracts/edit', [App\Http\Controllers\ContractController::class, 'update'])->name('contract.edit');
+        Route::get('/contracts/delete/{id}', [App\Http\Controllers\ContractController::class, 'destroy'])->name('contract.delete');
+        Route::get('/contracts/download/{id}', [App\Http\Controllers\ContractController::class, 'download'])->name('contracts.download');
 
         //grace periods
-        Route::get('/grace-periods/{operation_area_id}',[App\Http\Controllers\GracePeriodController::class,'index'])->name('grace.periods.index');
-        Route::post('/grace-period/store/{operation_area_id}',[App\Http\Controllers\GracePeriodController::class,'store'])->name('grace.period.store');
-        Route::post('/grace-period/edit',[App\Http\Controllers\GracePeriodController::class,'update'])->name('grace.period.edit');
-        Route::get('/grace-period/delete/{id}',[App\Http\Controllers\GracePeriodController::class,'destroy'])->name('grace.period.delete');
+        Route::get('/grace-periods/{operation_area_id}', [App\Http\Controllers\GracePeriodController::class, 'index'])->name('grace.periods.index');
+        Route::post('/grace-period/store/{operation_area_id}', [App\Http\Controllers\GracePeriodController::class, 'store'])->name('grace.period.store');
+        Route::post('/grace-period/edit', [App\Http\Controllers\GracePeriodController::class, 'update'])->name('grace.period.edit');
+        Route::get('/grace-period/delete/{id}', [App\Http\Controllers\GracePeriodController::class, 'destroy'])->name('grace.period.delete');
 
     });
     Route::group(['prefix' => 'customers', 'as' => 'customers.'], function () {
@@ -373,6 +374,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::post('/banks/add', [App\Http\Controllers\PaymentServiceProviderController::class, 'addBank'])->name('banks.add');
         Route::get('/banks/delete/{bankId}', [App\Http\Controllers\PaymentServiceProviderController::class, 'deleteBank'])->name('banks.destroy');
         Route::post('/banks/update/{bankId}', [App\Http\Controllers\PaymentServiceProviderController::class, 'updateBank'])->name('banks.update');
+
+        Route::get('/clusters', [ClusterController::class, 'index'])->name('clusters');
+        Route::post('/cluster/store', [ClusterController::class, 'store'])->name('cluster.store');
+        Route::delete('/cluster/{cluster}/delete', [ClusterController::class, 'destroy'])->name('cluster.delete');
+
 
     });
     Route::prefix('stock-management')->name('stock.')->group(function () {

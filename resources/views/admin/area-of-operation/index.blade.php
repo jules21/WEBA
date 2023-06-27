@@ -101,7 +101,6 @@
                     <input type="hidden" id="license_number" name="license_number"/>
                     <input type="hidden" id="valid_from" name="valid_from"/>
                     <input type="hidden" id="valid_to" name="valid_to"/>
-                    <input type="hidden" id="valid_to" name="valid_to"/>
                     <input type="hidden" value="Active" id="status" name="status"/>
 
                     <div class="modal-body">
@@ -207,7 +206,9 @@
                                         return {
                                             id: newItem.district_id,
                                             name: newItem.district_name,
-                                            doc_number: item.doc_number
+                                            doc_number: item.doc_number,
+                                            valid_from: item.valid_from,
+                                            valid_to: item.valid_to,
                                         };
                                     })
                             });
@@ -215,7 +216,7 @@
                         $district_id.empty();
                         $district_id.append('<option value="">Select District</option>');
                         $.each(districts, function (key, value) {
-                            $district_id.append(`<option value="${value.id}">${value.name} - ${value.doc_number}</option>`);
+                            $district_id.append(`<option data-doc_number="${value.doc_number}"  data-valid_from="${value.valid_from}"  data-valid_to="${value.valid_to}"  value="${value.id}">${value.name} - ${value.doc_number}</option>`);
                         });
                         $district_id.trigger('change');
 
@@ -250,7 +251,11 @@
                     })
                 });
                 if ($license) {
+                    console.log($license);
                     $('#licenseName').text($license.license_name);
+                    $('#valid_from').val($license.valid_from);
+                    $('#valid_to').val($license.valid_to);
+                    $('#license_number').val($license.doc_number);
                     $('#validityFrom').text((new Date($license.valid_from)).toLocaleDateString());
                     $('#validityTo').text((new Date($license.valid_to)).toLocaleDateString());
                     $resultsContent.slideDown();
