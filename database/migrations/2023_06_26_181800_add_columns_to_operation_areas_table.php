@@ -14,10 +14,10 @@ class AddColumnsToOperationAreasTable extends Migration
     public function up()
     {
         Schema::table('operation_areas', function (Blueprint $table) {
-            $table->string('license_number');
-            $table->date('valid_from');
-            $table->date('valid_to');
-            $table->string('status');
+            $table->string('license_number')->nullable();
+            $table->date('valid_from')->nullable();
+            $table->date('valid_to')->nullable();
+            $table->string('status')->nullable();
         });
     }
 
