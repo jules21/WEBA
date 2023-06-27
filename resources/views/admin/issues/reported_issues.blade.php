@@ -40,13 +40,14 @@
 
 @section('content')
     <div class="">
-        <div class="d-flex justify-content-between align-items-center mb-6">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center mb-6"
+             style="gap: 10px;">
             <h4 class="mb-0">
                 Reported Issues
             </h4>
             @if(auth()->user()->canFilterIssues())
-                <form action="" class="form-inline">
-                    <select name="operator" id="operator" class="form-control form-control-sm mr-2">
+                <form action="" class="form-inline" style="gap: 10px;">
+                    <select name="operator" id="operator" class="form-control form-control-sm">
                         <option value="">All Operators</option>
                         @foreach($operators as $operator)
                             <option value="{{ $operator->id }}"
@@ -58,7 +59,7 @@
                     <select name="area" id="area" class="form-control form-control-sm">
                         <option value="">All Operating Areas</option>
                     </select>
-                    <button class="btn btn-primary btn-sm ml-2">
+                    <button class="btn btn-primary btn-sm">
                         Filter
                         <i class="fa fa-filter"></i>
                     </button>
@@ -247,14 +248,15 @@
             });
 
             let $operator = $('#operator');
+            let $operatingArea = $('#area');
 
             function loadOperatingAreas(operatorId, selectedAreaId = null) {
                 let selectedOperator = operators.find(item => Number(item.id) === Number(operatorId));
-
+                if (!selectedOperator) {
+                    return;
+                }
                 let operatingAreas = selectedOperator.operation_areas;
-                let $operatingArea = $('#area');
-                $operatingArea.empty();
-                $operatingArea.append('<option value="">All Operating Area</option>');
+
                 operatingAreas.forEach(function (item) {
                     $operatingArea.append(`<option value="${item.id}">${item.name}</option>`);
                 });
@@ -265,6 +267,8 @@
 
             $operator.on('change', function () {
                 let operatorId = $(this).val();
+                $operatingArea.empty();
+                $operatingArea.append('<option value="">All Operating Area</option>');
                 loadOperatingAreas(operatorId);
             });
             $operator.trigger('change');
