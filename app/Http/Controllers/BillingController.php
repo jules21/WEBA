@@ -186,8 +186,11 @@ class BillingController extends Controller
     {
         $billings = Billing::query()->where('meter_number', $meter)->where('subscription_number', $subscription);
         $datatable = new BillingDataTable($billings);
+        $datatable = new BillingDataTable($billings);
+        $totalAmount = $billings->sum('amount');
+        $totalBalance = $billings->sum('balance');
 
-        return $datatable->render('admin.billings.customer_bills', compact('meter'));
+        return $datatable->render('admin.billings.customer_bills', compact('meter', 'subscription', 'totalAmount', 'totalBalance'));
     }
 
     public function download(Billing $billing)

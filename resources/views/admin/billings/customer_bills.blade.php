@@ -44,13 +44,13 @@
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
+                            <a href="{{ route('admin.dashboard') }}" class="text-dark-50">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a class="text-muted" href="{{ route('admin.customers.index') }}">Customers</a>
+                            <a class="text-dark-50" href="{{ route('admin.customers.index') }}">Customers</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a class="text-muted">Billing</a>
+                            <a class="text-dark-50">Billing</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -96,17 +96,30 @@
                             <!--end::Dropdown Menu-->
                         </div>
                     </div>
-                    <div class="row mb-5">
-                        <div class="col-md-6">
-                            <strong>Total Billed</strong> : {{ number_format($totalAmount,2) ?? 0 }} Rwf
-                            <br>
-                            <strong>Total Payments</strong> : {{ number_format(($totalAmount-$totalBalance),2) ?? 0 }} Rwf
-                            <br>
-                            <strong>Remaining Balance to be paid
-                            </strong> : {{ number_format($totalBalance,2) ?? 0 }} Rwf
-
+                    <div class="d-flex">
+                        <div class="border border-primary border-dashed rounded-lg p-6 mb-6 m-4">
+                            <div class="font-weight-bold">
+                                <span class="font-weight-bolder">Total Billed</span>
+                                <br>
+                                <span class="text-dark-50">{{ number_format($totalAmount,2) ?? 0 }} Rwf</span>
+                            </div>
+                        </div>
+                        <div class="border border-success rounded-lg p-6 mb-6 m-4">
+                            <div >
+                                <span class="font-weight-bolder">Total Payments</span>
+                                <br>
+                                <span class="text-dark-50">{{ number_format(($totalAmount-$totalBalance),2) ?? 0 }} Rwf</span>
+                            </div>
+                        </div>
+                        <div class="border border-warning rounded-lg p-6 mb-6 m-4">
+                            <div >
+                                <span class="font-weight-bolder">Remaining Balance <br> to be paid</span>
+                                <br>
+                                <span class="text-dark-50">{{ number_format($totalBalance,2) ?? 0 }} Rwf</span>
+                            </div>
                         </div>
                     </div>
+
                     @if(Str::contains(Route::currentRouteName(), 'admin.billings.index'))
                         <form action="#" id="filter-form">
                             <div class="row">
