@@ -14,7 +14,7 @@
 @section('content')
     <div class="container my-md-3">
         <div class="row ">
-            <div class="col-lg-7 col-md-7 col-xl-8 my-2">
+            <div class="col-lg-7 col-md-7 col-xl-7 my-2">
                 <div>
                     <div class="mb-4">
                         <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-3xl md:tw-leading-loose font-weight-bolder md:mb-3  ">
@@ -78,8 +78,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-5 col-lg-5 col-xl-4 ">
-                <div class="card card-body tw-rounded-xl">
+            <div class="col-md-5 col-lg-5 col-xl-5 ">
+                <div class="card card-body py-5 tw-rounded-xl">
                     <form method="post" id="myform" action="{{ route('client.login') }}" autocomplete="off">
                         @csrf
                         <h5 class="text-primary font-weight-bolder mb-3">{{__('auth.login_form')}}</h5>
