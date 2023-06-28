@@ -39,6 +39,7 @@ use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\RequestTechnicianController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
+use App\Http\Controllers\UrlController;
 use App\Http\Controllers\UserManualController;
 use App\Http\Livewire\CheckBills;
 use App\Http\Livewire\Client\IssuesReported;
@@ -48,6 +49,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 Route::get('/home', [ClientsController::class, 'home'])->name('home')->middleware('auth:client');
+Route::get('/go/{code}', [UrlController::class, 'redirect'])->name('url.redirect');
+Route::get('/{request}/view-materials', [HomeController::class, 'viewMaterials'])->name('requests.view-materials');
+
 
 Route::get('/help', [ClientsController::class, 'help'])->name('help');
 Route::get('/faq', [ClientsController::class, 'faq'])->name('faq');

@@ -72,7 +72,9 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="upi">UPI <x-required-sign/></label>
+                        <label for="upi">UPI
+                            <x-required-sign/>
+                        </label>
                         <input type="text" value="{{old('upi',$request->upi??"") }}"
                                required
                                name="upi" id="upi" class="form-control"/>
@@ -80,7 +82,9 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="upi_attachment">@lang('app.UPI_attachment')  <x-required-sign/></label>
+                        <label for="upi_attachment">@lang('app.UPI_attachment')
+                            <x-required-sign/>
+                        </label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="upi_attachment"
                                    {{ isset($request)?'':'required'  }}
@@ -96,7 +100,9 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="sector_id">@lang('app.sector')  <x-required-sign/></label>
+                        <label for="sector_id">@lang('app.sector')
+                            <x-required-sign/>
+                        </label>
                         <select name="sector_id" id="sector_id" class="form-control select2" required
                                 style="width:100% !important;">
                             <option value="">@lang('app.select_sector')</option>
@@ -110,7 +116,9 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="cell_id">@lang('app.cell')  <x-required-sign/></label>
+                        <label for="cell_id">@lang('app.cell')
+                            <x-required-sign/>
+                        </label>
                         <select name="cell_id" id="cell_id" class="form-control select2" required
                                 style="width:100% !important;">
                             <option value="">@lang('app.select_cell')</option>
@@ -122,7 +130,9 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="village_id">@lang('app.village')  <x-required-sign/></label>
+                        <label for="village_id">@lang('app.village')
+                            <x-required-sign/>
+                        </label>
                         <select name="village_id" id="village_id" class="form-control select2"
                                 style="width:100% !important;">
                             <option value="">@lang('app.select_village')</option>
@@ -139,7 +149,9 @@
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <label for="cross_road">@lang('app.new_connection_will_cross_the_road') ?  <x-required-sign/></label>
+                    <label for="cross_road">@lang('app.new_connection_will_cross_the_road') ?
+                        <x-required-sign/>
+                    </label>
                     <div class="form-group">
                         <div>
                             <div class="custom-control custom-radio custom-control-inline">
@@ -171,7 +183,9 @@
                 <div class="col-lg-6">
                     <div class="form-group" id="roadTypeContainer"
                          style="display: {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'block' : 'none' }}">
-                        <label for="road_type">@lang('app.road_type')  <x-required-sign/></label>
+                        <label for="road_type">@lang('app.road_type')
+                            <x-required-sign/>
+                        </label>
                         <select name="road_type" id="road_type" class="form-control" required>
                             <option value="">@lang('app.select_road_type')</option>
                             @foreach($roadTypes as $roadType)
@@ -188,7 +202,9 @@
             <div class="row">
 
                 <div class="col-lg-6">
-                    <label>@lang('app.will_you_dig_a_water_pipe_by_yourself_?') <x-required-sign/></label>
+                    <label>@lang('app.will_you_dig_a_water_pipe_by_yourself_?')
+                        <x-required-sign/>
+                    </label>
                     <div class="form-group">
                         <div>
                             <div class="custom-control custom-radio custom-control-inline">
@@ -218,7 +234,8 @@
 
                 <div class="col-lg-6">
                     <label>
-                        @lang('app.do_you_want_to_pay_for_the_materials_yourself_by_submitting_an_EBM_invoice_?') <x-required-sign/>
+                        @lang('app.do_you_want_to_pay_for_the_materials_yourself_by_submitting_an_EBM_invoice_?')
+                        <x-required-sign/>
                     </label>
                     <div class="form-group">
                         <div>
@@ -245,6 +262,20 @@
                     </div>
                 </div>
             </div>
+
+            <div class=" mb-4" style="border-bottom: 3px dotted #95989d">
+
+                <div class="custom-control custom-checkbox ">
+                    <input type="checkbox" name="terms_conditions" required class="custom-control-input"
+                           id="terms_conditions">
+                    <label class="custom-control-label" for="terms_conditions">
+                        I agree to the <a href="https://www.termsandconditionsgenerator.com/live.php?token=zSDhmGUj0e9MmCND6uhUNUs5Oxb3Sbct" target="_blank">terms and conditions</a>
+                    </label>
+                </div>
+                <label id="terms_conditions-error" class="error" for="terms_conditions" style=""></label>
+
+            </div>
+
             <div class="form-group">
                 <button type="submit" class="btn btn-primary float-right">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check" width="24"
@@ -339,7 +370,19 @@
 
         $(function () {
             let $formSave = $('#formSave');
-            $formSave.validate();
+            // validate form's terms and conditions
+            $formSave.validate({
+                rules: {
+                    terms_conditions: {
+                        required: true
+                    }
+                },
+                messages: {
+                    terms_conditions: {
+                        required: "Please accept our terms and conditions"
+                    }
+                }
+            })
             $formSave.on('submit', function (e) {
                 e.preventDefault();
                 if ($(this).valid()) {
