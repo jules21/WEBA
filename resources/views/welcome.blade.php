@@ -83,49 +83,56 @@
                     <form method="post" id="myform" action="{{ route('client.login') }}" autocomplete="off">
                         @csrf
                         <h5 class="text-primary font-weight-bolder mb-3">{{__('auth.login_form')}}</h5>
-                            <p class="">
-                                {{__('auth.please_enter_your_login_details_to_access_your_account.')}}
-                            </p>
+                        <p class="">
+                            {{__('auth.please_enter_your_login_details_to_access_your_account.')}}
+                        </p>
 
-                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label for="email" class="control-label">{{__('auth.email_address')}}</label>
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <label for="email" class="control-label">{{__('auth.email_address')}}</label>
 
-                                <div>
-                                    <input id="email" type="email"
-                                           class="form-control tw-rounded-md {{ $errors->has('email') ? ' is-invalid' : '' }}"
-                                           name="email" value="{{ old('email') }}" autofocus>
-                                    @if ($errors->has('email'))
-                                        <span class="invalid-feedback">
+                            <div>
+                                <input id="email" type="email"
+                                       class="form-control tw-rounded-md {{ $errors->has('email') ? ' is-invalid' : '' }}"
+                                       name="email" value="{{ old('email') }}" autofocus>
+                                @if ($errors->has('email'))
+                                    <span class="invalid-feedback">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                    @endif
-                                </div>
+                                @endif
                             </div>
+                        </div>
 
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="control-label">{{__('auth.password')}}</label>
-                                <div>
-                                    <input id="password" type="password"
-                                           class="form-control tw-rounded-md {{ $errors->has('password') ? ' is-invalid' : '' }}"
-                                           name="password">
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <label for="password" class="control-label">{{__('auth.password')}}</label>
+                            <div class="position-relative">
+                                <input id="password" type="password"
+                                       class="form-control tw-rounded-md {{ $errors->has('password') ? ' is-invalid' : '' }}"
+                                       name="password">
+                                <button type="button"
 
-                                    @if ($errors->has('password'))
-                                        <span class="invalid-feedback">
+                                        class="position-absolute  btn p-0 tw-top-1 shadow-none tw-right-4 "
+                                        onclick="showPassword()">
+                                    <i class="ti ti-eye tw-text-xl"
+                                       id="eye"></i>
+                                </button>
+
+                                @if ($errors->has('password'))
+                                    <span class="invalid-feedback">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
-                                    @endif
-                                </div>
+                                @endif
                             </div>
-                            <div class="mb-3 ">
-                                <a class="d-block" href="{{ url('/client/password/reset') }}">
-                                    {{__('auth.forgot_your_password?')}}
-                                </a>
-                            </div>
-                            <div class="form-group d-flex flex-column flex-lg-row  align-items-center">
-                                <button type="submit" class="btn btn-primary w-100">
-                                    {{__('auth.login')}}
-                                </button>
-                            </div>
+                        </div>
+                        <div class="mb-3 ">
+                            <a class="d-block" href="{{ url('/client/password/reset') }}">
+                                {{__('auth.forgot_your_password?')}}
+                            </a>
+                        </div>
+                        <div class="form-group d-flex flex-column flex-lg-row  align-items-center">
+                            <button type="submit" class="btn btn-primary w-100">
+                                {{__('auth.login')}}
+                            </button>
+                        </div>
                     </form>
                 </div>
 
@@ -154,7 +161,7 @@
             </div>
             <div class="col-sm-6 my-2 col-lg-3">
                 <x-feature-card title="{{__('app.customer_login')}}"
-                                description="{{__('app.payment_description')}}">
+                                description="{{__('app.customer_login_description')}}">
                     <h1 class="font-weight-bold mb-0 tw- ">2</h1>
                     {{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash" width="24"--}}
                     {{--                         height="24"--}}
@@ -236,6 +243,22 @@
     <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>
     <script src="{{ asset('css/slick/slick.min.js') }}" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/@srexi/purecounterjs/dist/purecounter_vanilla.js"></script>
+    <script>
+        function showPassword() {
+            let password = document.getElementById("password");
+            let icon = document.getElementById("eye");
+            if (password.type === "password") {
+                password.type = "text";
+                icon.classList.remove("ti-eye");
+                icon.classList.add("ti-eye-off");
+            } else {
+                password.type = "password";
+                icon.classList.remove("ti-eye-off");
+                icon.classList.add("ti-eye");
+            }
+
+        }
+    </script>
     <script>
         $(document).on('ready', function () {
             $('.autoplay').slick({
