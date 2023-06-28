@@ -60,7 +60,7 @@
                             {{--                                </svg>--}}
                             {{--                            </a>--}}
                             <a href="{{route('client.register')}}"
-                               class="btn bg-accent text-white tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
+                               class="btn tw-bg-accent text-white tw-rounded-sm py-2 px-4 hover:tw-bg-blue-50 hover:tw-text-primary hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
                                 {{__('app.register')}}
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-plus"
                                      width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75"
