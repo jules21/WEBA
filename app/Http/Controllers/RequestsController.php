@@ -65,7 +65,7 @@ class RequestsController extends Controller
                 return $query->where('customer_id', '=', decryptId($customerId));
             })
 
-            //if user has district_id then show only that district requests
+            //if a user has district_id then show only that district requests
             ->when(auth()->user()->district_id, function (Builder $query) {
                 return $query->whereHas('operationArea', function (Builder $query) {
                     $query->where('district_id', '=', auth()->user()->district_id);
@@ -241,6 +241,10 @@ class RequestsController extends Controller
             $dir = $request->file('upi_attachment')->store(Request::UPI_ATTACHMENT_PATH);
             $data['upi_attachment'] = basename($dir);
         }
+        if ($request->hasFile('form_attachment')) {
+            $dir = $request->file('form_attachment')->store(Request::FORM_ATTACHMENT_PATH);
+            $data['form_attachment'] = basename($dir);
+        }
         DB::beginTransaction();
         $req = AppRequest::query()->create($data);
         $road_cross_types = $request->input('road_cross_types', []);
@@ -306,6 +310,8 @@ class RequestsController extends Controller
             'waterNetworks' => $waterNetworks,
             'itemCategories' => $itemCategories,
             'paymentConfig' => $paymentConfig,
+            'roadCrossTypes' => $this->getRoadCrossTypes(),
+            'selected_road_cross_types' => $request->pipeCrosses->pluck('road_cross_type_id')->toArray(),
         ]);
     }
 
@@ -329,13 +335,18 @@ class RequestsController extends Controller
         unset($data['road_cross_types']);
 
         if ($request->hasFile('upi_attachment')) {
-
             if ($appRequest->upi_attachment) {
                 Storage::delete(Request::UPI_ATTACHMENT_PATH . '/' . $appRequest->upi_attachment);
             }
-
             $dir = $request->file('upi_attachment')->store(Request::UPI_ATTACHMENT_PATH);
             $data['upi_attachment'] = basename($dir);
+        }
+        if ($request->hasFile('form_attachment')) {
+            if ($appRequest->form_attachment) {
+                Storage::delete(Request::FORM_ATTACHMENT_PATH . '/' . $appRequest->form_attachment);
+            }
+            $dir = $request->file('form_attachment')->store(Request::FORM_ATTACHMENT_PATH);
+            $data['form_attachment'] = basename($dir);
         }
 
         $appRequest->update($data);

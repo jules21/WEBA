@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ValidateAppRequest extends FormRequest
 {
@@ -35,6 +36,10 @@ class ValidateAppRequest extends FormRequest
             'digging_pipeline' => ['required', 'string'],
             'upi_attachment' => ['required_if:id,0', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
             'road_cross_types' => ['nullable', 'array'],
+            'form_attachment' => [
+                Rule::requiredIf(fn() => request('id') == 0 && auth()->id() > 0),
+                'file', 'mimes:pdf,jpg,jpeg,png', 'max:1024'
+            ],
         ];
     }
 

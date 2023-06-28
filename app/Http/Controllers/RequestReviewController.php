@@ -12,8 +12,10 @@ use App\Models\PaymentType;
 use App\Models\Request as AppRequest;
 use App\Models\RequestType;
 use App\Models\StockMovementDetail;
+use App\Notifications\MaterialsFeeNotification;
 use App\Notifications\PaymentNotification;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use Throwable;
@@ -213,6 +215,8 @@ class RequestReviewController extends Controller
         $psp = $this->getPsp($materialsConfig);
         $message = "You have to pay the materials fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp";
         $request->customer->notify(new PaymentNotification($message));
+        info(json_encode($requestItems));
+        $request->customer->notify(new MaterialsFeeNotification($requestItems));
     }
 
     public function declareConnectionFee(AppRequest $request): void
@@ -240,7 +244,7 @@ class RequestReviewController extends Controller
             if ($request->connection_fee > 0) {
                 $this->declareConnectionFee($request);
             }
-            $requestItems = $request->items()->with('item')->get();
+            $requestItems = $request->items()->with('item.stock.operationArea')->get();
             // save payment declarations for each item
             if ($requestItems->count() > 0) {
                 $this->declareMaterialsFee($requestItems, $request);
@@ -250,18 +254,47 @@ class RequestReviewController extends Controller
             $request->load('meterNumbers.item');
             $this->declareMetersFee($request);
             $meters = $request->meterNumbers;
-            // update stock movement details
-            $meters->each(function ($meter) use ($request) {
-                $request->items()
-                    ->create([
-                        'quantity' => 1,
-                        'type' => $request->getClassName(),
-                        'status' => 'pending',
-                        'item_id' => $meter->item_id,
-                        'unit_price' => $meter->item->selling_price,
-                    ]);
-            });
-
+            // update stock movement details if a customer will not buy equipments by themselves
+            if (!$request->equipment_payment) {
+                $meters->each(function ($meter) use ($request) {
+                    $request->items()
+                        ->create([
+                            'quantity' => 1,
+                            'type' => $request->getClassName(),
+                            'status' => 'pending',
+                            'item_id' => $meter->item_id,
+                            'unit_price' => $meter->item->selling_price,
+                        ]);
+                });
+            }
         }
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function saveRoadCrossTypes(Request $connectionRequest, AppRequest $request)
+    {
+        $rules = [
+            'road_cross_types' => ['required', 'array']
+        ];
+        $messages = [
+            'road_cross_types.required' => 'Please select at least one road cross type',
+        ];
+        $connectionRequest->validate($rules, $messages);
+
+        DB::beginTransaction();
+        $request->pipeCrosses()->delete();
+        $road_cross_types = $connectionRequest->input('road_cross_types', []);
+        foreach ($road_cross_types as $road_cross_type) {
+            $request->pipeCrosses()->create([
+                'road_cross_type_id' => $road_cross_type,
+            ]);
+        }
+        DB::commit();
+
+        return redirect()
+            ->back()
+            ->with('success', 'Road cross types updated successfully');
     }
 }

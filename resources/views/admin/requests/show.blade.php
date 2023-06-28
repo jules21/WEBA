@@ -135,13 +135,8 @@
                 @include('admin.requests.partials._request_details')
 
                 @if($request->canBeReviewed())
-                    {{--     <div class="mb-3">
-                             @include('admin.requests.partials._technician_details')
-                         </div>--}}
 
-                    @if(!$request->equipment_payment)
-                        @include('admin.requests.partials._equipments')
-                    @endif
+                    @include('admin.requests.partials._equipments')
                     @if($request->pendingPayments(\App\Models\PaymentType::METERS_FEE))
                         <div class="alert alert-outline-warning alert-notice alert-custom">
                             <div class="alert-icon text-warning">
@@ -166,7 +161,7 @@
                         @include('admin.requests.partials._assign_meter_numbers')
                     @endif
 
-                    @if( $request->canBeApprovedByMe() && auth()->user()->operation_area)
+                    @if( $request->canBeApprovedByMe() && auth()->user()->operation_area && $requestItems->count() >0)
 
                         @include('admin.requests.partials._review_form')
 
