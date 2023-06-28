@@ -14,6 +14,7 @@ use App\Models\RequestType;
 use App\Models\StockMovementDetail;
 use App\Notifications\MaterialsFeeNotification;
 use App\Notifications\PaymentNotification;
+use App\Services\UrlService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -198,6 +199,7 @@ class RequestReviewController extends Controller
 
     public function declareMaterialsFee(Collection $requestItems, AppRequest $request): void
     {
+        $urlService = new UrlService();
         $sum = $requestItems->sum('total');
         $materialsConfig = getPaymentConfiguration(PaymentType::MATERIALS_FEE, $request->request_type_id);
 
@@ -213,10 +215,16 @@ class RequestReviewController extends Controller
         $ref = $dec->generateReferenceNumber();
         $formatted = number_format($sum);
         $psp = $this->getPsp($materialsConfig);
-        $message = "You have to pay the materials fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp";
+
+        $materialsUrl = route('requests.view-materials', encryptId($request->id));
+        $shortUrl = $urlService->shortenUrl($materialsUrl);
+        $shortenedUrl = route("url.redirect", $shortUrl->short_code);
+        $message = "You have to pay the materials fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp . visit $shortenedUrl";
+
         $request->customer->notify(new PaymentNotification($message));
-        info(json_encode($requestItems));
+
         $request->customer->notify(new MaterialsFeeNotification($requestItems));
+
     }
 
     public function declareConnectionFee(AppRequest $request): void

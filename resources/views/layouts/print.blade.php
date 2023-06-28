@@ -17,10 +17,12 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
     <style>
-        *{
-          font-size: 13px;
+        * {
+            font-size: 13px;
         }
+
         @media print {
             .d-print-none {
                 display: none !important;
