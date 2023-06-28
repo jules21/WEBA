@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section("title","Water Networks")
+@section("title","Water Supply Systems")
 @section('css')
 @endsection
 @section('page-header')
@@ -10,7 +10,7 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-2 mr-5">Water Networks</h5>
+                    <h5 class="text-dark font-weight-bold my-2 mr-5">Water Supply Systems</h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -18,7 +18,7 @@
                             <a href="{{ route('admin.dashboard') }}" class="text-muted">Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a class="text-muted">Water Networks</a>
+                            <a class="text-muted">Water Supply Systems</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -103,7 +103,7 @@
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
                 <h3 class="card-label">
-                    Water Networks List
+                    Water Supply Systems List
                     @if($operationArea)
                         <span
                             class="d-block pt-2 font-size-sm">Operation Area: {{$operationArea->name}}</span>
@@ -226,7 +226,7 @@
                 @csrf
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">New Water Network</h4>
+                        <h4 class="modal-title">New Water Supply System</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
@@ -347,7 +347,7 @@
                 <input type="hidden" value="0" id="WaterNetworkId" name="WaterNetworkId">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Water Network</h4>
+                        <h4 class="modal-title">Edit Water Supply System</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>

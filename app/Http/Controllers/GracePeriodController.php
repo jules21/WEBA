@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\GracePeriodUpdate;
 use App\Models\Contract;
 use App\Models\GracePeriod;
 use App\Http\Requests\StoreGracePeriodRequest;
@@ -89,7 +90,15 @@ class GracePeriodController extends Controller
         $contract->operation_area_id=$operationArea->id;
         $contract->days=$request->days;
         $contract->status=$request->status;
-        $contract->contract_id=$request->contract_id;
+
+        // Retrieve contact person and valid_to from OperationArea
+//        $OperationArea = OperationArea::query()->where('id',$operationArea)->get();
+        $validTo = $operationArea->valid_to;
+        $contactPerson = $operationArea->contact_person_email;
+
+        // Queue the email sending
+        \Mail::to($contactPerson)->queue(new GracePeriodUpdate($request->input('days'),$validTo,$contactPerson));
+
         $contract->save();
         return redirect()->back()->with('success','Grace Period Store Successfully');
     }
