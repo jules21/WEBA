@@ -48,6 +48,10 @@ class OperationAreaController extends Controller
                                                          <i class="fas fa-users"></i>
                                                          <span class="ml-2">Water Networks</span>
                                                       </a>
+                                                      <a class="dropdown-item" href="' . route('admin.operator.contract.index', encryptId($row->id)) . '">
+                                                          <i class="fas fa-book-open "></i>
+                                                          <span class="ml-2">Contract</span>
+                                                       </a>
                                                  <a class="dropdown-item" href="' . route('admin.operator.grace.periods.index', $row->id) . '">
                                                          <i class="fas fa-hand-holding"></i>
                                                          <span class="ml-2">Grace Period</span>
