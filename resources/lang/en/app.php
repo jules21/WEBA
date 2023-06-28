@@ -78,7 +78,7 @@
         "all_requests"=>"All Requests",
         "details"=>"Details",
         "request_details"=>"Request Details",
-        "water_usage"=>"Water Usage",
+        "water_usage"=>"Connection Type",
         "number_of_meters_requested:"=>" Number of Meters Requested:",
         "UPI_attachment:"=>" UPI Attachment:",
         "download_UPI"=>"Download UPI",

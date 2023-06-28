@@ -42,6 +42,7 @@
                     <div class="form-group">
                         <label for="water_usage_id">
                             @lang('app.water_usage')
+                            <x-required-sign/>
                         </label>
                         <select name="water_usage_id" id="water_usage_id" class="form-control select2" required
                                 style="width:100% !important;">
@@ -60,6 +61,7 @@
                     <div class="form-group">
                         <label for="meter_qty">
                             @lang('app.how_many_meters_do_you_need?')
+                            <x-required-sign/>
                         </label>
                         <input type="number" required
                                value="{{ old('meter_qty',$request->meter_qty??"") }}" min="1"
@@ -70,7 +72,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="upi">UPI</label>
+                        <label for="upi">UPI <x-required-sign/></label>
                         <input type="text" value="{{old('upi',$request->upi??"") }}"
                                required
                                name="upi" id="upi" class="form-control"/>
@@ -78,7 +80,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="upi_attachment">@lang('app.UPI_attachment') </label>
+                        <label for="upi_attachment">@lang('app.UPI_attachment')  <x-required-sign/></label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="upi_attachment"
                                    {{ isset($request)?'':'required'  }}
@@ -94,7 +96,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="sector_id">@lang('app.sector') </label>
+                        <label for="sector_id">@lang('app.sector')  <x-required-sign/></label>
                         <select name="sector_id" id="sector_id" class="form-control select2" required
                                 style="width:100% !important;">
                             <option value="">@lang('app.select_sector')</option>
@@ -108,7 +110,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="cell_id">@lang('app.cell') </label>
+                        <label for="cell_id">@lang('app.cell')  <x-required-sign/></label>
                         <select name="cell_id" id="cell_id" class="form-control select2" required
                                 style="width:100% !important;">
                             <option value="">@lang('app.select_cell')</option>
@@ -120,7 +122,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="village_id">@lang('app.village') </label>
+                        <label for="village_id">@lang('app.village')  <x-required-sign/></label>
                         <select name="village_id" id="village_id" class="form-control select2"
                                 style="width:100% !important;">
                             <option value="">@lang('app.select_village')</option>
@@ -137,7 +139,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <label for="cross_road">@lang('app.new_connection_will_cross_the_road')</label>
+                    <label for="cross_road">@lang('app.new_connection_will_cross_the_road') ?  <x-required-sign/></label>
                     <div class="form-group">
                         <div>
                             <div class="custom-control custom-radio custom-control-inline">
@@ -169,7 +171,7 @@
                 <div class="col-lg-6">
                     <div class="form-group" id="roadTypeContainer"
                          style="display: {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'block' : 'none' }}">
-                        <label for="road_type">@lang('app.road_type')</label>
+                        <label for="road_type">@lang('app.road_type')  <x-required-sign/></label>
                         <select name="road_type" id="road_type" class="form-control" required>
                             <option value="">@lang('app.select_road_type')</option>
                             @foreach($roadTypes as $roadType)
@@ -182,35 +184,11 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="form-group">
-                        <label for="road_cross_types">
-                            @lang('app.where_will_the_water_pipe_cross_?')
-                        </label>
-                        <div class="row">
-                            @foreach($roadCrossTypes as $item)
-                                <div class="col-md-4">
-                                    <div class="custom-control my-2  custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" value="{{ $item->id }}"
-                                               id="customCheck{{ $item->id }}" required
-                                               {{ isset($request) && in_array($item->id, $selected_road_cross_types??[]) ? 'checked' : '' }}
-                                               name="road_cross_types[]">
-                                        <label class="custom-control-label" for="customCheck{{ $item->id }}">
-                                            {{ $item->name }}
-                                        </label>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <label id="road_cross_types[]-error" class="error" for="road_cross_types[]"></label>
-                    </div>
-                </div>
-            </div>
+
             <div class="row">
 
                 <div class="col-lg-6">
-                    <label>@lang('app.will_you_dig_a_water_pipe_by_yourself_?')</label>
+                    <label>@lang('app.will_you_dig_a_water_pipe_by_yourself_?') <x-required-sign/></label>
                     <div class="form-group">
                         <div>
                             <div class="custom-control custom-radio custom-control-inline">
@@ -240,7 +218,7 @@
 
                 <div class="col-lg-6">
                     <label>
-                        @lang('app.do_you_want_to_pay_for_the_materials_yourself_by_submitting_an_EBM_invoice_?')
+                        @lang('app.do_you_want_to_pay_for_the_materials_yourself_by_submitting_an_EBM_invoice_?') <x-required-sign/>
                     </label>
                     <div class="form-group">
                         <div>

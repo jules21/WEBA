@@ -14,7 +14,9 @@
                   </div>--}}
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
-                    <label for="name" class="font-weight-bold">Water Usage</label>
+                    <label for="name" class="font-weight-bold">
+                        Connection Type
+                    </label>
                     <div class="form-control-plaintext py-0">
                         {{ $request->waterUsage->name }}
                     </div>
@@ -158,9 +160,62 @@
                 </div>
             </div>
 
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="font-weight-bold">Form Attachment</label>
+                    <div>
+                        @if($request->form_attachment)
+                            <a href="{{ $request->form_attachment_url }}" class="btn btn-sm btn-light-danger"
+                               target="_blank">
+                                <i class="flaticon2-download-2"></i>
+                                Download Form
+                            </a>
+                        @else
+                            N/A
+                        @endif
+
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         @if(auth()->check())
+            @if($request->customer_initiated && $request->status== \App\Constants\Status::ASSIGNED)
+                <div class="card card-body" style="border-style: dashed;border-width: 3px;">
+                    <form action="{{ route('admin.requests.road-cross-types.update',encryptId($request->id)) }}"
+                          method="post">
+                        @csrf
+                        <div>
+                            <label for="road_cross_types">
+                                @lang('app.where_will_the_water_pipe_cross_?')
+                                <x-required-sign/>
+                            </label>
+                            <div class="row">
+                                @foreach($roadCrossTypes as $item)
+                                    <div class="col-md-4">
+                                        <label class="checkbox  my-2">
+                                            <input type="checkbox" value="{{ $item->id }}"
+                                                   {{ isset($request) && in_array($item->id, $selected_road_cross_types??[]) ? 'checked' : '' }}
+                                                   name="road_cross_types[]"/>
+                                            <span class="mr-2 rounded-0"></span>
+                                            {{ $item->name }}
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <label id="road_cross_types[]-error" class="error" for="road_cross_types[]"></label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            Save Changes
+                        </button>
+
+                    </form>
+                </div>
+
+            @endif
+
             <div class="row mt-4">
                 <div class="col-lg-12">
                     <div class="">

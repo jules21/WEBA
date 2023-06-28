@@ -10,8 +10,8 @@
         @endif
 
     </div>
-    <div class="table-responsive border rounded">
-        <table class="table table-head-solid table-head-custom">
+    <div class="table-responsive border rounded-sm">
+        <table class="table  table-head-custom">
             <thead>
             <tr>
                 <th>Name</th>

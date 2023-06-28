@@ -138,6 +138,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::delete('/{request}/item/{id}/delete', [RequestReviewController::class, 'deleteRequestItem'])->name('delete-request-item');
         Route::post('/{req}/add-water-network', [RequestReviewController::class, 'addWaterNetwork'])->name('add-water-network');
         Route::post('/{request}/reviews/save', [RequestReviewController::class, 'saveReview'])->name('reviews.save');
+        Route::post('/{request}/road-cross-types/update', [RequestReviewController::class, 'saveRoadCrossTypes'])->name('road-cross-types.update');
 
         Route::post('/{request}/technician/save', [RequestTechnicianController::class, 'store'])->name('technician.save');
         Route::delete('/technician/{id}/delete', [RequestTechnicianController::class, 'destroy'])->name('technician.delete');
