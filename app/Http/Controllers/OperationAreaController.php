@@ -6,6 +6,7 @@ use App\Http\Requests\StoreOperationAreaRequest;
 use App\Models\ChartAccount;
 use App\Models\ChartAccountTemplate;
 use App\Models\District;
+use App\Models\GracePeriod;
 use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\Request;
@@ -46,6 +47,10 @@ class OperationAreaController extends Controller
                                                  <a class="dropdown-item" href="' . route('admin.water.networks', ['area' => encryptId($row->id)]) . '">
                                                          <i class="fas fa-users"></i>
                                                          <span class="ml-2">Water Networks</span>
+                                                      </a>
+                                                 <a class="dropdown-item" href="' . route('admin.operator.grace.periods.index', $row->id) . '">
+                                                         <i class="fas fa-hand-holding"></i>
+                                                         <span class="ml-2">Grace Period</span>
                                                       </a>
                                                       <div class="dropdown-divider"></div>
                                                      <a class="dropdown-item js-edit" href="' . route('admin.operator.area-of-operation.show', encryptId($row->id)) . '">
@@ -275,4 +280,5 @@ class OperationAreaController extends Controller
             ->where('district_id', $districtId)
             ->get();
     }
+
 }

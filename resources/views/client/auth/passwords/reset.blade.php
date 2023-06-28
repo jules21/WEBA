@@ -8,7 +8,7 @@
                     <div class="d-flex justify-content-center align-items-center">
                         <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
                     </div>
-                    <h2 class="mb-4">Reset Password</h2>
+                    <h2 class="mb-4 text-center">Reset Password</h2>
                     <p class="text-1">
                         Please enter your email address and new password to reset your password.
                     </p>

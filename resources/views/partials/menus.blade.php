@@ -1,3 +1,7 @@
+@php
+    $data=badgesCounts();
+@endphp
+
 <ul class="menu-nav">
     <li class="menu-item nav-dashboard">
         <a href="{{route('admin.dashboard')}}" class="menu-link">
@@ -131,11 +135,12 @@
                         @endcan
                         @can(\App\Constants\Permission::AssignRequest)
                             <x-menu-item title="Pending Requests" item-class="nav-pending-requests"
+                                         :count="$data['pending_requests']"
                                          :route="route('admin.requests.new')"/>
                             <x-menu-item title="Assigned Requests" item-class="nav-assigned-requests"
                                          :route="route('admin.requests.assigned')"/>
                         @endcan
-                        <x-menu-item title="My Tasks" item-class="nav-my-tasks"
+                        <x-menu-item title="My Tasks" item-class="nav-my-tasks" :count="$data['requests_tasks']"
                                      :route="route('admin.requests.my-tasks')"/>
                         @can(\App\Constants\Permission::ManageItemDelivery)
                             <x-menu-item title="Item Delivery" item-class="nav-item-delivery"
@@ -364,16 +369,9 @@
                                     </li>
                                 @endcan
                                 @can(\App\Constants\Permission::ApproveStockIn)
-                                    <li class="menu-item nav-my-purchases" aria-haspopup="true">
-                                        <a href="{{route('admin.purchases.index')}}" class="menu-link">
-                                            <i class="menu-bullet menu-bullet-dot">
-                                                <span></span>
-                                            </i>
-                                            <span class="menu-text">
-                        @lang('backend.my_tasks')
-                    </span>
-                                        </a>
-                                    </li>
+                                    <x-menu-item item-class="nav-my-purchases" :route="route('admin.purchases.index')"
+                                                 :title="__('backend.my_tasks')" :count="$data['purchases_tasks']">
+                                    </x-menu-item>
                                 @endcan
                             @endif
                             <li class="menu-item nav-all-purchases" aria-haspopup="true">
@@ -609,11 +607,7 @@
             </div>
         </li>
     @endcanany
-    @canany([\App\Constants\Permission::ManageBanks, \App\Constants\Permission::ManageBillCharges, \App\Constants\Permission::ManageRequestType,
-    \App\Constants\Permission::ManagePaymentType, \App\Constants\Permission::ManageDocumentTypes, \App\Constants\Permission::ManagePackagingUnits,
-    \App\Constants\Permission::ManageRoadCrossTypes, \App\Constants\Permission::ManageWaterUsages, \App\Constants\Permission::ManageWaterNetworks,
-     \App\Constants\Permission::ManageWaterNetworkTypes, \App\Constants\Permission::ManageWaterNetwork,
-     \App\Constants\Permission::ManageRequestDurationConfigurations, \App\Constants\Permission::ManagePaymentConfigurations])
+    @canany(settingsPermissions())
         <li class="menu-section">
             <h4 class="menu-text">System Settings</h4>
             <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -651,16 +645,7 @@
                             </a>
                         </li>
                     @endcan
-                    {{--                    @can('Manage Bill Charges')--}}
-                    {{--                        <li class="menu-item nav-bill-charges" aria-haspopup="true">--}}
-                    {{--                            <a href="{{ route('admin.bill.charges') }}" class="menu-link">--}}
-                    {{--                                <i class="menu-bullet menu-bullet-dot">--}}
-                    {{--                                    <span></span>--}}
-                    {{--                                </i>--}}
-                    {{--                                <span class="menu-text">Bill Charges</span>--}}
-                    {{--                            </a>--}}
-                    {{--                        </li>--}}
-                    {{--                    @endcan--}}
+
                     @can('Manage Request Type')
                         <li class="menu-item nav-request-type" aria-haspopup="true">
                             <a href="{{ route('admin.request.types') }}" class="menu-link">
@@ -733,18 +718,7 @@
                             </a>
                         </li>
                     @endcan
-                    {{--                    @if(auth()->user()->operator_id)--}}
-                    {{--                        @can('Manage Water Networks')--}}
-                    {{--                            <li class="menu-item nav-water-networks" aria-haspopup="true">--}}
-                    {{--                                <a href="{{ route('admin.water.networks') }}" class="menu-link">--}}
-                    {{--                                    <i class="menu-bullet menu-bullet-dot">--}}
-                    {{--                                        <span></span>--}}
-                    {{--                                    </i>--}}
-                    {{--                                    <span class="menu-text">Water Networks</span>--}}
-                    {{--                                </a>--}}
-                    {{--                            </li>--}}
-                    {{--                        @endcan--}}
-                    {{--                    @endif--}}
+
                     @can('Manage Water Network Types')
                         <li class="menu-item nav-water-network-types" aria-haspopup="true">
                             <a href="{{ route('admin.water.network.types') }}" class="menu-link">
@@ -761,7 +735,19 @@
                                 <i class="menu-bullet menu-bullet-dot">
                                     <span></span>
                                 </i>
-                                <span class="menu-text">Water Networks</span>
+                                <span class="menu-text">Water Supply Systems</span>
+                            </a>
+                        </li>
+                    @endcan
+                    @can(\App\Constants\Permission::ManageClusters)
+                        <li class="menu-item nav-water-networks" aria-haspopup="true">
+                            <a href="{{ route('admin.clusters') }}" class="menu-link">
+                                <i class="menu-bullet menu-bullet-dot">
+                                    <span></span>
+                                </i>
+                                <span class="menu-text">
+                                    Clusters
+                                </span>
                             </a>
                         </li>
                     @endcan

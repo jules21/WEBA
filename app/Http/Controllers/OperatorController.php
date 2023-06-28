@@ -2,16 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\ApplicationRole;
 use App\Constants\Permission;
 use App\Exports\OperatorsExport;
 use App\Http\Requests\StoreOperatorRequest;
 use App\Http\Requests\UpdateOperatorRequest;
+use App\Models\Contract;
 use App\Models\LegalType;
+use App\Models\OperationArea;
 use App\Models\Operator;
 use App\Models\Province;
+use App\Models\User;
+use App\Notifications\OperatorAdminCreated;
+use DB;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use Spatie\Permission\Models\Role;
 use Storage;
+use Throwable;
 use Yajra\DataTables\DataTables;
 
 class OperatorController extends Controller
@@ -27,8 +38,8 @@ class OperatorController extends Controller
         $operationAreaId = request('operation_area_id');
 
         $data = Operator::with(['legalType'])
-            ->when(auth()->user()->district_id, function ($query){
-                return $query->whereHas('operationAreas', function ($query){
+            ->when(auth()->user()->district_id, function ($query) {
+                return $query->whereHas('operationAreas', function ($query) {
                     return $query->where('district_id', auth()->user()->district_id);
                 });
             })
@@ -67,7 +78,7 @@ class OperatorController extends Controller
                     if (auth()->user()->can(Permission::ManageOperationAreas)) {
                         $opAreaBtn = '<a class="dropdown-item" href="' . route('admin.operator.area-of-operation.index', encryptId($row->id)) . '">
                                          <i class="fas fa-map"></i>
-                                         <span class="ml-2">Area of Operations</span>
+                                         <span class="ml-2">Districts</span>
                                       </a>';
                     }
 
@@ -87,6 +98,10 @@ class OperatorController extends Controller
                                         <a class="dropdown-item" href="' . route('admin.operator.details-page', encryptId($row->id)) . '">
                                          <i class="fas fa-info-circle "></i>
                                          <span class="ml-2">Details</span>
+                                     </a>
+                                     <a class="dropdown-item" href="' . route('admin.operator.contract.index', encryptId($row->id)) . '">
+                                         <i class="fas fa-book-open "></i>
+                                         <span class="ml-2">Contract</span>
                                      </a>
                                      <a class="dropdown-item js-edit"
                                       data-address="' . $row->address . '"
@@ -114,6 +129,9 @@ class OperatorController extends Controller
         ]);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function store(StoreOperatorRequest $request)
     {
         $data = $request->validated();
@@ -135,7 +153,7 @@ class OperatorController extends Controller
                 'data' => $operator,
             ], 400);
         }
-
+        DB::beginTransaction();
         $operator = Operator::query()->create([
             'clms_id' => $details['id'],
             'name' => $details['name'],
@@ -148,8 +166,37 @@ class OperatorController extends Controller
             'cell_id' => $data['cell_id'],
             'village_id' => $data['village_id'],
             'address' => $details['address'],
-            'prefix' => $data['prefix'],
+            'prefix' => $this->generatePrefix($details['name']),
         ]);
+        //  create default operator admin user
+        $defaultPassword = Str::random(8);
+        $user = User::query()
+            ->create([
+                'name' => $details['name'],
+                'email' => $details['email'],
+                'password' => Hash::make($defaultPassword),
+                'phone' => $details['telephone'],
+                'operator_id' => $operator->id,
+            ]);
+        // find an Operator Admin role if not found, create it and assign it to the user
+        $operatorAdminRole = Role::query()
+            ->where('name', '=', ApplicationRole::OPERATOR_ADMIN)->first();
+        if (is_null($operatorAdminRole)) {
+            $operatorAdminRole = Role::query()
+                ->create([
+                    'name' => ApplicationRole::OPERATOR_ADMIN,
+                    'guard_name' => 'web',
+                    'description' => 'Operator Admin',
+                    'operator_id' => $operator->id,
+                ]);
+            // assign permissions to the role
+            $operatorAdminRole->givePermissionTo(Permission::ManageOperatorUsers);
+        }
+        $user->assignRole($operatorAdminRole);
+        // send and email notification to the user with the default password
+        $user->notify(new OperatorAdminCreated($user, $defaultPassword));
+
+        DB::commit();
 
         if ($request->ajax()) {
             return response()->json([
@@ -191,7 +238,8 @@ class OperatorController extends Controller
             ]);
         }
 
-        return redirect()->route('operator.index');
+        return redirect()->back()
+            ->with('success', 'Operator updated successfully');
     }
 
     public function destroy(Operator $operator)
@@ -253,5 +301,32 @@ class OperatorController extends Controller
         return view('admin.operator.details', [
             'operator' => $operator,
         ]);
+    }
+
+    private function generatePrefix($name)
+    {
+        $nameParts = explode(' ', $name);
+        $prefix = '';
+        foreach ($nameParts as $namePart) {
+            $prefix .= strtoupper(substr($namePart, 0, 1));
+        }
+        $operator = Operator::query()
+            ->where('prefix', '=', $prefix)
+            ->first();
+        return is_null($operator) ? $prefix : Str::of($name)->substr(0, 2)->upper();
+    }
+
+    public function contract( Contract $contract,$operation_area_id){
+
+        $areas = OperationArea::query()
+            ->when(isOperator(), function (Builder $builder) {
+                $builder->where('operator_id', '=', auth()->user()->operator_id);
+            })
+            ->when(isForOperationArea(), function (Builder $builder) {
+                $builder->where('id', '=', auth()->user()->operation_area);
+            })
+            ->get();
+        $contract = Contract::find($operation_area_id);
+        return view('admin.operator.contract.index',compact('contract','areas'));
     }
 }

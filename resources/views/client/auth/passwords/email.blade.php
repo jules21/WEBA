@@ -8,20 +8,20 @@
                     <div class="d-flex justify-content-center align-items-center">
                         <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
                     </div>
-                    <h2 class="mb-4">{{__('auth.forgot_password')}}</h2>
-                    <p class="text-1">
+                    <h2 class="mb-4 ">{{__('auth.forgot_password')}}</h2>
+                    <p class="">
                         {{__('auth.please_enter_your_email_address_to_reset_your_password.')}}
                         <br>
                         <br>
                         {{__('auth.remembered_your_credentials_lick_the_button_below_to_log_in.')}}
                     </p>
-                    <a href="{{ route('client.login') }}" class="btn btn-outline-light tw-mt-10">{{__('auth.login_here')}}</a>
+                    <a href="{{ route('welcome') }}" class="btn btn-outline-light tw-mt-10">{{__('auth.login_here')}}</a>
                 </div>
             </div>
             <div class="col-md-6 col-xl-4 col-lg-5 bg-white card-body tw-rounded-xl">
                 <form class="p-4" action="{{ url('/client/password/email') }}" method="post"  autocomplete="off">
                     @csrf
-                    <h2 class="text-primary font-weight-bolder mb-5">{{__('auth.reset_password')}}</h2>
+                    <h2 class="text-primary text-center font-weight-bolder mb-5">{{__('auth.reset_password')}}</h2>
                     @if (session('status'))
                         <div class="alert alert-success">
                             {{ session('status') }}

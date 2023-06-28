@@ -18,7 +18,6 @@
 <!--end::Head-->
 <!--begin::Body-->
 <body class="admin-bg">
-
 <div class="container tw-min-h-screen d-flex flex-column justify-content-center">
 
     <div class="row  justify-content-center align-items-center ">
@@ -28,10 +27,10 @@
                 <small class="tw-text-xs font-weight-bold">RWSS</small>
                 <span class="text-white">@lang('auth.login')</span>
             </h3>
-            <div class="card lg:tw-p-10 border-0 card-body tw-rounded-sm">
-                <div class="d-flex justify-content-center align-items-center">
+            <div class="card lg:tw-p-10 border-0 card-body tw-rounded-md">
+                <a href="{{route('welcome')}}" class="d-flex justify-content-center align-items-center">
                     <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
-                </div>
+                </a>
 
                 <form action="{{ route('login') }}" autocomplete="off"
                       method="post">
@@ -42,9 +41,9 @@
                             @lang('auth.email_address')
                         </label>
                         <input
-                            class="form-control tw-py-6 tw-rounded-sm tw-border-[#AAAAAA]  tw-text-[14px] @error('email') is-invalid @enderror"
+                            class="form-control tw-py-6 tw-rounded-md tw-border-[#AAAAAA]  tw-text-[14px] @error('email') is-invalid @enderror"
                             type="email" id="email" placeholder="{{__('auth.email')}}" value="{{ old('email') }}" name="email"
-                            required
+
                             autocomplete="off" autofocus/>
                         @error('email')
                         <span class="invalid-feedback text-left" role="alert">
@@ -52,13 +51,14 @@
                             </span>
                         @enderror
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 position-relative">
                         <label for="password"
                                class="form-label  tw-text-[14px] text-dark tw-opacity-60 tw-leading-[21px] font-weight-normal">@lang('auth.password')</label>
                         <input
-                            class="form-control  tw-rounded-sm tw-border-[#AAAAAA] tw-py-6  tw-text-[14px] @error('password') is-invalid @enderror"
+                            class="form-control  tw-rounded-md tw-border-[#AAAAAA] tw-py-6  tw-text-[14px] @error('password') is-invalid @enderror"
                             type="password" id="password"
-                            placeholder="{{__('auth.password')}}" name="password" required autocomplete="off"/>
+                            placeholder="{{__('auth.password')}}" name="password"  autocomplete="off"/>
+                        <button type="button" class="position-absolute focus:tw-outline-offset-none focus:tw-outline-none btn p-0 tw-top-10 shadow-none tw-right-4 " onclick="showPassword()"><i class="ti ti-eye tw-text-xl"></i></button>
                         @error('password')
                         <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -87,7 +87,7 @@
 
                     <div class="my-2">
                         <button type="submit"
-                                class="btn btn-accent tw-font-semibold tw-py-4 w-100  tw-text-[14px] text-white tw-rounded-sm hover:tw-ring-2 tw-ring-accent tw-ring-offset-2">
+                                class="btn btn-accent tw-font-semibold tw-py-4 w-100  tw-text-[14px] text-white tw-rounded-md hover:tw-ring-2 tw-ring-accent tw-ring-offset-2">
                             @lang('auth.sign_in')
                         </button>
                     </div>
@@ -101,4 +101,20 @@
 
 
 </body>
+<script>
+    function showPassword() {
+        let password = document.getElementById("password");
+        let icon = document.querySelector(".ti");
+        if (password.type === "password") {
+            password.type = "text";
+            icon.classList.remove("ti-eye");
+            icon.classList.add("ti-eye-off");
+        } else {
+            password.type = "password";
+            icon.classList.remove("ti-eye-off");
+            icon.classList.add("ti-eye");
+        }
+
+    }
+</script>
 </html>

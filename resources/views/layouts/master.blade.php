@@ -135,7 +135,8 @@
                     <!--begin::Header Menu Wrapper-->
                     <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
                         <!--begin::Header Menu-->
-                        <div id="kt_header_menu" class="header-menu header-menu-mobile py-md-4 py-20 header-menu-layout-default">
+                        <div id="kt_header_menu"
+                             class="header-menu header-menu-mobile py-md-4 py-20 header-menu-layout-default">
                             <!--begin::Header Nav-->
                             <ul class="menu-nav">
                                 <li class="menu-item menu-item-submenu menu-item-rel menu-item-active"
@@ -149,7 +150,11 @@
                                             @endif
                                             @if(Helper::hasOperationArea())
                                                 <span>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                         class="icon icon-tabler icon-tabler-chevron-right" width="24"
+                                                         height="24" viewBox="0 0 24 24" stroke-width="1.75"
+                                                         stroke="currentColor" fill="none" stroke-linecap="round"
+                                                         stroke-linejoin="round">
                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                                        <path d="M9 6l6 6l-6 6"></path>
                                                     </svg>
@@ -172,21 +177,12 @@
                     <div class="topbar">
                         <div class="dropdown show">
                             <!--begin::Toggle-->
-{{--                            <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px" aria-expanded="true">--}}
-{{--                                <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">--}}
-{{--                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">--}}
-{{--                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
-{{--                                        <path d="M4 5h7"></path>--}}
-{{--                                        <path d="M9 3v2c0 4.418 -2.239 8 -5 8"></path>--}}
-{{--                                        <path d="M5 9c0 2.144 2.952 3.908 6.7 4"></path>--}}
-{{--                                        <path d="M12 20l4 -9l4 9"></path>--}}
-{{--                                        <path d="M19.1 18h-6.2"></path>--}}
-{{--                                    </svg>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
                             <!--end::Toggle-->
                             <!--begin::Dropdown-->
-                            <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-right" style="position: absolute; transform: translate3d(-117px, 65px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="bottom-end">
+                            <div
+                                class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-right"
+                                style="position: absolute; transform: translate3d(-117px, 65px, 0px); top: 0px; left: 0px; will-change: transform;"
+                                x-placement="bottom-end">
                                 <!--begin::Nav-->
                                 <ul class="navi navi-hover py-4">
                                     <!--begin::Item-->
@@ -351,47 +347,79 @@
             <a href="{{route("admin.users.profile",encryptId(Auth::user()->id))}}"
                class="navi-item mb-5">
                 <div class="navi-link">
-                    <div class="symbol symbol-40 bg-light mr-3">
+                    <div class="symbol symbol-40 bg-light-success mr-3">
                         <div class="symbol-label">
-									<span class="svg-icon svg-icon-md svg-icon-success">
-										<!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
-										<svg xmlns="http://www.w3.org/2000/svg"
-                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                             viewBox="0 0 24 24" version="1.1">
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												<rect x="0" y="0" width="24" height="24"/>
-												<path
-                                                    d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z"
-                                                    fill="#000000"/>
-												<circle fill="#000000" opacity="0.3" cx="18.5" cy="5.5" r="2.5"/>
-											</g>
-										</svg>
-                                        <!--end::Svg Icon-->
-									</span>
+                            <span class="svg-icon svg-icon-md text-success">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-edit"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                           <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                                           <path d="M6 21v-2a4 4 0 0 1 4 -4h3.5"></path>
+                                           <path
+                                               d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z"></path>
+                                </svg>
+                            </span>
                         </div>
                     </div>
                     <div class="navi-text">
                         <div class="font-weight-bold">My Profile</div>
                         <div class="text-muted">Personal Information</div>
                     </div>
-
                 </div>
 
             </a>
+            <!--begin::Item-->
+
+            @if(isOperator())
+                <a href="{{ route('admin.operator.profile')  }}"
+                   class="navi-item mb-5">
+                    <div class="navi-link">
+                        <div class="symbol symbol-40 bg-light-success mr-3">
+                            <div class="symbol-label">
+                            <span class="svg-icon svg-icon-md text-success">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mood-edit"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                   <path d="M20.955 11.104a9 9 0 1 0 -9.895 9.847"></path>
+                                   <path d="M9 10h.01"></path>
+                                   <path d="M15 10h.01"></path>
+                                   <path d="M9.5 15c.658 .672 1.56 1 2.5 1c.126 0 .251 -.006 .376 -.018"></path>
+                                   <path d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z"></path>
+                                </svg>
+                            </span>
+                            </div>
+                        </div>
+                        <div class="navi-text">
+                            <div class="font-weight-bold">Operator Profile</div>
+                            <div class="text-muted">
+                                Manage Operator Profile
+                            </div>
+                        </div>
+                    </div>
+
+                </a>
+            @endif
+
+
             <a href="{{route("admin.users.permissions",encryptId(Auth::user()->id))}}"
-                    class="navi-item mb-5">
+               class="navi-item mb-5">
                 <div class="navi-link">
                     <div class="symbol symbol-40 bg-light mr-3">
                         <div class="symbol-label">
 									<span class="svg-icon svg-icon-md svg-icon-success">
-                                        <span class="svg-icon svg-icon-md svg-icon-success">
-                                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo6\dist/../src/media/svg/icons\General\Shield-protected.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24"/>
-                                                <path d="M4,4 L11.6314229,2.5691082 C11.8750185,2.52343403 12.1249815,2.52343403 12.3685771,2.5691082 L20,4 L20,13.2830094 C20,16.2173861 18.4883464,18.9447835 16,20.5 L12.5299989,22.6687507 C12.2057287,22.8714196 11.7942713,22.8714196 11.4700011,22.6687507 L8,20.5 C5.51165358,18.9447835 4,16.2173861 4,13.2830094 L4,4 Z" fill="#000000" opacity="0.3"/>
-                                                <path d="M14.5,11 C15.0522847,11 15.5,11.4477153 15.5,12 L15.5,15 C15.5,15.5522847 15.0522847,16 14.5,16 L9.5,16 C8.94771525,16 8.5,15.5522847 8.5,15 L8.5,12 C8.5,11.4477153 8.94771525,11 9.5,11 L9.5,10.5 C9.5,9.11928813 10.6192881,8 12,8 C13.3807119,8 14.5,9.11928813 14.5,10.5 L14.5,11 Z M12,9 C11.1715729,9 10.5,9.67157288 10.5,10.5 L10.5,11 L13.5,11 L13.5,10.5 C13.5,9.67157288 12.8284271,9 12,9 Z" fill="#000000"/>
-                                            </g>
-                                        </svg><!--end::Svg Icon--></span>
+                                        <span class="svg-icon svg-icon-md text-success">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="icon icon-tabler icon-tabler-shield-filled" width="24" height="24"
+                                             viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                             stroke-linecap="round" stroke-linejoin="round">
+   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+   <path
+       d="M11.884 2.007l.114 -.007l.118 .007l.059 .008l.061 .013l.111 .034a.993 .993 0 0 1 .217 .112l.104 .082l.255 .218a11 11 0 0 0 7.189 2.537l.342 -.01a1 1 0 0 1 1.005 .717a13 13 0 0 1 -9.208 16.25a1 1 0 0 1 -.502 0a13 13 0 0 1 -9.209 -16.25a1 1 0 0 1 1.005 -.717a11 11 0 0 0 7.531 -2.527l.263 -.225l.096 -.075a.993 .993 0 0 1 .217 -.112l.112 -.034a.97 .97 0 0 1 .119 -.021z"
+       stroke-width="0" fill="currentColor"></path>
+</svg>
+                                        </span>
 									</span>
                         </div>
                     </div>
@@ -401,36 +429,29 @@
                     </div>
                 </div>
             </a>
-                <a href="{{route("admin.user.manual.admin")}}"
-                   class="navi-item mb-5">
-                    <div class="navi-link">
-                        <div class="symbol symbol-40 bg-light mr-3">
-                            <div class="symbol-label">
-									<span class="svg-icon svg-icon-md svg-icon-success">
-										<!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                             xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                             viewBox="0 0 24 24" version="1.1">
-											<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-												<polygon points="0 0 24 0 24 24 0 24"></polygon>
-												<path
-                                                    d="M4.85714286,1 L11.7364114,1 C12.0910962,1 12.4343066,1.12568431 12.7051108,1.35473959 L17.4686994,5.3839416 C17.8056532,5.66894833 18,6.08787823 18,6.52920201 L18,19.0833333 C18,20.8738751 17.9795521,21 16.1428571,21 L4.85714286,21 C3.02044787,21 3,20.8738751 3,19.0833333 L3,2.91666667 C3,1.12612489 3.02044787,1 4.85714286,1 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z"
-                                                    fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
-												<path
-                                                    d="M6.85714286,3 L14.7364114,3 C15.0910962,3 15.4343066,3.12568431 15.7051108,3.35473959 L20.4686994,7.3839416 C20.8056532,7.66894833 21,8.08787823 21,8.52920201 L21,21.0833333 C21,22.8738751 20.9795521,23 19.1428571,23 L6.85714286,23 C5.02044787,23 5,22.8738751 5,21.0833333 L5,4.91666667 C5,3.12612489 5.02044787,3 6.85714286,3 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z"
-                                                    fill="#000000" fill-rule="nonzero"></path>
-											</g>
-										</svg>
-                                        <!--end::Svg Icon-->
-									</span>
-                            </div>
-                        </div>
-                        <div class="navi-text">
-                            <div class="font-weight-bold">User Guide</div>
-                            <div class="text-muted">User Manual</div>
+            <a href="{{route("admin.user.manual.admin")}}"
+               class="navi-item mb-5">
+                <div class="navi-link">
+                    <div class="symbol symbol-40 bg-light mr-3">
+                        <div class="symbol-label">
+                            <span class="svg-icon svg-icon-md text-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-help" width="24"
+                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                 stroke-linecap="round" stroke-linejoin="round">
+   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+   <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+   <path d="M12 17l0 .01"></path>
+   <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4"></path>
+</svg>
+                            </span>
                         </div>
                     </div>
-                </a>
+                    <div class="navi-text">
+                        <div class="font-weight-bold">User Guide</div>
+                        <div class="text-muted">User Manual</div>
+                    </div>
+                </div>
+            </a>
 
             <!--end:Item-->
         </div>
@@ -522,6 +543,15 @@
 
 <script>
     $(document).ready(function () {
+
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            todayHighlight: true,
+            orientation: "bottom left",
+            autoclose: true,
+            todayBtn: true,
+            clearBtn: true
+        });
 
 
         $('.my_loader').fadeOut(500);
