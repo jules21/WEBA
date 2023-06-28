@@ -735,7 +735,7 @@
                                 <i class="menu-bullet menu-bullet-dot">
                                     <span></span>
                                 </i>
-                                <span class="menu-text">Water Networks</span>
+                                <span class="menu-text">Water Supply Systems</span>
                             </a>
                         </li>
                     @endcan

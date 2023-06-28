@@ -98,7 +98,7 @@
                             </div>
 
                             <label for="name">Status</label>
-                            <select name="operation_area_id" id="operation_area_id" class="form-control" required>
+                            <select name="status" id="status" class="form-control" required>
                                 <option value="">Select status</option>
 
                                     <option value="active">Active</option>
@@ -144,7 +144,7 @@
                             </div>
 
                             <label for="name">Status</label>
-                            <select name="operation_area_id" id="operation_area_id" class="form-control" required>
+                            <select name="status" id="status" class="form-control" required>
                                 <option value="">Select status</option>
 
                                 <option value="active">Active</option>
