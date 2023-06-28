@@ -151,7 +151,6 @@ class ContractController extends Controller
     public function update(UpdateContractRequest $request, Contract $contract)
     {
         $contract = Contract::findOrFail($request->input('ContractId'));
-        $contract->operation_area_id=$request->operation_area_id;
         $contract->status=$request->status;
         $contract->start_date=$request->start_date;
         $contract->end_date=$request->end_date;
