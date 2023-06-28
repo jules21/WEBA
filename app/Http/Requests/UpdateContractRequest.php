@@ -24,7 +24,6 @@ class UpdateContractRequest extends FormRequest
     public function rules()
     {
         return [
-            'operation_area_id'=>'required',
             'start_date'=>'required',
             'end_date'=>'required',
             'status'=>'required',
