@@ -117,12 +117,12 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="water_usage_id">
-                                Connection Type
+                                {{ __('app.water_usage') }}
                                 <x-required-sign/>
                             </label>
                             <select name="water_usage_id" id="water_usage_id" class="form-control select2"
                                     style="width:100% !important;">
-                                <option value="">Select Connection Type</option>
+                                <option value="">Select Water Usage</option>
                                 @foreach($waterUsage as $requestType)
                                     <option
                                         {{ isset($request) && $request->water_usage_id == $requestType->id ? 'selected' : '' }}

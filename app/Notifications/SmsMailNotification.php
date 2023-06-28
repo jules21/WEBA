@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PaymentNotification extends Notification implements ShouldQueue
+class SmsMailNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -32,7 +32,7 @@ class PaymentNotification extends Notification implements ShouldQueue
      */
     public function via($notifiable): array
     {
-        return ['mail', 'database', SmsChannel::class];
+        return ['mail', SmsChannel::class];
     }
 
     /**
@@ -49,22 +49,6 @@ class PaymentNotification extends Notification implements ShouldQueue
             ->line('Thank you for using our application!');
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     */
-    public function toArray($notifiable): array
-    {
-        return [
-            'message' => $this->message,
-            'url' => url('/'),
-            'type' => 'payment',
-            'icon' => 'fas fa-money-bill-wave',
-            'amount' => 0,
-            'request_id' => 0,
-        ];
-    }
 
     public function toSms($notifiable): BesoftSmsService
     {

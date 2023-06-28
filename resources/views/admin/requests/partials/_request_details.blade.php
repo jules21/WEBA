@@ -220,7 +220,7 @@
                 <div class="col-lg-12">
                     <div class="">
                         <h4>
-                            Water Network & Connection Fee
+                            Water Supply System & Connection Fee
                         </h4>
                         @if($request->canAddConnectionFee())
                             <form action="{{ route('admin.requests.add-water-network', encryptId($request->id)) }}"
@@ -243,11 +243,13 @@
                                     <div class="col-md-4 my-2">
                                         <div class="form-group">
                                             <label for="water_network_id">
-                                                <span class="font-weight-bold">Water Network</span>
+                                                <span class="font-weight-bold">
+                                                    Water Supply System
+                                                </span>
                                             </label>
                                             <select name="water_network_id" id="water_network_id" class="form-control">
                                                 <option value="">
-                                                    Please Select Water Network
+                                                    Please Select Water Supply
                                                 </option>
                                                 @foreach($waterNetworks as $item)
                                                     <option value="{{ $item->id }}"
@@ -275,7 +277,7 @@
                             <div class="row mt-4">
                                 <div class="col-lg-6">
                                     <label for="">
-                                        <span class="font-weight-bold">Water Network</span>
+                                        <span class="font-weight-bold">Water Supply System</span>
                                     </label>
                                     <div class="form-control-plaintext py-0">
                                         {{ $request->waterNetwork->name }}
@@ -304,7 +306,7 @@
                                     </svg>
                                 </div>
                                 <div class="alert-text">
-                                    No Water Network & Connection Fee Added Yet !
+                                    No Water Supply System & Connection Fee Added Yet !
                                 </div>
                             </div>
                         @endif
@@ -326,7 +328,7 @@
                         </svg>
                     </div>
                     <div class="alert-text">
-                        Please add the water network to proceed.
+                        Please add the water supply to proceed.
                     </div>
                 </div>
             @endif

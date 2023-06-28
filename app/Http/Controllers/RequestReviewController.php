@@ -12,8 +12,7 @@ use App\Models\PaymentType;
 use App\Models\Request as AppRequest;
 use App\Models\RequestType;
 use App\Models\StockMovementDetail;
-use App\Notifications\MaterialsFeeNotification;
-use App\Notifications\PaymentNotification;
+use App\Notifications\SmsMailNotification;
 use App\Services\UrlService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -194,15 +193,13 @@ class RequestReviewController extends Controller
         $psp = $this->getPsp($metersConfig);
         $subscriptionNumbers = $request->meterNumbers->pluck('subscription_number')->implode(', ');
         $message = "You have to pay the meters fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp. Subscription numbers of your meters are $subscriptionNumbers ";
-        $request->customer->notify(new PaymentNotification($message));
+        $request->customer->notify(new SmsMailNotification($message));
     }
 
-    public function declareMaterialsFee(Collection $requestItems, AppRequest $request): void
+    public function declareMaterialsFee(Collection $requestItems, AppRequest $request, string $shortenedUrl): void
     {
-        $urlService = new UrlService();
         $sum = $requestItems->sum('total');
         $materialsConfig = getPaymentConfiguration(PaymentType::MATERIALS_FEE, $request->request_type_id);
-
         $dec = $request->paymentDeclarations()
             ->create([
                 'amount' => $sum,
@@ -216,15 +213,8 @@ class RequestReviewController extends Controller
         $formatted = number_format($sum);
         $psp = $this->getPsp($materialsConfig);
 
-        $materialsUrl = route('requests.view-materials', encryptId($request->id));
-        $shortUrl = $urlService->shortenUrl($materialsUrl);
-        $shortenedUrl = route("url.redirect", $shortUrl->short_code);
         $message = "You have to pay the materials fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp . visit $shortenedUrl";
-
-        $request->customer->notify(new PaymentNotification($message));
-
-        $request->customer->notify(new MaterialsFeeNotification($requestItems));
-
+        $request->customer->notify(new SmsMailNotification($message));
     }
 
     public function declareConnectionFee(AppRequest $request): void
@@ -243,7 +233,7 @@ class RequestReviewController extends Controller
         $formatted = number_format($request->connection_fee);
         $psp = $this->getPsp($connectionConfig);
         $message = "You have to pay the connection fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp.";
-        $request->customer->notify(new PaymentNotification($message));
+        $request->customer->notify(new SmsMailNotification($message));
     }
 
     public function takeDecision($status, AppRequest $request): void
@@ -255,7 +245,18 @@ class RequestReviewController extends Controller
             $requestItems = $request->items()->with('item.stock.operationArea')->get();
             // save payment declarations for each item
             if ($requestItems->count() > 0) {
-                $this->declareMaterialsFee($requestItems, $request);
+                $urlService = new UrlService();
+                $materialsUrl = route('requests.view-materials', encryptId($request->id));
+                $shortUrl = $urlService->shortenUrl($materialsUrl);
+                $shortenedUrl = route("url.redirect", $shortUrl->short_code);
+
+                if ($request->equipment_payment) {
+                    $request->customer->notify(
+                        new SmsMailNotification("Because you have chosen to buy the materials by yourself, you can view the list of materials you have to buy by visiting $shortenedUrl")
+                    );
+                } else {
+                    $this->declareMaterialsFee($requestItems, $request, $shortenedUrl);
+                }
             }
 
         } elseif ($status == Status::METER_ASSIGNED) {
