@@ -370,13 +370,17 @@
 
             </a>
             <!--begin::Item-->
-            <a href="{{ route('admin.operator.profile')  }}"
-               class="navi-item mb-5">
-                <div class="navi-link">
-                    <div class="symbol symbol-40 bg-light-success mr-3">
-                        <div class="symbol-label">
+
+            @if(isOperator())
+                <a href="{{ route('admin.operator.profile')  }}"
+                   class="navi-item mb-5">
+                    <div class="navi-link">
+                        <div class="symbol symbol-40 bg-light-success mr-3">
+                            <div class="symbol-label">
                             <span class="svg-icon svg-icon-md text-success">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mood-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-mood-edit"
+                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                     fill="none" stroke-linecap="round" stroke-linejoin="round">
                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                    <path d="M20.955 11.104a9 9 0 1 0 -9.895 9.847"></path>
                                    <path d="M9 10h.01"></path>
@@ -385,17 +389,20 @@
                                    <path d="M18.42 15.61a2.1 2.1 0 0 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39z"></path>
                                 </svg>
                             </span>
+                            </div>
+                        </div>
+                        <div class="navi-text">
+                            <div class="font-weight-bold">Operator Profile</div>
+                            <div class="text-muted">
+                                Manage Operator Profile
+                            </div>
                         </div>
                     </div>
-                    <div class="navi-text">
-                        <div class="font-weight-bold">Operator Profile</div>
-                        <div class="text-muted">
-                            Manage Operator Profile
-                        </div>
-                    </div>
-                </div>
 
-            </a>
+                </a>
+            @endif
+
+
             <a href="{{route("admin.users.permissions",encryptId(Auth::user()->id))}}"
                class="navi-item mb-5">
                 <div class="navi-link">
@@ -536,6 +543,15 @@
 
 <script>
     $(document).ready(function () {
+
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            todayHighlight: true,
+            orientation: "bottom left",
+            autoclose: true,
+            todayBtn: true,
+            clearBtn: true
+        });
 
 
         $('.my_loader').fadeOut(500);

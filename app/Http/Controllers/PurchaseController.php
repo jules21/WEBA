@@ -34,60 +34,7 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-
-        $startDate = \request('start_date');
-        $endDate = \request('end_date');
-
-        $user = auth()->user();
-
-            $data = Purchase::query()
-                ->with(['supplier','movementDetails.item.packagingUnit','movementDetails.item.stock.operationArea'])
-//                ->where('operation_area_id', '=', auth()->user()->operation_area)
-                ->withCount('movementDetails')
-                ->where(function (Builder $builder) {
-                    if (request('type') == 'all') {
-                        return;
-                    }
-                    $statuses = [];
-                    if (auth()->user()->can(Permission::StockInItems)) {
-                        $statuses[] = Status::RETURN_BACK;
-                    }
-                    if (auth()->user()->can(Permission::ApproveStockIn)) {
-                        $statuses[] = Status::SUBMITTED;
-                    }
-
-                    $builder->whereIn('status', $statuses);
-                })
-
-                ->when((request()->has('item_id') && request()->filled('item_id')), function ($query) {
-                    $query->whereHas('movementDetails', function ($query) {
-                        $query->where('item_id', '=', request()->item_id);
-                    });
-                })
-                ->when((request()->has('status') && request()->filled('status')), function ($query) {
-                    $query->where('status', '=', request()->status);
-                })
-                ->when($user->operator_id, function ($query) use ($user) {
-                    $query->whereHas('operationArea', function ($query) use ($user) {
-                        $query->where('operator_id', $user->operator_id);
-                    });
-                })
-                ->when($user->operation_area, function ($query) use ($user) {
-                    $query->where('operation_area_id', $user->operation_area);
-                })
-                ->when((request()->has('supplier_id') && request()->filled('supplier_id')), function ($query) {
-                    $query->where('supplier_id', '=', request()->supplier_id);
-                })
-                ->when((request()->has('from_date') && request()->filled('from_date')), function ($query) {
-                    $query->whereDate('created_at', '>=', request()->from_date);
-                })
-                ->when((request()->has('to_date') && request()->filled('to_date')), function ($query) {
-                    $query->whereDate('created_at', '<=', request()->to_date);
-                })
-                ->when(!is_null($startDate) && !is_null($endDate), function (Builder $query) use ($startDate, $endDate) {
-                    return $query->whereDate('created_at', '>=', $startDate)
-                        ->whereDate('created_at', '<=', $endDate);
-                });
+        $data = purchaseBuilder();
         if (request()->ajax()) {
             return datatables()->of($data)
                 ->editColumn('supplier_nane', function ($row) {
@@ -121,7 +68,7 @@ class PurchaseController extends Controller
                 ->make(true);
         }
 
-        if (request()->is_download && ! request()->ajax()) {
+        if (request()->is_download && !request()->ajax()) {
             return $this->exportDataToExcel($data->get());
         }
 

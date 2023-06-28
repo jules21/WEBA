@@ -112,4 +112,6 @@ class Permission
 
     const CreateOperatorIssue = 'Create Operator Issue';
     const ManageOperatorIssues = 'Manage Operator Issues';
+
+    const ManageClusters = 'Manage Clusters';
 }

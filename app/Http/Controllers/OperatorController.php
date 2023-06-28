@@ -238,7 +238,8 @@ class OperatorController extends Controller
             ]);
         }
 
-        return redirect()->route('operator.index');
+        return redirect()->back()
+            ->with('success', 'Operator updated successfully');
     }
 
     public function destroy(Operator $operator)

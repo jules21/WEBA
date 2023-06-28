@@ -4,10 +4,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateOperatorRequest extends FormRequest
+class StoreClusterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
+     *
+     * @return bool
      */
     public function authorize(): bool
     {
@@ -16,12 +18,14 @@ class UpdateOperatorRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
+     *
+     * @return array
      */
     public function rules(): array
     {
         return [
-            'address' => ['required', 'string', 'max:255'],
-            'logo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,svg,webp', 'max:1048'],
+            'name' => ['required', 'unique:clusters', 'string', 'max:255'],
+            'expiration_date' => ['required', 'date'],
         ];
     }
 }

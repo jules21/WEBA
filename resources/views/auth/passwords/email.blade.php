@@ -40,7 +40,7 @@
                 </div>
                 <!--end::Login Header-->
                 <!--begin::Login Sign in form-->
-                <div class="card lg:tw-p-10 border-0 card-body tw-rounded-sm">
+                <div class="card lg:tw-p-10 border-0 card-body tw-rounded-md">
                     <div class="d-flex justify-content-center align-items-center">
                         <img src="{{ asset('img/logo.svg') }}" alt="Logo"/>
                     </div>
@@ -59,7 +59,7 @@
                             @csrf
                             <div class="form-group mb-5">
                                 <input
-                                    class="form-control h-auto form-control-solid  tw-py-4  border px-8 @error('email') is-invalid @enderror"
+                                    class="form-control  tw-rounded-md tw-border-[#AAAAAA] tw-py-8  tw-text-[14px] @error('email') is-invalid @enderror"
                                     type="email" id="email" placeholder="Email" value="{{ old('email') }}" name="email"
                                     required
                                     autocomplete="off" autofocus/>
@@ -70,7 +70,7 @@
                                 @enderror
                             </div>
                             <button id="kt_login_signin_submit"
-                                    class="btn btn-accent tw-text-[14px] btn-block font-weight-bold py-4 my-3">
+                                    class="btn btn-accent tw-font-semibold tw-py-5 w-100  tw-text-[14px] text-white tw-rounded-md hover:tw-ring-2 tw-ring-accent tw-ring-offset-2">
                                 {{ __('Send Password Reset Link') }}
                             </button>
                         </form>
