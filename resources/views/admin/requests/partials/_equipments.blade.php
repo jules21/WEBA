@@ -2,12 +2,19 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0">Materials</h5>
-        @if($request->canAddMaterials())
-            <button type="button" class="btn btn-sm rounded btn-light-primary" id="addBtn">
-                <i class="flaticon2-add-1"></i>
-                Add New
-            </button>
-        @endif
+        <div>
+            @if($request->canAddMaterials())
+                <button type="button" class="btn btn-sm rounded btn-light-primary" id="addBtn">
+                    <i class="flaticon2-add-1"></i>
+                    Add New
+                </button>
+            @endif
+            @if($requestItems->count() >0)
+                <a href="{{ route('requests.view-materials',encryptId($request->id)) }}" target="_blank" class="btn btn-sm rounded btn-light-success" id="saveBtn">
+                    Print Materials
+                </a>
+            @endif
+        </div>
 
     </div>
     <div class="table-responsive border rounded-sm">

@@ -48,7 +48,7 @@
                                 <span class="font-weight-bolder mb-2">
                                     PAYMENT REF.
                                 </span>
-                                <span class="opacity-70">{{$payDec->payment_reference}}</span>
+                                <span class="opacity-70">{{$payDec->payment_reference??'N/A'}}</span>
                             </div>
                             <div class="d-flex flex-column flex-root">
                                 <span class="font-weight-bolder mb-2">MATERIALS TO.</span>
