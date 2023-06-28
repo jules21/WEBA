@@ -112,35 +112,14 @@
 .tw-left-0 {
     left: 0px !important
 }
-.tw-top-3 {
-    top: 0.75rem !important
-}
-.tw-top-6 {
-    top: 1.5rem !important
-}
-.tw-top-10 {
-    top: 2.5rem !important
-}
-.tw-top-11 {
-    top: 2.75rem !important
-}
-.tw-left-1 {
-    left: 0.25rem !important
-}
-.tw-right-1 {
-    right: 0.25rem !important
-}
 .tw-right-4 {
     right: 1rem !important
 }
-.tw-top-2 {
-    top: 0.5rem !important
-}
-.tw-top-0 {
-    top: 0px !important
-}
 .tw-top-1 {
     top: 0.25rem !important
+}
+.tw-top-10 {
+    top: 2.5rem !important
 }
 .tw-col-span-2 {
     grid-column: span 2 / span 2 !important
@@ -403,13 +382,13 @@
     padding-top: 1rem !important;
     padding-bottom: 1rem !important
 }
-.tw-py-6 {
-    padding-top: 1.5rem !important;
-    padding-bottom: 1.5rem !important
-}
 .tw-py-5 {
     padding-top: 1.25rem !important;
     padding-bottom: 1.25rem !important
+}
+.tw-py-6 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important
 }
 .tw-py-8 {
     padding-top: 2rem !important;
@@ -456,14 +435,6 @@
 .tw-text-xs {
     font-size: 0.75rem !important;
     line-height: 1rem !important
-}
-.tw-text-3xl {
-    font-size: 1.875rem !important;
-    line-height: 2.25rem !important
-}
-.tw-text-5xl {
-    font-size: 3rem !important;
-    line-height: 1 !important
 }
 .tw-font-medium {
     font-weight: 500 !important
@@ -554,9 +525,6 @@
 .tw-outline-0 {
     outline-width: 0px !important
 }
-.tw-outline-offset-0 {
-    outline-offset: 0px !important
-}
 .tw-ring-accent {
     --tw-ring-opacity: 1 !important;
     --tw-ring-color: rgb(166 206 57 / var(--tw-ring-opacity)) !important
@@ -588,9 +556,21 @@
     --tw-bg-opacity: 1 !important;
     background-color: rgb(1 78 132 / var(--tw-bg-opacity)) !important
 }
+.hover\:tw-bg-white:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity)) !important
+}
+.hover\:tw-bg-blue-50:hover {
+    --tw-bg-opacity: 1 !important;
+    background-color: rgb(239 246 255 / var(--tw-bg-opacity)) !important
+}
 .hover\:tw-text-accent:hover {
     --tw-text-opacity: 1 !important;
     color: rgb(166 206 57 / var(--tw-text-opacity)) !important
+}
+.hover\:tw-text-primary:hover {
+    --tw-text-opacity: 1 !important;
+    color: rgb(1 78 132 / var(--tw-text-opacity)) !important
 }
 .hover\:tw-text-white:hover {
     --tw-text-opacity: 1 !important;
@@ -612,10 +592,6 @@
     --tw-border-opacity: 1 !important;
     border-color: rgb(166 206 57 / var(--tw-border-opacity)) !important
 }
-.focus\:tw-bg-yellow-900:focus {
-    --tw-bg-opacity: 1 !important;
-    background-color: rgb(113 63 18 / var(--tw-bg-opacity)) !important
-}
 .focus\:tw-shadow-none:focus {
     --tw-shadow: 0 0 #0000 !important;
     --tw-shadow-colored: 0 0 #0000 !important;
@@ -627,9 +603,6 @@
 }
 .focus\:tw-outline-0:focus {
     outline-width: 0px !important
-}
-.focus\:tw-outline-offset-0:focus {
-    outline-offset: 0px !important
 }
 .focus\:tw-ring:focus {
     --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color) !important;
@@ -679,29 +652,21 @@
         padding-left: 5rem !important;
         padding-right: 5rem !important
     }
+    .lg\:tw-text-2xl {
+        font-size: 1.5rem !important;
+        line-height: 2rem !important
+    }
     .lg\:tw-text-3xl {
         font-size: 1.875rem !important;
         line-height: 2.25rem !important
-    }
-    .lg\:tw-text-sm {
-        font-size: 0.875rem !important;
-        line-height: 1.25rem !important
     }
     .lg\:tw-text-4xl {
         font-size: 2.25rem !important;
         line-height: 2.5rem !important
     }
-    .lg\:tw-text-5xl {
-        font-size: 3rem !important;
-        line-height: 1 !important
-    }
-    .lg\:tw-text-2xl {
-        font-size: 1.5rem !important;
-        line-height: 2rem !important
-    }
-    .lg\:tw-text-xl {
-        font-size: 1.25rem !important;
-        line-height: 1.75rem !important
+    .lg\:tw-text-sm {
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important
     }
 }
 
