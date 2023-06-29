@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -26,9 +27,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Sector whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Sector whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cluster> $clusters
+ * @property-read int|null $clusters_count
+ * @property-read \App\Models\District $district
  * @mixin \Eloquent
  */
 class Sector extends Model
@@ -39,8 +40,14 @@ class Sector extends Model
     {
         return $this->hasMany(Cell::class);
     }
+
     public function district(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(District::class);
+    }
+
+    public function clusters(): BelongsToMany
+    {
+        return $this->belongsToMany(Cluster::class, 'cluster_sector');
     }
 }

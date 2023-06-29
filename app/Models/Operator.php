@@ -76,6 +76,15 @@ use Storage;
  * @property-read Collection<int, \App\Models\Request> $requests
  * @property-read int|null $requests_count
  * @method static Builder|Operator wherePrefix($value)
+ * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read Collection<int, \App\Models\Customer> $customers
+ * @property-read string $initials
+ * @property-read Collection<int, \App\Models\IssueReport> $issues
+ * @property-read int|null $issues_count
+ * @property-read Collection<int, \App\Models\OperationArea> $operationAreas
+ * @property-read Collection<int, \App\Models\Request> $requests
+ * @property-read Collection<int, \App\Models\Stock> $stocks
+ * @property-read Collection<int, \App\Models\User> $users
  * @mixin Eloquent
  */
 class Operator extends Model implements Auditable

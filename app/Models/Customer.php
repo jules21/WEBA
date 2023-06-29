@@ -75,6 +75,10 @@ use OwenIt\Auditing\Models\Audit;
  * @method static Builder|Customer whereOperatorId($value)
  * @property-read Collection<int, Audit> $audits
  * @property-read int|null $audits_count
+ * @property-read Collection<int, Audit> $audits
+ * @property-read Collection<int, \App\Models\MeterRequest> $connections
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
+ * @property-read Collection<int, \App\Models\Request> $requests
  * @mixin Eloquent
  */
 class Customer extends Model implements Auditable

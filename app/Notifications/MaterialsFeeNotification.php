@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Models\Request;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;

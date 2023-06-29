@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, ChartAccount> $children
  * @property-read \Illuminate\Database\Eloquent\Collection<int, ChartAccount> $children
  * @property-read \Illuminate\Database\Eloquent\Collection<int, ChartAccount> $children
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, ChartAccount> $children
  * @mixin \Eloquent
  */
 class ChartAccount extends Model

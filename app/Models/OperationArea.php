@@ -43,6 +43,20 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read int|null $bill_charges_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
+ * @property string|null $license_number
+ * @property string|null $valid_from
+ * @property string|null $valid_to
+ * @property string|null $status
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BillCharge> $billCharges
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ChartAccount> $chartOfAccounts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\IssueReport> $issues
+ * @property-read int|null $issues_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereLicenseNumber($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereValidFrom($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|OperationArea whereValidTo($value)
  * @mixin \Eloquent
  */
 class OperationArea extends Model implements Auditable

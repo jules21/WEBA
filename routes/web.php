@@ -28,6 +28,7 @@ use App\Http\Controllers\LedgerMigrationController;
 use App\Http\Controllers\MeterRequestController;
 use App\Http\Controllers\OperationAreaController;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\OperatorProfileController;
 use App\Http\Controllers\OperatorUserController;
 use App\Http\Controllers\PaymentServiceProviderAccountController;
 use App\Http\Controllers\PurchaseController;
@@ -41,6 +42,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\UrlController;
 use App\Http\Controllers\UserManualController;
+use App\Http\Controllers\WaterNetworkController;
 use App\Http\Livewire\CheckBills;
 use App\Http\Livewire\Client\IssuesReported;
 use App\Http\Livewire\Client\Payments;
@@ -59,7 +61,7 @@ Route::get('/set-language/{locale}', [HomeController::class, 'setLanguage'])->na
 Route::get('/get-operator-by-district', [HomeController::class, 'getOperatorsByDistrict'])->name('get-operators-by-district');
 Route::get('/check-bills', CheckBills::class)->name('check-bills');
 
-
+Route::get('/water-networks-by-district/{id}', [WaterNetworkController::class, 'getWaterNetworksByDistrict'])->name('get-water-networks-by-district');
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
 Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('villages');
 Route::get('/districts/{province}', [DistrictController::class, 'getByProvince'])->name('districts.province');
@@ -95,7 +97,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/export', [OperatorController::class, 'exportToExcel'])->name('export-to-excel');
 
-        Route::get('/profile', [\App\Http\Controllers\OperatorProfileController::class, 'index'])->name('profile');
+        Route::get('/profile', [OperatorProfileController::class, 'index'])->name('profile');
 
 
         //contract
@@ -382,6 +384,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/clusters', [ClusterController::class, 'index'])->name('clusters');
         Route::post('/cluster/store', [ClusterController::class, 'store'])->name('cluster.store');
+        Route::get('/cluster/{cluster}/show', [ClusterController::class, 'show'])->name('cluster.show');
         Route::delete('/cluster/{cluster}/delete', [ClusterController::class, 'destroy'])->name('cluster.delete');
 
 
