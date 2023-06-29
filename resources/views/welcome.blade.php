@@ -3,7 +3,6 @@
 @section('styles')
     <link rel="stylesheet" type="text/css" href="{{ asset('css/slick/slick.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/slick/slick-theme.css') }}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css" rel="stylesheet">
     <style>
         .slick-prev:before,
         .slick-next:before {
@@ -46,21 +45,8 @@
                                 </svg>
                             </a>
                         @else
-                            {{--                            <a href="{{route('client.login')}}"--}}
-                            {{--                               class="btn  bg-accent tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">--}}
-                            {{--                                {{__('app.login')}}--}}
-                            {{--                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-login"--}}
-                            {{--                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75"--}}
-                            {{--                                     stroke="currentColor"--}}
-                            {{--                                     fill="none" stroke-linecap="round" stroke-linejoin="round">--}}
-                            {{--                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
-                            {{--                                    <path--}}
-                            {{--                                        d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>--}}
-                            {{--                                    <path d="M20 12h-13l3 -3m0 6l-3 -3"></path>--}}
-                            {{--                                </svg>--}}
-                            {{--                            </a>--}}
                             <a href="{{route('client.register')}}"
-                               class="btn bg-accent text-white tw-rounded-sm py-2 px-4 hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
+                               class="btn tw-bg-accent text-white tw-rounded-sm py-2 px-4 hover:tw-bg-blue-50 hover:tw-text-primary hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary">
                                 {{__('app.register')}}
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-plus"
                                      width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75"
@@ -79,62 +65,65 @@
                 </div>
             </div>
             <div class="col-md-5 col-lg-5 col-xl-5 ">
-                <div class="card card-body py-5 tw-rounded-xl">
-                    <form method="post" id="myform" action="{{ route('client.login') }}" autocomplete="off">
-                        @csrf
-                        <h5 class="text-primary font-weight-bolder mb-3">{{__('auth.login_form')}}</h5>
-                        <p class="">
-                            {{__('auth.please_enter_your_login_details_to_access_your_account.')}}
-                        </p>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="control-label">{{__('auth.email_address')}}</label>
+                @guest('client')
+                    <div class="card card-body py-5 tw-rounded-xl">
+                        <form method="post" id="myform" action="{{ route('client.login') }}" autocomplete="off">
+                            @csrf
+                            <h5 class="text-primary font-weight-bolder mb-3">{{__('auth.login_form')}}</h5>
+                            <p class="">
+                                {{__('auth.please_enter_your_login_details_to_access_your_account.')}}
+                            </p>
 
-                            <div>
-                                <input id="email" type="email"
-                                       class="form-control tw-rounded-md {{ $errors->has('email') ? ' is-invalid' : '' }}"
-                                       name="email" value="{{ old('email') }}" autofocus>
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback">
+                            <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                <label for="email" class="control-label">{{__('auth.email_address')}}</label>
+
+                                <div>
+                                    <input id="email" type="email"
+                                           class="form-control tw-rounded-md {{ $errors->has('email') ? ' is-invalid' : '' }}"
+                                           name="email" value="{{ old('email') }}" autofocus>
+                                    @if ($errors->has('email'))
+                                        <span class="invalid-feedback">
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
-                                @endif
+                                    @endif
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="control-label">{{__('auth.password')}}</label>
-                            <div class="position-relative">
-                                <input id="password" type="password"
-                                       class="form-control tw-rounded-md {{ $errors->has('password') ? ' is-invalid' : '' }}"
-                                       name="password">
-                                <button type="button"
+                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                <label for="password" class="control-label">{{__('auth.password')}}</label>
+                                <div class="position-relative">
+                                    <input id="password" type="password"
+                                           class="form-control tw-rounded-md {{ $errors->has('password') ? ' is-invalid' : '' }}"
+                                           name="password">
+                                    <button type="button"
 
-                                        class="position-absolute  btn p-0 tw-top-1 shadow-none tw-right-4 "
-                                        onclick="showPassword()">
-                                    <i class="ti ti-eye tw-text-xl"
-                                       id="eye"></i>
-                                </button>
+                                            class="position-absolute  btn p-0 tw-top-1 shadow-none tw-right-4 "
+                                            onclick="showPassword()">
+                                        <i class="ti ti-eye tw-text-xl"
+                                           id="eye"></i>
+                                    </button>
 
-                                @if ($errors->has('password'))
-                                    <span class="invalid-feedback">
+                                    @if ($errors->has('password'))
+                                        <span class="invalid-feedback">
                                         <strong>{{ $errors->first('password') }}</strong>
                                     </span>
-                                @endif
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3 ">
-                            <a class="d-block" href="{{ url('/client/password/reset') }}">
-                                {{__('auth.forgot_your_password?')}}
-                            </a>
-                        </div>
-                        <div class="form-group d-flex flex-column flex-lg-row  align-items-center">
-                            <button type="submit" class="btn btn-primary w-100">
-                                {{__('auth.login')}}
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                            <div class="mb-3 ">
+                                <a class="d-block" href="{{ url('/client/password/reset') }}">
+                                    {{__('auth.forgot_your_password?')}}
+                                </a>
+                            </div>
+                            <div class="form-group d-flex flex-column flex-lg-row  align-items-center">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    {{__('auth.login')}}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                @endguest
 
             </div>
         </div>

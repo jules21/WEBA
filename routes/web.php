@@ -39,6 +39,7 @@ use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\RequestTechnicianController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
+use App\Http\Controllers\UrlController;
 use App\Http\Controllers\UserManualController;
 use App\Http\Livewire\CheckBills;
 use App\Http\Livewire\Client\IssuesReported;
@@ -48,6 +49,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 Route::get('/home', [ClientsController::class, 'home'])->name('home')->middleware('auth:client');
+Route::get('/go/{code}', [UrlController::class, 'redirect'])->name('url.redirect');
+Route::get('/{request}/view-materials', [HomeController::class, 'viewMaterials'])->name('requests.view-materials');
+
 
 Route::get('/help', [ClientsController::class, 'help'])->name('help');
 Route::get('/faq', [ClientsController::class, 'faq'])->name('faq');
@@ -138,6 +142,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::delete('/{request}/item/{id}/delete', [RequestReviewController::class, 'deleteRequestItem'])->name('delete-request-item');
         Route::post('/{req}/add-water-network', [RequestReviewController::class, 'addWaterNetwork'])->name('add-water-network');
         Route::post('/{request}/reviews/save', [RequestReviewController::class, 'saveReview'])->name('reviews.save');
+        Route::post('/{request}/road-cross-types/update', [RequestReviewController::class, 'saveRoadCrossTypes'])->name('road-cross-types.update');
 
         Route::post('/{request}/technician/save', [RequestTechnicianController::class, 'store'])->name('technician.save');
         Route::delete('/technician/{id}/delete', [RequestTechnicianController::class, 'destroy'])->name('technician.delete');

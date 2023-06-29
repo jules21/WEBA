@@ -6,6 +6,7 @@ use App\Constants\Status;
 use App\Models\Customer;
 use App\Models\MeterRequest;
 use App\Models\Operator;
+use App\Models\PaymentType;
 use App\Models\Request;
 use App\Models\WaterNetwork;
 
@@ -48,6 +49,19 @@ class HomeController extends Controller
             })
             ->get();
         return response()->json($operators);
+    }
+
+    public function viewMaterials(Request $request)
+    {
+        $request->load('items.item');
+        $payDec = $request->paymentDeclarations()
+            ->whereHas('paymentConfig.paymentType', function ($query) {
+                $query->where('id', '=', PaymentType::MATERIALS_FEE);
+            })->first();
+        return view('client.view_materials', [
+            'request' => $request,
+            'payDec' => $payDec
+        ]);
     }
 
 

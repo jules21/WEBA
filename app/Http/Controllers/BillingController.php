@@ -216,7 +216,15 @@ class BillingController extends Controller
 
     public function changeLastIndex(Request $request, Billing $billing)
     {
-        $billing->last_index = $request->current_index;
+        $networkType =$billing->meterRequest->request->waterNetwork->waterNetworkType ?? null;
+        if ($networkType == null) {
+            return redirect()->back()->with('error', 'Unable to change last index');
+            info('Unable to change last index, network type not found');
+        }
+        $price = $networkType->unit_price;
+        $used = $request->input('current_index') - $billing->starting_index;
+        $billing->last_index = $request->input('current_index');
+        $billing->amount = $price * $used;
         $billing->save();
         //TODO: update fees too
 

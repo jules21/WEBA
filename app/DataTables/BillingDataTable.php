@@ -53,7 +53,7 @@ class BillingDataTable extends DataTable
                 return '<span class="label label-sm label-light-primary label-inline">'.$model->starting_index.'</span>'.' '.'to'.' '.'<span class="label label-sm label-light-primary label-inline py-0">'.$model->last_index.'</span>';
             })
             ->addColumn('action', function ($model) {
-                $change_indexes_btn = auth()->user()->can('Change Meter indexes') ?  '
+                $change_indexes_btn = (auth()->user()->operator_id !=null && auth()->user()->can('Change Meter indexes')) ?  '
                                 <a class="dropdown-item btn-change-index" data-toggle="modal" data-target="#change-indexes-modal" href="#"
                                 data-id="'.$model->id.'"
                                 data-starting-index="'.$model->starting_index.'"

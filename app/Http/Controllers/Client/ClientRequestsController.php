@@ -13,6 +13,7 @@ use App\Models\Request as AppRequest;
 use App\Models\RequestType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class ClientRequestsController extends Controller
 {
@@ -31,7 +32,7 @@ class ClientRequestsController extends Controller
         $requestTypes = $this->getRequestsTypes();
         $waterUsage = $this->getWaterUsages();
         $roadTypes = $this->getRoadTypes();
-        $roadCrossTypes = $this->getRoadCrossTypes();
+
         $action = route('client.request-new-connection', encryptId($operator->id)) . '?op_id=' . encryptId($operationArea->id);
         return view('client.new_connections', [
             'operator' => $operator,
@@ -39,7 +40,6 @@ class ClientRequestsController extends Controller
             'requestTypes' => $requestTypes,
             'waterUsage' => $waterUsage,
             'roadTypes' => $roadTypes,
-            'roadCrossTypes' => $roadCrossTypes,
             'operationArea' => $operationArea,
             'action' => $action
         ]);
@@ -47,7 +47,7 @@ class ClientRequestsController extends Controller
 
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function requestNewConnection(ValidateNewConnectionRequest $connectionRequest, Operator $operator)
     {
@@ -175,7 +175,7 @@ class ClientRequestsController extends Controller
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function update(ValidateNewConnectionRequest $request, AppRequest $appRequest)
     {

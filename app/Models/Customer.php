@@ -6,13 +6,17 @@ use App\Traits\HasAddress;
 use Database\Factories\CustomerFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use OwenIt\Auditing\Contracts\Auditable;
+use OwenIt\Auditing\Models\Audit;
 
 /**
  * App\Models\Customer
@@ -51,25 +55,25 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @method static Builder|Customer whereSectorId($value)
  * @method static Builder|Customer whereUpdatedAt($value)
  * @method static Builder|Customer whereVillageId($value)
- * @property-read \App\Models\Cell|null $cell
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\MeterRequest> $connections
+ * @property-read Cell|null $cell
+ * @property-read Collection<int, MeterRequest> $connections
  * @property-read int|null $connections_count
- * @property-read \App\Models\District|null $district
+ * @property-read District|null $district
  * @property-read string $address
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Operator> $operators
+ * @property-read Collection<int, Operator> $operators
  * @property-read int|null $operators_count
- * @property-read \App\Models\Province|null $province
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Request> $requests
+ * @property-read Province|null $province
+ * @property-read Collection<int, Request> $requests
  * @property-read int|null $requests_count
- * @property-read \App\Models\Sector|null $sector
- * @property-read \App\Models\Village|null $village
+ * @property-read Sector|null $sector
+ * @property-read Village|null $village
  * @property int|null $operator_id
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
- * @property-read \App\Models\OperationArea $operationArea
- * @property-read \App\Models\Operator|null $operator
+ * @property-read OperationArea $operationArea
+ * @property-read Operator|null $operator
  * @method static Builder|Customer whereOperatorId($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read Collection<int, Audit> $audits
  * @property-read int|null $audits_count
  * @mixin Eloquent
  */

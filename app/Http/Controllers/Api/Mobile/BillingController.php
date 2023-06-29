@@ -10,7 +10,7 @@ use App\Models\Billing;
 use App\Models\MeterRequest;
 use App\Models\Payment;
 use App\Models\WaterNetworkType;
-use App\Notifications\PaymentNotification;
+use App\Notifications\SmsMailNotification;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
 
@@ -113,7 +113,7 @@ class BillingController extends Controller
             $bill->save();
             $bill->load('meterRequest.request.customer');
             $message = 'Dear ' . $meterRequest->request->customer->name . ', Your bill for the month of ' . date('F') . ' is ' . $bill->amount . ' RWF. Please pay before ' . date('d-m-Y', strtotime('+30 days')) . ' to avoid disconnection. Thank you.';
-            $meterRequest->request->customer->notify(new PaymentNotification($message));
+            $meterRequest->request->customer->notify(new SmsMailNotification($message));
 
             //if meter request balance is greater than 0,make payment of the bill
             if ($meterRequest->balance > 0) {
