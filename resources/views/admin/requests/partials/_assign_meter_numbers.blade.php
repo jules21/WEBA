@@ -101,7 +101,7 @@
                     <input type="hidden" value="0" name="id" id="meter_id"/>
                     <div class="form-group">
                         <label for="category_id">
-                            Meter Category
+                            Meter Category <x-required-sign/>
                         </label>
                         <select name="item_category_id" id="category_id" class="form-control  select2"
                                 style="width: 100%!important;">
@@ -114,7 +114,7 @@
 
                     <div class="form-group">
                         <label for="item_meter_id">
-                            Meter
+                            Meter <x-required-sign/>
                         </label>
                         <select name="item_id" id="item_meter_id" class="form-control select2"
                                 style="width: 100%!important;">
@@ -124,12 +124,12 @@
 
 
                     <div class="form-group">
-                        <label for="meter_number">Meter Number</label>
+                        <label for="meter_number">Meter Number <x-required-sign/></label>
                         <input type="text" name="meter_number" id="meter_number" class="form-control"/>
                     </div>
 
                     <div class="form-group">
-                        <label for="last_index">Last Index</label>
+                        <label for="last_index">Last Index <x-required-sign/></label>
                         <input type="number" step="0.1" name="last_index" id="last_index" class="form-control"/>
                     </div>
 

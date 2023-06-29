@@ -436,7 +436,7 @@
                     <input type="hidden" name="id" value="0" id="materialId"/>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="item_id">Item</label>
+                            <label for="item_id">Item <x-required-sign/></label>
                             <select name="item_id" id="item_id" class="form-control select2"
                                     style="width: 100% !important;">
                                 <option value="">Select Item</option>
@@ -447,7 +447,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="quantity">Quantity</label>
+                            <label for="quantity">Quantity <x-required-sign/></label>
                             <input type="number" name="quantity" id="quantity" class="form-control"/>
                         </div>
                         {{--      <div class="form-group">
@@ -515,6 +515,16 @@
 
         let isSubmitting = false;
         $(document).ready(function () {
+
+            // radio with name new_connection_crosses_road
+            $('input[name="new_connection_crosses_road"]').on('change', function (e) {
+                if ($(this).val() === '1') {
+                    $('#roadTypeContainer').slideDown();
+                } else {
+                    $('#roadTypeContainer').slideUp();
+                }
+            });
+
 
             let $saveMeterForm = $('#saveMeterForm');
             $saveMeterForm.validate();

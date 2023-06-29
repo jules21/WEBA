@@ -160,7 +160,7 @@
                     <div class="modal-body">
 
                         <div class="form-group">
-                            <label for="ledger_group">Ledger Group</label>
+                            <label for="ledger_group">Ledger Group <x-required-sign/></label>
                             <select name="ledger_group" id="ledger_group"
                                     class="form-control">
                                 <option value="">Select Ledger</option>
@@ -174,7 +174,7 @@
 
                         <div class="form-group">
                             <label for="ledger_category">
-                                Ledger Category
+                                Ledger Category <x-required-sign/>
                             </label>
                             <select name="ledger_category" id="ledger_category"
                                     class="form-control">
@@ -184,20 +184,20 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="ledger_id">Ledger No</label>
+                            <label for="ledger_id">Ledger No <x-required-sign/></label>
                             <select name="ledger_id" id="ledger_no"
                                     class="form-control">
                                 <option value="">Select Ledger</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="amount">Amount</label>
+                            <label for="amount">Amount <x-required-sign/></label>
                             <input type="number" name="amount" class="form-control" id="amount"/>
                         </div>
 
                         <div class="form-group">
                             <label for="balance_type">
-                                Balance Type
+                                Balance Type <x-required-sign/>
                             </label>
                             <select class="form-control" name="balance_type" id="balance_type">
                                 <option value="">

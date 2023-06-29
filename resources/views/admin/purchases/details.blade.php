@@ -184,7 +184,7 @@
                                   method="post" id="formSaveReview">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="status">Status:</label>
+                                    <label for="status">Status: <x-required-sign/></label>
                                     <select name="status" id="status" class="form-control">
                                         <option value="">Mark Purchase As</option>
                                         @foreach($purchase->getApprovalStatuses() as $item)
@@ -202,7 +202,7 @@
                                 </div>
 
                                 <div class=" form-group">
-                                    <label for="comment">Description:</label>
+                                    <label for="comment">Description: <x-required-sign/></label>
                                     <textarea name="comment" id="comment" rows="5"
                                               class="form-control"></textarea>
                                 </div>

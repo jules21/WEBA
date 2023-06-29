@@ -83,8 +83,6 @@ class ClientRequestsController extends Controller
             'cell_id' => $data['cell_id'],
             'village_id' => $data['village_id'],
             'description' => $data['description'],
-            'new_connection_crosses_road' => $data['new_connection_crosses_road'],
-            'road_type' => $data['new_connection_crosses_road'] == 0 ? null : $data['road_type'],
             'digging_pipeline' => $data['digging_pipeline'],
             'equipment_payment' => $data['equipment_payment'],
             'customer_initiated' => true,

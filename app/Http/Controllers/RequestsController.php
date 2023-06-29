@@ -303,6 +303,7 @@ class RequestsController extends Controller
             ])
             ->get();
         $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, RequestType::NEW_CONNECTION);
+        $roadTypes = $this->getRoadTypes();
         return view('admin.requests.show', [
             'request' => $request,
             'reviews' => $reviews,
@@ -314,6 +315,7 @@ class RequestsController extends Controller
             'paymentConfig' => $paymentConfig,
             'roadCrossTypes' => $this->getRoadCrossTypes(),
             'selected_road_cross_types' => $request->pipeCrosses->pluck('road_cross_type_id')->toArray(),
+            'roadTypes' => $roadTypes,
         ]);
     }
 
