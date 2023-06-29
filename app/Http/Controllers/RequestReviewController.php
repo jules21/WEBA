@@ -285,14 +285,24 @@ class RequestReviewController extends Controller
     public function saveRoadCrossTypes(Request $connectionRequest, AppRequest $request)
     {
         $rules = [
-            'road_cross_types' => ['required', 'array']
+            'road_cross_types' => ['required', 'array'],
+            'new_connection_crosses_road' => ['required', 'string'],
+            'road_type' => ['required_if:new_connection_crosses_road,1']
         ];
         $messages = [
             'road_cross_types.required' => 'Please select at least one road cross type',
+            'new_connection_crosses_road.required' => 'Please select if the new connection crosses the road',
+            'road_type.required_if' => 'Please select the road type',
         ];
         $connectionRequest->validate($rules, $messages);
 
         DB::beginTransaction();
+
+        $request->update([
+            'new_connection_crosses_road' => $connectionRequest->input('new_connection_crosses_road'),
+            'road_type' => $connectionRequest->input('road_type'),
+        ]);
+
         $request->pipeCrosses()->delete();
         $road_cross_types = $connectionRequest->input('road_cross_types', []);
         foreach ($road_cross_types as $road_cross_type) {

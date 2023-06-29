@@ -147,57 +147,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <label for="cross_road">@lang('app.new_connection_will_cross_the_road') ?
-                        <x-required-sign/>
-                    </label>
-                    <div class="form-group">
-                        <div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input
-                                    {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'checked' : '' }} type="radio"
-                                    id="new_connection_crosses_road1" value="1" name="new_connection_crosses_road"
-                                    required
-                                    class="custom-control-input">
-                                <label class="custom-control-label" for="new_connection_crosses_road1">
-                                    @lang('app.yes')
-                                </label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input
-                                    {{ isset($request) && $request->new_connection_crosses_road == 0 ? 'checked' : '' }} type="radio"
-                                    id="new_connection_crosses_road2" value="0" name="new_connection_crosses_road"
-                                    required
-                                    class="custom-control-input">
-                                <label class="custom-control-label"
-                                       for="new_connection_crosses_road2">@lang('app.no')</label>
-                            </div>
-                        </div>
-                        <label id="new_connection_crosses_road-error" class="error"
-                               for="new_connection_crosses_road"></label>
-
-                    </div>
-
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group" id="roadTypeContainer"
-                         style="display: {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'block' : 'none' }}">
-                        <label for="road_type">@lang('app.road_type')
-                            <x-required-sign/>
-                        </label>
-                        <select name="road_type" id="road_type" class="form-control" required>
-                            <option value="">@lang('app.select_road_type')</option>
-                            @foreach($roadTypes as $roadType)
-                                <option
-                                    {{ isset($request) && $request->road_type == $roadType ? 'selected' : '' }}
-                                    value="{{ $roadType }}">{{ $roadType }}</option>
-                            @endforeach
-                        </select>
-
-                    </div>
-                </div>
-            </div>
 
             <div class="row">
 

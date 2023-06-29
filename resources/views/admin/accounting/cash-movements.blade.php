@@ -97,16 +97,16 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="date">Date</label>
-                                    <input type="date" name="date" value="{{ now()->toDateString() }}"
-                                           class="form-control"
+                                    <label for="date">Date <x-required-sign/></label>
+                                    <input type="text" name="date" value="{{ now()->toDateString() }}"
+                                           class="form-control datepicker w-100"
                                            id="date"/>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="transaction_type">Transaction Type</label>
+                                    <label for="transaction_type">Transaction Type <x-required-sign/></label>
                                     <select name="transaction_type" id="transaction_type" class="form-control">
                                         <option value="">Select Type</option>
                                         @foreach(\App\Constants\TransactionType::getTypes() as $key => $value)
@@ -120,7 +120,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="psp_id">Bank</label>
+                                    <label for="psp_id">Bank <x-required-sign/></label>
                                     <select name="psp_id" id="psp_id"
                                             class="form-control">
                                         <option value="">Select Bank</option>
@@ -133,7 +133,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="psp_account_id">Bank Account</label>
+                                    <label for="psp_account_id">Bank Account <x-required-sign/></label>
                                     <select name="psp_account_id" id="psp_account_id" class="form-control">
                                         <option value="">Select Bank Account</option>
                                     </select>
@@ -145,20 +145,20 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="amount">Amount</label>
+                                    <label for="amount">Amount <x-required-sign/></label>
                                     <input type="number" name="amount" class="form-control" id="amount"/>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="reference_no">Reference No</label>
+                                    <label for="reference_no">Reference No <x-required-sign/></label>
                                     <input type="text" name="reference_no" class="form-control" id="reference_no"/>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="description">Description</label>
+                            <label for="description">Description <x-required-sign/></label>
                             <textarea name="description" id="description" class="form-control"></textarea>
                         </div>
 

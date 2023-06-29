@@ -8,7 +8,7 @@
                         method="post" id="formSaveReview">
                     @csrf
                     <div class="form-group row">
-                        <label for="status" class="col-md-3 col-form-label">Status:</label>
+                        <label for="status" class="col-md-3 col-form-label">Status: <x-required-sign/></label>
                         <div class="col-md-9">
                             <select name="status" id="status" class="form-control">
                                 <option value="">Select Status</option>
@@ -19,7 +19,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="comment" class="col-md-3 col-form-label">Comment:</label>
+                        <label for="comment" class="col-md-3 col-form-label">Comment: <x-required-sign/></label>
                         <div class="col-md-9">
                                                 <textarea class="form-control" name="comment" id="comment" cols="30"
                                                           rows="5"></textarea>
