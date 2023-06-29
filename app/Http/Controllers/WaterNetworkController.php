@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Exports\WaterNetworksExport;
 use App\Http\Requests\StoreWaterNetworkRequest;
 use App\Http\Requests\UpdateWaterNetworkRequest;
+use App\Models\District;
 use App\Models\OperationArea;
 use App\Models\Operator;
+use App\Models\User;
 use App\Models\WaterNetwork;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -80,8 +82,15 @@ class WaterNetworkController extends Controller
                 $builder->where('id', '=', auth()->user()->operation_area);
             })
             ->get();
+
+        $districts = District::query()
+            ->when(auth()->user()->district_id, function (Builder $builder) {
+                $builder->where('id', auth()->user()->district_id);
+            })
+            ->get();
+
         $operationArea = OperationArea::query()->find(decryptId(request('area', 0)));
-        return view('admin.settings.water_networks', compact('waterNetworks', 'operators', 'operationAreas', 'Areas', 'operationArea'));
+        return view('admin.settings.water_networks', compact('waterNetworks', 'operators', 'operationAreas', 'Areas', 'operationArea', 'districts'));
     }
 
 
@@ -97,13 +106,14 @@ class WaterNetworkController extends Controller
         $waterNetwork->distance_covered = $request->distance_covered;
         $waterNetwork->population_covered = $request->population_covered;
         $waterNetwork->water_network_type_id = $request->water_network_type_id;
-        $waterNetwork->operation_area_id = $request->operation_area_id;
         $waterNetwork->water_network_status_id = $request->water_network_status_id;
-        if (auth()->user()->is_super_admin == 'true') {
-            $waterNetwork->operator_id = $request->operator_id;
-        } else {
-            $waterNetwork->operator_id = auth()->user()->operator_id;
-        }
+        $waterNetwork->district_id = $request->district_id;
+//        $waterNetwork->operation_area_id = $request->operation_area_id;
+//        if (auth()->user()->is_super_admin == 'true') {
+//            $waterNetwork->operator_id = $request->operator_id;
+//        } else {
+//            $waterNetwork->operator_id = auth()->user()->operator_id;
+//        }
 //        return $waterNetwork;
         $waterNetwork->save();
 
@@ -142,13 +152,14 @@ class WaterNetworkController extends Controller
         $waterNetwork->distance_covered = $request->distance_covered;
         $waterNetwork->population_covered = $request->population_covered;
         $waterNetwork->water_network_type_id = $request->water_network_type_id;
-        $waterNetwork->operation_area_id = $request->operation_area_id;
         $waterNetwork->water_network_status_id = $request->water_network_status_id;
-        if (auth()->user()->is_super_admin == 'true') {
-            $waterNetwork->operator_id = $request->operator_id;
-        } else {
-            $waterNetwork->operator_id = auth()->user()->operator_id;
-        }
+        $waterNetwork->district_id = $request->district_id;
+//        $waterNetwork->operation_area_id = $request->operation_area_id;
+//        if (auth()->user()->is_super_admin == 'true') {
+//            $waterNetwork->operator_id = $request->operator_id;
+//        } else {
+//            $waterNetwork->operator_id = auth()->user()->operator_id;
+//        }
 //        return $waterNetwork;
         $waterNetwork->save();
 

@@ -157,15 +157,16 @@
                     <thead>
                     <tr>
                         <th>#</th>
+                        <th>District</th>
                         <th>Name</th>
                         <th>Distance Covered</th>
                         <th>Population Covered</th>
                         <th>Water Network Type</th>
                         <th>Water Network Status</th>
-                        @if(auth()->user()->is_super_admin)
-                            <th>Operator</th>
-                            <th>Operation Area</th>
-                        @endif
+{{--                        @if(auth()->user()->is_super_admin)--}}
+{{--                            <th>Operator</th>--}}
+{{--                            <th>Operation Area</th>--}}
+{{--                        @endif--}}
 
                         <th>Action</th>
                     </tr>
@@ -175,15 +176,16 @@
                     @foreach($waterNetworks as $key=>$waterNetwork)
                         <tr>
                             <td>{{++$key}}</td>
+                            <td>{{$waterNetwork->district->name ?? ''}}</td>
                             <td>{{$waterNetwork->name}}</td>
                             <td>{{$waterNetwork->distance_covered}}</td>
                             <td>{{$waterNetwork->population_covered}}</td>
                             <td>{{$waterNetwork->waterNetworkType->name?? ''}}</td>
                             <td>{{$waterNetwork->waterNetworkStatus->name?? ''}}</td>
-                            @if(auth()->user()->is_super_admin)
-                                <td>{{$waterNetwork->operator->name?? ''}}</td>
-                                <td>{{$waterNetwork->operationArea->name?? ''}}</td>
-                            @endif
+{{--                            @if(auth()->user()->is_super_admin)--}}
+{{--                                <td>{{$waterNetwork->operator->name?? ''}}</td>--}}
+{{--                                <td>{{$waterNetwork->operationArea->name?? ''}}</td>--}}
+{{--                            @endif--}}
 
                             <td>
                                 <div class="dropdown">
@@ -197,10 +199,11 @@
                                            data-name="{{$waterNetwork->name}}"
                                            data-distance="{{$waterNetwork->distance_covered}}"
                                            data-population="{{$waterNetwork->population_covered}}"
-                                           data-operator="{{$waterNetwork->operator_id}}"
                                            data-network="{{$waterNetwork->water_network_type_id}}"
-                                           data-area="{{$waterNetwork->operation_area_id}}"
                                            data-status="{{$waterNetwork->water_network_status_id}}"
+                                           data-district="{{$waterNetwork->district_id}}"
+{{--                                           data-operator="{{$waterNetwork->operator_id}}"--}}
+{{--                                           data-area="{{$waterNetwork->operation_area_id}}"--}}
                                            class="dropdown-item js-edit">Edit</a>
                                         <a href="{{route('admin.water.network.delete',$waterNetwork->id)}}"
                                            class="dropdown-item js-delete">Delete</a>
@@ -278,48 +281,14 @@
                             </div>
                         </div>
 
-                        @if(auth()->user()->operator_id == null)
-                            <div class="form-group">
-                                <label>Operator</label>
-                                <select name="operator_id" class="form-control select2" style="width: 100% !important;">
-                                    <option value="">Select Operator</option>
-                                    @foreach($operators as $operator)
-                                        <option value="{{$operator->id}}">{{$operator->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @else
-                            <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
-                        @endif
-
-                        @if(auth()->user()->operator_id == null)
-                            <div class="form-group">
-                                <label for="name">Operation Area</label>
-                                <select type="text" name="operation_area_id" id="operation_area_id"
-                                        class="form-control">
-                                    <option value="">Please Select Operation Area</option>
-                                </select>
-                            </div>
-                        @else
-                            <div class="form-group">
-                                <label for="name">Operation Area</label>
-                                <select type="text" name="operation_area_id" id="operation_area_id"
-                                        class="form-control">
-                                    <option value="">Please Select Operation Area</option>
-                                    @foreach($Areas as $area)
-                                        <option value="{{$area->id}}">{{$area->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @endif
-
-                        <div class="row">
-                            <div class="col-md-6">
-
-                            </div>
-                            <div class="col-md-6">
-
-                            </div>
+                        <div class="form-group">
+                            <label>District</label>
+                            <select name="district_id" class="form-control select2" style="width: 100% !important;">
+                                <option value="">Select district</option>
+                                @foreach($districts as $district)
+                                    <option value="{{$district->id}}">{{$district->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                     </div>
@@ -399,41 +368,15 @@
                             </div>
                         </div>
 
-                        @if(auth()->user()->operator_id == null)
-                            <div class="form-group">
-                                <label>Operator</label>
-                                <select name="operator_id" class="form-control select2" id="edit_operator_id"
-                                        style="width: 100% !important;">
-                                    <option value="">Select Operator</option>
-                                    @foreach($operators as $operator)
-                                        <option value="{{$operator->id}}">{{$operator->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @else
-                            <input type="hidden" name="operator_id" value="{{auth()->user()->operator_id}}">
-                        @endif
-
-                        @if(auth()->user()->operator_id == null)
-                            <div class="form-group">
-                                <label for="name">Operation Area</label>
-                                <select type="text" name="operation_area_id" id="edit_operation_area_id"
-                                        class="form-control">
-                                    <option value="">Please Select Operation Area</option>
-                                </select>
-                            </div>
-                        @else
-                            <div class="form-group">
-                                <label for="name">Operation Area</label>
-                                <select type="text" name="operation_area_id" id="edit_operation_area_id"
-                                        class="form-control">
-                                    <option value="">Please Select Operation Area</option>
-                                    @foreach($Areas as $area)
-                                        <option value="{{$area->id}}">{{$area->name}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @endif
+                        <div class="form-group">
+                            <label>District</label>
+                            <select name="district_id" id="edit_district_id" class="form-control select2" style="width: 100% !important;">
+                                <option value="">Select district</option>
+                                @foreach($districts as $district)
+                                    <option value="{{$district->id}}">{{$district->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
                     </div>
                     <div class="modal-footer">
@@ -468,15 +411,14 @@
         $(document).on('click', '.js-edit', function (e) {
             e.preventDefault();
             $("#modalUpdate").modal('show');
-            console.log($(this).data('name'));
+            console.log($(this).data('district'));
             var url = $(this).data('url');
             $("#WaterNetworkId").val($(this).data('id'));
             $("#edit_name").val($(this).data('name'));
             $("#edit_distance_covered").val($(this).data('distance'));
             $("#edit_population_covered").val($(this).data('population'));
-            $("#edit_operator_id").val($(this).data('operator'));
             $("#edit_water_network_type_id").val($(this).data('network'));
-            $("#edit_operation_area_id").val($(this).data('area'));
+            $("#edit_district_id").val($(this).data('district'));
             $("#edit_water_network_status_id").val($(this).data('status'));
             $('#submissionFormEdit').attr('action', url);
         });
