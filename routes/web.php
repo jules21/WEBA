@@ -102,8 +102,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/contracts/download/{id}', [App\Http\Controllers\ContractController::class, 'download'])->name('contracts.download');
 
         //grace periods
-        Route::get('/grace-periods/{operation_area_id}', [App\Http\Controllers\GracePeriodController::class, 'index'])->name('grace.periods.index');
-        Route::post('/grace-period/store/{operation_area_id}', [App\Http\Controllers\GracePeriodController::class, 'store'])->name('grace.period.store');
+        Route::get('/grace-periods', [App\Http\Controllers\GracePeriodController::class, 'index'])->name('grace.periods.index');
+        Route::post('/grace-period/store', [App\Http\Controllers\GracePeriodController::class, 'store'])->name('grace.period.store');
         Route::post('/grace-period/edit', [App\Http\Controllers\GracePeriodController::class, 'update'])->name('grace.period.edit');
         Route::get('/grace-period/delete/{id}', [App\Http\Controllers\GracePeriodController::class, 'destroy'])->name('grace.period.delete');
 

@@ -13,18 +13,27 @@ class GracePeriodUpdate extends Mailable
 
     public $days;
     public $validTo;
-    public $contactPerson;
+    public $contactPersonName;
+    public $contactPersonEmail;
+    public $fromDate;
 
+    public $type;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct( $days,$validTo,$contactPerson)
+
+
+    public function __construct( $days,$fromDate,$validTo,$contactPersonEmail, $contactPersonName, $type)
     {
         $this->days=$days;
-        $this->validTo=$validTo;
-        $this->validTo=$contactPerson;
+        $this->fromDate=$fromDate;
+        $this->validTo=$validTo->format('Y-m-d');
+        $this->contactPersonName=$contactPersonName;
+        $this->contactPersonEmail=$contactPersonEmail;
+        $this->type = $type;
+//        dd($days);
     }
 
     /**
@@ -37,6 +46,6 @@ class GracePeriodUpdate extends Mailable
 
         return $this
             ->subject('Grace Period and Validity Update')
-            ->view('admin.area-of-operation.grace_periods.email.index');
+            ->markdown('admin.area-of-operation.grace_periods.email.index');
     }
 }

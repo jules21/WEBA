@@ -117,8 +117,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="name">Attachment</label>
-                            <input type="file" id="attachment" name="attachment" class="form-control" required/>
+                            <label for="name">Contact</label>
+                            <div class="custom-file">
+                                <input type="file" id="attachment" name="attachment" class="custom-file-input" required/>
+                                <label class="custom-file-label">Contact</label>
+                            </div>
                         </div>
 
                     </div>
@@ -171,8 +174,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="name">Attachment</label>
-                            <input type="file" id="edit_attachment" name="attachment" class="form-control" required/>
+                            <label for="">Contract</label>
+                            <div class="custom-file">
+                                <label for="name" class="custom-file-label">Contract</label>
+                                <input type="file" id="edit_attachment" name="attachment" class="custom-file-input" required/>
+                            </div>
                         </div>
 
                         <div class="form-group">
