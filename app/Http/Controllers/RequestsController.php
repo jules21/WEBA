@@ -288,9 +288,11 @@ class RequestsController extends Controller
             ->whereHas('stock', fn(Builder $query) => $query->where('quantity', '>', 0))
             ->orderBy('name')
             ->get();
-
+        $districts = OperationArea::query()
+            ->where('operator_id', '=', auth()->user()->operator_id)
+            ->pluck('district_id');
         $waterNetworks = WaterNetwork::query()
-            ->where('operation_area_id', '=', auth()->user()->operation_area)
+            ->whereIn('district_id', $districts)
             ->get();
 
         $itemCategories = ItemCategory::query()
