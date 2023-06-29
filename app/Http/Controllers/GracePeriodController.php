@@ -8,6 +8,8 @@ use App\Models\GracePeriod;
 use App\Http\Requests\StoreGracePeriodRequest;
 use App\Http\Requests\UpdateGracePeriodRequest;
 use App\Models\OperationArea;
+use Carbon\Carbon;
+use PHPUnit\Exception;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Utilities\Request;
 
@@ -18,17 +20,22 @@ class GracePeriodController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function index(Request $request,$operation_area_id)
+    public function index(Request $request)
     {
 
         $gracePeriods = GracePeriod::query()
-            ->where('operation_area_id',$operation_area_id)
+            ->when($request->operation_area_id, function ($builder) use ($request){
+                    $builder->where('operation_area_id',decryptId($request->operation_area_id));
+            })
+            ->when($request->contract_id, function ($builder) use ($request){
+                $builder->where('contract_id',decryptId($request->contract_id));
+            })
+
             ->orderBy('id','desc')->select('grace_periods.*');
-        $operationArea = OperationArea::find($operation_area_id);
         if ($request->ajax()){
             return $this->formatDataTable($gracePeriods);
         }
-        return view('admin.area-of-operation.grace_periods.index',compact('operationArea'));
+        return view('admin.area-of-operation.grace_periods.index');
     }
 
     protected function formatDataTable($data)
@@ -58,10 +65,10 @@ class GracePeriodController extends Controller
 
 
             ->addColumn('action', function ($item) {
-                return view('admin.operator.contract.contract_action', compact('item'));
+                return view('admin.area-of-operation.grace_periods.grace_period_action', compact('item'));
             })
 
-            ->rawColumns(['created_at','days','status','action'])
+            ->rawColumns(['created_at','days','status'])
             ->make(true);
     }
 
@@ -81,25 +88,46 @@ class GracePeriodController extends Controller
      * @param  \App\Http\Requests\StoreGracePeriodRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(StoreGracePeriodRequest $request,$operation_area_id)
+    public function store(StoreGracePeriodRequest $request)
     {
+        $grace_period = new GracePeriod();
+        $grace_period->operation_area_id=$request->input('operation_area_id') !=null ? decryptId($request->operation_area_id): null;
+        $grace_period->contract_id=$request->input('contract_id') !=null ? decryptId($request->contract_id): null;
+        $grace_period->days=$request->days;
+        $grace_period->status='active';
 
-        $operationArea = OperationArea::find($operation_area_id);
+        //if its on operation area
+        if ($request->input('operation_area_id') !=null){
+            $operationArea= OperationArea::find(decryptId($request->input('operation_area_id')));
+            $fromDate = $operationArea->valid_to;
+            $validTo = Carbon::parse($fromDate)->addDay($request->input('days'));
+            $contactPersonName = $operationArea->contact_person_name;
+            $contactPersonEmail = $operationArea->contact_person_email;
+            $type = optional($operationArea->district)->name;
+            GracePeriod::query()->whereNull('contract_id')->update(['status' => 'inactive']);
+        }
+        //if its on contract
+        if ($request->input('contract_id') !=null){
+            $contract= Contract::find(decryptId($request->input('contract_id')));
+            $fromDate = $contract->start_date;
+            $validTo = $contract->expire_date ==null
+                ? Carbon::parse($fromDate)->addDay($request->input('days'))
+                : Carbon::parse($contract->expire_date)->addDay($request->input('days'));
+            $contactPersonName = optional($contract->operationArea)->contact_person_name;
+            $contactPersonEmail = optional($contract->operationArea)->contact_person_email;
+            $contract->update(['expire_date' =>$validTo]);
+            $type = "Contract";
+            GracePeriod::query()->whereNull('operation_area_id')->update(['status' => 'inactive']);
+          // dd($request->all(), $contract, $grace_period);
+        }
+        $grace_period->save();
 
-        $contract = new GracePeriod();
-        $contract->operation_area_id=$operationArea->id;
-        $contract->days=$request->days;
-        $contract->status=$request->status;
-
-        // Retrieve contact person and valid_to from OperationArea
-//        $OperationArea = OperationArea::query()->where('id',$operationArea)->get();
-        $validTo = $operationArea->valid_to;
-        $contactPerson = $operationArea->contact_person_email;
+         // return new GracePeriodUpdate($request->input('days'), $fromDate,$validTo,$contactPersonEmail,$contactPersonName);
 
         // Queue the email sending
-        \Mail::to($contactPerson)->queue(new GracePeriodUpdate($request->input('days'),$validTo,$contactPerson));
+        \Mail::to($contactPersonEmail)->queue(new GracePeriodUpdate($request->input('days'), $fromDate,$validTo,$contactPersonEmail,$contactPersonName, $type));
 
-        $contract->save();
+
         return redirect()->back()->with('success','Grace Period Store Successfully');
     }
 
@@ -141,10 +169,17 @@ class GracePeriodController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\GracePeriod  $gracePeriod
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(GracePeriod $gracePeriod)
+    public function destroy(GracePeriod $gracePeriod,$id)
     {
-        //
+        try {
+            $gracePeriod = GracePeriod::find($id);
+            $gracePeriod->delete();
+            return redirect()->back()->with('success','Grace Period deleted successfully');
+        }catch (Exception $exception){
+            info($exception);
+            return redirect()->back()->with('error','Grace Period can not be deleted');
+        }
     }
 }

@@ -3,7 +3,6 @@
 @section('title',"Grace Periods")
 
 @section('content')
-
     <div class="subheader py-2 py-lg-4 tw-border-b-gray-300 border-bottom tw-shadow-none " id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
@@ -80,8 +79,10 @@
     <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog"
          aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog">
-            <form action="{{route('admin.operator.grace.period.store',$operationArea->id)}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
+            <form action="{{route('admin.operator.grace.period.store')}}" method="post" id="submissionForm" class="submissionForm" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="operation_area_id" value="{{request()->input('operation_area_id')}}">
+                <input type="hidden" name="contract_id" value="{{request()->input('contract_id')}}">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">New Grace Period</h4>
@@ -90,23 +91,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
+
                         <div class="form-group">
-
-                            <div class="form-group">
-                                <label for="name">Days</label>
-                                <input type="number" id="days" name="days" class="form-control" required/>
-                            </div>
-
-                            <label for="name">Status</label>
-                            <select name="status" id="status" class="form-control" required>
-                                <option value="">Select status</option>
-
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
-
-                            </select>
+                            <label for="name">Days</label>
+                            <input type="number" id="days" name="days" class="form-control" required/>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <div class="btn-group">
@@ -140,11 +129,11 @@
 
                             <div class="form-group">
                                 <label for="name">Days</label>
-                                <input type="number" id="days" name="days" class="form-control" required/>
+                                <input type="number" id="edit_days" name="days" class="form-control" required/>
                             </div>
 
                             <label for="name">Status</label>
-                            <select name="status" id="status" class="form-control" required>
+                            <select name="status" id="edit_status" class="form-control" required>
                                 <option value="">Select status</option>
 
                                 <option value="active">Active</option>
@@ -175,16 +164,16 @@
 
     <script>
         $(function () {
-            const formData = $("#filter-form").serialize();
             var table = $('.yajra-datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('admin.operator.grace.periods.index',$operationArea->id) }}?" + formData,
+                ajax: "{{ request()->fullUrl()  }}",
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex',  orderable:false,
                         searchable: false},
                     {data: 'days', name: 'days'},
                     {data: 'status', name: 'status'},
+                    {data: 'created_at', name: 'created_at'},
                     {
                         data: 'action',
                         name: 'action',
@@ -208,9 +197,7 @@
             $("#GracePeriodId").val($(this).data('id'));
             $("#edit_operation_area_id").val($(this).data('operation-area'));
             $("#edit_status").val($(this).data('status'));
-            $("#edit_start_date").val($(this).data('start-date'));
-            $("#edit_end_date").val($(this).data('end-date'));
-            $("#edit_attachment").val($(this).data('attachment'));
+            $("#edit_days").val($(this).data('days'));
             $('#submissionFormEdit').attr('action', url);
         });
         $(document).on('click', '.js-delete', function (e) {
