@@ -181,7 +181,7 @@
         </div>
 
         @if(auth()->check())
-            @if($request->customer_initiated && $request->status== \App\Constants\Status::ASSIGNED)
+            @if($request->canAddConnectionFee())
                 <div class="card card-body" style="border-style: dashed;border-width: 3px;">
                     <form action="{{ route('admin.requests.road-cross-types.update',encryptId($request->id)) }}"
                           method="post">
@@ -207,13 +207,54 @@
                             <label id="road_cross_types[]-error" class="error" for="road_cross_types[]"></label>
                         </div>
 
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label for="cross_road">New connection will cross the road ?
+                                    <x-required-sign/>
+                                </label>
+                                <div class="form-group">
+                                    <label class="radio checkbox-accent">
+                                        <input type="radio" value="1"
+                                               {{ $request->new_connection_crosses_road == 1 ? 'checked' : '' }}
+                                               name="new_connection_crosses_road">
+                                        <span class="mr-1 "></span>
+                                        Yes
+                                    </label>
+                                    <label class="radio checkbox-accent">
+                                        <input type="radio"
+                                               {{  $request->new_connection_crosses_road == 0 ? 'checked' : '' }}
+                                               value="0" name="new_connection_crosses_road">
+                                        <span class="mr-1 "></span>
+                                        No
+                                    </label>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group" id="roadTypeContainer"
+                                     style="display: {{$request->new_connection_crosses_road == 1?'block':'none'}}">
+                                    <label for="road_type">Road Type
+                                    <x-required-sign/>
+                                    </label>
+                                    <select name="road_type" id="road_type" class="form-control ">
+                                        <option value="">Select Road Type</option>
+                                        @foreach($roadTypes as $roadType)
+                                            <option
+                                                {{ isset($request) && $request->road_type == $roadType ? 'selected' : '' }}
+                                                value="{{ $roadType }}">{{ $roadType }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <button type="submit" class="btn btn-primary btn-sm">
                             Save Changes
                         </button>
 
                     </form>
                 </div>
-
             @endif
 
             <div class="row mt-4">
@@ -245,6 +286,7 @@
                                             <label for="water_network_id">
                                                 <span class="font-weight-bold">
                                                     Water Supply System
+                                                         <x-required-sign/>
                                                 </span>
                                             </label>
                                             <select name="water_network_id" id="water_network_id" class="form-control">

@@ -131,16 +131,6 @@ use Storage;
  * @method static Builder|Request whereCustomerInitiated($value)
  * @method static Builder|Request whereReturnBackStatus($value)
  * @property string|null $form_attachment
- * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
- * @property-read Collection<int, \App\Models\RequestDelivery> $deliveries
- * @property-read Collection<int, \App\Models\RequestDeliveryDetail> $deliveryDetails
- * @property-read Collection<int, \App\Models\FlowHistory> $flowHistories
- * @property-read string|null $form_attachment_url
- * @property-read Collection<int, \App\Models\StockMovementDetail> $items
- * @property-read Collection<int, \App\Models\MeterRequest> $meterNumbers
- * @property-read Collection<int, \App\Models\PaymentDeclaration> $paymentDeclarations
- * @property-read Collection<int, \App\Models\RequestPipeCross> $pipeCrosses
- * @property-read Collection<int, \App\Models\RequestAssignment> $requestAssignments
  * @method static Builder|Request whereFormAttachment($value)
  * @mixin Eloquent
  */

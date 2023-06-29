@@ -218,66 +218,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <label for="cross_road">New connection will cross the road ?
-                            <x-required-sign/>
-                        </label>
-                        <div class="form-group">
-                            <label class="radio checkbox-accent">
-                                <input type="radio" value="1"
-                                       {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'checked' : '' }}
-                                       name="new_connection_crosses_road">
-                                <span class="mr-1 "></span>
-                                Yes
-                            </label>
-                            <label class="radio checkbox-accent">
-                                <input type="radio"
-                                       {{ isset($request) && $request->new_connection_crosses_road == 0 ? 'checked' : '' }}
-                                       value="0" name="new_connection_crosses_road">
-                                <span class="mr-1 "></span>
-                                No
-                            </label>
-                        </div>
 
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group" id="roadTypeContainer" style="display: none">
-                            <label for="road_type">Road Type</label>
-                            <select name="road_type" id="road_type" class="form-control ">
-                                <option value="">Select Road Type</option>
-                                @foreach($roadTypes as $roadType)
-                                    <option
-                                        {{ isset($request) && $request->road_type == $roadType ? 'selected' : '' }}
-                                        value="{{ $roadType }}">{{ $roadType }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label for="road_cross_types">
-                                Where will the water pipe cross ?
-                            </label>
-                            <div class="row">
-                                @foreach($roadCrossTypes as $item)
-                                    <div class="col-md-4">
-                                        <label class="checkbox my-3 checkbox-primary">
-                                            <input type="checkbox" value="{{ $item->id }}"
-                                                   {{ isset($request) && in_array($item->id, $selected_road_cross_types??[]) ? 'checked' : '' }}
-                                                   name="road_cross_types[]">
-                                            <span class="mr-1 rounded-0"></span>
-                                            {{ $item->name }}
-                                        </label>
-                                    </div>
-
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-lg-6">
                         <label>Will you dig a water pipe by yourself?
@@ -366,9 +307,7 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     {!! JsValidator::formRequest(App\Http\Requests\ValidateAppRequest::class) !!}
-
     <script>
-
         function getDistricts(provinceId, selectedDistrictId) {
             let districtId = $('#district_id');
             districtId.empty();

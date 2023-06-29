@@ -94,7 +94,7 @@
                     <input type="hidden" name="id" id="accountId" value="0"/>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="payment_service_provider_id">Service Provider</label>
+                            <label for="payment_service_provider_id">Service Provider <x-required-sign/></label>
                             <select name="payment_service_provider_id" id="payment_service_provider_id"
                                     class="form-control">
                                 <option value="">Select Service Provider</option>
@@ -105,12 +105,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="account_number">Account Number</label>
+                            <label for="account_number">Account Number <x-required-sign/></label>
                             <input type="text" name="account_number" id="account_number" class="form-control"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="account_name">Account Name</label>
+                            <label for="account_name">Account Name <x-required-sign/></label>
                             <input type="text" name="account_name" id="account_name" class="form-control"/>
                         </div>
                         {{--      <div class="form-group">
@@ -127,12 +127,12 @@
 
                         <div class="form-group">
                             <label for="opening_date">Opening Date</label>
-                            <input type="date" name="opening_date" id="opening_date" class="form-control"/>
+                            <input type="text" name="opening_date" id="opening_date" class="form-control datepicker w-100"/>
                         </div>
 
 
                         <div class="form-group">
-                            <label for="is_active">Status</label>
+                            <label for="is_active">Status <x-required-sign/></label>
                             <select name="is_active" id="is_active" class="form-control">
                                 <option value="">Select Status</option>
                                 <option value="1">Active</option>

@@ -92,13 +92,13 @@
                     <input type="hidden" name="id" id="expenseId" value="0"/>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="date">Date</label>
-                            <input type="date" name="date" value="{{ now()->toDateString() }}" class="form-control"
+                            <label for="date">Date <x-required-sign/></label>
+                            <input type="text" name="date" value="{{ now()->toDateString() }}" class="form-control datepicker w-100"
                                    id="date"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="expense_category">Expense Category</label>
+                            <label for="expense_category">Expense Category <x-required-sign/></label>
                             <select name="expense_category" id="expense_category"
                                     class="form-control">
                                 <option value="">Select Expense Category</option>
@@ -109,14 +109,14 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="expense_ledger">Expense Ledger</label>
+                            <label for="expense_ledger">Expense Ledger <x-required-sign/></label>
                             <select name="expense_ledger" id="expense_ledger"
                                     class="form-control">
                                 <option value="">Select Expense Ledger</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="payment_ledger">Payment Ledger</label>
+                            <label for="payment_ledger">Payment Ledger <x-required-sign/></label>
                             <select name="payment_ledger" id="payment_ledger"
                                     class="form-control">
                                 <option value="">Select Payment Ledger</option>
@@ -129,12 +129,12 @@
 
 
                         <div class="form-group">
-                            <label for="amount">Amount</label>
+                            <label for="amount">Amount <x-required-sign/></label>
                             <input type="number" name="amount" class="form-control" id="amount"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="description">Description</label>
+                            <label for="description">Description <x-required-sign/></label>
                             <textarea name="description" id="description" class="form-control"></textarea>
                         </div>
 

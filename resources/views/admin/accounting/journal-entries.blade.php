@@ -92,14 +92,14 @@
                     <input type="hidden" name="id" id="entryId" value="0"/>
                     <div class="modal-body">
                         <div class="form-group">
-                            <label for="date">Date</label>
-                            <input type="date" name="date" value="{{ now()->toDateString() }}" class="form-control"
+                            <label for="date">Date <x-required-sign/></label>
+                            <input type="text" name="date" value="{{ now()->toDateString() }}" class="form-control datepicker w-100"
                                    id="date"/>
                         </div>
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="debit_ledger_croup">Debit Ledger Group</label>
+                                    <label for="debit_ledger_croup">Debit Ledger Group <x-required-sign/></label>
                                     <select name="debit_ledger_croup" id="debit_ledger_croup"
                                             class="form-control">
                                         <option value="">Select Group</option>
@@ -113,7 +113,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="debit_ledger">
-                                        Debit Ledger
+                                        Debit Ledger <x-required-sign/>
                                     </label>
                                     <select name="debit_ledger" id="debit_ledger"
                                             class="form-control">
@@ -128,7 +128,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="credit_ledger_croup">Credit Ledger Group</label>
+                                    <label for="credit_ledger_croup">Credit Ledger Group <x-required-sign/></label>
                                     <select name="credit_ledger_croup" id="credit_ledger_croup"
                                             class="form-control">
                                         <option value="">Select Group</option>
@@ -142,7 +142,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="credit_ledger">
-                                        Credit Ledger
+                                        Credit Ledger <x-required-sign/>
                                     </label>
                                     <select name="credit_ledger" id="credit_ledger"
                                             class="form-control">
@@ -156,12 +156,12 @@
 
 
                         <div class="form-group">
-                            <label for="amount">Amount</label>
+                            <label for="amount">Amount <x-required-sign/></label>
                             <input type="number" name="amount" class="form-control" id="amount"/>
                         </div>
 
                         <div class="form-group">
-                            <label for="description">Description</label>
+                            <label for="description">Description <x-required-sign/></label>
                             <textarea name="description" id="description" class="form-control"></textarea>
                         </div>
 
