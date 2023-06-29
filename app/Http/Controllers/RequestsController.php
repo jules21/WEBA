@@ -292,7 +292,7 @@ class RequestsController extends Controller
             ->where('operator_id', '=', auth()->user()->operator_id)
             ->pluck('district_id');
         $waterNetworks = WaterNetwork::query()
-            ->whereIn('district_id', $districts)
+//            ->whereIn('district_id', $districts)
             ->get();
 
         $itemCategories = ItemCategory::query()
