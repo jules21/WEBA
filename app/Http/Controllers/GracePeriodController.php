@@ -118,15 +118,11 @@ class GracePeriodController extends Controller
             $contract->update(['expire_date' =>$validTo]);
             $type = "Contract";
             GracePeriod::query()->whereNull('operation_area_id')->update(['status' => 'inactive']);
-//            dd($request->all(), $contract, $grace_period);
+          // dd($request->all(), $contract, $grace_period);
         }
-
-
-
         $grace_period->save();
 
-//        return $fromDate->toDateString();
-//        return new GracePeriodUpdate($request->input('days'), $fromDate,$validTo,$contactPersonEmail,$contactPersonName);
+         // return new GracePeriodUpdate($request->input('days'), $fromDate,$validTo,$contactPersonEmail,$contactPersonName);
 
         // Queue the email sending
         \Mail::to($contactPersonEmail)->queue(new GracePeriodUpdate($request->input('days'), $fromDate,$validTo,$contactPersonEmail,$contactPersonName, $type));
