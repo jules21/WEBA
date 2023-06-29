@@ -34,6 +34,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|IssueReportDetail whereUserType($value)
  * @property-read User $client
  * @property-read Model|Eloquent $model
+ * @property int|null $district_id
+ * @method static Builder|IssueReportDetail whereDistrictId($value)
  * @mixin Eloquent
  */
 class IssueReportDetail extends Model

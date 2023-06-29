@@ -59,6 +59,8 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereSectorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereVillageId($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\IssueReportDetail> $issueDetails
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @mixin \Eloquent
  */
 class Client extends Authenticatable

@@ -41,6 +41,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @mixin Eloquent
  */
 class Supplier extends Model implements Auditable

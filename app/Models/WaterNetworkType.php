@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -23,11 +24,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BillCharge> $billCharges
  * @property-read int|null $bill_charges_count
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetworkType whereUnitPrice($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\BillCharge> $billCharges
  * @mixin \Eloquent
  */
 class WaterNetworkType extends Model
 {
+    use HasFactory;
     public function billCharges(): HasMany
     {
         return $this->hasMany(BillCharge::class);

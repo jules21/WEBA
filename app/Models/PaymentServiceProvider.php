@@ -40,6 +40,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|PaymentServiceProvider whereClmsId($value)
  * @method static Builder|PaymentServiceProvider whereSupportsPayment($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentServiceProviderAccount> $accounts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PaymentServiceProviderAccount> $accounts
  * @mixin Eloquent
  */
 class PaymentServiceProvider extends Model

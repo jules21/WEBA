@@ -99,6 +99,37 @@
                                    class="form-control datepicker w-100"/>
                         </div>
 
+                        <div class="form-group">
+                            <label for="district_id">
+                                District
+                            </label>
+                            <select name="district_id" id="district_id" class="form-control select2"
+                                    style="width: 100% !important;">
+                                <option value="">Select District</option>
+                                @foreach($districts as $district)
+                                    <option value="{{ $district->id }}">{{ $district->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sectors">
+                                Sectors
+                            </label>
+                            <select name="sectors[]" id="sectors" class="form-control select2"
+                                    style="width: 100% !important;" multiple>
+                                <option value="">Select Sectors</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="water_networks">
+                                Water Supply Systems
+                            </label>
+                            <select name="water_networks[]" id="water_networks" class="form-control select2"
+                                    style="width: 100% !important;" multiple>
+                                <option value="">Select Water Supply Systems</option>
+                            </select>
+                        </div>
+
 
                     </div>
                     <div class="modal-footer bg-light">
@@ -117,6 +148,71 @@
     {!! JsValidator::formRequest(\App\Http\Requests\StoreClusterRequest::class, '#formSave') !!}
 
     <script>
+        let getSectors = function (districtId, selectedSectorIds = []) {
+            if (!districtId) {
+                return;
+            }
+            let url = "{{ route('sectors.district',":id") }}";
+            url = url.replace(':id', districtId);
+            let $input = $('#district_id');
+            // select previous sibling label for district_id
+            let $label = $input.prev('label');
+            // add a span element after the label with the loading icon
+            $label.after('<span class="spinner-border spinner-border-sm text-primary ml-2" role="status" aria-hidden="true"></span>');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+                    let options = '';
+                    $.each(data, function (index, sector) {
+                        let selected = '';
+                        if (selectedSectorIds.includes(sector.id)) {
+                            selected = 'selected';
+                        }
+                        options += '<option value="' + sector.id + '" ' + selected + '>' + sector.name + '</option>';
+                    });
+                    $('#sectors').html(options);
+                },
+                complete: function () {
+                    // remove the loading icon
+                    $label.next('span').remove();
+                }
+            });
+        }
+        let getWaterNetworks = function (districtId, selectedWaterNetworkIds = []) {
+            if (!districtId) {
+                return;
+            }
+
+            let url = "{{ route('get-water-networks-by-district',":id") }}";
+            url = url.replace(':id', districtId);
+            let $input = $('#district_id');
+            // select previous sibling label for district_id
+            let $label = $input.prev('label');
+            // add a span element after the label with the loading icon
+            $label.after('<span class="spinner-border spinner-border-sm text-primary ml-2" role="status" aria-hidden="true"></span>');
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function (data) {
+                    let options = '';
+                    $.each(data, function (index, waterNetwork) {
+                        let selected = '';
+                        if (selectedWaterNetworkIds.includes(waterNetwork.id)) {
+                            selected = 'selected';
+                        }
+                        options += '<option value="' + waterNetwork.id + '" ' + selected + '>' + waterNetwork.name + '</option>';
+                    });
+                    $('#water_networks').html(options);
+                },
+                complete: function () {
+                    // remove the loading icon
+                    $label.next('span').remove();
+                }
+            });
+        }
+
+
         $(function () {
 
             $('#addButton').click(function () {
@@ -145,11 +241,22 @@
                 ]
             });
 
+            $('#district_id').change(function () {
+                let input = $(this);
+                let districtId = input.val();
+                if (!districtId) {
+                    return;
+                }
+                getSectors(districtId);
+                getWaterNetworks(districtId);
+            });
+
+            let submitting = false;
             $('#formSave').submit(function (e) {
                 e.preventDefault();
                 let form = $(this);
 
-                if (!form.valid()) {
+                if (!form.valid() || submitting) {
                     return;
                 }
 
@@ -160,6 +267,8 @@
                 let submitButton = form.find('[type="submit"]');
                 submitButton.prop('disabled', true);
                 submitButton.addClass('spinner spinner-white spinner-right');
+
+                submitting = true;
 
                 $.ajax({
                     url: url,
@@ -173,6 +282,7 @@
                     complete: function () {
                         submitButton.prop('disabled', false);
                         submitButton.removeClass('spinner spinner-white spinner-right');
+                        submitting = false;
                     },
                     error: function (reason) {
                         Swal.fire({
@@ -183,14 +293,44 @@
                     }
                 })
             });
+            $('#addModal').on('hidden.bs.modal', function () {
+                $('#id').val(0);
+                $('#name').val('');
+                $('#district_id').val('').trigger('change');
+                $('#sectors').val('').trigger('change');
+                $('#water_networks').val('').trigger('change');
+                $('#expiration_date').val('');
+            });
 
-            $(document).on('click', '.js-edit', function () {
+            $(document).on('click', '.js-edit', function (e) {
+                e.preventDefault();
                 let id = $(this).data('id');
+                let href = $(this).attr('href');
 
-                $('#id').val(id);
-                $('#name').val($(this).data('name'));
-                $('#expiration_date').val($(this).data('expiration_date'));
-                $('#addModal').modal('show');
+                $.ajax({
+                    url: href,
+                    method: 'GET',
+                    success: function (response) {
+                        $('#id').val(response.id);
+                        $('#name').val(response.name);
+                        let $districtId = $('#district_id');
+                        $districtId.val(response.district_id);
+                        $districtId.trigger('change');
+                        $('#expiration_date').val(moment(response.expiration_date).format('YYYY-MM-DD'));
+
+                        getSectors(response.district_id, response.sectors.map(sector => sector.id));
+                        getWaterNetworks(response.district_id, response.water_networks.map(waterNetwork => waterNetwork.id));
+
+                        $('#addModal').modal('show');
+                    },
+                    error: function (reason) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: reason?.responseJSON?.message ?? "Something went wrong!, Please try again later.",
+                        })
+                    }
+                });
 
             });
 

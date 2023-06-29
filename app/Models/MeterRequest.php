@@ -54,6 +54,9 @@ use Illuminate\Support\Carbon;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Billing> $billings
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $deliveryItems
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $stockMovementDetails
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Billing> $billings
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $deliveryItems
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\StockMovementDetail> $stockMovementDetails
  * @mixin Eloquent
  */
 class MeterRequest extends Model
