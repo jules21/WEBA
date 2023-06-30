@@ -281,15 +281,28 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>District</label>
-                            <select name="district_id" class="form-control select2" style="width: 100% !important;">
-                                <option value="">Select district</option>
-                                @foreach($districts as $district)
-                                    <option value="{{$district->id}}">{{$district->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @if(auth()->user()->district_id == null)
+                            <div class="form-group">
+                                <label>District</label>
+                                <select name="district_id" id="district_id" class="form-control select2" style="width: 100% !important;">
+                                    <option value="">Select district</option>
+                                    @foreach($districts as $district)
+                                        <option value="{{$district->id}}">{{$district->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <label>District</label>
+                                <input type="hidden" value="{{auth()->user()->district_id}}" name="district_id">
+                                <select name="district_id" id="district_id" class="form-control select2" style="width: 100% !important;" disabled>
+                                    <option value="">Select district</option>
+                                    @foreach($districts as $district)
+                                        <option value="{{ $district->id }}" selected>{{ $district->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
 
                     </div>
                     <div class="modal-footer">
@@ -337,7 +350,7 @@
                         <div class="form-group">
                             <label for="name">Population Covered</label>
                             <input type="number" name="population_covered" id="edit_population_covered"
-                                   class="form-control" required/>
+                                   class="form-control" readonly required/>
                         </div>
 
                         <div class="row">
@@ -368,15 +381,28 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>District</label>
-                            <select name="district_id" id="edit_district_id" class="form-control select2" style="width: 100% !important;">
-                                <option value="">Select district</option>
-                                @foreach($districts as $district)
-                                    <option value="{{$district->id}}">{{$district->name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                        @if(auth()->user()->district_id == null)
+                            <div class="form-group">
+                                <label>District</label>
+                                <select name="district_id" id="edit_district_id" class="form-control select2" style="width: 100% !important;">
+                                    <option value="">Select district</option>
+                                    @foreach($districts as $district)
+                                        <option value="{{$district->id}}">{{$district->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @else
+                            <div class="form-group">
+                                <label>District</label>
+                                <input type="hidden" value="{{auth()->user()->district_id}}" name="district_id" id="edit_district_id">
+                                <select name="district_id" id="edit_district_id" class="form-control select2" style="width: 100% !important;" disabled>
+                                    <option value="">Select district</option>
+                                    @foreach($districts as $district)
+                                        <option value="{{ $district->id }}" selected>{{ $district->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
 
                     </div>
                     <div class="modal-footer">
@@ -418,7 +444,7 @@
             $("#edit_distance_covered").val($(this).data('distance'));
             $("#edit_population_covered").val($(this).data('population'));
             $("#edit_water_network_type_id").val($(this).data('network'));
-            $("#edit_district_id").val($(this).data('district'));
+            $("#edit_district_id").val($(this).data('district')).select2();
             $("#edit_water_network_status_id").val($(this).data('status'));
             $('#submissionFormEdit').attr('action', url);
         });
