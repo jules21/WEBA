@@ -740,7 +740,7 @@
                         </li>
                     @endcan
                     @can(\App\Constants\Permission::ManageClusters)
-                        <li class="menu-item nav-water-networks" aria-haspopup="true">
+                        <li class="menu-item nav-clusters" aria-haspopup="true">
                             <a href="{{ route('admin.clusters') }}" class="menu-link">
                                 <i class="menu-bullet menu-bullet-dot">
                                     <span></span>

@@ -148,6 +148,10 @@
     {!! JsValidator::formRequest(\App\Http\Requests\StoreClusterRequest::class, '#formSave') !!}
 
     <script>
+
+        $('.nav-settings').addClass('menu-item-active  menu-item-open');
+        $('.nav-clusters').addClass('menu-item-active');
+
         let getSectors = function (districtId, selectedSectorIds = []) {
             if (!districtId) {
                 return;
