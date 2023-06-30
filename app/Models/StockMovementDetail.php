@@ -53,6 +53,7 @@ use Illuminate\Support\Carbon;
  * @property-read mixed $vat_amount
  * @method static Builder|StockMovementDetail whereDescription($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $deliveryItems
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RequestDeliveryDetail> $deliveryItems
  * @mixin Eloquent
  */
 class StockMovementDetail extends Model

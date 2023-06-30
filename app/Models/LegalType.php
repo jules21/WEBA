@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|LegalType whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DocumentType> $documentTypes
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DocumentType> $documentTypes
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\DocumentType> $documentTypes
  * @mixin \Eloquent
  */
 class LegalType extends Model

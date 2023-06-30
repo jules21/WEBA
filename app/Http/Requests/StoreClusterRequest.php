@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreClusterRequest extends FormRequest
 {
@@ -24,8 +25,20 @@ class StoreClusterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'unique:clusters', 'string', 'max:255'],
+            'name' => [
+                'required',
+                Rule::unique('clusters', 'name')
+                    ->where('district_id', $this->district_id)
+                    ->ignore($this->id),
+                'string',
+                'max:255'
+            ],
             'expiration_date' => ['required', 'date'],
+            'district_id' => ['required', 'exists:districts,id'],
+            'sectors' => ['required', 'array'],
+            'sectors.*' => ['required', 'exists:sectors,id'],
+            'water_networks' => ['required', 'array'],
+            'water_networks.*' => ['required', 'exists:water_networks,id'],
         ];
     }
 }

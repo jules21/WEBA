@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ValidateAppRequest extends FormRequest
 {
@@ -29,12 +30,16 @@ class ValidateAppRequest extends FormRequest
             'upi' => ['required', 'string'],
             'meter_qty' => ['required', 'integer', 'min:1'],
             'description' => ['required', 'string'],
-            'new_connection_crosses_road' => ['required', 'string'],
-            'road_type' => ['required_if:new_connection_crosses_road,1'],
+     /*       'new_connection_crosses_road' => ['required', 'string'],
+            'road_type' => ['required_if:new_connection_crosses_road,1'],*/
             'equipment_payment' => ['required', 'string'],
             'digging_pipeline' => ['required', 'string'],
             'upi_attachment' => ['required_if:id,0', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:1024'],
             'road_cross_types' => ['nullable', 'array'],
+            'form_attachment' => [
+                Rule::requiredIf(fn() => request('id') == 0 && auth()->id() > 0),
+                'file', 'mimes:pdf,jpg,jpeg,png', 'max:1024'
+            ],
         ];
     }
 

@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Village whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Village whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Village whereUpdatedAt($value)
+ * @property-read \App\Models\Cell $cell
  * @mixin \Eloquent
  */
 class Village extends Model

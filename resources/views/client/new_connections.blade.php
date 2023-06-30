@@ -42,6 +42,7 @@
                     <div class="form-group">
                         <label for="water_usage_id">
                             @lang('app.water_usage')
+                            <x-required-sign/>
                         </label>
                         <select name="water_usage_id" id="water_usage_id" class="form-control select2" required
                                 style="width:100% !important;">
@@ -60,6 +61,7 @@
                     <div class="form-group">
                         <label for="meter_qty">
                             @lang('app.how_many_meters_do_you_need?')
+                            <x-required-sign/>
                         </label>
                         <input type="number" required
                                value="{{ old('meter_qty',$request->meter_qty??"") }}" min="1"
@@ -70,7 +72,9 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="upi">UPI</label>
+                        <label for="upi">UPI
+                            <x-required-sign/>
+                        </label>
                         <input type="text" value="{{old('upi',$request->upi??"") }}"
                                required
                                name="upi" id="upi" class="form-control"/>
@@ -78,7 +82,9 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="upi_attachment">@lang('app.UPI_attachment') </label>
+                        <label for="upi_attachment">@lang('app.UPI_attachment')
+                            <x-required-sign/>
+                        </label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="upi_attachment"
                                    {{ isset($request)?'':'required'  }}
@@ -94,7 +100,9 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="sector_id">@lang('app.sector') </label>
+                        <label for="sector_id">@lang('app.sector')
+                            <x-required-sign/>
+                        </label>
                         <select name="sector_id" id="sector_id" class="form-control select2" required
                                 style="width:100% !important;">
                             <option value="">@lang('app.select_sector')</option>
@@ -108,7 +116,9 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="cell_id">@lang('app.cell') </label>
+                        <label for="cell_id">@lang('app.cell')
+                            <x-required-sign/>
+                        </label>
                         <select name="cell_id" id="cell_id" class="form-control select2" required
                                 style="width:100% !important;">
                             <option value="">@lang('app.select_cell')</option>
@@ -120,7 +130,9 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label for="village_id">@lang('app.village') </label>
+                        <label for="village_id">@lang('app.village')
+                            <x-required-sign/>
+                        </label>
                         <select name="village_id" id="village_id" class="form-control select2"
                                 style="width:100% !important;">
                             <option value="">@lang('app.select_village')</option>
@@ -135,82 +147,13 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <label for="cross_road">@lang('app.new_connection_will_cross_the_road')</label>
-                    <div class="form-group">
-                        <div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input
-                                    {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'checked' : '' }} type="radio"
-                                    id="new_connection_crosses_road1" value="1" name="new_connection_crosses_road"
-                                    required
-                                    class="custom-control-input">
-                                <label class="custom-control-label" for="new_connection_crosses_road1">
-                                    @lang('app.yes')
-                                </label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input
-                                    {{ isset($request) && $request->new_connection_crosses_road == 0 ? 'checked' : '' }} type="radio"
-                                    id="new_connection_crosses_road2" value="0" name="new_connection_crosses_road"
-                                    required
-                                    class="custom-control-input">
-                                <label class="custom-control-label"
-                                       for="new_connection_crosses_road2">@lang('app.no')</label>
-                            </div>
-                        </div>
-                        <label id="new_connection_crosses_road-error" class="error"
-                               for="new_connection_crosses_road"></label>
 
-                    </div>
-
-                </div>
-                <div class="col-lg-6">
-                    <div class="form-group" id="roadTypeContainer"
-                         style="display: {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'block' : 'none' }}">
-                        <label for="road_type">@lang('app.road_type')</label>
-                        <select name="road_type" id="road_type" class="form-control" required>
-                            <option value="">@lang('app.select_road_type')</option>
-                            @foreach($roadTypes as $roadType)
-                                <option
-                                    {{ isset($request) && $request->road_type == $roadType ? 'selected' : '' }}
-                                    value="{{ $roadType }}">{{ $roadType }}</option>
-                            @endforeach
-                        </select>
-
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="form-group">
-                        <label for="road_cross_types">
-                            @lang('app.where_will_the_water_pipe_cross_?')
-                        </label>
-                        <div class="row">
-                            @foreach($roadCrossTypes as $item)
-                                <div class="col-md-4">
-                                    <div class="custom-control my-2  custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" value="{{ $item->id }}"
-                                               id="customCheck{{ $item->id }}" required
-                                               {{ isset($request) && in_array($item->id, $selected_road_cross_types??[]) ? 'checked' : '' }}
-                                               name="road_cross_types[]">
-                                        <label class="custom-control-label" for="customCheck{{ $item->id }}">
-                                            {{ $item->name }}
-                                        </label>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <label id="road_cross_types[]-error" class="error" for="road_cross_types[]"></label>
-                    </div>
-                </div>
-            </div>
             <div class="row">
 
                 <div class="col-lg-6">
-                    <label>@lang('app.will_you_dig_a_water_pipe_by_yourself_?')</label>
+                    <label>@lang('app.will_you_dig_a_water_pipe_by_yourself_?')
+                        <x-required-sign/>
+                    </label>
                     <div class="form-group">
                         <div>
                             <div class="custom-control custom-radio custom-control-inline">
@@ -241,6 +184,7 @@
                 <div class="col-lg-6">
                     <label>
                         @lang('app.do_you_want_to_pay_for_the_materials_yourself_by_submitting_an_EBM_invoice_?')
+                        <x-required-sign/>
                     </label>
                     <div class="form-group">
                         <div>
@@ -267,6 +211,27 @@
                     </div>
                 </div>
             </div>
+
+            <div class=" mb-4" style="border-bottom: 3px dotted #95989d">
+
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" name="terms_conditions" required class="custom-control-input"
+                           id="terms_conditions">
+                    <label class="custom-control-label" for="terms_conditions">
+                        I agree to the <a
+                            href="https://www.termsandconditionsgenerator.com/live.php?token=zSDhmGUj0e9MmCND6uhUNUs5Oxb3Sbct"
+                            target="_blank">terms and conditions
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                                <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+                            </svg>
+                        </a>
+                    </label>
+                </div>
+                <label id="terms_conditions-error" class="error" for="terms_conditions" style=""></label>
+
+            </div>
+
             <div class="form-group">
                 <button type="submit" class="btn btn-primary float-right">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check" width="24"
@@ -361,7 +326,19 @@
 
         $(function () {
             let $formSave = $('#formSave');
-            $formSave.validate();
+            // validate form's terms and conditions
+            $formSave.validate({
+                rules: {
+                    terms_conditions: {
+                        required: true
+                    }
+                },
+                messages: {
+                    terms_conditions: {
+                        required: "Please accept our terms and conditions"
+                    }
+                }
+            })
             $formSave.on('submit', function (e) {
                 e.preventDefault();
                 if ($(this).valid()) {

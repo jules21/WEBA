@@ -54,7 +54,10 @@
                 <div class="row align-items-center">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="customer_id">Customer</label>
+                            <label for="customer_id">
+                                Customer
+                                <x-required-sign/>
+                            </label>
                             <select name="customer_id" id="customer_id" class="form-control select2"
                                     style="width:100% !important;">
                                 <option value="">Select Customer</option>
@@ -114,11 +117,12 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="water_usage_id">
-                                Water Usage
+                                {{ __('app.water_usage') }}
+                                <x-required-sign/>
                             </label>
                             <select name="water_usage_id" id="water_usage_id" class="form-control select2"
                                     style="width:100% !important;">
-                                <option value="">Select Request Type</option>
+                                <option value="">Select Water Usage</option>
                                 @foreach($waterUsage as $requestType)
                                     <option
                                         {{ isset($request) && $request->water_usage_id == $requestType->id ? 'selected' : '' }}
@@ -131,6 +135,7 @@
                         <div class="form-group">
                             <label for="meter_qty">
                                 How many meters do you need?
+                                <x-required-sign/>
                             </label>
                             <input type="number"
                                    value="{{ isset($request)?$request->meter_qty:"" }}"
@@ -141,7 +146,9 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="upi">UPI</label>
+                            <label for="upi">UPI
+                                <x-required-sign/>
+                            </label>
                             <input type="text"
                                    value="{{ isset($request)?$request->upi:"" }}"
                                    name="upi" id="upi" class="form-control"/>
@@ -149,7 +156,9 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="upi_attachment">UPI Attachment </label>
+                            <label for="upi_attachment">UPI Attachment
+                                <x-required-sign/>
+                            </label>
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="upi_attachment"
                                        name="upi_attachment">
@@ -162,7 +171,9 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="sector_id">Sector </label>
+                            <label for="sector_id">Sector
+                                <x-required-sign/>
+                            </label>
                             <select name="sector_id" id="sector_id" class="form-control select2"
                                     style="width:100% !important;">
                                 <option value="">Select Sector</option>
@@ -176,7 +187,9 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="cell_id">Cell </label>
+                            <label for="cell_id">Cell
+                                <x-required-sign/>
+                            </label>
                             <select name="cell_id" id="cell_id" class="form-control select2"
                                     style="width:100% !important;">
                                 <option value="">Select Cell</option>
@@ -197,73 +210,20 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group">
-                            <label for="description">Description</label>
+                            <label for="description">Description
+                                <x-required-sign/>
+                            </label>
                             <textarea name="description" id="description" rows="3"
                                       class="form-control">{{ isset($request)?$request->description:'' }}</textarea>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <label for="cross_road">New connection will cross the road</label>
-                        <div class="form-group">
-                            <label class="radio checkbox-accent">
-                                <input type="radio" value="1"
-                                       {{ isset($request) && $request->new_connection_crosses_road == 1 ? 'checked' : '' }}
-                                       name="new_connection_crosses_road">
-                                <span class="mr-1 "></span>
-                                Yes
-                            </label>
-                            <label class="radio checkbox-accent">
-                                <input type="radio"
-                                       {{ isset($request) && $request->new_connection_crosses_road == 0 ? 'checked' : '' }}
-                                       value="0" name="new_connection_crosses_road">
-                                <span class="mr-1 "></span>
-                                No
-                            </label>
-                        </div>
 
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group" id="roadTypeContainer" style="display: none">
-                            <label for="road_type">Road Type</label>
-                            <select name="road_type" id="road_type" class="form-control ">
-                                <option value="">Select Road Type</option>
-                                @foreach($roadTypes as $roadType)
-                                    <option
-                                        {{ isset($request) && $request->road_type == $roadType ? 'selected' : '' }}
-                                        value="{{ $roadType }}">{{ $roadType }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="form-group">
-                            <label for="road_cross_types">
-                                Where will the water pipe cross ?
-                            </label>
-                            <div class="row">
-                                @foreach($roadCrossTypes as $item)
-                                    <div class="col-md-4">
-                                        <label class="checkbox my-3 checkbox-primary">
-                                            <input type="checkbox" value="{{ $item->id }}"
-                                                   {{ isset($request) && in_array($item->id, $selected_road_cross_types??[]) ? 'checked' : '' }}
-                                                   name="road_cross_types[]">
-                                            <span class="mr-1 rounded-0"></span>
-                                            {{ $item->name }}
-                                        </label>
-                                    </div>
-
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-lg-6">
-                        <label>Will you dig a water pipe by yourself?</label>
+                        <label>Will you dig a water pipe by yourself?
+                            <x-required-sign/>
+                        </label>
                         <div class="form-group">
                             <label class="radio checkbox-primary">
                                 <input type="radio"
@@ -284,6 +244,7 @@
                     <div class="col-lg-6">
                         <label>
                             Do You want to pay for the materials yourself by submitting an EBM invoice ?
+                            <x-required-sign/>
                         </label>
                         <div class="form-group">
                             <label class="radio  checkbox-primary">
@@ -300,6 +261,23 @@
                                 <span class="mr-1 "></span>
                                 No
                             </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="form_attachment">
+                                Upload a form filled
+                                <x-required-sign/>
+                            </label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="form_attachment" required
+                                       name="form_attachment">
+                                <label class="custom-file-label" for="form_attachment">
+                                    Choose file
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -329,9 +307,7 @@
 @section('scripts')
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.min.js')}}"></script>
     {!! JsValidator::formRequest(App\Http\Requests\ValidateAppRequest::class) !!}
-
     <script>
-
         function getDistricts(provinceId, selectedDistrictId) {
             let districtId = $('#district_id');
             districtId.empty();

@@ -33,6 +33,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read \App\Models\Operator|null $operator
  * @method static \Illuminate\Database\Eloquent\Builder|BillCharge whereOperatorId($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @mixin \Eloquent
  */
 class BillCharge extends Model implements Auditable

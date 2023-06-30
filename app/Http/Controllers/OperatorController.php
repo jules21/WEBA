@@ -99,10 +99,7 @@ class OperatorController extends Controller
                                          <i class="fas fa-info-circle "></i>
                                          <span class="ml-2">Details</span>
                                      </a>
-                                     <a class="dropdown-item" href="' . route('admin.operator.contract.index', encryptId($row->id)) . '">
-                                         <i class="fas fa-book-open "></i>
-                                         <span class="ml-2">Contract</span>
-                                     </a>
+
                                      <a class="dropdown-item js-edit"
                                       data-address="' . $row->address . '"
                                       data-prefix="' . $row->prefix . '"

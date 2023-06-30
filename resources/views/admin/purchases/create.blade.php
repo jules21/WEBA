@@ -76,7 +76,7 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="supplier_id">
-                                Supplier
+                                Supplier <x-required-sign/>
                             </label>
                             <select name="supplier_id" id="supplier_id" class="form-control select2" required
                                     style="width: 100%!important;">
@@ -99,12 +99,12 @@
                             <table class="table  table-hea table-head-custom " id="itemsTable">
                                 <thead>
                                 <tr>
-                                    <th style="width: 40%;">Item</th>
-                                    <th>Qty</th>
-                                    <th>VAT({{ config('services.VAT_RATE') }}%)</th>
-                                    <th>Unit Price</th>
-                                    <th>VAT Amount</th>
-                                    <th>Total</th>
+                                    <th style="width: 40%;">Item <x-required-sign/></th>
+                                    <th>Qty <x-required-sign/></th>
+                                    <th>VAT({{ config('services.VAT_RATE') }}%) </th>
+                                    <th>Unit Price <x-required-sign/></th>
+                                    <th>VAT Amount <x-required-sign/></th>
+                                    <th>Total <x-required-sign/></th>
                                     <th>
 
                                     </th>

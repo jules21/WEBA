@@ -60,6 +60,12 @@ use Storage;
  * @property-read int|null $movement_details_count
  * @method static Builder|Adjustment whereAttachment($value)
  * @method static Builder|Adjustment whereReturnBackStatus($value)
+ * @property-read Collection<int, Audit> $audits
+ * @property-read Collection<int, \App\Models\FlowHistory> $flowHistories
+ * @property-read Collection<int, \App\Models\StockMovementDetail> $items
+ * @property-read Collection<int, \App\Models\StockMovementDetail> $movementDetails
+ * @property-read Collection<int, \App\Models\StockMovement> $movements
+ * @method static \Database\Factories\AdjustmentFactory factory(...$parameters)
  * @mixin Eloquent
  */
 class Adjustment extends Model implements Auditable

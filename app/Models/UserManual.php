@@ -28,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|UserManual whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserManual whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|UserManual whereUpdatedAt($value)
+ * @property string|null $file_kn
+ * @method static \Illuminate\Database\Eloquent\Builder|UserManual whereFileKn($value)
  * @mixin \Eloquent
  */
 class UserManual extends Model

@@ -32,16 +32,16 @@ class ValidateNewConnectionRequest extends FormRequest
             'cell_id' => ['required'],
             'village_id' => ['nullable'],
             'description' => ['nullable', 'string'],
-            'new_connection_crosses_road' => ['required'],
-            'road_type' => ['required_if:new_connection_crosses_road,1'],
-            'road_cross_types' => ['required', 'array'],
-            'road_cross_types.*' => ['required', 'numeric'],
+//            'new_connection_crosses_road' => ['required'],
+//            'road_type' => ['required_if:new_connection_crosses_road,1'],
+//            'road_cross_types' => ['required', 'array'],
+//            'road_cross_types.*' => ['required', 'numeric'],
             'digging_pipeline' => ['required'],
             'equipment_payment' => ['required'],
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'water_usage_id.required' => 'Water usage is required',

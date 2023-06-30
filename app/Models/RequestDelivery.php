@@ -43,6 +43,7 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string|null $deliver_note_url
  * @method static Builder|RequestDelivery whereDeliveryNote($value)
  * @property-read Collection<int, \App\Models\RequestDeliveryDetail> $details
+ * @property-read Collection<int, \App\Models\RequestDeliveryDetail> $details
  * @mixin Eloquent
  */
 class RequestDelivery extends Model

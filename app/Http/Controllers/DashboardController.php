@@ -127,7 +127,7 @@ class DashboardController extends Controller
         })->count('doc_number');
 
         $waterNetworks = WaterNetwork::query()
-            ->where('operation_area_id', auth()->user()->operation_area)->count();
+            ->where('district_id', auth()->user()->district_id)->count();
         $requests = Request::query()
             ->where('operation_area_id', auth()->user()->operation_area)->get(['id', 'status']);
 

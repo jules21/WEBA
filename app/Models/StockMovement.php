@@ -56,6 +56,7 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read int|null $audits_count
  * @method static Builder|StockMovement whereQtyAvailable($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @mixin Eloquent
  */
 class StockMovement extends Model implements Auditable

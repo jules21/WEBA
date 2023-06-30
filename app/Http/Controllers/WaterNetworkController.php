@@ -81,7 +81,7 @@ class WaterNetworkController extends Controller
             })
             ->get();
         $operationArea = OperationArea::query()->find(decryptId(request('area', 0)));
-        return view('admin.settings.water_networks', compact('waterNetworks', 'operators', 'operationAreas', 'Areas','operationArea'));
+        return view('admin.settings.water_networks', compact('waterNetworks', 'operators', 'operationAreas', 'Areas', 'operationArea'));
     }
 
 
@@ -184,5 +184,12 @@ class WaterNetworkController extends Controller
     public function export()
     {
         return \Excel::download(new WaterNetworksExport(), 'water_network.xlsx');
+    }
+
+    public function getWaterNetworksByDistrict($id)
+    {
+        return WaterNetwork::query()
+            ->where('district_id', $id)
+            ->get();
     }
 }

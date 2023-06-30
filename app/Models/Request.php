@@ -130,12 +130,13 @@ use Storage;
  * @method static Builder|Request operatorCustomer()
  * @method static Builder|Request whereCustomerInitiated($value)
  * @method static Builder|Request whereReturnBackStatus($value)
-
+ * @property string|null $form_attachment
+ * @method static Builder|Request whereFormAttachment($value)
  * @mixin Eloquent
  */
 class Request extends Model implements Auditable
 {
-    protected $appends = ['status_color', 'upi_attachment_url', 'total_qty', 'total_delivered'];
+    protected $appends = ['status_color', 'upi_attachment_url', 'form_attachment_url', 'total_qty', 'total_delivered'];
 
     use HasAddress;
     use HasStatusColor;
@@ -145,6 +146,7 @@ class Request extends Model implements Auditable
 
 
     const UPI_ATTACHMENT_PATH = 'requests/upi/';
+    const FORM_ATTACHMENT_PATH = 'requests/form_attachment/';
 
     public function getUpiAttachmentUrlAttribute(): ?string
     {
@@ -152,9 +154,18 @@ class Request extends Model implements Auditable
         if ($upi_attachment) {
             return Storage::url(self::UPI_ATTACHMENT_PATH . $upi_attachment);
         }
-
         return null;
     }
+
+    public function getFormAttachmentUrlAttribute(): ?string
+    {
+        $form_attachment = optional($this->attributes)['form_attachment'];
+        if ($form_attachment) {
+            return Storage::url(self::FORM_ATTACHMENT_PATH . $form_attachment);
+        }
+        return null;
+    }
+
 
     public function requestType(): BelongsTo
     {
@@ -186,7 +197,7 @@ class Request extends Model implements Auditable
         return $this->belongsTo(Village::class);
     }
 
-        public function waterUsage(): BelongsTo
+    public function waterUsage(): BelongsTo
     {
         return $this->belongsTo(WaterUsage::class);
     }
@@ -266,7 +277,7 @@ class Request extends Model implements Auditable
 
     public function canBeReviewed(): bool
     {
-        return $this->status != Status::PENDING && !is_null($this->water_network_id) && auth()->user()->operation_area;
+        return $this->status != Status::PENDING && !is_null($this->water_network_id) && auth()->user()->operation_area && $this->pipeCrosses->count() > 0;
     }
 
     public function canBeApprovedByMe(): bool
@@ -324,8 +335,7 @@ class Request extends Model implements Auditable
     public function canAddMaterials(): bool
     {
         return $this->status == Status::ASSIGNED &&
-            auth()->user()->can(Permission::ReviewRequest) &&
-            !$this->equipment_payment;
+            auth()->user()->can(Permission::ReviewRequest);
     }
 
     public function deliveries(): HasMany

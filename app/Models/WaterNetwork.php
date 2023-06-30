@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\WaterNetwork
@@ -36,6 +37,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $water_network_status_id
  * @property-read \App\Models\WaterNetworkStatus|null $waterNetworkStatus
  * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereWaterNetworkStatusId($value)
+ * @property int|null $district_id
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cluster> $clusters
+ * @property-read int|null $clusters_count
+ * @method static \Illuminate\Database\Eloquent\Builder|WaterNetwork whereDistrictId($value)
  * @mixin \Eloquent
  */
 class WaterNetwork extends Model
@@ -52,13 +57,18 @@ class WaterNetwork extends Model
         return $this->belongsTo(WaterNetworkType::class, 'water_network_type_id');
     }
 
-    public function operationArea()
+    public function operationArea(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(OperationArea::class, 'operation_area_id');
     }
 
-    public function waterNetworkStatus()
+    public function waterNetworkStatus(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(WaterNetworkStatus::class, 'water_network_status_id');
+    }
+
+    public function clusters(): BelongsToMany
+    {
+        return $this->belongsToMany(Cluster::class, 'cluster_water_network');
     }
 }

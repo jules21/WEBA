@@ -37,6 +37,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|IssueReport whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IssueReport whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|IssueReport whereUserId($value)
+ * @property int $operator_id
+ * @property-read \App\Models\Client|null $client
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\IssueReportDetail> $details
+ * @property-read string $status_color
+ * @property-read \App\Models\OperationArea|null $operatingArea
+ * @property-read \App\Models\Operator $operator
+ * @method static \Illuminate\Database\Eloquent\Builder|IssueReport whereOperatorId($value)
  * @mixin \Eloquent
  */
 class IssueReport extends Model

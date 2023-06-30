@@ -28,6 +28,7 @@ use App\Http\Controllers\LedgerMigrationController;
 use App\Http\Controllers\MeterRequestController;
 use App\Http\Controllers\OperationAreaController;
 use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\OperatorProfileController;
 use App\Http\Controllers\OperatorUserController;
 use App\Http\Controllers\PaymentServiceProviderAccountController;
 use App\Http\Controllers\PurchaseController;
@@ -39,7 +40,9 @@ use App\Http\Controllers\RequestsController;
 use App\Http\Controllers\RequestTechnicianController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SectorController;
+use App\Http\Controllers\UrlController;
 use App\Http\Controllers\UserManualController;
+use App\Http\Controllers\WaterNetworkController;
 use App\Http\Livewire\CheckBills;
 use App\Http\Livewire\Client\IssuesReported;
 use App\Http\Livewire\Client\Payments;
@@ -48,6 +51,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 Route::get('/home', [ClientsController::class, 'home'])->name('home')->middleware('auth:client');
+Route::get('/go/{code}', [UrlController::class, 'redirect'])->name('url.redirect');
+Route::get('/{request}/view-materials', [HomeController::class, 'viewMaterials'])->name('requests.view-materials');
+
 
 Route::get('/help', [ClientsController::class, 'help'])->name('help');
 Route::get('/faq', [ClientsController::class, 'faq'])->name('faq');
@@ -55,7 +61,7 @@ Route::get('/set-language/{locale}', [HomeController::class, 'setLanguage'])->na
 Route::get('/get-operator-by-district', [HomeController::class, 'getOperatorsByDistrict'])->name('get-operators-by-district');
 Route::get('/check-bills', CheckBills::class)->name('check-bills');
 
-
+Route::get('/water-networks-by-district/{id}', [WaterNetworkController::class, 'getWaterNetworksByDistrict'])->name('get-water-networks-by-district');
 Route::get('/cells/{sector}', [CellController::class, 'getCells'])->name('cells');
 Route::get('/villages/{cell}', [CellController::class, 'getVillages'])->name('villages');
 Route::get('/districts/{province}', [DistrictController::class, 'getByProvince'])->name('districts.province');
@@ -91,7 +97,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/export', [OperatorController::class, 'exportToExcel'])->name('export-to-excel');
 
-        Route::get('/profile', [\App\Http\Controllers\OperatorProfileController::class, 'index'])->name('profile');
+        Route::get('/profile', [OperatorProfileController::class, 'index'])->name('profile');
 
 
         //contract
@@ -102,8 +108,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::get('/contracts/download/{id}', [App\Http\Controllers\ContractController::class, 'download'])->name('contracts.download');
 
         //grace periods
-        Route::get('/grace-periods/{operation_area_id}', [App\Http\Controllers\GracePeriodController::class, 'index'])->name('grace.periods.index');
-        Route::post('/grace-period/store/{operation_area_id}', [App\Http\Controllers\GracePeriodController::class, 'store'])->name('grace.period.store');
+        Route::get('/grace-periods', [App\Http\Controllers\GracePeriodController::class, 'index'])->name('grace.periods.index');
+        Route::post('/grace-period/store', [App\Http\Controllers\GracePeriodController::class, 'store'])->name('grace.period.store');
         Route::post('/grace-period/edit', [App\Http\Controllers\GracePeriodController::class, 'update'])->name('grace.period.edit');
         Route::get('/grace-period/delete/{id}', [App\Http\Controllers\GracePeriodController::class, 'destroy'])->name('grace.period.delete');
 
@@ -138,6 +144,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
         Route::delete('/{request}/item/{id}/delete', [RequestReviewController::class, 'deleteRequestItem'])->name('delete-request-item');
         Route::post('/{req}/add-water-network', [RequestReviewController::class, 'addWaterNetwork'])->name('add-water-network');
         Route::post('/{request}/reviews/save', [RequestReviewController::class, 'saveReview'])->name('reviews.save');
+        Route::post('/{request}/road-cross-types/update', [RequestReviewController::class, 'saveRoadCrossTypes'])->name('road-cross-types.update');
 
         Route::post('/{request}/technician/save', [RequestTechnicianController::class, 'store'])->name('technician.save');
         Route::delete('/technician/{id}/delete', [RequestTechnicianController::class, 'destroy'])->name('technician.delete');
@@ -377,6 +384,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/clusters', [ClusterController::class, 'index'])->name('clusters');
         Route::post('/cluster/store', [ClusterController::class, 'store'])->name('cluster.store');
+        Route::get('/cluster/{cluster}/show', [ClusterController::class, 'show'])->name('cluster.show');
         Route::delete('/cluster/{cluster}/delete', [ClusterController::class, 'destroy'])->name('cluster.delete');
 
 

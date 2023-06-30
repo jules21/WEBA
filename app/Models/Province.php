@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\District> $districts
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\District> $districts
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\District> $districts
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\District> $districts
  * @mixin \Eloquent
  */
 class Province extends Model

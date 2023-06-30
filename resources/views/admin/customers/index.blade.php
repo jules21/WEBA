@@ -85,7 +85,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="legal_type_id">Legal Type</label>
+                                    <label for="legal_type_id">Legal Type <x-required-sign/></label>
                                     <select name="legal_type_id" id="legal_type_id" class="form-control" required>
                                         <option value="">Select Legal</option>
                                         @foreach($legalTypes as $item)
@@ -97,7 +97,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="document_type_id">Document Type</label>
+                                    <label for="document_type_id">Document Type <x-required-sign/></label>
                                     <select name="document_type_id" id="document_type_id" class="form-control" required>
                                         <option value="">Select Type</option>
                                         @foreach($idTypes as $item)
@@ -112,7 +112,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="doc_number">Document Number</label>
+                                    <label for="doc_number">Document Number <x-required-sign/></label>
                                     <div class="d-flex flex-shrink-0">
                                         <div class="w-100">
                                             <input type="text" id="doc_number" name="doc_number"
@@ -129,7 +129,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="name">Name</label>
+                                    <label for="name">Name <x-required-sign/></label>
                                     <input type="text" name="name" id="name" class="form-control" required/>
                                     <span class="invalid-feedback small"></span>
                                 </div>
@@ -139,7 +139,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="phone">Phone Number</label>
+                                    <label for="phone">Phone Number <x-required-sign/></label>
                                     <input type="tel" name="phone" id="phone" class="form-control" required/>
                                     <span class="invalid-feedback small"></span>
                                 </div>
@@ -157,7 +157,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="province_id">Province</label>
+                                    <label for="province_id">Province <x-required-sign/></label>
                                     <select name="province_id" id="province_id" class="form-control" required>
                                         <option value="">Select Province</option>
                                         @foreach($provinces as $item)
@@ -169,7 +169,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="district_id">District</label>
+                                    <label for="district_id">District <x-required-sign/></label>
                                     <select name="district_id" id="district_id" class="form-control" required>
                                         <option value="">Select District</option>
                                     </select>
@@ -181,7 +181,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="sector_id">Sector</label>
+                                    <label for="sector_id">Sector <x-required-sign/></label>
                                     <select name="sector_id" id="sector_id" class="form-control" required>
                                         <option value="">Select Sector</option>
                                     </select>
@@ -190,7 +190,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="cell_id">Cell</label>
+                                    <label for="cell_id">Cell <x-required-sign/></label>
                                     <select name="cell_id" id="cell_id" class="form-control" required>
                                         <option value="">Select Cell</option>
                                     </select>
@@ -202,7 +202,7 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <label for="village_id">Village</label>
+                                    <label for="village_id">Village <x-required-sign/></label>
                                     <select name="village_id" id="village_id" class="form-control">
                                         <option value="">Select Village</option>
                                     </select>
