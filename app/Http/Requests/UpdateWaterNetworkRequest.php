@@ -27,7 +27,6 @@ class UpdateWaterNetworkRequest extends FormRequest
             'name' => 'required',
             'distance_covered' => 'required',
             'population_covered' => 'required',
-            'operator_id' => 'required',
             'water_network_type_id' => 'required',
         ];
     }

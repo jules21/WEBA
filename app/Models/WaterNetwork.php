@@ -71,4 +71,8 @@ class WaterNetwork extends Model
     {
         return $this->belongsToMany(Cluster::class, 'cluster_water_network');
     }
+
+    public function district(){
+        return $this->belongsTo(District::class,'district_id');
+    }
 }

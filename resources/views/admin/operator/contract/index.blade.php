@@ -117,10 +117,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="name">Contact</label>
+                            <label for="name">Contact Attachment</label>
                             <div class="custom-file">
                                 <input type="file" id="attachment" name="attachment" class="custom-file-input" required/>
-                                <label class="custom-file-label">Contact</label>
+                                <label class="custom-file-label">Attach your file</label>
                             </div>
                         </div>
 
@@ -174,9 +174,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="">Contract</label>
+                            <label for="">Contract Attachment</label>
                             <div class="custom-file">
-                                <label for="name" class="custom-file-label">Contract</label>
+                                <label for="name" class="custom-file-label">Attach your file</label>
                                 <input type="file" id="edit_attachment" name="attachment" class="custom-file-input" required/>
                             </div>
                         </div>
