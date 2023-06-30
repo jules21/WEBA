@@ -122,7 +122,7 @@ class BillingDataTable extends DataTable
                 return 'function(data,type,fullData,meta){return meta.settings._iDisplayStart+meta.row+1;}';
             }],
 
-            $columns[] =Column::make('operator_name')
+            Column::make('operator_name')
                 ->title('Operator'),
 
             Column::make('operation_area')
@@ -154,7 +154,10 @@ class BillingDataTable extends DataTable
                 ->title(''),
 
         ];
-//        dd($columns[2]);
+        $user = auth()->user();
+        if($user->operator){
+            $columns[0]['visible'] = false;
+        }
         return $columns;
 
     }
