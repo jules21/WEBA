@@ -202,6 +202,7 @@
                                            data-network="{{$waterNetwork->water_network_type_id}}"
                                            data-status="{{$waterNetwork->water_network_status_id}}"
                                            data-district="{{$waterNetwork->district_id}}"
+                                           data-districts="{{$waterNetwork->district_id}}"
 {{--                                           data-operator="{{$waterNetwork->operator_id}}"--}}
 {{--                                           data-area="{{$waterNetwork->operation_area_id}}"--}}
                                            class="dropdown-item js-edit">Edit</a>
@@ -394,11 +395,11 @@
                         @else
                             <div class="form-group">
                                 <label>District</label>
-                                <input type="hidden" value="{{auth()->user()->district_id}}" name="district_id" id="edit_district_id">
+                                <input type="hidden" value="{{auth()->user()->district_id}}" name="district_id" class="form-control">
                                 <select name="district_id" id="edit_district_id" class="form-control select2" style="width: 100% !important;" disabled>
                                     <option value="">Select district</option>
                                     @foreach($districts as $district)
-                                        <option value="{{ $district->id }}" selected>{{ $district->name }}</option>
+                                        <option value="{{$district->id}}" selected>{{$district->name}}</option>
                                     @endforeach
                                 </select>
                             </div>

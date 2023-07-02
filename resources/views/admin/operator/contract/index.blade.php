@@ -165,7 +165,7 @@
 
                         <div class="form-group">
                             <label for="name">Start Date</label>
-                            <input type="date" id="edit_start_date" name="start_date" class="form-control" required/>
+                            <input type="date" id="edit_start_date" name="start_date" max="{{now()->toDateString()}}" class="form-control" required/>
                         </div>
 
                         <div class="form-group">
