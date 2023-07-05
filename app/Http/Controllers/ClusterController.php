@@ -27,6 +27,7 @@ class ClusterController extends Controller
     {
         if (request()->ajax()) {
             $source = Cluster::query()
+                ->with(['district'])
                 ->when(isDistrict(), function ($query) {
                     return $query->where('district_id', auth()->user()->district_id);
                 })->select('clusters.*');
@@ -80,7 +81,6 @@ class ClusterController extends Controller
         $arr = [
             'name' => $data['name'],
             'district_id' => $data['district_id'],
-            'expiration_date' => $data['expiration_date']
         ];
         DB::beginTransaction();
         if ($id > 0) {

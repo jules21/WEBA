@@ -20,7 +20,6 @@ class StoreOperationAreaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required'],
             'district_id' => ['required_if:id,0'],
             'contact_person_name' => ['required', 'string', 'max:255'],
             'contact_person_phone' => ['required', 'string', 'max:50'],

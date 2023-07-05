@@ -33,7 +33,7 @@ class StoreClusterRequest extends FormRequest
                 'string',
                 'max:255'
             ],
-            'expiration_date' => ['required', 'date'],
+//            'expiration_date' => ['required', 'date'],
             'district_id' => ['required', 'exists:districts,id'],
             'sectors' => ['required', 'array'],
             'sectors.*' => ['required', 'exists:sectors,id'],
