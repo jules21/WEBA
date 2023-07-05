@@ -13,7 +13,7 @@ class UpdateGracePeriodRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,15 @@ class UpdateGracePeriodRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'status'=>'required',
+            'edit_comment'=>'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+          'edit_comment.required'=>'The comment field is required.'
         ];
     }
 }

@@ -25,7 +25,8 @@ class StoreGracePeriodRequest extends FormRequest
     {
         return [
             'days'=>'required',
-            'type'=>'nullable'
+            'type'=>'nullable',
+            'comment'=>'required',
         ];
     }
 }

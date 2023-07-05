@@ -57,8 +57,9 @@
                     <tr>
                         <th></th>
                         <th>Days</th>
+                        <th>Star Date</th>
+                        <th>End Date</th>
                         <th>Status</th>
-                        <th>Created At</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -96,6 +97,26 @@
                             <label for="name">Days</label>
                             <input type="number" id="days" name="days" class="form-control" required/>
                         </div>
+                        <div class="form-group">
+                            <label for="name">Start Date</label>
+                            <input type="date" id="star_date" name="star_date" min="{{ \Carbon\Carbon::today()->toDateString() }}" class="form-control" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">End Date</label>
+                            <input type="date" id="end_date" name="end_date" min="{{ \Carbon\Carbon::today()->toDateString() }}" class="form-control" required/>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">Comment</label>
+                            <textarea name="comment" id="comment"class="form-control" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Attachment</label>
+                            <div class="custom-file">
+                                <label for="" class="custom-file-label">Attach your file</label>
+                                <input type="file" name="attachment" id="attachment" class="custom-file-input" required>
+                            </div>
+                        </div>
+
                     </div>
                     <div class="modal-footer">
                         <div class="btn-group">
@@ -119,30 +140,36 @@
                 <input type="hidden" value="0"  id="GracePeriodId" name="GracePeriodId">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">Edit Grace Period</h4>
+                        <h4 class="modal-title">Cancel Grace Period</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
                     </div>
                     <div class="modal-body">
+
                         <div class="form-group">
+                            <label for="edit_comment">Comment</label>
+                            <textarea name="edit_comment" id="_edit_comment" class="form-control" required></textarea>
+                        </div>
 
-                            <div class="form-group">
-                                <label for="name">Days</label>
-                                <input type="number" id="edit_days" name="days" class="form-control" required/>
+                        <div class="form-group">
+                            <label for="">Attachment</label>
+                            <div class="custom-file">
+                                <label for="attachment" class="custom-file-label">Attach your file</label>
+                                <input type="file" name="attachment" id="edit_attachment" class="custom-file-input">
                             </div>
+                        </div>
 
+                        <div class="form-group">
                             <label for="name">Status</label>
                             <select name="status" id="edit_status" class="form-control" required>
                                 <option value="">Select status</option>
-
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
-
                             </select>
                         </div>
-
                     </div>
+
                     <div class="modal-footer">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -172,8 +199,9 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex',  orderable:false,
                         searchable: false},
                     {data: 'days', name: 'days'},
+                    {data: 'star_date', name: 'star_date'},
+                    {data: 'end_date', name: 'end_date'},
                     {data: 'status', name: 'status'},
-                    {data: 'created_at', name: 'created_at'},
                     {
                         data: 'action',
                         name: 'action',
@@ -195,9 +223,8 @@
             console.log($(this).data('description'));
             var url = $(this).data('url');
             $("#GracePeriodId").val($(this).data('id'));
-            $("#edit_operation_area_id").val($(this).data('operation-area'));
+            // $("#edit_operation_area_id").val($(this).data('operation-area'));
             $("#edit_status").val($(this).data('status'));
-            $("#edit_days").val($(this).data('days'));
             $('#submissionFormEdit').attr('action', url);
         });
         $(document).on('click', '.js-delete', function (e) {

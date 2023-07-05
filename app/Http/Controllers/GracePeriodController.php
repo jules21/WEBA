@@ -9,6 +9,7 @@ use App\Http\Requests\StoreGracePeriodRequest;
 use App\Http\Requests\UpdateGracePeriodRequest;
 use App\Models\OperationArea;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use PHPUnit\Exception;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Utilities\Request;
@@ -90,12 +91,22 @@ class GracePeriodController extends Controller
      */
     public function store(StoreGracePeriodRequest $request)
     {
+
+        $dir = 'public/grace_period/attachments';
+        $path = $request->file('attachment')->store($dir);
+        $attachment = str_replace($dir,'',$path);
+
         $grace_period = new GracePeriod();
         $grace_period->operation_area_id=$request->input('operation_area_id') !=null ? decryptId($request->operation_area_id): null;
         $grace_period->contract_id=$request->input('contract_id') !=null ? decryptId($request->contract_id): null;
         $grace_period->days=$request->days;
+        $grace_period->star_date=$request->star_date;
+        $grace_period->end_date=$request->end_date;
+        $grace_period->comment=$request->comment;
+        $grace_period->attachment=$attachment;
         $grace_period->status='active';
 
+//        return $grace_period;
         //if its on operation area
         if ($request->input('operation_area_id') !=null){
             $operationArea= OperationArea::find(decryptId($request->input('operation_area_id')));
@@ -158,11 +169,36 @@ class GracePeriodController extends Controller
      *
      * @param  \App\Http\Requests\UpdateGracePeriodRequest  $request
      * @param  \App\Models\GracePeriod  $gracePeriod
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateGracePeriodRequest $request, GracePeriod $gracePeriod)
     {
-        //
+
+        $gracePeriod = GracePeriod::findOrFail($request->input('GracePeriodId'));
+
+        if ($gracePeriod->status === 'active') {
+            // Update the comment and status columns
+            $gracePeriod->comment = $request->input('comment');
+            $gracePeriod->status = $request->input('status');
+
+            // Handle attachment file upload if provided
+            if ($request->hasFile('attachment')) {
+                $destination = 'public/grace_period/attachments/' . $gracePeriod->attachment;
+                if (Storage::exists($destination)) {
+                    Storage::delete($destination);
+                }
+                $dir = 'public/grace_period/attachments';
+                $path = $request->file('attachment')->store($dir);
+                $attachment = str_replace($dir, '', $path);
+                $gracePeriod->attachment = $attachment;
+            }
+            $gracePeriod->save();
+            return redirect()->back()->with('success','Grace Period Canceled');
+        } else{
+            return redirect()->back()->with('error','Grace periods that are not active can cot be canceled');
+        }
+//        return $gracePeriod;
+//        dd($request->all());
     }
 
     /**
@@ -182,4 +218,47 @@ class GracePeriodController extends Controller
             return redirect()->back()->with('error','Grace Period can not be deleted');
         }
     }
+
+    public function detail($id){
+
+        $gracePeriod = GracePeriod::find($id);
+
+        $endDate = $gracePeriod->end_date;
+
+        // Use Carbon to parse the end_date
+        $expiryDate = Carbon::parse($endDate);
+
+        // Calculate the number of expiry days from today's date
+        $expiryDays = $expiryDate->diffInDays(Carbon::today());
+
+        return view('admin.area-of-operation.grace_periods.detail',compact('gracePeriod','expiryDays'));
+    }
+
+    public function download($id)
+    {
+        // Get the grace period record from the database
+        $gracePeriod = GracePeriod::findOrFail($id);
+
+        // Get the file path from the grace period record
+        $filePath = $gracePeriod->attachment;
+
+        // Normalize the file path by replacing forward slashes with the DIRECTORY_SEPARATOR
+        $normalizedFilePath = str_replace('/', DIRECTORY_SEPARATOR, $filePath);
+
+        // Trim any trailing slashes in the file path
+        $trimmedFilePath = trim($normalizedFilePath, DIRECTORY_SEPARATOR);
+
+        // Generate the full file path using the public disk
+        $fullFilePath = storage_path('app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'grace_period' . DIRECTORY_SEPARATOR . 'attachments' . DIRECTORY_SEPARATOR . $trimmedFilePath);
+
+        // Check if the file exists
+        if (file_exists($fullFilePath)) {
+            // Generate a download response
+            return response()->download($fullFilePath);
+        } else {
+            // File not found, handle the error
+            return redirect()->back()->with('error', 'File not found');
+        }
+    }
+
 }
