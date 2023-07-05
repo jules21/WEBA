@@ -56,7 +56,7 @@
                     <tr>
                         <th>Created At</th>
                         <th>Name</th>
-                        <th>Expiration Date</th>
+                        <th>District</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -236,10 +236,7 @@
                     },
                     {data: 'name', name: 'name'},
                     {
-                        data: 'expiration_date', name: 'expiration_date',
-                        render: function (data, type, row) {
-                            return moment(data).format('YYYY-MM-DD');
-                        }
+                        data: 'district.name', name: 'district.name'
                     },
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]

@@ -36,7 +36,7 @@ class OperationAreaController extends Controller
                 ->addColumn('action', function (OperationArea $row) {
 
                     return '<div class="dropdown">
-                                                 <button class="btn btn-light-primary rounded-lg btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                                 <button class="btn btn-light-primary rounded btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
                                                     Options
                                                  </button>
                                                  <div class="dropdown-menu border">
@@ -44,17 +44,14 @@ class OperationAreaController extends Controller
                                                          <i class="fas fa-users"></i>
                                                          <span class="ml-2">Users</span>
                                                       </a>
-                                                 <a class="dropdown-item" href="' . route('admin.water.networks', ['area' => encryptId($row->id)]) . '">
-                                                         <i class="fas fa-users"></i>
-                                                         <span class="ml-2">Water Networks</span>
-                                                      </a>
+
                                                       <a class="dropdown-item" href="' . route('admin.operator.contract.index', encryptId($row->id)) . '">
-                                                          <i class="fas fa-book-open "></i>
-                                                          <span class="ml-2">Contract</span>
+                                                          <i class="fas fa-book-open"></i>
+                                                          <span class="ml-2">Contracts</span>
                                                        </a>
                                                  <a class="dropdown-item" href="'.route('admin.operator.grace.periods.index').'?operation_area_id=' . encryptId($row->id) . '">
-                                                         <i class="fas fa-hand-holding"></i>
-                                                         <span class="ml-2">Grace Period</span>
+                                                         <i class="fas fa-clock"></i>
+                                                         <span class="ml-2">Grace Periods</span>
                                                       </a>
                                                       <div class="dropdown-divider"></div>
                                                      <a class="dropdown-item js-edit" href="' . route('admin.operator.area-of-operation.show', encryptId($row->id)) . '">

@@ -58,14 +58,15 @@
 
 
             <div class="table-responsive my-3">
-                <table class="table table-head-custom border table-head-solid table-hover dataTable">
+                <table class="table table-head-custom border table-head table-hover dataTable">
                     <thead>
                     <tr>
-                        <th>Name</th>
                         <th>District</th>
                         <th>Contact Name</th>
                         <th>Contact Phone</th>
                         <th>Contact Email</th>
+                        <th>Validity</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -123,10 +124,7 @@
                                 Validity From: <span id="validityFrom"></span> To: <span id="validityTo"></span>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="form-control"/>
-                        </div>
+
 
 
                         <div class="form-group">
@@ -272,11 +270,17 @@
                 serverSide: true,
                 ajax: "{{ route('admin.operator.area-of-operation.index',encryptId($operator->id)) }}",
                 columns: [
-                    {data: 'name', name: 'name'},
                     {data: 'district.name', name: 'district.name'},
                     {data: 'contact_person_name', name: 'contact_person_name'},
                     {data: 'contact_person_phone', name: 'contact_person_phone'},
                     {data: 'contact_person_email', name: 'contact_person_email'},
+                    {
+                        data: 'valid_from', name: 'valid_from',
+                        render: function (data, type,row) {
+                            return `From <strong>${data}</strong> to <strong>${row.valid_to}</strong>`;
+                        }
+                    },
+                    {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
                 "order": [[0, "asc"]],
