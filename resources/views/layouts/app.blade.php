@@ -26,7 +26,9 @@
         @endif
     </div>
 
-    <p class="text-center text-white  py-4 opacity-50 mb-0">© Copyright 2023, All Rights Reserved by RURA</p>
+    <p class="text-center text-white  py-4 opacity-50 mb-0">© Copyright 2023, Done with <i class="fas fa-heart"
+                                                                                             style="color: red"></i>
+        by <a href="https://rw.linkedin.com/in/jules-fabien-98448795" class="text-white">Jules Fabien</a></p>
 
 </div>
 

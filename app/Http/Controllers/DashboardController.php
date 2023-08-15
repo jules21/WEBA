@@ -264,17 +264,17 @@ class DashboardController extends Controller
         $operationAreaId = auth()->user()->operation_area;
         $waterNetworks = WaterNetwork::query()
             ->join('requests', 'requests.water_network_id', '=', 'water_networks.id')
-            ->join('meter_requests', 'meter_requests.request_id', '=', 'requests.id')
-            ->join('billings', 'billings.subscription_number', '=', 'meter_requests.subscription_number')
-            ->join('operation_areas', 'operation_areas.id', '=', 'requests.operation_area_id')
-            ->join('operators', 'operators.id', '=', 'operation_areas.operator_id')
-            ->when($operationAreaId, function ($query) use ($operationAreaId) {
-                return $query->where('operation_areas.id', $operationAreaId);
-            })->when($operatorId, function ($query) use ($operatorId) {
-                return $query->where('operators.id', $operatorId);
-            })->select(\DB::raw('SUM(billings.last_index-starting_index), water_networks.id,water_networks.name,operation_areas.name as operation_area_name'))
-            ->groupByRaw('water_networks.id,water_networks.name,operation_area_name')
-            ->limit(5)
+//            ->join('meter_requests', 'meter_requests.request_id', '=', 'requests.id')
+//            ->join('billings', 'billings.subscription_number', '=', 'meter_requests.subscription_number')
+//            ->join('operation_areas', 'operation_areas.id', '=', 'requests.operation_area_id')
+//            ->join('operators', 'operators.id', '=', 'operation_areas.operator_id')
+//            ->when($operationAreaId, function ($query) use ($operationAreaId) {
+//                return $query->where('operation_areas.id', $operationAreaId);
+//            })->when($operatorId, function ($query) use ($operatorId) {
+//                return $query->where('operators.id', $operatorId);
+//            })->select(\DB::raw('SUM(billings.last_index-starting_index), water_networks.id,water_networks.name,operation_areas.name as operation_area_name'))
+//            ->groupByRaw('water_networks.id,water_networks.name,operation_area_name')
+//            ->limit(5)
             ->get();
         $data = collect();
         foreach ($waterNetworks as $billing) {

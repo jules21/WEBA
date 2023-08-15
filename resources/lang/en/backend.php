@@ -1,7 +1,7 @@
 <?php
 
 return [
-    "cms_rwss_system"=>"CMS RWSS System",
+    "cms_rwss_system"=>config('app.name'),
     "dashboard"=>"Dashboard",
     "operators"=>"Operators",
     "customers"=>"Customers",

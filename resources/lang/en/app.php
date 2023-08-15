@@ -162,7 +162,7 @@
         "do_you_want_to_pay_for_the_materials_yourself_by_submitting_an_EBM_invoice_?"=>"Do you want to pay for the materials yourself by submitting an EBM invoice ?",
         "submit"=>"Submit",
         "your_request_has_been_submitted_successfully"=>"Your request has been submitted successfully",
-        "all_rights_reserved_by_RURA"=>"© Copyright 2023, All Rights Reserved by RURA",
+        "all_rights_reserved_by_RURA"=>"© Copyright 2023, All Rights Reserved by WEBA",
         "my_connections"=>"My Connections",
         "total_balance_due"=>"Total Balance Due:",
         "download"=>"Download",

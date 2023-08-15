@@ -15,9 +15,9 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::query()->updateOrInsert(['email' => 'admin@wfp.rw'], [
+        User::query()->updateOrInsert(['email' => 'admin@weba.rw'], [
             'name' => 'Super Admin',
-            'email' => 'admin@wfp.rw',
+            'email' => 'admin@weba.rw',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => \Illuminate\Support\Str::random(10),

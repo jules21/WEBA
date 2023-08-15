@@ -17,10 +17,10 @@
                 <div>
                     <div class="mb-4">
                         <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-3xl md:tw-leading-loose font-weight-bolder md:mb-3  ">
-                            {{__('app.CUSTOMER_MANAGEMENT')}}
+                            WATER ELECTRONIC BILLING APP
                         </h1>
                         <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-4xl md:tw-leading-loose font-weight-bolder md:mb-2  ">
-                            {{__('app.SYSTEM(CMS)')}}
+                            WEBA
                         </h1>
                     </div>
                     <h2 class="mb-4  tw-text-sm md:tw-text-2xl lg:tw-text-2xl text-accent font-weight-bolder tw-tracking-widest text-uppercase">
@@ -29,8 +29,8 @@
                 </div>
                 <div>
                     <p class="tw-text-gray-300 mb-4  tw-tracking-wide">
-                        {{__('app.empowering_private_water_operators_for_sustainable_water_management')}} <br>
-                        {{__('app.reducing_financial_loss_and_non-revenue_water.')}}
+                        Welcome to the future of water billing and service requests <br>with our cutting-edge  Water Electronic Billing App.
+                        <br>Say goodbye to manual invoice generation and hello to seamless automation.
                     </p>
                     <div class="d-flex tw-gap-6 justify-content-center justify-content-sm-start">
                         @if(auth('client')->check())
@@ -138,13 +138,6 @@
                 </a>
                 <x-feature-card title="{{__('app.registration')}}"
                                 description="{{__('app.register_description')}}">
-                    {{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt" width="24"--}}
-                    {{--                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
-                    {{--                         stroke-linecap="round" stroke-linejoin="round">--}}
-                    {{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
-                    {{--                        <path--}}
-                    {{--                            d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2"></path>--}}
-                    {{--                    </svg>--}}
                     <h1 class="  mb-0  font-weight-bold">1</h1>
                 </x-feature-card>
             </div>
@@ -152,81 +145,24 @@
                 <x-feature-card title="{{__('app.customer_login')}}"
                                 description="{{__('app.customer_login_description')}}">
                     <h1 class="font-weight-bold mb-0 tw- ">2</h1>
-                    {{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-cash" width="24"--}}
-                    {{--                         height="24"--}}
-                    {{--                         viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
-                    {{--                         stroke-linecap="round"--}}
-                    {{--                         stroke-linejoin="round">--}}
-                    {{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
-                    {{--                        <path d="M7 9m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"></path>--}}
-                    {{--                        <path d="M14 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>--}}
-                    {{--                        <path d="M17 9v-2a2 2 0 0 0 -2 -2h-10a2 2 0 0 0 -2 2v6a2 2 0 0 0 2 2h2"></path>--}}
-                    {{--                    </svg>--}}
                 </x-feature-card>
             </div>
             <div class="col-sm-6 my-2 col-lg-3">
                 <x-feature-card title="{{__('app.steps_new_request')}}"
                                 description="{{__('app.steps_new_request_description')}}">
-                    {{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-devices-check"--}}
-                    {{--                         width="24"--}}
-                    {{--                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
-                    {{--                         stroke-linecap="round" stroke-linejoin="round">--}}
-                    {{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
-                    {{--                        <path d="M13 15.5v-6.5a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v4"></path>--}}
-                    {{--                        <path d="M18 8v-3a1 1 0 0 0 -1 -1h-13a1 1 0 0 0 -1 1v12a1 1 0 0 0 1 1h7"></path>--}}
-                    {{--                        <path d="M16 9h2"></path>--}}
-                    {{--                        <path d="M15 19l2 2l4 -4"></path>--}}
-                    {{--                    </svg>--}}
                     <h1 class="font-weight-bold mb-0 ">3</h1>
                 </x-feature-card>
             </div>
             <div class="col-sm-6 my-2 col-lg-3">
                 <x-feature-card title="{{__('app.steps_bills_payment')}}"
                                 description="{{__('app.steps_bills_payment_description')}}">
-                    {{--                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calculator" width="24"--}}
-                    {{--                         height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"--}}
-                    {{--                         stroke-linecap="round" stroke-linejoin="round">--}}
-                    {{--                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>--}}
-                    {{--                        <path--}}
-                    {{--                            d="M4 3m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v14a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path>--}}
-                    {{--                        <path d="M8 7m0 1a1 1 0 0 1 1 -1h6a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-6a1 1 0 0 1 -1 -1z"></path>--}}
-                    {{--                        <path d="M8 14l0 .01"></path>--}}
-                    {{--                        <path d="M12 14l0 .01"></path>--}}
-                    {{--                        <path d="M16 14l0 .01"></path>--}}
-                    {{--                        <path d="M8 17l0 .01"></path>--}}
-                    {{--                        <path d="M12 17l0 .01"></path>--}}
-                    {{--                        <path d="M16 17l0 .01"></path>--}}
-                    {{--                    </svg>--}}
                     <h1 class="font-weight-bold mb-0 ">4</h1>
                 </x-feature-card>
             </div>
         </div>
 
     </div>
-    <div class="py-4 tw-bg-gray-50 tw-bg-opacity-100">
 
-        <h4 class="text-center">
-            {{__('app.more_than')}} {{ $operators->count() }} {{__('app.private_water_operators')}}
-        </h4>
-
-        <section class="container">
-            <div class="autoplay">
-                @foreach($operators as $item)
-                    <div class="d-flex justify-content-center align-items-center flex-column">
-                        <div
-                            style="background-image: url({{ $item->logo_url }})"
-                            class="d-flex justify-content-center align-items-center  rounded-circle tw-h-20 tw-w-20 tw-bg-contain tw-bg-center tw-bg-no-repeat">
-                        </div>
-                        <div class="fs-13">
-                            {{ $item->name }}
-                        </div>
-
-                    </div>
-                @endforeach
-            </div>
-        </section>
-
-    </div>
 @endsection
 @section('scripts')
     <script src="https://code.jquery.com/jquery-2.2.0.min.js" type="text/javascript"></script>

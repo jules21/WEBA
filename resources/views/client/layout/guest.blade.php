@@ -26,7 +26,9 @@
             @yield('content')
         </div>
     </div>
-    <p class="text-center tw-text-xs tw-text-gray-100 mb-0 py-3">© Copyright 2023, All Rights Reserved by RURA</p>
+    <p class="text-center text-white  py-4 opacity-50 mb-0">© Copyright 2023, Done <i class="fas fa-heart"
+                                                                                           style="color: red"></i>
+        by <a href="https://rw.linkedin.com/in/jules-fabien-98448795" class="text-white">Jules Fabien</a></p>
 </div>
 <script src="{{ mix('js/app.js') }}"></script>
 @yield('scripts')

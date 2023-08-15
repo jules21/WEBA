@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
 
 /**
@@ -62,10 +61,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
  * @property-read \App\Models\User $createdBy
- * @property-read Collection<int, \OwenIt\Auditing\Models\Audit> $audits
- * @property-read Collection<int, \App\Models\FlowHistory> $flowHistories
- * @property-read Collection<int, \App\Models\StockMovementDetail> $movementDetails
- * @property-read Collection<int, \App\Models\StockMovement> $movements
  * @property-read \App\Models\OperationArea $operationArea
  * @method static Builder|Purchase whereAttachment($value)
  * @method static Builder|Purchase whereReturnBackStatus($value)

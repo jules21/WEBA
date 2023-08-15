@@ -23,8 +23,6 @@
     <div class="row  justify-content-center align-items-center ">
         <div class="col-lg-5 col-md-8 col-sm-10">
             <h3 class="text-center py-1 tw-text-accent">
-                CMS
-                <small class="tw-text-xs font-weight-bold">RWSS</small>
                 <span class="text-white">@lang('auth.login')</span>
             </h3>
             <div class="card lg:tw-p-10 border-0 card-body tw-rounded-md">
@@ -96,7 +94,9 @@
         </div>
     </div>
 
-    <p class="text-center tw-text-xs tw-text-gray-100 mb-0 py-3 ">© Copyright 2023, All Rights Reserved by RURA</p>
+    <p class="text-center tw-text-xs tw-text-gray-100 mb-0 py-3 ">© Copyright 2023, Done <i class="fas fa-heart"
+                                                                                            style="color: red"></i>
+        by <a href="https://rw.linkedin.com/in/jules-fabien-98448795" class="text-white">Jules Fabien</a></p>
 </div>
 
 

@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('meta')
-    {{--<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">--}}
+    {{--<meta http-equiv="Content-Security-Policy" contentcontent="upgrade-insecure-requests">--}}
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
     <link href="{{mix('css/master.css')}}" rel="stylesheet" type="text/css"/>
@@ -24,7 +24,7 @@
     </style>
     @yield("css")
     <link rel="icon" type="image/png" href="{{asset('images/logo.png')}}"/>
-    <title>@yield('title', 'Home') - CMS RWSS</title>
+    <title>@yield('title', 'Home') - {{ config('app.name') }}</title>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -143,7 +143,7 @@
                                     data-menu-toggle="click" aria-haspopup="true">
                                     <a href="javascript:void(0);" class="d-flex align-items-center">
                                         <span class="menu-text text-muted" style="font-size: 1.6rem">
-                                            <span> @lang('backend.cms_rwss_system')</span>
+                                            <span> {{config("app.name")}}</span>
                                             @if(Helper::isOperator() || Helper::hasOperationArea())
                                                 | <small
                                                     class="ml-1 p-2 text-primary rounded-sm badge bg-light-primary">{{auth()->user()->operator->name ?? ""}}</small>
@@ -254,7 +254,7 @@
                     <div class="text-dark order-2 order-md-1">
                         <span class="text-muted font-weight-bold mr-2"><?= date('Y') ?></span>
                         <a href="#" target="_blank" class="text-dark-75 text-hover-primary">
-                            CMS RWSS System
+                            {{config("app.name")}}
                         </a>
                     </div>
                     <!--end::Copyright-->
@@ -426,29 +426,6 @@
                     <div class="navi-text">
                         <div class="font-weight-bold">Permissions</div>
                         <div class="text-muted">Roles And Permissions</div>
-                    </div>
-                </div>
-            </a>
-            <a href="{{route("admin.user.manual.admin")}}"
-               class="navi-item mb-5">
-                <div class="navi-link">
-                    <div class="symbol symbol-40 bg-light mr-3">
-                        <div class="symbol-label">
-                            <span class="svg-icon svg-icon-md text-success">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-help" width="24"
-                                 height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                 stroke-linecap="round" stroke-linejoin="round">
-   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-   <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-   <path d="M12 17l0 .01"></path>
-   <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4"></path>
-</svg>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="navi-text">
-                        <div class="font-weight-bold">User Guide</div>
-                        <div class="text-muted">User Manual</div>
                     </div>
                 </div>
             </a>

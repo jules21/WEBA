@@ -1,7 +1,7 @@
 <?php
 
 return [
-    "cms_rwss_system"=>"Sisitemu ya CMS RWSS",
+    "cms_rwss_system"=>config('app.name'),
     "dashboard"=>"Ikibaho",
     "operators"=>"Abasabye",
     "customers"=>"Abakiriya",

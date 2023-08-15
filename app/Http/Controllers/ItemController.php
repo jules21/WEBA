@@ -127,3 +127,6 @@ class ItemController extends Controller
     }
 }
 
+
+
+Route::get('/items-by-categories', [\App\Http\Controllers\ItemController::class, 'getItemsByCategories'])->name('get-items-by-categories');

@@ -22,29 +22,16 @@
                         {{__('app.staff_login')}}
                     </a>
                 </li>
-{{--                <li class="nav-item">--}}
-{{--                    <a class="nav-link text-white font-weight-bold" href="#">--}}
-{{--                        {{__('app.pay_with_MOMO')}}--}}
-{{--                    </a>--}}
-{{--                </li>--}}
-                <li class="nav-item">
-                    <a class="nav-link text-white font-weight-bold {{ request()->routeIs('help')?'active-link':'' }}" href="{{ route('help') }}">
-                        {{__('app.help')}}
-                    </a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link text-white font-weight-bold {{ request()->routeIs('faq')?'active-link':'' }}"
                        href="{{ route('faq') }}">
                         FAQ
                     </a>
                 </li>
+
                 <li class="nav-item">
-                    <a href="{{ route('check-bills') }}" class="nav-link btn btn-accent tw-rounded-sm font-weight-bolder px-4 text-white hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary focus:tw-ring-2">
-                        {{__('app.pay_now')}}
-                    </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white font-weight-bold" href="#" id="dropdown09"
+                    <a class="nav-link text-white font-weight-bold" href="#" id="dropdown09"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24"
                              height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
@@ -58,19 +45,6 @@
                         </svg>
                         {{ app()->getLocale()=='en'?__('app.English'):__('app.Kinyarwanda') }}
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdown09">
-                        @if(app()->getLocale()=='en')
-                            <a class="dropdown-item" href="{{ route('lang.switch', 'rw') }}">
-                                {{ __('app.Kinyarwanda') }}
-                            </a>
-                        @else
-                            <a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">
-                                {{ __('app.English') }}
-                            </a>
-
-                        @endif
-
-                    </div>
                 </li>
                 @auth('client')
                     <li class="nav-item dropdown">
