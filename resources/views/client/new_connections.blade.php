@@ -23,9 +23,7 @@
             {{ isset($request)?'Edit':trans('app.request') }} @lang('app._new_connection')
         </h4>
         <div class="tw-text-sm alert alert-info d-flex align-items-center tw-gap-2">
-            <i class="ti ti-info-circle tw-text-[24px]"></i> @lang('app.fill_the_form_below_to_request_new_connection_at')
-            <strong>{{ $operator->name }} </strong> @lang('app.in')
-            <strong>{{ $operationArea->district->name }}</strong> @lang('app.district.')
+            <i class="ti ti-info-circle tw-text-[24px]"></i> @lang('app.fill_the_form_below_to_request_new_connection')
         </div>
 
         <form
@@ -100,13 +98,40 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="form-group">
+                        <label for="province_id">@lang('app.province')
+                            <x-required-sign/>
+                        </label>
+                        <select name="province_id" id="province_id" class="form-control select2" required
+                                style="width:100% !important;">
+                            <option value="">@lang('app.select_province')</option>
+                            @foreach($provinces ?? [] as $item)
+                                <option
+                                    {{ isset($request) && $request->province_id == $item->id ? 'selected' : '' }}
+                                    value="{{ $item->id }}">{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
+                        <label for="district_id">@lang('app.district')
+                            <x-required-sign/>
+                        </label>
+                        <select name="district_id" id="district_id" class="form-control select2" required
+                                style="width:100% !important;">
+                            <option value="">@lang('app.select_district')</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group">
                         <label for="sector_id">@lang('app.sector')
                             <x-required-sign/>
                         </label>
                         <select name="sector_id" id="sector_id" class="form-control select2" required
                                 style="width:100% !important;">
                             <option value="">@lang('app.select_sector')</option>
-                            @foreach($sectors as $item)
+                            @foreach($sectors ?? [] as $item)
                                 <option
                                     {{ isset($request) && $request->sector_id == $item->id ? 'selected' : '' }}
                                     value="{{ $item->id }}">{{ $item->name }}</option>

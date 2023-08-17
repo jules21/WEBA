@@ -28,6 +28,8 @@ class ValidateNewConnectionRequest extends FormRequest
             'meter_qty' => ['required', 'numeric', 'min:1'],
             'upi' => ['required', 'string'],
             'upi_attachment' => ['required_if:id,0', 'file', 'mimes:pdf,jpg,jpeg,png'],
+            'province_id' => ['required'],
+            'district_id' => ['required'],
             'sector_id' => ['required'],
             'cell_id' => ['required'],
             'village_id' => ['nullable'],

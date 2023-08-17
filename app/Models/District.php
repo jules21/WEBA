@@ -27,11 +27,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|District whereUpdatedAt($value)
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OperationArea> $operationAreas
  * @property-read int|null $operation_areas_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Sector> $sectors
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OperationArea> $operationAreas
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Sector> $sectors
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OperationArea> $operationAreas
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Sector> $sectors
  * @mixin \Eloquent
  */
 class District extends Model
@@ -46,5 +41,10 @@ class District extends Model
     public function operationAreas(): HasMany
     {
         return $this->hasMany(OperationArea::class);
+    }
+
+    public function province(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Province::class);
     }
 }

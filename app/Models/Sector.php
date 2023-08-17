@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Sector whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Sector whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Sector whereUpdatedAt($value)
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cell> $cells
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cluster> $clusters
  * @property-read int|null $clusters_count
  * @property-read \App\Models\District $district

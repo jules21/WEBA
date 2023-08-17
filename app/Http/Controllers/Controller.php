@@ -7,6 +7,7 @@ use App\Models\ItemSellingPrice;
 use App\Models\ItemSellPrice;
 use App\Models\PaymentConfiguration;
 use App\Models\PaymentMapping;
+use App\Models\Province;
 use App\Models\Request as AppRequest;
 use App\Models\RequestType;
 use App\Models\RoadCrossType;
@@ -94,7 +95,7 @@ class Controller extends BaseController
             ->create([
                 'type' => $req->getClassName(),
                 'status' => $status,
-                'user_id' => auth()->id() ?? null,
+                'user_id' => auth('web')->id() ?? null,
                 'comment' => $message,
                 'attachment' => $fileName,
                 'is_comment' => $isComment,
@@ -148,4 +149,11 @@ class Controller extends BaseController
 
         return $movement ? $movement->unit_price : 0;
     }
+
+    public function getProvinces()
+    {
+        return Province::query()->get();
+    }
+
+
 }

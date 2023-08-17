@@ -17,13 +17,13 @@
                 <div>
                     <div class="mb-4">
                         <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-3xl md:tw-leading-loose font-weight-bolder md:mb-3  ">
-                            WATER ELECTRONIC BILLING APP
+                            WATER ELECTRONIC BILLING APP(WEBA)
                         </h1>
-                        <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-4xl md:tw-leading-loose font-weight-bolder md:mb-2  ">
-                            WEBA
-                        </h1>
+{{--                        <h1 class="text-white tw-text-xl md:tw-text-2xl lg:tw-text-4xl md:tw-leading-loose font-weight-bolder md:mb-2  ">--}}
+{{--                            WEBA--}}
+{{--                        </h1>--}}
                     </div>
-                    <h2 class="mb-4  tw-text-sm md:tw-text-2xl lg:tw-text-2xl text-accent font-weight-bolder tw-tracking-widest text-uppercase">
+                    <h2 class="mb-4  tw-text-sm md:tw-text-2xl lg:tw-text-xl text-accent font-weight-bolder tw-tracking-widest text-uppercase">
                         {{__('app.for_rural_water_supply_services')}}
                     </h2>
                 </div>
@@ -154,7 +154,7 @@
                 </x-feature-card>
             </div>
             <div class="col-sm-6 my-2 col-lg-3">
-                <x-feature-card title="{{__('app.steps_bills_payment')}}"
+                <x-feature-card title="Check Bills"
                                 description="{{__('app.steps_bills_payment_description')}}">
                     <h1 class="font-weight-bold mb-0 ">4</h1>
                 </x-feature-card>

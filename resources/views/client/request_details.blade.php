@@ -134,16 +134,6 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-xl-4">
-                <div class="form-group">
-                    <label class="font-weight-bold">
-                        @lang('app.operating_area:')
-                    </label>
-                    <div class="form-control-plaintext py-0">
-                        {{ $request->operationArea->name }}
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="row">

@@ -39,12 +39,12 @@
                     <a class="nav-link d-flex tw-gap-1 align-items-center btn btn-accent btn-sm text-white px-4 tw-rounded-sm tw-font-semibold " target="_blank"
                        href="{{ route('check-bills') }}">
                         <span>
-                            @lang('app.pay_now')
+                            @lang('app.Check_bills')
                         </span>
                     </a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle text-white font-weight-bold" href="#" id="dropdown09" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link  text-white font-weight-bold" href="#" id="dropdown09"  aria-haspopup="true" aria-expanded="false">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M4 5h7"></path>
@@ -57,10 +57,10 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdown09">
                         @if(app()->getLocale()=='en')
-                            <a class="dropdown-item {{ app()->getLocale()=='rw'?'active':'' }}"
-                               href="{{ route('lang.switch', 'rw') }}">
-                                {{ __('app.Kinyarwanda') }}
-                            </a>
+{{--                            <a class="dropdown-item {{ app()->getLocale()=='rw'?'active':'' }}"--}}
+{{--                               href="{{ route('lang.switch', 'rw') }}">--}}
+{{--                                {{ __('app.Kinyarwanda') }}--}}
+{{--                            </a>--}}
                         @else
                             <a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">
                                 {{ __('app.English') }}

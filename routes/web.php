@@ -492,14 +492,14 @@ Route::group(['prefix' => 'client', 'as' => 'client.'], function () {
         //client change password
         Route::post('/change-password', [ClientsController::class, 'updatePassword'])->name('update-password');
 
-        Route::post('/new-connection/{operator}', [ClientRequestsController::class, 'requestNewConnection'])
+        Route::post('/new-connection', [ClientRequestsController::class, 'requestNewConnection'])
             ->name('request-new-connection');
         Route::get('/requests/{request}/details', [ClientRequestsController::class, 'details'])->name('request-details');
         Route::get('/requests/{request}/edit', [ClientRequestsController::class, 'edit'])->name('requests.edit');
         Route::put('/requests/{appRequest}/update', [ClientRequestsController::class, 'update'])->name('requests.update');
 
         Route::get('/billings', App\Http\Livewire\Client\ClientBilling::class)->name('billings');
-        Route::get('/payments', Payments::class)->name('payments');
+//        Route::get('/payments', Payments::class)->name('payments');
 
         Route::get('/requests', [ClientsController::class, 'requests'])->name('requests');
         Route::get('/issues', [ClientIssuesController::class, 'index'])->name('issues-reported');

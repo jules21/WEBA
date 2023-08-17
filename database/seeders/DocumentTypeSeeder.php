@@ -8,6 +8,7 @@ use Illuminate\Database\Seeder;
 
 class DocumentTypeSeeder extends Seeder
 {
+    use Traits\TruncateTable;
     /**
      * Run the database seeds.
      *
@@ -18,6 +19,8 @@ class DocumentTypeSeeder extends Seeder
         if (DocumentType::query()->exists()) {
             return;
         }
+
+        $this->truncate('document_types');
 
         foreach (IdType::get() as $item) {
             DocumentType::query()

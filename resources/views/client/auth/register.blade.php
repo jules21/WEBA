@@ -322,19 +322,19 @@
 
         let $btnCheckIdDetails = $('#btnCheckIdDetails');
         let $name = $('#name');
-        $documentTypeId.on('change', function () {
-            let docTypeId = $(this).val();
-            $name.val("");
-            if (docTypeId === "{{ config('app.NATIONAL_ID') }}") {
-                $inputDocNumber.attr('maxlength', '16');
-                $name.attr('disabled', true);
-                $btnCheckIdDetails.show();
-            } else {
-                $inputDocNumber.attr('maxlength', '21');
-                $name.attr('disabled', false);
-                $btnCheckIdDetails.hide();
-            }
-        });
+        {{--$documentTypeId.on('change', function () {--}}
+        {{--    let docTypeId = $(this).val();--}}
+        {{--    $name.val("");--}}
+        {{--    if (docTypeId === "{{ config('app.NATIONAL_ID') }}") {--}}
+        {{--        $inputDocNumber.attr('maxlength', '16');--}}
+        {{--        $name.attr('disabled', true);--}}
+        {{--        $btnCheckIdDetails.show();--}}
+        {{--    } else {--}}
+        {{--        $inputDocNumber.attr('maxlength', '21');--}}
+        {{--        $name.attr('disabled', false);--}}
+        {{--        $btnCheckIdDetails.hide();--}}
+        {{--    }--}}
+        {{--});--}}
 
         $docNumber.on('keyup', function () {
             if (globalDocNumber !== $(this).val()) {

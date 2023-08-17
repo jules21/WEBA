@@ -29,6 +29,11 @@
                         FAQ
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('check-bills') }}" class="nav-link btn btn-accent tw-rounded-sm font-weight-bolder px-4 text-white hover:tw-bg-accent hover:tw-ring-2 tw-ring-offset-2 tw-ring-accent/20 tw-ring-offset-primary focus:tw-ring-2">
+                        {{__('app.Check_bills')}}
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link text-white font-weight-bold" href="#" id="dropdown09"

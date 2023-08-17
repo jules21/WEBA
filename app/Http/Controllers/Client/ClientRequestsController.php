@@ -19,29 +19,19 @@ class ClientRequestsController extends Controller
 {
     public function newConnection()
     {
-        $operator = Operator::query()->findOrFail(\request('op_id'));
-        $districtId = \request('district');
-        $operationArea = OperationArea::query()
-            ->where([
-                ['operator_id', '=', $operator->id],
-                ['district_id', '=', $districtId]
-            ])->first();
-        $sectors = $this->getSectors($operationArea);
-
-
         $requestTypes = $this->getRequestsTypes();
         $waterUsage = $this->getWaterUsages();
         $roadTypes = $this->getRoadTypes();
+        $provinces = $this->getProvinces();
 
-        $action = route('client.request-new-connection', encryptId($operator->id)) . '?op_id=' . encryptId($operationArea->id);
+        $action = route('client.request-new-connection');
         return view('client.new_connections', [
-            'operator' => $operator,
-            'sectors' => $sectors,
+
             'requestTypes' => $requestTypes,
             'waterUsage' => $waterUsage,
             'roadTypes' => $roadTypes,
-            'operationArea' => $operationArea,
-            'action' => $action
+            'action' => $action,
+            'provinces' => $provinces
         ]);
     }
 
@@ -49,16 +39,11 @@ class ClientRequestsController extends Controller
     /**
      * @throws Throwable
      */
-    public function requestNewConnection(ValidateNewConnectionRequest $connectionRequest, Operator $operator)
+    public function requestNewConnection(ValidateNewConnectionRequest $connectionRequest)
     {
         $data = $connectionRequest->validated();
         $sector_id = $data['sector_id'];
-        $opId = decryptId(\request('op_id'));
 
-        $operationArea = OperationArea::query()->findOrFail($opId);
-        if (is_null($operationArea))
-            return back()->with('error', 'No operation area found for this operator,please contact the operator for more information.')
-                ->withInput($connectionRequest->all());
 
         if ($connectionRequest->hasFile('upi_attachment')) {
             $dir = $connectionRequest->file('upi_attachment')->store(Request::UPI_ATTACHMENT_PATH);
@@ -67,18 +52,18 @@ class ClientRequestsController extends Controller
         $data['request_type_id'] = RequestType::NEW_CONNECTION;
         DB::beginTransaction();
 
+        $operator = Operator::query()->first();
         $customer = $this->saveCustomer($operator);
         $request = Request::create([
             'operator_id' => $operator->id,
             'customer_id' => $customer->id,
-            'operation_area_id' => $operationArea->id,
             'request_type_id' => $data['request_type_id'],
             'water_usage_id' => $data['water_usage_id'],
             'meter_qty' => $data['meter_qty'],
             'upi' => $data['upi'],
             'upi_attachment' => $data['upi_attachment'],
-            'province_id' => $operationArea->district->province_id,
-            'district_id' => $operationArea->district_id,
+            'province_id' => $data['province_id'],
+            'district_id' => $data['district_id'],
             'sector_id' => $sector_id,
             'cell_id' => $data['cell_id'],
             'village_id' => $data['village_id'],
