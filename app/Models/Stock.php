@@ -29,8 +29,6 @@ use OwenIt\Auditing\Contracts\Auditable;
  * @property-read \App\Models\OperationArea $operationArea
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @property-read int|null $audits_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \OwenIt\Auditing\Models\Audit> $audits
  * @mixin \Eloquent
  */
 class Stock extends Model implements Auditable
@@ -50,21 +48,8 @@ class Stock extends Model implements Auditable
         return $this->where('id', $id)->firstOrFail();
     }
 
-    protected $appends = ['operator'];
-
     public function item(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Item::class);
-    }
-
-    public function operationArea(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(OperationArea::class);
-    }
-
-    //has many through inverse
-    public function getOperatorAttribute()
-    {
-        return $this->operationArea->operator;
     }
 }

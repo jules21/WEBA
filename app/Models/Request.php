@@ -277,7 +277,9 @@ class Request extends Model implements Auditable
 
     public function canBeReviewed(): bool
     {
-        return $this->status != Status::PENDING && !is_null($this->water_network_id) && auth()->user()->operation_area && $this->pipeCrosses->count() > 0;
+        //ToDo: may be ammended later
+        return $this->status != Status::PENDING;
+
     }
 
     public function canBeApprovedByMe(): bool
@@ -291,23 +293,20 @@ class Request extends Model implements Auditable
         } elseif ($user->can(Permission::AssignMeterNumber) && $this->status == Status::APPROVED && $this->meterNumbers->count() > 0) {
             return true;
         }
-
         return false;
     }
 
     public function canEditMeterNumber(): bool
     {
         return $this->status == Status::APPROVED
-            && auth()->user()->can(Permission::AssignMeterNumber)
-            && !$this->pendingPayments(PaymentType::METERS_FEE);
+            && auth()->user()->can(Permission::AssignMeterNumber);
     }
 
     public function canAssignMeterNumber(): bool
     {
         return $this->meterNumbers->count() < $this->meter_qty
-            && $this->status == Status::APPROVED
-            && auth()->user()->can(Permission::AssignMeterNumber)
-            && !$this->pendingPayments(PaymentType::METERS_FEE);
+            && $this->status == Status::ASSIGNED
+            && auth()->user()->can(Permission::AssignMeterNumber);
     }
 
     public function waterNetwork(): BelongsTo
@@ -382,7 +381,7 @@ class Request extends Model implements Auditable
 
     public function canMeterNumberBeShown(): bool
     {
-        return !in_array($this->status, [Status::PENDING, Status::ASSIGNED, Status::PROPOSE_TO_APPROVE]);
+        return !in_array($this->status, [Status::PENDING, Status::PROPOSE_TO_APPROVE]);
     }
 
     public function getPreviousStatus(): ?string

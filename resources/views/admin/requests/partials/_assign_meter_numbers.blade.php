@@ -43,8 +43,8 @@
                     <tr>
                         <td>{{ $item->subscription_number }}</td>
                         <td>{{ $item->meter_number }}</td>
-                        <td>{{ $item->itemCategory->name }}</td>
-                        <td>{{ $item->item->name }}</td>
+                        <td>{{ optional(optional($item->item)->category)->name }}</td>
+                        <td>{{ optional($item->item)->name }}</td>
                         <td>{{ number_format($item->item->selling_price) }}</td>
                         @if($request->canEditMeterNumber())
                             <td>

@@ -115,7 +115,6 @@ class Purchase extends Model implements Auditable
     public function canBeReviewed(): bool
     {
         return $this->status === Status::SUBMITTED
-            && auth()->user()->operation_area
             && auth()->user()->can(Permission::ApproveStockIn);
     }
 

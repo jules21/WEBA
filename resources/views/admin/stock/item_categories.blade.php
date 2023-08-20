@@ -129,13 +129,7 @@
                                 <input type="text" name="name" class="form-control" aria-describedby="emailHelp"
                                        placeholder="Category name">
                             </div>
-                            <div class="form-group">
-                                <label>Is Meter</label>
-                                <select name="is_meter" class="form-control">
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                                </select>
-                            </div>
+                            <input type="hidden" name="is_meter" class="form-control" value="1">
 
                         </div>
                         <div class="modal-footer">
@@ -173,14 +167,8 @@
                                        placeholder="Category name">
                             </div>
                             <div class="row">
-                                <div class="col-6 form-group">
-                                    <label class="checkbox">
-                                        <input type="hidden" name="is_meter" value="0">
-                                        <input type="checkbox" name="is_meter" id="_is_meter" value="1">
-                                        <span class="mr-2"></span>Is Meter
+                                <input type="hidden" name="is_meter" id="_is_meter" value="1">
 
-                                    </label>
-                                </div>
                                 <div class="col-6 form-group">
                                     <label class="checkbox">
                                         <input type="hidden" name="is_active" value="0">

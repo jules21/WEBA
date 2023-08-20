@@ -109,11 +109,6 @@ class ItemsDataTable extends DataTable
             Column::make('description'),
             Column::make('item_category_id')
                 ->title('Category'),
-            Column::make('packaging_unit_id')
-                ->title('Packaging Unit'),
-            Column::make('selling_price'),
-            //            Column::make('vatable'),
-            //            Column::make('vat_rate'),
             Column::make('is_active')
                 ->title('Status'),
             Column::computed('action')

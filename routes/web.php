@@ -181,38 +181,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'auth'], fu
 
         Route::get('/export', [PurchaseController::class, 'exportDataToExcel'])->name('export-data-to-excel');
     });
-    Route::group(['prefix' => 'accounting', 'as' => 'accounting.'], function () {
-        Route::get('/chart-of-accounts', [ChartAccountController::class, 'index'])->name('chart-of-accounts');
-        Route::get('/bank-accounts', [PaymentServiceProviderAccountController::class, 'index'])->name('bank-accounts.index');
-        Route::post('/bank-accounts/store', [PaymentServiceProviderAccountController::class, 'store'])->name('bank-accounts.store');
-        Route::delete('/bank-accounts/{id}/delete', [PaymentServiceProviderAccountController::class, 'destroy'])->name('bank-accounts.delete');
-        Route::get('/bank-accounts/{paymentServiceProviderAccount}/show', [PaymentServiceProviderAccountController::class, 'show'])->name('bank-accounts.show');
-        Route::get('/bank-accounts/{paymentServiceProviderAccount}/edit', [PaymentServiceProviderAccountController::class, 'accountsByServiceProvider'])
-            ->name('provider-service-by-accounts');
-
-        Route::get('/expenses', [ExpenseController::class, 'index'])->name('expenses');
-        Route::post('/expenses/store', [ExpenseController::class, 'store'])->name('expenses.store');
-        Route::get('/expenses/{expense}/show', [ExpenseController::class, 'show'])->name('expenses.show');
-        Route::delete('/expenses/{expense}/delete', [ExpenseController::class, 'destroy'])->name('expenses.delete');
-        Route::get('/expenses/{id}/expense-ledgers', [ExpenseController::class, 'getExpenseLedgers'])->name('expense-ledgers');
-
-        Route::get('/cash-movements', [CashMovementController::class, 'index'])->name('cash-movements.index');
-        Route::post('/cash-movements/store', [CashMovementController::class, 'store'])->name('cash-movements.store');
-        Route::delete('/cash-movements/{id}/delete', [CashMovementController::class, 'destroy'])->name('cash-movements.delete');
-        Route::get('/cash-movements/{cashMovement}/show', [CashMovementController::class, 'show'])->name('cash-movements.show');
-
-        Route::get('/journal-entries', [JournalEntryController::class, 'index'])->name('journal-entries');
-        Route::post('/journal-entries/store', [JournalEntryController::class, 'store'])->name('journal-entries.store');
-        Route::get('/journal-entries/{journalEntry}/show', [JournalEntryController::class, 'show'])->name('journal-entries.show');
-        Route::delete('/journal-entries/{journalEntry}/delete', [JournalEntryController::class, 'destroy'])->name('journal-entries.delete');
-
-        Route::get('/ledger-migration', [LedgerMigrationController::class, 'index'])->name('ledger-migration.index');
-        Route::post('/ledger-migration', [LedgerMigrationController::class, 'store'])->name('ledger-migration.store');
-        Route::get('/ledger-migration/{ledgerMigration}/show', [LedgerMigrationController::class, 'show'])->name('ledger-migration.show');
-        Route::delete('/ledger-migration/{ledgerMigration}/delete', [LedgerMigrationController::class, 'destroy'])->name('ledger-migration.delete');
-        Route::post('/ledger-migration/validate', [LedgerMigrationController::class, 'validateData'])->name('ledger-migration.validate');
-
-    });
     Route::prefix('user-management')->group(function () {
         //roles routes
         Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');

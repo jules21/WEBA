@@ -173,36 +173,6 @@
             </div>
         </div>
 
-        @if(!$request->equipment_payment)
-            <h6 class="text-primary font-weight-bold mt-4">@lang('app.materials')</h6>
-            <div class="table-responsive border rounded-lg">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th class="border-top-0 text-muted text-uppercase">@lang('app.name')</th>
-                        <th class="border-top-0 text-muted text-uppercase">@lang('app.price')</th>
-                        <th class="border-top-0 text-muted text-uppercase">@lang('app.qty')</th>
-                        <th class="border-top-0 text-muted text-uppercase">@lang('app.total')</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($request->items as $meter)
-                        <tr>
-                            <td>{{ $meter->item->name }}</td>
-                            <td>{{ number_format($meter->unit_price) }}</td>
-                            <td>{{ $meter->quantity }}</td>
-                            <td>{{ number_format($meter->total) }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="3" class="text-center">@lang('app.no_data_found')</td>
-                        </tr>
-                    @endforelse
-                    </tbody>
-                </table>
-            </div>
-        @endif
-
         <div class="mt-4">
             <h6 class="text-primary font-weight-bold">@lang('app.assigned_meters')</h6>
             <div class="table-responsive border rounded-lg">

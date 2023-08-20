@@ -179,21 +179,21 @@ class RequestReviewController extends Controller
         $meters = $request->meterNumbers()->with('item')->get();
         $metersConfig = getPaymentConfiguration(PaymentType::METERS_FEE, $request->request_type_id);
         $sum = $meters->sum('item.selling_price');
-        $dec = $request->paymentDeclarations()
-            ->create([
-                'amount' => $sum,
-                'status' => PaymentDeclaration::ACTIVE,
-                'payment_configuration_id' => $metersConfig->id,
-                'type' => 'Meters Fee',
-                'balance' => $sum,
-                'payment_reference' => 'N/A',
-            ]);
-        $ref = $dec->generateReferenceNumber();
-        $formatted = number_format($sum);
-        $psp = $this->getPsp($metersConfig);
-        $subscriptionNumbers = $request->meterNumbers->pluck('subscription_number')->implode(', ');
-        $message = "You have to pay the meters fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp. Subscription numbers of your meters are $subscriptionNumbers ";
-        $request->customer->notify(new SmsMailNotification($message));
+//        $dec = $request->paymentDeclarations()
+//            ->create([
+//                'amount' => $sum,
+//                'status' => PaymentDeclaration::ACTIVE,
+//                'payment_configuration_id' => $metersConfig->id,
+//                'type' => 'Meters Fee',
+//                'balance' => $sum,
+//                'payment_reference' => 'N/A',
+//            ]);
+//        $ref = $dec->generateReferenceNumber();
+//        $formatted = number_format($sum);
+//        $psp = $this->getPsp($metersConfig);
+//        $subscriptionNumbers = $request->meterNumbers->pluck('subscription_number')->implode(', ');
+//        $message = "You have to pay the meters fee of $formatted. Please use the reference number $ref to make the payment. You can pay via $psp. Subscription numbers of your meters are $subscriptionNumbers ";
+//        $request->customer->notify(new SmsMailNotification($message));
     }
 
     public function declareMaterialsFee(Collection $requestItems, AppRequest $request, string $shortenedUrl): void
@@ -272,7 +272,7 @@ class RequestReviewController extends Controller
                             'type' => $request->getClassName(),
                             'status' => 'pending',
                             'item_id' => $meter->item_id,
-                            'unit_price' => $meter->item->selling_price,
+                            'unit_price' => $meter->item->selling_price ?? 0
                         ]);
                 });
             }

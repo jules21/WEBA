@@ -338,7 +338,6 @@ class PurchaseController extends Controller
     public function getCategories()
     {
         return ItemCategory::query()
-            ->where('operator_id', '=', auth()->user()->operator_id)
             ->orderBy('name')
             ->whereHas('items')
             ->get();
@@ -347,8 +346,7 @@ class PurchaseController extends Controller
     public function getItems()
     {
         return Item::query()
-            ->with('stock.operationArea')
-            ->where('operator_id', '=', auth()->user()->operator_id)
+            ->with('stock')
             ->orderBy('name')
             ->get();
     }

@@ -77,8 +77,7 @@ class DashboardController extends Controller
             })->count();
         $totalCustomers = Customer::where('operator_id', auth()->user()->operator_id)
             ->wherehas('connections')->count('doc_number');
-        $waterNetworks = WaterNetwork::query()
-            ->where('operator_id', auth()->user()->operator_id)->count();
+        $waterNetworks = 0;
         $requests = Request::query()
             ->where('operator_id', auth()->user()->operator_id)->get(['id', 'status']);
         $allRequests = $requests->count();

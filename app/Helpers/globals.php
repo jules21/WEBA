@@ -217,14 +217,6 @@ function purchaseBuilder($fromCount = false)
         ->when((request()->has('status') && request()->filled('status')), function ($query) {
             $query->where('status', '=', request()->status);
         })
-        ->when($user->operator_id, function ($query) use ($user) {
-            $query->whereHas('operationArea', function ($query) use ($user) {
-                $query->where('operator_id', $user->operator_id);
-            });
-        })
-        ->when($user->operation_area, function ($query) use ($user) {
-            $query->where('operation_area_id', $user->operation_area);
-        })
         ->when((request()->has('supplier_id') && request()->filled('supplier_id')), function ($query) {
             $query->where('supplier_id', '=', request()->supplier_id);
         })

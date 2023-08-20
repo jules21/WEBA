@@ -26,12 +26,11 @@ class ItemController extends Controller
             abort(403);
         }
         $items = Item::query()
-            ->where('operator_id', auth()->user()->operator_id)
-            ->select('items.*')->with('category', 'packagingUnit','stock.operationArea');
+            ->select('items.*');
         $dataTable = new ItemsDataTable($items);
 
         return $dataTable->render('admin.stock.items', [
-            'categories' => ItemCategory::query()->where('operator_id', auth()->user()->operator_id)->get(),
+            'categories' => ItemCategory::query()->get(),
             'units' => PackagingUnit::query()->get(),
         ]);
     }
@@ -102,7 +101,6 @@ class ItemController extends Controller
     public function itemsByCategory($categoryId)
     {
         return Item::query()
-            ->with('stock.operationArea')
             ->where('item_category_id','=', $categoryId)
             ->get();
     }
@@ -126,7 +124,3 @@ class ItemController extends Controller
         return $this->getItemLastUnitPrice($item);
     }
 }
-
-
-
-Route::get('/items-by-categories', [\App\Http\Controllers\ItemController::class, 'getItemsByCategories'])->name('get-items-by-categories');

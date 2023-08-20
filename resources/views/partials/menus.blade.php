@@ -71,7 +71,6 @@
                                 <span class="menu-text">@lang('backend.requests')</span>
                             </span>
                     </li>
-                    @if(auth()->user()->operation_area)
                         @can(\App\Constants\Permission::CreateRequest)
                             <x-menu-item title="New Connection" item-class="nav-create-request"
                                          :route="route('admin.requests.create')"/>
@@ -89,7 +88,7 @@
                             <x-menu-item title="Item Delivery" item-class="nav-item-delivery"
                                          :route="route('admin.requests.to-be-delivered')"/>
                         @endcan
-                    @endif
+
                     <x-menu-item title="All Requests" item-class="nav-all-requests"
                                  :route="route('admin.requests.index')"/>
 
@@ -98,8 +97,166 @@
             </div>
         </li>
     @endif
+    @if(Helper::isOperator())
+        @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems,
+        \App\Constants\Permission::ManageStocks,
+        \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment,
+        \App\Constants\Permission::ApproveAdjustment,
+        \App\Constants\Permission::ViewAdjustment,
+        \App\Constants\Permission::ManageSuppliers,
+        \App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn])
+            <li class="menu-section">
+                <h4 class="menu-text">Stock Management Section</h4>
+                <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+            </li>
+            @canany([\App\Constants\Permission::StockInItems,\App\Constants\Permission::ApproveStockIn, \App\Constants\Permission::ViewStockIn])
+                <li class="menu-item menu-item-submenu nav-purchases" aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:" class="menu-link menu-toggle">
+                    <span class="svg-icon menu-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tags" width="24"
+                             height="24"
+                             viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path
+                                d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z">
+                            </path>
+                            <path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116"></path>
+                            <path d="M6 9h-.01"></path>
+                        </svg>
+                    </span>
+                        <span class="menu-text">
+                        @lang('backend.stock_in')
+                    </span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                                @can(\App\Constants\Permission::StockInItems)
+                                    <li class="menu-item nav-create-purchase" aria-haspopup="true">
+                                        <a href="{{route('admin.purchases.create')}}" class="menu-link">
+                                            <i class="menu-bullet menu-bullet-dot">
+                                                <span></span>
+                                            </i>
+                                            <span class="menu-text">@lang('backend.create_new')</span>
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can(\App\Constants\Permission::ApproveStockIn)
+                                    <x-menu-item item-class="nav-my-purchases" :route="route('admin.purchases.index')"
+                                                 :title="__('backend.my_tasks')" :count="$data['purchases_tasks']">
+                                    </x-menu-item>
+                                @endcan
 
-    @canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles,
+                            <li class="menu-item nav-all-purchases" aria-haspopup="true">
+                                <a href="{{route('admin.purchases.index',['type'=>'all'])}}" class="menu-link">
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">
+                        @lang('backend.all')
+                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endcanany
+
+            @canany([\App\Constants\Permission::ManageItemCategories, \App\Constants\Permission::ManageItems,
+            \App\Constants\Permission::ManageStocks,
+            \App\Constants\Permission::ManageStockMovements, \App\Constants\Permission::CreateAdjustment,
+            \App\Constants\Permission::ApproveAdjustment,
+            \App\Constants\Permission::ViewAdjustment])
+                <li class="menu-item menu-item-submenu nav-stock-managements" aria-haspopup="true"
+                    data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <i class="menu-icon flaticon2-cube"></i>
+                        <span class="menu-text">Stock Management</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            <li class="menu-item menu-item-parent" aria-haspopup="true">
+                            <span class="menu-link">
+                                <span class="menu-text">OPM Management</span>
+                            </span>
+                            </li>
+                            @can(\App\Constants\Permission::ManageItemCategories)
+                                <li class="menu-item nav-item-categories" aria-haspopup="true">
+                                    <a href="{{ route('admin.stock.item-categories.index') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">@lang('backend.item_categories')</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can(\App\Constants\Permission::ManageItems)
+                                <li class="menu-item nav-items" aria-haspopup="true">
+                                    <a href="{{route('admin.stock.items.index')}}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">@lang('backend.items')</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can(\App\Constants\Permission::ManageStocks)
+                                <li class="menu-item nav-stock" aria-haspopup="true">
+                                    <a href="{{ route('admin.stock.stock-items.index') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">@lang('backend.stock')</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can(\App\Constants\Permission::ManageStockMovements)
+                                <li class="menu-item nav-stock-movements" aria-haspopup="true">
+                                    <a href="{{ route('admin.stock.stock-items.movements') }}" class="menu-link">
+                                        <i class="menu-bullet menu-bullet-dot">
+                                            <span></span>
+                                        </i>
+                                        <span class="menu-text">@lang('backend.stock_movements')</span>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </div>
+                </li>
+            @endcanany
+
+            @can('Manage Suppliers')
+                <li class="menu-item nav-suppliers">
+                    <a href="{{route('admin.suppliers')}}"
+                       class="menu-link">
+
+                        <span class="svg-icon menu-icon">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-truck-delivery"
+                               width="24" height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor"
+                               fill="none" stroke-linecap="round" stroke-linejoin="round">
+                               <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                               <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                               <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                               <path d="M5 17h-2v-4m-1 -8h11v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5"></path>
+                               <path d="M3 9l4 0"></path>
+                            </svg>
+                        </span>
+                        <span class="menu-text">
+                        Suppliers
+                    </span>
+                    </a>
+                </li>
+            @endcan
+        @endif
+
+    @endcanany
+
+@canany([\App\Constants\Permission::ManageSystemUsers, \App\Constants\Permission::ManageRoles,
     \App\Constants\Permission::ManagePermissions, \App\Constants\Permission::ManageDistrictUsers,])
         <li class="menu-section">
             <h4 class="menu-text">System Users Section</h4>

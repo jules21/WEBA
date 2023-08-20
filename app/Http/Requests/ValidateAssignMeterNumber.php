@@ -21,7 +21,7 @@ class ValidateAssignMeterNumber extends FormRequest
     public function rules(): array
     {
         return [
-            'item_category_id' => ['required', 'exists:item_categories,id'],
+//            'item_category_id' => ['required', 'exists:item_categories,id'],
             'item_id' => ['required', 'exists:items,id'],
             'meter_number' => [
                 'required',
@@ -34,7 +34,7 @@ class ValidateAssignMeterNumber extends FormRequest
     public function messages(): array
     {
         return [
-            'item_category_id.required' => 'Please select an item category',
+//            'item_category_id.required' => 'Please select an item category',
             'item_category_id.exists' => 'Please select a valid item category',
             'item_id.required' => 'Please select an item',
             'item_id.exists' => 'Please select a valid item',

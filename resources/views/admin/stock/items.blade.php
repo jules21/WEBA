@@ -61,7 +61,7 @@
         <div class="modal fade" id="addModal" tabindex="-1" category="dialog"
              aria-labelledby="exampleModalLabel"
              aria-hidden="true">
-            <div class="modal-dialog modal-lg" category="document">
+            <div class="modal-dialog" category="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Add new Item</h5>
@@ -96,20 +96,6 @@
                                             @endif
                                         @endforeach
                                     </select>
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label>Packaging Unit</label>
-                                    <select name="packaging_unit_id" class="form-control">
-                                        <option value="">--select--</option>
-                                        @foreach($units as $unit)
-                                            <option value="{{$unit->id}}">{{$unit->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label>Selling Price</label>
-                                    <input type="number" name="selling_price" class="form-control" aria-describedby="emailHelp"
-                                           placeholder="Selling Price">
                                 </div>
 
                                 <div class="col-12 form-group">

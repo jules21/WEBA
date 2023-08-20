@@ -102,20 +102,6 @@
                         Flow History
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link font-weight-bolder" id="payments-tab" data-toggle="tab" href="#payments">
-                    <span class="svg-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-receipt" width="24"
-                             height="24" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
-                             stroke-linecap="round" stroke-linejoin="round">
-                           <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                           <path
-                               d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2m4 -14h6m-6 4h6m-2 4h2"></path>
-                        </svg>
-                    </span>
-                        Payments
-                    </a>
-                </li>
             </ul>
 
             @if($request->status==\App\Constants\Status::PENDING && !$request->customer_initiated && auth()->user()->can(\App\Constants\Permission::CreateRequest))
@@ -135,33 +121,11 @@
                 @include('admin.requests.partials._request_details')
 
                 @if($request->canBeReviewed())
-
-                    @include('admin.requests.partials._equipments')
-                    @if($request->pendingPayments(\App\Models\PaymentType::METERS_FEE))
-                        <div class="alert alert-outline-warning alert-notice alert-custom">
-                            <div class="alert-icon text-warning">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="icon icon-tabler icon-tabler-shield-exclamation" width="24" height="24"
-                                     viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
-                                     stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path
-                                        d="M15.04 19.745c-.942 .551 -1.964 .976 -3.04 1.255a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 .195 6.015"></path>
-                                    <path d="M19 16v3"></path>
-                                    <path d="M19 22v.01"></path>
-                                </svg>
-                            </div>
-                            <div class="alert-text">
-                                Please make sure all pending payments are paid before assigning meter numbers to this
-                                request.
-                            </div>
-                        </div>
-                    @endif
                     @if($request->canMeterNumberBeShown())
                         @include('admin.requests.partials._assign_meter_numbers')
                     @endif
 
-                    @if( $request->canBeApprovedByMe() && auth()->user()->operation_area && $requestItems->count() >0)
+                    @if( $request->canBeApprovedByMe())
 
                         @include('admin.requests.partials._review_form')
 
@@ -256,118 +220,7 @@
 
                 </div>
             </div>
-            <div class="tab-pane fade" id="payments">
-                <div class="accordion accordion-solid  accordion-panel accordion-svg-toggle mb-3"
-                     id="accordionExample3">
-                    @forelse($request->paymentDeclarations as $payment)
-                        <div class="card border">
-                            <div class="card-header" id="headingOne{{$payment->id}}">
-                                <div class="card-title  bg-light rounded-bottom-0" data-toggle="collapse"
-                                     data-target="#collapseOne{{$payment->id}}">
-                                    <div class="d-flex flex-wrap align-items-center justify-content-between w-100">
-                                        <!--begin::Info-->
-                                        <div class="d-flex flex-column  py-2 w-75">
-                                            <!--begin::Title-->
-                                            <a href="#"
-                                               class="text-dark-75 font-weight-bold text-hover-primary font-size-lg mb-1">
-                                                {{ $payment->paymentConfig->paymentType->name }}
 
-                                                <span class="ml-3">
-                                                    {{ number_format($payment->amount) }} RWF
-                                                </span>
-                                            </a>
-                                            <!--end::Title-->
-                                            <!--begin::Data-->
-                                            <div>
-
-
-                                                <span>
-                                                    Payment Reference:
-                                                    <span
-                                                        class="font-weight-bold">
-                                                        {{ $payment->payment_reference }}
-                                                    </span>
-                                                </span>
-                                            </div>
-                                            <!--end::Data-->
-                                        </div>
-                                        <!--end::Info-->
-                                        <!--begin::Label-->
-                                        <span
-                                            class="label label-lg font-weight-bold label-light-{{ $payment->status_color }} label-inline rounded-pill mr-4">
-                                            {{ ucfirst($payment->status=='active'?'Not paid':$payment->status) }}
-                                        </span>
-                                        <!--end::Label-->
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="collapseOne{{$payment->id}}" class="collapse" data-parent="#accordionExample3">
-                                <div class="card-body">
-                                    @if($payment->paymentHistories->count() >0)
-                                        <div class="timeline timeline-6 mt-4">
-
-                                            @foreach($payment->paymentHistories as $item)
-                                                <div class="timeline-item align-items-start hover-opacity-70">
-                                                    <!--begin::Label-->
-                                                    <div
-                                                        class="timeline-label  text-dark-75 font-size-sm">
-                                                        {{ $item->created_at->format('h:i A') }}
-                                                    </div>
-                                                    <!--end::Label-->
-
-                                                    <!--begin::Badge-->
-                                                    <div class="timeline-badge mt-1">
-                                                        <i class="fa fa-chevron-up text-success"></i>
-                                                    </div>
-                                                    <!--end::Badge-->
-
-                                                    <!--begin::Text-->
-                                                    <div class="mx-3 d-flex flex-column w-100">
-                                                        <div class="mb-1 d-flex justify-content-between">
-                                                            <div>
-                                                                <span>Amount Paid</span>
-                                                                <span
-                                                                    class="label label-inline label-light-success rounded-pill font-weight-bolder">{{ number_format($item->amount) }} RWF</span>
-
-                                                            </div>
-                                                            <span
-                                                                class="label label-inline label-secondary rounded-pill font-weight-bolder">{{ $item->created_at->format('d M Y') }}</span>
-                                                        </div>
-                                                        <div class="mt-1 font-weight-bolder">
-                                                          <span>
-                                                                Payment Provider:
-                                                          </span>
-                                                            <span
-                                                                class="label label-inline label-light-primary rounded-pill font-weight-bolder">
-                                                                   {{ $item->mapping->account->paymentServiceProvider->name }}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <!--end::Text-->
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    @else
-                                        <div class="alert alert-light-info p-3 mt-4 mb-0 alert-custom">
-                                            <div class="alert-text">
-                                                No payment made yet.
-                                            </div>
-                                        </div>
-                                    @endif
-
-                                </div>
-                            </div>
-                        </div>
-                    @empty
-                        <div class="alert alert-light-info p-3 alert-custom">
-                            <div class="alert-text">
-                                No payment declaration yet.
-                            </div>
-                        </div>
-                    @endforelse
-                </div>
-
-            </div>
         </div>
     </div>
 
@@ -450,10 +303,6 @@
                             <label for="quantity">Quantity <x-required-sign/></label>
                             <input type="number" name="quantity" id="quantity" class="form-control"/>
                         </div>
-                        {{--      <div class="form-group">
-                                  <label for="unit_price">Unit Price</label>
-                                  <input type="number" name="unit_price" id="unit_price" disabled class="form-control"/>
-                              </div>--}}
 
 
                     </div>

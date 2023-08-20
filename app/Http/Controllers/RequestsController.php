@@ -279,7 +279,7 @@ class RequestsController extends Controller
         $flowHistories = $request->flowHistories->where('is_comment', '=', false);
 
         $requestItems = $request->items()
-            ->with('item.stock.operationArea')
+            ->with('item.stock')
             ->get();
 
         $items = Item::query()
@@ -299,7 +299,6 @@ class RequestsController extends Controller
             ->whereHas('items')
             ->where([
                 ['is_meter', '=', true],
-                ['operator_id', '=', auth()->user()->operator_id],
             ])
             ->get();
         $paymentConfig = getPaymentConfiguration(PaymentType::CONNECTION_FEE, RequestType::NEW_CONNECTION);
