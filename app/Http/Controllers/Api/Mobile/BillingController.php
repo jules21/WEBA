@@ -46,14 +46,14 @@ class BillingController extends Controller
                 'data' => null,
             ]);
         } else {
-            $requestRecord = $meterRequest->request;
-            if ($requestRecord->operator_id != auth()->user()->operator_id) {
-                return response()->json([
-                    'action' => 0,
-                    'message' => 'Your are not authorized to view this record',
-                    'data' => null,
-                ]);
-            }
+//            $requestRecord = $meterRequest->request;
+//            if ($requestRecord->operator_id != auth()->user()->operator_id) {
+//                return response()->json([
+//                    'action' => 0,
+//                    'message' => 'Your are not authorized to view this record',
+//                    'data' => null,
+//                ]);
+//            }
 
             $meterRequest->load('request.customer');
 

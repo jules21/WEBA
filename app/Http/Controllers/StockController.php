@@ -23,24 +23,7 @@ class StockController extends Controller
     public function index(Request $request)
     {
         $user = auth()->user();
-        $stock = Stock::with('operationArea', 'item', 'item.category');
-
-        $stock->when($user->operator_id, function ($query) use ($user) {
-            $query->whereHas('operationArea', function ($query) use ($user) {
-                $query->where('operator_id', $user->operator_id);
-            });
-        });
-        $stock->when($user->operation_area, function ($query) use ($user) {
-            $query->where('operation_area_id', $user->operation_area);
-        });
-        $stock->when($request->has('operator_id'), function ($query) use ($request) {
-            $query->whereHas('operationArea', function ($query) use ($request) {
-                $query->whereIn('operator_id', $request->operator_id);
-            });
-        });
-        $stock->when($request->has('operation_area_id'), function ($query) use ($request) {
-            $query->whereIn('operation_area_id', $request->operation_area_id);
-        });
+        $stock = Stock::with( 'item', 'item.category');
         $stock->when($request->has('item_category_id'), function ($query) use ($request) {
             $query->whereHas('item', function ($query) use ($request) {
                 $query->whereIn('item_category_id', $request->item_category_id);
@@ -52,31 +35,30 @@ class StockController extends Controller
         //get stock items
         $stock = $stock->get();
         //expected response
-        $items = Item::query()->with('category')->where('operator_id', $user->operator_id);
+        $items = Item::query()->with('category');
         $items->when($request->has('item_category_id'), function ($query) use ($request) {
-            $query->whereIn('item_category_id', $request->item_category_id);
+            $query->whereIn('item_category_id', $request->input('item_category_id'));
         });
         $items->when($request->has('item_id'), function ($query) use ($request) {
-            $query->whereIn('id', $request->item_id);
+            $query->whereIn('id', $request->input('item_id'));
         });
         $items = $items->get();
         $stock_data = $items->map(function ($item) use ($user, $stock) {
             $item->quantity = collect($stock)
                 ->where('item_id', $item->id)
-                ->where('operation_area_id', $user->operation_area)
                 ->sum('quantity');
 
             return $item;
         });
         //export
-        if (request()->is_download == true && ! \request()->ajax()) {
+        if (request()->input('is_download') && ! \request()->ajax()) {
             return $this->exportStock($stock_data);
         }
 
         return view('admin.stock.stock', [
             'operators' => Operator::query()->get(),
             'items' => [], // Item::query()->get(),
-            'categories' => ItemCategory::query()->where('operator_id', $user->operator_id)->get(),
+            'categories' => ItemCategory::query()->get(),
             'stocks' => $stock_data,
             'operationAreas' => $user->operator_id ? OperationArea::query()->where('operator_id', $user->operator_id)->get() : OperationArea::query()->get(),
         ]);

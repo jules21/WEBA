@@ -84,7 +84,6 @@ class Controller extends BaseController
     public function getSectors($operationArea)
     {
         return Sector::query()
-            ->where('district_id', '=', $operationArea->district_id)
             ->orderBy('name')
             ->get();
     }

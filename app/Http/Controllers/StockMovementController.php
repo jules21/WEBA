@@ -22,18 +22,8 @@ class StockMovementController extends Controller
     {
 
         $user = auth()->user();
-        $data = StockMovement::with('item', 'operationArea.operator','item.packagingUnit','item.stock.operationArea')->select('stock_movements.*');
-        $data->when($user->operator_id, function ($query) use ($user) {
-            $query->whereHas('operationArea', function ($query) use ($user) {
-                $query->where('operator_id', $user->operator_id);
-            });
-        });
-        $data->when($user->operation_area, function ($query) use ($user) {
-            $query->where('operation_area_id', $user->operation_area);
-        });
-        $data->when(request()->has('operation_area_id'), function ($query) {
-            $query->whereIn('operation_area_id', request()->operation_area_id);
-        });
+        $data = StockMovement::with('item','item.packagingUnit','item.stock')->select('stock_movements.*');
+
         $data->when(request()->item_id, function ($query) {
             $query->whereIn('item_id', request()->item_id);
         });
@@ -54,9 +44,9 @@ class StockMovementController extends Controller
 
         return $datatable->render('admin.stock.items_movement',
             [
-                'categories' => ItemCategory::query()->where('operator_id', $user->operator_id)->get(),
+                'categories' => ItemCategory::query()->get(),
                 'items' => [], // Item::query()->where('operator_id', $user->operator_id)->get(),
-                'operationAreas' => $user->operator_id ? OperationArea::query()->where('operator_id', $user->operator_id)->get() : OperationArea::query()->get(),
+                'operationAreas' => OperationArea::query()->get(),
             ]
         );
     }

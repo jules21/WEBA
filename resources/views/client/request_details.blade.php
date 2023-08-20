@@ -79,34 +79,6 @@
             <div class="col-md-6 col-xl-4">
                 <div class="form-group">
                     <div class="font-weight-bold">
-                        @lang('app.will_the_new_connection_cross_a_road?')
-                    </div>
-                    <span class="tw-bg-accent/20 font-weight-bold tw-text-primary px-2 py-1 rounded-pill">
-                                        {{ $request->new_connection_crosses_road? 'Yes' : 'No' }}
-                                    </span>
-                </div>
-            </div>
-            <div class="col-md-6 col-xl-4">
-                <div class="form-group">
-                    <label class="font-weight-bold">@lang('app.road_type:')</label>
-                    <div class="form-control-plaintext py-0">
-                        {{ $request->road_type??'N/A' }}
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xl-4">
-                <div class="form-group">
-                    <div class="font-weight-bold">
-                        @lang('app.will_you_buy_the_equipments_by_yourself?')
-                    </div>
-                    <span class="tw-bg-accent/20 font-weight-bold tw-text-primary px-2 py-1 rounded-pill">
-                                        {{ $request->equipment_payment? 'Yes' : 'No' }}
-                                    </span>
-                </div>
-            </div>
-            <div class="col-md-6 col-xl-4">
-                <div class="form-group">
-                    <div class="font-weight-bold">
                         @lang('app.will_you_dig_the_pipeline_by_yourself?')
                     </div>
                     <span class="tw-bg-accent/20 font-weight-bold tw-text-primary px-2 py-1 rounded-pill">
@@ -124,45 +96,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-xl-4">
-                <div class="form-group">
-                    <label class="font-weight-bold">
-                        @lang('app.operator'):
-                    </label>
-                    <div class="form-control-plaintext py-0">
-                        {{ $request->operator->name }}
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-12">
-                <label class="font-weight-bold d-block">@lang('app.pipe_will_cross:')</label>
-                <div class="row">
-                    @forelse($request->pipeCrosses as $item)
-                        <div class="col-lg-4 my-2">
-                           <span class="svg-icon tw-text-accent">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                     class="icon icon-tabler icon-tabler-circle-check" width="24" height="24"
-                                     viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" fill="none"
-                                     stroke-linecap="round" stroke-linejoin="round">
-                                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                   <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                                   <path d="M9 12l2 2l4 -4"></path>
-                                </svg>
-                           </span>
-                            {{ $item->pipeCross->name }}
-                        </div>
-                    @empty
-
-                        <div class="col-12">
-                            <strong class="text-info"> @lang('app.no_data_found')</strong>
-                        </div>
-
-                    @endforelse
-                </div>
-            </div>
             <div class="col-lg-12">
                 <div class="form-group">
                     <label class="font-weight-bold">@lang('app.description:')</label>

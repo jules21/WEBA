@@ -6,7 +6,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title> @yield('title') {{ config('app.name', 'CMS-RWSS') }}</title>
+    <title> @yield('title') {{ config('app.name', 'WEBA') }}</title>
     <link rel="icon" href="{{ asset('images/logo.svg') }}" type="image/icon type"/>
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     <link href="{{ mix('css/tailwind.css') }}" rel="stylesheet">

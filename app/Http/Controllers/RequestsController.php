@@ -6,6 +6,7 @@ use App\Constants\Permission;
 use App\Constants\Status;
 use App\Exports\RequestsExport;
 use App\Http\Requests\ValidateAppRequest;
+use App\Models\Cell;
 use App\Models\Customer;
 use App\Models\District;
 use App\Models\Item;
@@ -225,8 +226,9 @@ class RequestsController extends Controller
     {
         $data = $request->validated();
 
-        $opArea = OperationArea::query()->find(auth()->user()->operation_area);
-        $district = District::query()->find($opArea->district_id);
+        $sector = Sector::find($data['sector_id']);
+
+        $district = $sector->district;
 
         $data['operator_id'] = auth()->user()->operator_id;
         $data['operation_area_id'] = auth()->user()->operation_area;

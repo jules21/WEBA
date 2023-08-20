@@ -35,26 +35,6 @@
     <div class="card card-body mb-5">
         <form action="#" id="filter-form">
             <div class="row">
-                @unless(Helper::hasOperationArea())
-                    <div class="col-md-3 form-group">
-                        <label for="operation_area">Operation Area</label>
-                        <select name="operation_area_id[]" id="operation_area" class="form-control select2"
-                                data-placeholder="Select Operation Area" multiple="multiple">
-                            @foreach($operationAreas as $operationArea)
-                                <option value="{{ $operationArea->id }}">{{ $operationArea->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                @endunless
-                <div class="col-md-3 form-group">
-                    <label for="type">Type</label>
-                    <select name="type[]" id="type" class="form-control select2"
-                            data-placeholder="Select Type" multiple="multiple">
-                        @foreach(Helper::stockMovementType() as $item)
-                            <option value="{{ $item}}">{{ $item }}</option>
-                        @endforeach
-                    </select>
-                </div>
                 <div class="col-md-3 form-group">
                     <label for="items">Item Category</label>
                     <select name="item_category_id[]" id="item_category" class="form-control select2"

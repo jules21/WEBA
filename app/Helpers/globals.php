@@ -95,7 +95,6 @@ function myOperators()
 function getDistrictsToRequestConnection()
 {
     return District::query()
-        ->whereHas('operationAreas')
         ->orderBy('name')
         ->get();
 }
@@ -192,7 +191,7 @@ function purchaseBuilder($fromCount = false)
 
     $user = auth()->user();
     return Purchase::query()
-        ->with(['supplier', 'movementDetails.item.packagingUnit', 'movementDetails.item.stock.operationArea'])
+        ->with(['supplier', 'movementDetails.item.packagingUnit', 'movementDetails.item.stock'])
 //                ->where('operation_area_id', '=', auth()->user()->operation_area)
         ->withCount('movementDetails')
         ->where(function (Builder $builder) use ($fromCount) {

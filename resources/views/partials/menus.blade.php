@@ -84,10 +84,7 @@
                         @endcan
                         <x-menu-item title="My Tasks" item-class="nav-my-tasks" :count="$data['requests_tasks']"
                                      :route="route('admin.requests.my-tasks')"/>
-                        @can(\App\Constants\Permission::ManageItemDelivery)
-                            <x-menu-item title="Item Delivery" item-class="nav-item-delivery"
-                                         :route="route('admin.requests.to-be-delivered')"/>
-                        @endcan
+
 
                     <x-menu-item title="All Requests" item-class="nav-all-requests"
                                  :route="route('admin.requests.index')"/>
@@ -316,16 +313,6 @@
                             </a>
                         </li>
                     @endcan
-                    @can(\App\Constants\Permission::ManageDistrictUsers)
-                        <li class="menu-item nav-district-users" aria-haspopup="true">
-                            <a href="{{ route('admin.users.index') }}?type=district" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">District Users</span>
-                            </a>
-                        </li>
-                    @endcan
                 </ul>
             </div>
         </li>
@@ -358,16 +345,6 @@
                                 <span class="menu-text">System Settings Management</span>
                             </span>
                     </li>
-                    @can('Manage banks')
-                        <li class="menu-item nav-banks" aria-haspopup="true">
-                            <a href="{{ route('admin.banks') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Banks</span>
-                            </a>
-                        </li>
-                    @endcan
 
                     @can('Manage Request Type')
                         <li class="menu-item nav-request-type" aria-haspopup="true">
@@ -379,16 +356,6 @@
                             </a>
                         </li>
                     @endcan
-                    @can('Manage Payment Type')
-                        <li class="menu-item nav-payment-type" aria-haspopup="true">
-                            <a href="{{ route('admin.payment.types') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Payment Type</span>
-                            </a>
-                        </li>
-                    @endcan
                     @can('Manage Document Types')
                         <li class="menu-item nav-document-types" aria-haspopup="true">
                             <a href="{{ route('admin.document.types') }}" class="menu-link">
@@ -396,38 +363,6 @@
                                     <span></span>
                                 </i>
                                 <span class="menu-text">Document Type</span>
-                            </a>
-                        </li>
-                    @endcan
-                    @if(auth()->user()->is_super_admin)
-                        @can('Manage Institutions')
-                            <li class="menu-item nav-institution" aria-haspopup="true">
-                                <a href="{{ route('admin.institutions') }}" class="menu-link">
-                                    <i class="menu-bullet menu-bullet-dot">
-                                        <span></span>
-                                    </i>
-                                    <span class="menu-text">Institutions</span>
-                                </a>
-                            </li>
-                        @endcan
-                    @endif
-                    @can('Manage Packaging Units')
-                        <li class="menu-item nav-packaging-units" aria-haspopup="true">
-                            <a href="{{ route('admin.packaging.units') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Packaging Units</span>
-                            </a>
-                        </li>
-                    @endcan
-                    @can('Manage Road Cross Types')
-                        <li class="menu-item nav-road-cross-types" aria-haspopup="true">
-                            <a href="{{ route('admin.road.cross.types') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Road Cross Types</span>
                             </a>
                         </li>
                     @endcan
@@ -442,91 +377,27 @@
                         </li>
                     @endcan
 
-                    @can('Manage Water Network Types')
-                        <li class="menu-item nav-water-network-types" aria-haspopup="true">
-                            <a href="{{ route('admin.water.network.types') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Water Network Types</span>
-                            </a>
-                        </li>
-                    @endcan
-                    @can('Manage Water Network')
-                        <li class="menu-item nav-water-networks" aria-haspopup="true">
-                            <a href="{{ route('admin.water.networks') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Water Supply Systems</span>
-                            </a>
-                        </li>
-                    @endcan
-                    @can(\App\Constants\Permission::ManageClusters)
-                        <li class="menu-item nav-clusters" aria-haspopup="true">
-                            <a href="{{ route('admin.clusters') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">
-                                    Clusters
-                                </span>
-                            </a>
-                        </li>
-                    @endcan
-                    @can('Manage Water Network Statuses')
-                        <li class="menu-item nav-water-network-statuses" aria-haspopup="true">
-                            <a href="{{ route('admin.water.network.statuses') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Water Network Statuses</span>
-                            </a>
-                        </li>
-                    @endcan
-                    @can('Manage Request Duration Configurations')
-                        <li class="menu-item nav-request-duration-configuration" aria-haspopup="true">
-                            <a href="{{ route('admin.request.duration.configurations') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Request Duration Configuration</span>
-                            </a>
-                        </li>
-                    @endcan
-                    @can('Manage Payment Configurations')
-                        <li class="menu-item nav-payment-configurations" aria-haspopup="true">
-                            <a href="{{ route('admin.payment.configurations') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">Payment Configuration</span>
-                            </a>
-                        </li>
-                    @endcan
-                    @if(auth()->user()->is_super_admin)
-                        @can('Manage Faqs')
-                            <li class="menu-item nav-faqs" aria-haspopup="true">
-                                <a href="{{ route('admin.faq') }}" class="menu-link">
-                                    <i class="menu-bullet menu-bullet-dot">
-                                        <span></span>
-                                    </i>
-                                    <span class="menu-text">FAQs</span>
-                                </a>
-                            </li>
-                        @endcan
-                    @endif
+{{--                    @can('Manage Water Network Types')--}}
+{{--                        <li class="menu-item nav-water-network-types" aria-haspopup="true">--}}
+{{--                            <a href="{{ route('admin.water.network.types') }}" class="menu-link">--}}
+{{--                                <i class="menu-bullet menu-bullet-dot">--}}
+{{--                                    <span></span>--}}
+{{--                                </i>--}}
+{{--                                <span class="menu-text">Water Network Types</span>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    @endcan--}}
+{{--                    @can('Manage Water Network')--}}
+{{--                        <li class="menu-item nav-water-networks" aria-haspopup="true">--}}
+{{--                            <a href="{{ route('admin.water.networks') }}" class="menu-link">--}}
+{{--                                <i class="menu-bullet menu-bullet-dot">--}}
+{{--                                    <span></span>--}}
+{{--                                </i>--}}
+{{--                                <span class="menu-text">Water Supply Systems</span>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    @endcan--}}
 
-                    @can('Manage User Manual')
-                        <li class="menu-item nav-faqs" aria-haspopup="true">
-                            <a href="{{ route('admin.user.manuals') }}" class="menu-link">
-                                <i class="menu-bullet menu-bullet-dot">
-                                    <span></span>
-                                </i>
-                                <span class="menu-text">User Manuals</span>
-                            </a>
-                        </li>
-                    @endcan
 
                 </ul>
             </div>

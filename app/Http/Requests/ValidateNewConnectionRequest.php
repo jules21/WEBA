@@ -39,7 +39,7 @@ class ValidateNewConnectionRequest extends FormRequest
 //            'road_cross_types' => ['required', 'array'],
 //            'road_cross_types.*' => ['required', 'numeric'],
             'digging_pipeline' => ['required'],
-            'equipment_payment' => ['required'],
+//            'equipment_payment' => ['required'],
         ];
     }
 

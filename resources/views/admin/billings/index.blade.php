@@ -107,20 +107,6 @@
                             </select>
                         </div>
                     @endunless
-                    @if(Helper::isOperator())
-                        <div class="col-md-3 form-group">
-                            <label for="customer_field_officer">Customer Field Officer</label>
-                            <select name="customer_field_officer_id[]" id="customer_field_officer"
-                                    class="form-control select2"
-                                    data-placeholder="Select Customer Field Officer" multiple="multiple">
-                                @foreach($customerFieldOfficers ?? [] as $customerFieldOfficer)
-                                    <option value="{{ $customerFieldOfficer->id }}"
-                                        {{request()->get('customer_field_officer_id') == $customerFieldOfficer->id ? 'selected' : ''}}
-                                    >{{ $customerFieldOfficer->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    @endif
                     <div class="col-md-3 form-group">
                         <label for="meter_number">Meter Number</label>
                         <input type="text" name="meter_number" id="meter_number" class="form-control"

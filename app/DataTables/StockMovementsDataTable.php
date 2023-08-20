@@ -68,7 +68,7 @@ class StockMovementsDataTable extends DataTable
             })
             ->addColumn('qty_change', function ($item) {
                 if ($item->qty_in > 0) {
-                    return '<span class="text-success  font-weight-lighter">+'.$item->qty_in.' '.$item->item->packagingUnit->name.'</span>';
+                    return '<span class="text-success  font-weight-lighter">+'.$item->qty_in.'</span>';
                 } else {
                     $qty =$item->qty_out.' '.$item->item->packagingUnit->name;
                     return "<a href='".route('admin.stock.stock-items.movements.history', encryptId($item->id))."'>

@@ -305,7 +305,7 @@ class Request extends Model implements Auditable
     public function canAssignMeterNumber(): bool
     {
         return $this->meterNumbers->count() < $this->meter_qty
-            && $this->status == Status::ASSIGNED
+            && $this->status == Status::APPROVED
             && auth()->user()->can(Permission::AssignMeterNumber);
     }
 
@@ -381,7 +381,7 @@ class Request extends Model implements Auditable
 
     public function canMeterNumberBeShown(): bool
     {
-        return !in_array($this->status, [Status::PENDING, Status::PROPOSE_TO_APPROVE]);
+        return !in_array($this->status, [Status::PENDING,Status::ASSIGNED, Status::PROPOSE_TO_APPROVE]);
     }
 
     public function getPreviousStatus(): ?string

@@ -206,35 +206,6 @@
                 </div>
 
 
-                <div class="col-lg-6">
-                    <label>
-                        @lang('app.do_you_want_to_pay_for_the_materials_yourself_by_submitting_an_EBM_invoice_?')
-                        <x-required-sign/>
-                    </label>
-                    <div class="form-group">
-                        <div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input
-                                    {{ isset($request) && $request->equipment_payment == 1 ? 'checked' : '' }} type="radio"
-                                    required
-                                    id="equipment_payment1" value="1" name="equipment_payment"
-                                    class="custom-control-input">
-                                <label class="custom-control-label" for="equipment_payment1">
-                                    @lang('app.yes')
-                                </label>
-                            </div>
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input
-                                    {{ isset($request) && $request->equipment_payment == 0 ? 'checked' : '' }} type="radio"
-                                    required
-                                    id="equipment_payment2" value="0" name="equipment_payment"
-                                    class="custom-control-input">
-                                <label class="custom-control-label" for="equipment_payment2">@lang('app.no')</label>
-                            </div>
-                        </div>
-                        <label id="equipment_payment-error" class="error" for="equipment_payment"></label>
-                    </div>
-                </div>
             </div>
 
             <div class=" mb-4" style="border-bottom: 3px dotted #95989d">

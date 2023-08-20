@@ -7,11 +7,11 @@
         </x-layouts.breadcrumb-item>
 
         <x-slot name="actions">
-            <button class="btn rounded tw-bg-accent  tw-font-semibold hover:tw-bg-accent hover:tw-text-white "
-                    type="button" data-toggle="modal" data-target="#exampleModal">
+            <a href="{{route('client.connection-new')}}" class="btn rounded tw-bg-accent  tw-font-semibold hover:tw-bg-accent hover:tw-text-white "
+                    type="button" >
                 <span class="ti ti-plus"></span>
                 New Connection
-            </button>
+            </a>
         </x-slot>
 
     </x-layouts.breadcrumb>

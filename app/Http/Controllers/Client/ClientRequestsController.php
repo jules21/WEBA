@@ -68,8 +68,8 @@ class ClientRequestsController extends Controller
             'cell_id' => $data['cell_id'],
             'village_id' => $data['village_id'],
             'description' => $data['description'],
-            'digging_pipeline' => $data['digging_pipeline'],
-            'equipment_payment' => $data['equipment_payment'],
+            'digging_pipeline' => 0,
+            'equipment_payment' =>0,
             'customer_initiated' => true,
             'status' => Status::SUBMITTED
         ]);
@@ -133,13 +133,13 @@ class ClientRequestsController extends Controller
         if ($request->status != Status::PENDING) {
             return redirect()->back()->with('error', 'Request cannot be edited');
         }
-
+        $provinces = $this->getProvinces();
         $requestTypes = $this->getRequestsTypes();
         $waterUsage = $this->getWaterUsages();
         $roadTypes = $this->getRoadTypes();
         $roadCrossTypes = $this->getRoadCrossTypes();
         $operator = $request->operator;
-        $operationArea = $request->operationArea;
+        $operationArea = $request->district_id;
         $sectors = $this->getSectors($operationArea);
         $selected_road_cross_types = $request->pipeCrosses()->pluck('road_cross_type_id')->toArray();
         $action = route('client.requests.update', encryptId($request->id));
@@ -153,7 +153,8 @@ class ClientRequestsController extends Controller
             'operationArea' => $operationArea,
             'request' => $request,
             'selected_road_cross_types' => $selected_road_cross_types,
-            'action' => $action
+            'action' => $action,
+            'provinces' => $provinces
         ]);
     }
 
@@ -166,9 +167,7 @@ class ClientRequestsController extends Controller
         DB::beginTransaction();
         unset($data['road_cross_types']);
 
-        if ($data['new_connection_crosses_road'] == 0) {
-            $data['road_type'] = null;
-        }
+
 
         if ($request->hasFile('upi_attachment')) {
 
